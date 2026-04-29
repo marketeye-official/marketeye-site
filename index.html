@@ -256,7 +256,7 @@
       display: grid;
       grid-template-columns: 1fr 420px;
       gap: 56px;
-      align-items: center;
+      align-items: flex-start;
       padding: 20px 0 16px;
     }
 
@@ -356,6 +356,22 @@
     .email-privacy {
       font-size: 0.6875rem;
       color: rgba(90, 106, 138, 0.5);
+    }
+
+    .hero-disclaimer {
+      grid-column: 2;
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: rgba(80, 51, 195, 0.08);
+      border: 1px solid rgba(80, 51, 195, 0.2);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .hero-disclaimer strong {
+      color: var(--blue);
     }
 
     /* Chart card */
@@ -1100,6 +1116,10 @@
         display: none;
       }
 
+      .hero-disclaimer {
+        display: none;
+      }
+
       .story-grid {
         grid-template-columns: 1fr;
         gap: 32px;
@@ -1212,12 +1232,6 @@
             <input type="hidden" name="page" value="long-hero">
           </form>
           <p class="email-privacy">🔒 Private & secure. No spam. Cancel anytime.</p>
-          <div
-            style="margin-top:24px;padding:14px 16px;background:rgba(80,51,195,0.08);border:1px solid rgba(80,51,195,0.2);border-radius:6px;font-size:0.75rem;color:var(--muted);line-height:1.5;">
-            <strong style="color:var(--blue);">Disclaimer:</strong> Trading futures, stocks, and cryptocurrencies
-            involves substantial risk of loss and is not suitable for all investors. Past performance does not guarantee
-            future results. Results vary based on individual discipline, market conditions, and execution.
-          </div>
         </div>
 
         <!-- Live chart mockup -->
@@ -1272,6 +1286,11 @@
               <div class="cg-val" style="color:#FF5A5A;">6,805.00</div>
             </div>
           </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="hero-disclaimer">
+          <strong>Disclaimer:</strong> Trading futures, stocks, and cryptocurrencies involves substantial risk of loss and is not suitable for all investors. Past performance does not guarantee future results. Results vary based on individual discipline, market conditions, and execution.
         </div>
       </div>
     </div>
