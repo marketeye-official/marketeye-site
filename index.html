@@ -1202,11 +1202,11 @@
           </div>
           <form class="webinar-form" onsubmit="return submitForm(event)">
             <div class="email-bar">
+              <input type="text" id="hero-name" name="first-name" placeholder="Your first name" required>
               <input type="email" id="hero-email" name="email" placeholder="Enter your email address" required>
               <button type="submit">Reserve My Seat →</button>
             </div>
             <input type="hidden" name="page" value="long-hero">
-            <input type="hidden" name="first-name" id="hero-name" value="">
           </form>
           <p class="email-privacy">🔒 Private & secure. No spam. Cancel anytime.</p>
           <div
@@ -1623,9 +1623,8 @@
 
     function submitForm(e) {
       e.preventDefault();
+      const name = document.getElementById('hero-name').value;
       const email = document.getElementById('hero-email').value;
-      const name = email.split('@')[0];
-      document.getElementById('hero-name').value = name;
       submitToWeb3Forms({
         'first-name': name,
         'email': email,
@@ -1646,6 +1645,7 @@
 
     function submitToWeb3Forms(data) {
       const formData = new FormData();
+      formData.append('access_key', 'YOUR_WEB3FORMS_ACCESS_KEY'); // Add your Web3Forms access key here
       Object.keys(data).forEach(key => {
         formData.append(key, data[key]);
       });
