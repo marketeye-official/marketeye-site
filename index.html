@@ -304,16 +304,17 @@
 
     .email-bar {
       display: flex;
+      flex-direction: column;
+      gap: 10px;
       max-width: 520px;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .email-bar input {
-      flex: 1;
+      width: 100%;
       background: rgba(0, 200, 255, 0.04);
       border: 1px solid rgba(0, 200, 255, 0.2);
-      border-right: none;
-      border-radius: 3px 0 0 3px;
+      border-radius: 3px;
       padding: 14px 16px;
       font-family: 'Barlow', sans-serif;
       font-size: 0.875rem;
@@ -330,11 +331,11 @@
       color: rgba(90, 106, 138, 0.5);
     }
 
-    .email-bar button {
+    .reserve-btn {
       padding: 14px 22px;
       background: var(--grad);
       border: none;
-      border-radius: 0 3px 3px 0;
+      border-radius: 3px;
       font-family: 'Exo 2', sans-serif;
       font-size: 0.75rem;
       font-weight: 700;
@@ -344,9 +345,11 @@
       cursor: pointer;
       white-space: nowrap;
       transition: opacity 0.2s;
+      display: inline-block;
+      width: auto;
     }
 
-    .email-bar button:hover {
+    .reserve-btn:hover {
       opacity: 0.88;
     }
 
@@ -1204,8 +1207,8 @@
             <div class="email-bar">
               <input type="text" id="hero-name" name="first-name" placeholder="Your first name" required>
               <input type="email" id="hero-email" name="email" placeholder="Enter your email address" required>
-              <button type="submit">Reserve My Seat →</button>
             </div>
+            <button type="submit" class="reserve-btn">Reserve My Seat →</button>
             <input type="hidden" name="page" value="long-hero">
           </form>
           <p class="email-privacy">🔒 Private & secure. No spam. Cancel anytime.</p>
