@@ -98,12 +98,9 @@
 
     /* ── NAV ── */
     nav {
-      position: sticky;
-      top: 32px;
       background: rgba(4, 9, 28, 0.96);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
-      z-index: 100;
       padding: 0 40px;
       display: flex;
       align-items: center;
@@ -166,7 +163,7 @@
     }
 
     .section-hero {
-      padding: 16px 0 16px;
+      padding: 120px 0 12px;
       display: flex;
       align-items: flex-start;
     }
@@ -306,7 +303,16 @@
       flex-direction: column;
       gap: 10px;
       max-width: 520px;
-      margin-bottom: 8px;
+      margin-bottom: 14px;
+    }
+
+    .name-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .name-row input {
+      flex: 1;
     }
 
     .email-bar input {
@@ -355,17 +361,21 @@
     .email-privacy {
       font-size: 0.6875rem;
       color: rgba(90, 106, 138, 0.5);
-      margin-bottom: 48px;
+      margin-bottom: 80px;
+    }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .hero-disclaimer {
-      grid-column: 2;
-      margin-top: -15.5rem;
-      padding: 14px 16px;
+      padding: 12px 14px;
       background: rgba(80, 51, 195, 0.08);
       border: 1px solid rgba(80, 51, 195, 0.2);
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.6875rem;
       color: var(--muted);
       line-height: 1.5;
     }
@@ -379,7 +389,7 @@
       background: var(--navy-card);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 22px;
+      padding: 14px;
       position: relative;
       overflow: hidden;
     }
@@ -398,7 +408,7 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .chart-symbol {
@@ -422,7 +432,7 @@
 
     .chart-svg {
       width: 100%;
-      height: 150px;
+      height: 110px;
     }
 
     .chart-grid {
@@ -1112,11 +1122,7 @@
         padding: 16px 0 12px;
       }
 
-      .chart-card {
-        display: none;
-      }
-
-      .hero-disclaimer {
+      .hero-right {
         display: none;
       }
 
@@ -1167,8 +1173,10 @@
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TS6V32CR" height="0" width="0"
       style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
+  <!-- STICKY HEADER WRAPPER: ticker + nav always stack together -->
+  <div style="position:sticky;top:0;z-index:200;">
   <!-- TICKER BAR - TRADINGVIEW LIVE WIDGET -->
-  <div style="position:sticky;top:0;z-index:200;background:#060E28;">
+  <div style="background:#060E28;">
     <div class="tradingview-widget-container" style="margin:0;padding:0;">
       <div class="tradingview-widget-container__widget" style="height:32px;"></div>
       <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
@@ -1197,13 +1205,14 @@
   </div>
 
   <!-- NAVIGATION -->
-  <nav>
+  <nav style="position:relative;top:auto;">
     <div class="nav-logo">
       <img src="marketeye-logo-mark.png" alt="MarketEye">
       <span class="nav-logo-text">MarketEye</span>
     </div>
     <a class="nav-cta" href="#cta-section">Claim Your Seat</a>
   </nav>
+  </div><!-- end sticky header wrapper -->
 
   <!-- HERO SECTION -->
   <section class="section section-hero">
@@ -1225,7 +1234,10 @@
           </div>
           <form class="webinar-form" onsubmit="return submitForm(event)">
             <div class="email-bar">
-              <input type="text" id="hero-name" name="first-name" placeholder="Your first name" required>
+              <div class="name-row">
+                <input type="text" id="hero-name" name="first-name" placeholder="First name" required>
+                <input type="text" id="hero-last-name" name="last-name" placeholder="Last name" required>
+              </div>
               <input type="email" id="hero-email" name="email" placeholder="Enter your email address" required>
             </div>
             <button type="submit" class="reserve-btn">Reserve My Seat →</button>
@@ -1234,7 +1246,8 @@
           <p class="email-privacy">🔒 Private & secure. No spam. Cancel anytime.</p>
         </div>
 
-        <!-- Live chart mockup -->
+        <!-- Right column: chart + disclaimer -->
+        <div class="hero-right">
         <div class="chart-card">
           <div class="chart-header">
             <div>
@@ -1292,6 +1305,7 @@
         <div class="hero-disclaimer">
           <strong>Disclaimer:</strong> Trading futures, stocks, and cryptocurrencies involves substantial risk of loss and is not suitable for all investors. Past performance does not guarantee future results. Results vary based on individual discipline, market conditions, and execution.
         </div>
+        </div><!-- end hero-right -->
       </div>
     </div>
   </section>
@@ -1580,12 +1594,19 @@
           rest. All you need is an email address.</p>
 
         <form class="form-container" onsubmit="return submitCtaForm(event)">
-          <div class="form-row">
+          <div class="form-row" style="justify-content:center;">
             <div class="form-field">
               <label class="form-label">First Name</label>
               <input type="text" id="cta-name" name="first-name" class="form-input" placeholder="Your first name"
                 required>
             </div>
+            <div class="form-field">
+              <label class="form-label">Last Name</label>
+              <input type="text" id="cta-last-name" name="last-name" class="form-input" placeholder="Your last name"
+                required>
+            </div>
+          </div>
+          <div class="form-row full" style="justify-content:center;">
             <div class="form-field">
               <label class="form-label">Email Address</label>
               <input type="email" id="cta-email" name="email" class="form-input" placeholder="your@email.com" required>
@@ -1645,10 +1666,12 @@
 
     function submitForm(e) {
       e.preventDefault();
-      const name = document.getElementById('hero-name').value;
+      const firstName = document.getElementById('hero-name').value;
+      const lastName = document.getElementById('hero-last-name').value;
       const email = document.getElementById('hero-email').value;
       submitToWeb3Forms({
-        'first-name': name,
+        'first-name': firstName,
+        'last-name': lastName,
         'email': email,
         'page': 'long-hero'
       });
@@ -1656,10 +1679,12 @@
 
     function submitCtaForm(e) {
       e.preventDefault();
-      const name = document.getElementById('cta-name').value;
+      const firstName = document.getElementById('cta-name').value;
+      const lastName = document.getElementById('cta-last-name').value;
       const email = document.getElementById('cta-email').value;
       submitToWeb3Forms({
-        'first-name': name,
+        'first-name': firstName,
+        'last-name': lastName,
         'email': email,
         'page': 'long-cta'
       });
