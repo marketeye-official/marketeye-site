@@ -163,7 +163,7 @@
     }
 
     .section-hero {
-      padding: 120px 0 12px;
+      padding: 80px 0 80px;
       display: flex;
       align-items: flex-start;
     }
@@ -269,7 +269,7 @@
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin: 8px 0 12px;
+      margin: 8px 0 6px;
     }
 
     .hero-badge {
@@ -290,12 +290,12 @@
     }
 
     .hero-subtitle {
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       color: var(--cream);
-      line-height: 1.55;
+      line-height: 1.4;
       font-weight: 300;
       max-width: 520px;
-      margin: 6px 0 10px;
+      margin: 6px 0 5px;
     }
 
     .email-bar {
@@ -303,7 +303,7 @@
       flex-direction: column;
       gap: 10px;
       max-width: 520px;
-      margin-bottom: 14px;
+      margin-bottom: 6px;
     }
 
     .name-row {
@@ -361,7 +361,18 @@
     .email-privacy {
       font-size: 0.6875rem;
       color: rgba(90, 106, 138, 0.5);
-      margin-bottom: 80px;
+      margin-bottom: 4px;
+    }
+
+    .hero-membership-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    .hero-membership-note strong {
+      color: var(--blue);
     }
 
     .hero-right {
@@ -583,7 +594,7 @@
 
     .audience-desc {
       font-size: 0.7812rem;
-      color: var(--muted);
+      color: #8A9BBF;
       line-height: 1.55;
     }
 
@@ -851,6 +862,72 @@
     .dir-desc em {
       color: var(--blue);
       font-style: italic;
+    }
+
+    /* ── METHOD STEPS ── */
+    .method-steps {
+      display: flex;
+      flex-direction: column;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .method-step {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    .method-step-number {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--blue);
+      opacity: 0.25;
+      line-height: 1;
+      min-width: 52px;
+      padding-top: 4px;
+    }
+
+    .method-step-content {
+      flex: 1;
+      padding-bottom: 8px;
+    }
+
+    .method-step-label {
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+
+    .method-step-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+
+    .method-step-desc {
+      font-size: 0.875rem;
+      color: var(--text);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .method-connector {
+      display: flex;
+      padding: 10px 0 10px 26px;
+    }
+
+    .method-connector-line {
+      width: 2px;
+      height: 32px;
+      background: linear-gradient(to bottom, var(--blue), rgba(80,51,195,0.1));
+      border-radius: 2px;
     }
 
     /* ── REVIEWS ── */
@@ -1220,17 +1297,16 @@
       <div class="hero">
         <div>
           <div class="eyebrow">
-            <div class="eyebrow-line"></div><span class="eyebrow-text">Join a Vetted Trading Community</span>
+            <div class="eyebrow-line"></div><span class="eyebrow-text">Free Live Workshop · 90 Minutes · No Experience Required</span>
           </div>
-          <h1 class="hero-title">Have What It Takes<br>to Become a<br><em>7-Figure Trader?</em></h1>
-          <p class="hero-subtitle">Attend our free workshop to learn the fundamentals and discover the 2 strategies that
-            all seasoned traders have evolved from — then find out if you qualify for our exclusive community of real
-            traders.</p>
+          <h1 class="hero-title">Got 90 Minutes to See<br>What <em>7-Figure Traders</em> Do?</h1>
+          <p class="hero-subtitle">No appraisals. No contractors. No rate hikes. No loan denials. Trading is the one wealth-building skill where outside forces don't decide your outcome — <em style="-webkit-text-fill-color:inherit;font-style:italic;">you</em> do.<br><br>
+            In this free 90-minute workshop, you'll learn exactly how money is made in the markets, the mindset consistent traders operate from, and two strategies you can start building from today. Whether you're brand new or you've tried everything else — <em style="-webkit-text-fill-color:inherit;font-style:italic;">this is your foundation.</em></p>
           <div class="hero-badges">
             <div class="hero-badge">📈 <span>Stocks · Futures · Forex · Crypto</span></div>
             <div class="hero-badge">⏰ <span>90-Minute Live Session</span></div>
-            <div class="hero-badge">🎓 <span>Trading Community & Mentorship</span></div>
-            <div class="hero-badge">💰 <span>Take Away An Actionable Plan</span></div>
+            <div class="hero-badge">🎓 <span>Complete Beginners Welcome</span></div>
+            <div class="hero-badge">💡 <span>Walk Away With a Real Plan</span></div>
           </div>
           <form class="webinar-form" onsubmit="return submitForm(event)">
             <div class="email-bar">
@@ -1240,10 +1316,11 @@
               </div>
               <input type="email" id="hero-email" name="email" placeholder="Enter your email address" required>
             </div>
-            <button type="submit" class="reserve-btn">Reserve My Seat →</button>
+            <button type="submit" class="reserve-btn">Reserve My Free Seat →</button>
             <input type="hidden" name="page" value="long-hero">
           </form>
           <p class="email-privacy">🔒 Private & secure. No spam. Cancel anytime.</p>
+          <p class="hero-membership-note">At the end of the session, you'll learn how to apply for the MarketEye mentorship — <strong>accepted by interview only.</strong></p>
         </div>
 
         <!-- Right column: chart + disclaimer -->
@@ -1355,38 +1432,31 @@
         <div class="eyebrow-line"></div><span class="eyebrow-text">Is This for You?</span>
       </div>
       <h2 class="section-title">Done Chasing<br><em>the Next Shiny Opportunity?</em></h2>
-      <p class="lead">Whether you're in the side-gig movement, creative real estate, MLM, or the make-money-online world
-        — trading offers a real, learnable edge. This webinar was designed for exactly where you are right now.</p>
+      <p class="lead">If you've invested time and money into real estate, eCommerce, auto leasing, or other wealth-building opportunities — and found yourself constantly fighting factors completely outside your control — this workshop was built for you. Trading is different. Not because it's easy, but because your outcome is entirely determined by your own skill, discipline, and execution.</p>
       <div class="audience-grid">
         <div class="audience-card"><span class="audience-icon">💼</span>
           <div class="audience-label">Side-Gig Seekers</div>
-          <div class="audience-desc">Trading can fit into 30 minutes a day with disciplined execution — no commute, no
-            boss, complete control over your schedule.</div>
+          <div class="audience-desc">No inventory. No clients. No commute. No ride-sharing. Trading fits into 90 minutes a day — once you build the skill, you control every outcome, and you can scale the gig as large as you want. There are no limits.</div>
         </div>
         <div class="audience-card"><span class="audience-icon">🏠</span>
           <div class="audience-label">Creative Real Estate</div>
-          <div class="audience-desc">Already thinking like an investor? Trading is capital allocation with faster
-            feedback and tighter risk controls.</div>
+          <div class="audience-desc">Tired of appraisals killing deals, contractors ghosting, and rate hikes shrinking your margins? Trading is investing without the outside variables. You set the entry, the target, and the exit. No middlemen.</div>
         </div>
         <div class="audience-card"><span class="audience-icon">🌐</span>
           <div class="audience-label">Make Money Online</div>
-          <div class="audience-desc">Tired of the hustle that never scales? Learn a skill that compounds — where your
-            edge grows with experience.</div>
+          <div class="audience-desc">Dropshipping, affiliate marketing, content — all dependent on algorithms, platforms, and competitors you can't control. Trading is a skill you own. No platform can take it away, no algorithm can tank your reach, and the only ceiling is your discipline.</div>
         </div>
         <div class="audience-card"><span class="audience-icon">🎯</span>
           <div class="audience-label">Complete Beginners</div>
-          <div class="audience-desc">Never placed a trade? Perfect. You won't unlearn bad habits. We build from the
-            correct foundation, day one.</div>
+          <div class="audience-desc">No prior experience needed — in fact, it's an advantage. You haven't picked up bad habits yet. We'll show you exactly how markets work and give you two real strategies to start building with. This 90-minute workshop is where traders begin.</div>
         </div>
         <div class="audience-card"><span class="audience-icon">📉</span>
           <div class="audience-label">Struggling Traders</div>
-          <div class="audience-desc">Been trading but losing? Discover why most traders fail — and the pre-trade
-            checklist that changes everything.</div>
+          <div class="audience-desc">You've placed trades, taken losses, and wondered if it's you or the strategy. It's usually neither — it's the framework. In this workshop, we break down exactly why most traders fail and what the ones who make it consistently do differently.</div>
         </div>
         <div class="audience-card"><span class="audience-icon">🚀</span>
           <div class="audience-label">Aspiring Entrepreneurs</div>
-          <div class="audience-desc">Trading is the ultimate entrepreneurial pursuit — you answer to no one, keep what
-            you earn, scale your pace.</div>
+          <div class="audience-desc">Tired of waiting for funding, customers, or permission? Trading gives you a business where the only variable is your skill. You keep what you earn, you answer to no one, and there's no cap on what you can build.</div>
         </div>
       </div>
     </div>
@@ -1394,77 +1464,53 @@
 
   <div class="grad-divider"></div>
 
-  <!-- WHAT IS TRADING -->
+  <!-- THE MARKETEYE METHOD -->
   <section class="section">
     <div class="container">
       <div class="eyebrow">
-        <div class="eyebrow-line"></div><span class="eyebrow-text">What Is Trading? (Demystified)</span>
+        <div class="eyebrow-line"></div><span class="eyebrow-text">The MarketEye Method</span>
       </div>
-      <h2 class="section-title">Make Money in <em>Any Market</em></h2>
-      <div class="two-col">
-        <div>
-          <h3
-            style="font-family:'Exo 2',sans-serif;font-size:1.375rem;font-weight:700;color:var(--cream);margin-bottom:14px;">
-            More Than Just Buying Low</h3>
-          <p class="body-text">Most people think you can only be made when prices go up. But traders have a second
-            weapon — the ability to profit from falling prices just as easily as rising ones.</p>
-          <p class="body-text">This is called "going short." And it's one of the most powerful — and misunderstood —
-            tools in any trader's arsenal. We'll demonstrate both live in the our free workshop using real stocks and
-            real situations.</p>
-          <div
-            style="margin-top:18px;padding:16px;background:var(--navy-card);border:1px solid var(--border);border-radius:6px;">
-            <div
-              style="font-size:0.625rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--blue);margin-bottom:10px;font-weight:600;">
-              Real Chart Examples You'll See Live</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:0.75rem;">
-              <div
-                style="padding:7px 10px;background:rgba(34,217,138,0.05);border:1px solid rgba(34,217,138,0.15);border-radius:3px;color:#22D98A;">
-                S&P 500 — Long ▲</div>
-              <div
-                style="padding:7px 10px;background:rgba(255,90,90,0.05);border:1px solid rgba(255,90,90,0.15);border-radius:3px;color:#FF5A5A;">
-                S&P 500 — Short ▼</div>
-              <div
-                style="padding:7px 10px;background:rgba(34,217,138,0.05);border:1px solid rgba(34,217,138,0.15);border-radius:3px;color:#22D98A;">
-                Amazon — Long ▲</div>
-              <div
-                style="padding:7px 10px;background:rgba(255,90,90,0.05);border:1px solid rgba(255,90,90,0.15);border-radius:3px;color:#FF5A5A;">
-                Amazon — Short ▼</div>
-              <div
-                style="padding:7px 10px;background:rgba(34,217,138,0.05);border:1px solid rgba(34,217,138,0.15);border-radius:3px;color:#22D98A;">
-                Bitcoin — Long ▲</div>
-              <div
-                style="padding:7px 10px;background:rgba(255,90,90,0.05);border:1px solid rgba(255,90,90,0.15);border-radius:3px;color:#FF5A5A;">
-                Bitcoin — Short ▼</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="dir-card">
-            <div class="dir-icon" style="background:rgba(34,217,138,0.08);border:1px solid rgba(34,217,138,0.2);">📈
-            </div>
-            <div>
-              <div class="dir-title" style="color:#22D98A;">Bull Market (Long Position)</div>
-              <div class="dir-desc">Buy at a lower price, sell at a higher price. The profit equals the difference
-                between your entry and exit price, adjusted for your position size.</div>
-            </div>
-          </div>
-          <div class="dir-card">
-            <div class="dir-icon" style="background:rgba(255,90,90,0.08);border:1px solid rgba(255,90,90,0.2);">📉</div>
-            <div>
-              <div class="dir-title" style="color:#FF5A5A;">Bear Market (Short Position)</div>
-              <div class="dir-desc">Sell high, buy back lower, keep the difference. The profit potential is equal
-                whether the market goes up or down — your risk and reward are defined before you enter the trade.</div>
-            </div>
-          </div>
-          <div
-            style="margin-top:18px;padding:16px;background:rgba(0,200,255,0.06);border:1px solid var(--border);border-radius:6px;">
-            <div style="font-size:0.75rem;color:var(--text);line-height:1.6;"><strong style="color:var(--blue);">Key
-                Insight:</strong> The market itself doesn't matter. What matters is your ability to read its direction
-              and position yourself correctly — whether that's up or down.</div>
-          </div>
-        </div>
-      </div>
+      <h2 class="section-title">A Clear Path From Zero to<br><em>Trading With Capital Partners</em></h2>
+      <p class="body-text" style="max-width:620px;margin:0 auto 48px;text-align:center;">Most people fail at trading because they skip steps. MarketEye is built around a proven three-stage journey — you don't move forward until you're ready.</p>
+      <div class="method-steps">
 
+        <div class="method-step">
+          <div class="method-step-number">01</div>
+          <div class="method-step-content">
+            <div class="method-step-label">Learn</div>
+            <h3 class="method-step-title">Build the Right Foundation</h3>
+            <p class="method-step-desc">You'll start by understanding how markets actually work: price action, risk management, and the psychology that separates consistent traders from everyone else. No guesswork. No information overload. A structured foundation built on what actually works.</p>
+          </div>
+        </div>
+
+        <div class="method-connector">
+          <div class="method-connector-line"></div>
+        </div>
+
+        <div class="method-step">
+          <div class="method-step-number">02</div>
+          <div class="method-step-content">
+            <div class="method-step-label">Prove</div>
+            <h3 class="method-step-title">Demonstrate Your Edge</h3>
+            <p class="method-step-desc">Before you risk real money, you prove your edge. You'll trade a live simulated account and hit defined performance benchmarks. This stage protects you — and it's how we know you're ready for the next step.</p>
+          </div>
+        </div>
+
+        <div class="method-connector">
+          <div class="method-connector-line"></div>
+        </div>
+
+        <div class="method-step">
+          <div class="method-step-number">03</div>
+          <div class="method-step-content">
+            <div class="method-step-label">Trade</div>
+            <h3 class="method-step-title">Scale With Capital Partners</h3>
+            <p class="method-step-desc">Once you've proven your consistency, you get the opportunity to trade with capital from our partners. That means you can scale beyond your own account — without taking on personal financial risk to do it.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </section>
 
   <div class="grad-divider"></div>
@@ -1479,27 +1525,23 @@
       <div class="review-grid">
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"I came in skeptical. But the 2-strategy framework filled gaps I didn't know I had.
-            Finally understand what separates profitable traders from the rest."</div>
-          <div class="review-author"><strong>Marcus T.</strong> — Texas · Futures Trader</div>
+          <div class="review-text">"I've got money tied up in real estate deals that are taking their own sweet time to pay out. I needed something with a much shorter window — that I could set to my own timeline, without laying out even more capital. The workshop showed me trading checked every box — and gave me a real path to follow. Applied for MarketEye the same day."</div>
+          <div class="review-author"><strong>Marcus T.</strong> — Texas · Real Estate Investor</div>
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Been trading for 8 years. This training exposed the exact gaps in my strategy and
-            risk management. The pre-trade checklist changed everything about my approach."</div>
+          <div class="review-text">"What I didn't expect was how structured it was. There's a real path — you learn the skill, you prove you can do it, and then you get access to capital. I'd spent years looking for something where the process made sense. This does."</div>
           <div class="review-author"><strong>Jennifer K.</strong> — California · Stock & Crypto Trader</div>
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Perfect for complete beginners. My biggest fear was entering without a plan. The
-            risk management framework gave me the structure I needed to start confidently."</div>
+          <div class="review-text">"I had zero experience and honestly felt like trading wasn't for people like me. Within the first 20 minutes of the workshop I realised I'd been wrong about what trading actually was. I'm six months into the mentorship now and on track to hit my benchmarks."</div>
           <div class="review-author"><strong>David L.</strong> — Florida · New Trader</div>
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"I run a 6-figure business. Trading appeals because it's time-flexible and I control
-            the outcome. This framework showed me how to approach it with actual discipline."</div>
-          <div class="review-author"><strong>Sarah M.</strong> — New York · Entrepreneur</div>
+          <div class="review-text">"I'd built an ecom business but felt like I was running in circles — chasing the next campaign, squeezing margins, always dependent on what the platform gods decided that month. The workshop reframed what trading actually is: not gambling, not guessing, but a skill with a repeatable process. Turns out it's a business too — just one where you're the only variable. I'm in the Learn stage now and it's exactly what I needed."</div>
+          <div class="review-author"><strong>Sarah M.</strong> — New York · eCommerce Entrepreneur</div>
         </div>
       </div>
     </div>
@@ -1517,13 +1559,29 @@
       <div class="faq-grid">
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">What happens at the end of the workshop?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-a">
+            <p>At the end of the session, we introduce MarketEye — our mentorship program for people who want to take trading seriously. You'll learn how the program works, what the journey looks like, and how to apply. There's no obligation and no pitch. If it's a fit, you'll know.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">How does the application process work?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-a">
+            <p>MarketEye isn't open enrollment. Every applicant goes through a short interview so we can understand where you're at and whether the program is the right fit for you. If you're accepted, you'll be given a start date and onboarded into your first stage. We keep cohorts small deliberately — this isn't a course you disappear into.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
             <span class="faq-q-text">How much money do I need to start?</span>
             <span class="faq-toggle">▼</span>
           </div>
           <div class="faq-a">
-            <p>Our members develop the skills necessary work with investors seeking partnerships with traders. They
-              provide the capital and you provide the talent for an 80% to 90% profit sharing. So the only money you
-              need to start is the cost of the tools and networks you'll need to run this business.</p>
+            <p>The goal of the MarketEye journey is to get you trading with capital from our funding partners — not your own. You'll need to cover the cost of your tools and platform access during the Learn and Prove stages, but you're not expected to fund a trading account out of pocket to reach that point.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -1532,20 +1590,7 @@
             <span class="faq-toggle">▼</span>
           </div>
           <div class="faq-a">
-            <p>Absolutely. We build from the ground up. You'll learn chart reading, entry/exit logic, risk management,
-              and the psychology of profitable trading — starting from day 1 with no assumptions about prior knowledge.
-            </p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">
-            <span class="faq-q-text">What if I lose money?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-a">
-            <p>Losses are part of trading. But our "pre-trade checklist" dramatically reduces large losses. Most traders
-              in our community lose small ($20-50) and win medium-to-large ($300-1500+). The math works when you have an
-              edge.</p>
+            <p>Yes. We build from the ground up — chart reading, entry and exit logic, risk management, and the psychology behind consistent trading. No prior knowledge assumed. In fact, beginners often progress faster because they haven't built bad habits yet.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -1554,29 +1599,25 @@
             <span class="faq-toggle">▼</span>
           </div>
           <div class="faq-a">
-            <p>A minimum of 2 to 3 hours on any day you decide to trade. Most traders execute 1-3 trades during the
-              session they've chosen to trade. You can do it before work, or as a full-time pursuit. It's flexible.</p>
+            <p>The mentorship requires a real commitment. You'll need roughly 90 minutes to 2 hours on any day you trade, plus time for daily homework and review. Most members trade before work or during a set morning window, some members trade evening and overnight, depending on their current schedules. It's flexible in when you do it — but not in whether you do it.</p>
           </div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)">
-            <span class="faq-q-text">Can I do this part-time?</span>
+            <span class="faq-q-text">What if I lose money?</span>
             <span class="faq-toggle">▼</span>
           </div>
           <div class="faq-a">
-            <p>Yes. Many of our traders have full-time jobs and trade before work or during lunch breaks. Once you have
-              your edge, 30 minutes of focus beats 8 hours of distraction.</p>
+            <p>Losses are part of trading — every professional trader has them. What separates consistent traders is how they manage them. The entire MarketEye framework is built around risk control first: you define your risk before every trade, and you never let a single loss derail the plan. You'll also be trading simulated capital during the Prove stage, so you're not risking real money until you've demonstrated you're ready.</p>
           </div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item" style="grid-column: 1;">
           <div class="faq-q" onclick="toggleFaq(this)">
-            <span class="faq-q-text">What if I've tried trading before?</span>
+            <span class="faq-q-text">What if I've tried trading before and it didn't work?</span>
             <span class="faq-toggle">▼</span>
           </div>
           <div class="faq-a">
-            <p>Most traders fail because they're either undercapitalized, lack an edge, or have terrible risk
-              management. We diagnose which it is and fix it. Many previous traders restart and become highly profitable
-              within 60-90 days.</p>
+            <p>Most traders who struggle are missing one of three things: a genuine edge, proper risk management, or the right framework to follow consistently. The workshop will help you identify which one it was. Many people who come through MarketEye have traded before — and find that the structure is what was missing, not the ability.</p>
           </div>
         </div>
       </div>
@@ -1589,9 +1630,11 @@
   <section class="section">
     <div class="container" id="cta-section">
       <div class="cta-box">
-        <h2>Ready to Join the Next Live Cohort?</h2>
-        <p>The webinar is 90 minutes. We'll show you the complete framework that separates 7-figure traders from the
-          rest. All you need is an email address.</p>
+        <div class="eyebrow" style="justify-content:center;margin-bottom:16px;">
+          <div class="eyebrow-line"></div><span class="eyebrow-text">The Last 'Wealth Opportunity' You'll Ever Need to Research</span>
+        </div>
+        <h2>90 Minutes Could Change the Way<br>You Think About Money Forever</h2>
+        <p>Reserve your free seat and see exactly how markets work, what consistent traders do differently, and whether the MarketEye path is right for you. No experience required. No obligation after.</p>
 
         <form class="form-container" onsubmit="return submitCtaForm(event)">
           <div class="form-row" style="justify-content:center;">
@@ -1613,7 +1656,7 @@
             </div>
           </div>
           <input type="hidden" name="page" value="long-cta">
-          <button type="submit" class="form-submit">Claim My Free Seat →</button>
+          <button type="submit" class="form-submit">Reserve My Free Seat →</button>
           <p style="font-size:0.75rem;color:var(--muted);text-align:center;margin-top:12px;">🔒 Your data is private. No
             spam. Ever.</p>
         </form>
@@ -1626,7 +1669,7 @@
     <div class="container">
       <div class="footer-inner">
         <div class="footer-logo">
-          <img src="marketeye-logo-mark.png" alt="MarketEye">
+          <img src="marketeye-icon.png" alt="MarketEye">
           <div>
             <div class="footer-logo-text">MarketEye</div>
             <span style="font-size:0.6875rem;color:var(--muted);">· Right market. right time. real profits.</span>
