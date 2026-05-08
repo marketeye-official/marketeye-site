@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Membership Billing Terms — MarketEye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#00C8FF;
+  --blue-mid:#2B72E8;
+  --indigo:#5033C3;
+  --grad:linear-gradient(135deg,#00C8FF 0%,#2B72E8 45%,#5033C3 100%);
+  --grad-text:linear-gradient(90deg,#00C8FF,#6B8EFF);
+  --navy:#04091C;
+  --navy-mid:#070E25;
+  --navy-card:#0A1530;
+  --border:rgba(0,200,255,0.12);
+  --border-bright:rgba(0,200,255,0.3);
+  --text:#D0DEFF;
+  --muted:#8FA3C0;
+  --cream:#FFFFFF;
+}
+
+html{font-size:18px;}
+body{
+  font-family:'Barlow',sans-serif;
+  background:var(--navy);
+  color:var(--text);
+  min-height:100vh;
+  position:relative;
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 75% 50%,rgba(0,200,255,0.04) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 80%,rgba(80,51,195,0.03) 0%,transparent 50%);
+  pointer-events:none;z-index:0;
+}
+
+/* TICKER */
+.ticker-bar{
+  background:linear-gradient(90deg,#0A1848,#051028,#0A1848);
+  border-bottom:1px solid var(--border);
+  height:32px;overflow:hidden;display:flex;align-items:center;
+  position:relative;z-index:10;
+}
+.ticker-track{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
+.ticker-track span{font-size:0.6875rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;padding:0 24px;}
+.ticker-track span.up{color:#22D98A;}
+.ticker-track span.dn{color:#FF5A5A;}
+.ticker-track span.up::before{content:'▲ ';}
+.ticker-track span.dn::before{content:'▼ ';}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* HEADER */
+.site-header{
+  border-bottom:1px solid var(--border);
+  padding:18px 0;
+  position:relative;z-index:1;
+}
+.header-inner{
+  max-width:760px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;gap:10px;
+}
+.logo-icon{width:32px;height:32px;}
+.logo-text{
+  font-family:'Exo 2',sans-serif;font-size:1.125rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:0.04em;
+}
+.logo-tag{font-size:0.5625rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-left:4px;}
+
+/* CONTENT */
+.page-wrap{
+  max-width:760px;margin:0 auto;padding:56px 24px 80px;
+  position:relative;z-index:1;
+}
+
+.page-eyebrow{
+  display:flex;align-items:center;gap:10px;margin-bottom:20px;
+}
+.eyebrow-line{height:1px;width:28px;background:var(--blue);flex-shrink:0;}
+.eyebrow-text{font-size:0.5625rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);font-weight:600;}
+
+h1{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(26px,3.5vw,36px);
+  font-weight:800;line-height:1.1;
+  color:var(--cream);margin-bottom:8px;
+}
+
+.meta{font-size:0.8125rem;color:var(--muted);margin-bottom:40px;}
+
+.grad-divider{height:1px;background:var(--grad);opacity:0.2;margin-bottom:40px;}
+
+/* PRICING CARDS */
+.pricing-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  margin-bottom:36px;
+}
+.pricing-card{
+  background:var(--navy-card);
+  border:1px solid rgba(0,200,255,0.18);
+  border-radius:6px;
+  padding:20px 22px;
+}
+.pricing-card .charge-label{
+  font-size:0.625rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--blue);font-weight:600;margin-bottom:8px;
+}
+.pricing-card .charge-amount{
+  font-family:'Exo 2',sans-serif;font-size:1.75rem;font-weight:800;
+  color:var(--cream);line-height:1;margin-bottom:4px;
+}
+.pricing-card .charge-cadence{
+  font-size:0.8125rem;color:var(--muted);margin-bottom:12px;
+}
+.pricing-card .charge-desc{
+  font-size:0.8125rem;color:var(--text);line-height:1.6;
+}
+
+.doc-section{margin-bottom:36px;}
+.doc-section h2{
+  font-family:'Exo 2',sans-serif;font-size:1rem;font-weight:700;
+  color:var(--cream);letter-spacing:0.04em;
+  margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.doc-section p{
+  font-size:0.9375rem;color:var(--text);line-height:1.75;margin-bottom:12px;
+}
+.doc-section p:last-child{margin-bottom:0;}
+
+.doc-section ul{
+  list-style:none;padding:0;margin:0 0 12px;
+}
+.doc-section ul li{
+  font-size:0.9375rem;color:var(--text);line-height:1.7;
+  padding-left:18px;position:relative;margin-bottom:6px;
+}
+.doc-section ul li::before{
+  content:'';position:absolute;left:0;top:10px;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--blue);opacity:0.7;
+}
+
+.highlight-box{
+  background:rgba(0,200,255,0.04);
+  border:1px solid rgba(0,200,255,0.15);
+  border-left:3px solid var(--blue);
+  border-radius:4px;
+  padding:16px 20px;
+  margin-bottom:12px;
+}
+.highlight-box p{
+  font-size:0.9375rem;color:var(--text);line-height:1.7;margin:0;
+}
+
+a{color:var(--blue);text-decoration:none;}
+a:hover{text-decoration:underline;}
+strong{color:var(--cream);font-weight:600;}
+
+/* FOOTER */
+.doc-footer{
+  margin-top:56px;padding-top:24px;
+  border-top:1px solid var(--border);
+}
+.doc-footer p{
+  font-size:0.75rem;color:var(--muted);line-height:1.7;margin-bottom:8px;
+}
+.doc-footer .footer-links{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:12px;
+}
+.doc-footer .footer-links a{font-size:0.75rem;color:var(--muted);}
+.doc-footer .footer-links a:hover{color:var(--blue);}
+
+@media(max-width:600px){
+  .page-wrap{padding:36px 20px 60px;}
+  h1{font-size:1.625rem;}
+  .pricing-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track">
+    <span class="up">ES 5,842.25 +18.50</span>
+    <span class="dn">NQ 20,421.00 -32.75</span>
+    <span class="up">GC 2,398.40 +12.10</span>
+    <span class="up">CL 79.82 +1.24</span>
+    <span class="dn">EUR/USD 1.0843 -0.0012</span>
+    <span class="up">BTC 97,468 +1,240</span>
+    <span class="up">RTY 2,104.50 +8.30</span>
+    <span class="dn">YM 43,218 -95</span>
+    <span class="up">MES 584.23 +1.85</span>
+    <span class="up">ES 5,842.25 +18.50</span>
+    <span class="dn">NQ 20,421.00 -32.75</span>
+    <span class="up">GC 2,398.40 +12.10</span>
+    <span class="up">CL 79.82 +1.24</span>
+    <span class="dn">EUR/USD 1.0843 -0.0012</span>
+    <span class="up">BTC 97,468 +1,240</span>
+    <span class="up">RTY 2,104.50 +8.30</span>
+    <span class="dn">YM 43,218 -95</span>
+    <span class="up">MES 584.23 +1.85</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="17" stroke="url(#lg)" stroke-width="1.5"/>
+      <polyline points="7,24 13,16 18,20 24,12 29,14" stroke="url(#lg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#00C8FF"/><stop offset="1" stop-color="#5033C3"/></linearGradient></defs>
+    </svg>
+    <span class="logo-text">MarketEye</span>
+    <span class="logo-tag">Trading Education</span>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<div class="page-wrap">
+  <div class="page-eyebrow">
+    <div class="eyebrow-line"></div>
+    <span class="eyebrow-text">Legal &amp; Policies</span>
+  </div>
+
+  <h1>Membership Billing Terms</h1>
+  <p class="meta">MarketEye, LLC &nbsp;·&nbsp; Last updated: May 2026</p>
+  <div class="grad-divider"></div>
+
+  <!-- PRICING SUMMARY CARDS -->
+  <div class="pricing-row">
+    <div class="pricing-card">
+      <div class="charge-label">Trial · 28 Days</div>
+      <div class="charge-amount">$28</div>
+      <div class="charge-cadence">Charged once at sign-up</div>
+      <div class="charge-desc">28-day trial. Covers onboarding, community access (Slack &amp; ClickUp), and initial training materials.</div>
+    </div>
+    <div class="pricing-card">
+      <div class="charge-label">Recurring · Membership</div>
+      <div class="charge-amount">$900</div>
+      <div class="charge-cadence">Billed every 90 days</div>
+      <div class="charge-desc">Full access to live sessions, mentorship, trade alerts, and community support.</div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <h2>Payment Processor</h2>
+    <p>
+      All charges are processed securely through <strong>Stripe</strong>. Your card details are never
+      stored on MarketEye servers — they are tokenised and held by Stripe in accordance with PCI-DSS
+      standards. By purchasing a membership you also agree to
+      <a href="https://stripe.com/legal/ssa" target="_blank" rel="noopener">Stripe's terms of service</a>.
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>28-Day Trial — $28</h2>
+    <p>
+      A one-time trial fee of <strong>$28</strong> is charged at the time of your initial
+      registration. This gives you a 28-day trial of the full MarketEye membership and is not refundable. It covers:
+    </p>
+    <ul>
+      <li>Full access to MarketEye's program for 28 days</li>
+      <li>Onboarding sequence and orientation materials</li>
+      <li>Invitation to the private Slack and ClickUp community workspaces</li>
+      <li>Account setup and initial support during onboarding</li>
+    </ul>
+    <p>
+      The trial fee is charged only once and does not recur. At the end of the 28-day trial,
+      your membership transitions to the quarterly billing cycle if you choose to continue.
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Quarterly Membership — $900 / 90 Days</h2>
+    <p>
+      After a successful enrollment, your quarterly membership begins immediately. Your card on file
+      will be charged <strong>$900</strong> for the first 90-day period at the start of membership,
+      and then automatically every 90 days thereafter until you cancel.
+    </p>
+    <p>
+      Your renewal date is calculated from the date your first quarterly charge was processed.
+      You can confirm your next billing date by emailing
+      <a href="mailto:support@marketeye.io">support@marketeye.io</a>.
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>What Your Membership Includes</h2>
+    <p>During each active billing period, members receive:</p>
+    <ul>
+      <li>Live trading sessions and market briefings</li>
+      <li>Direct mentorship and Q&amp;A access</li>
+      <li>Real-time trade alerts and analysis</li>
+      <li>Access to the private Slack community and ClickUp resource hub</li>
+      <li>Recorded sessions and educational archive</li>
+    </ul>
+    <p>
+      Access to the above is contingent on your membership remaining in good standing (i.e. no
+      outstanding failed payments or active disputes).
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Automatic Renewal</h2>
+    <div class="highlight-box">
+      <p>Your membership renews automatically every 90 days. You will not receive a separate reminder before each charge. It is your responsibility to cancel before the renewal date if you do not wish to continue.</p>
+    </div>
+    <p>
+      By providing your payment details and completing enrollment, you authorise MarketEye, LLC to
+      charge your card on a recurring 90-day basis until you cancel. See
+      <a href="cancellation-instructions.html">Cancellation Instructions</a> for how to stop future charges.
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Failed Payments</h2>
+    <p>
+      If a payment is declined, Stripe will automatically retry the charge over the following
+      several days. During this period your access may be restricted. If the charge cannot be
+      collected after retries, your membership will be paused and you will be notified by email.
+    </p>
+    <p>
+      To restore access, contact <a href="mailto:support@marketeye.io">support@marketeye.io</a> to
+      update your payment method. Access will be reinstated promptly upon successful payment.
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Price Changes</h2>
+    <p>
+      MarketEye, LLC reserves the right to adjust membership pricing. If your rate changes, you will
+      be notified by email at least <strong>14 days</strong> before the new price takes effect. You
+      may cancel at any time before the new price applies if you do not wish to continue at the
+      updated rate.
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Taxes</h2>
+    <p>
+      Prices listed are in USD. Depending on your location, applicable taxes may be added at
+      checkout as required by law. MarketEye, LLC is not responsible for any additional fees
+      charged by your bank or card issuer (e.g. foreign transaction fees).
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Questions About a Charge</h2>
+    <p>
+      If you see an unexpected charge or have any questions about your billing, please contact us
+      before initiating a dispute with your bank:
+    </p>
+    <p>
+      <strong>Email:</strong> <a href="mailto:support@marketeye.io">support@marketeye.io</a><br>
+      <strong>Company:</strong> MarketEye, LLC
+    </p>
+    <p>
+      Please include your name, billing email, charge date, and charge amount so we can assist you
+      as quickly as possible.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <p>&copy; 2026 MarketEye, LLC. All rights reserved. These terms are subject to change; the current version will always be posted at this URL.</p>
+    <p style="margin-top:4px;font-size:0.6875rem;color:rgba(143,163,192,0.5);">
+      Trading futures, forex, and other financial instruments involves substantial risk of loss and is not
+      appropriate for all investors. Past performance is not indicative of future results. MarketEye content
+      is for educational purposes only and does not constitute investment advice.
+    </p>
+    <div class="footer-links">
+      <a href="refund-policy.html">Refund Policy</a>
+      <a href="membership-billing-terms.html">Billing Terms</a>
+      <a href="cancellation-instructions.html">Cancellation Instructions</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
