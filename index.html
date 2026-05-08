@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="marketeye-icon.png">
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MarketEye — Right Market. Real Strategies. Real Results.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -353,6 +354,8 @@
       transition: opacity 0.2s;
       display: inline-block;
       width: auto;
+      margin-top: 24px;
+      margin-bottom: 24px;
     }
 
     .reserve-btn:hover {
@@ -1300,7 +1303,7 @@
           <div class="eyebrow">
             <div class="eyebrow-line"></div><span class="eyebrow-text">Free Live Workshop · 90 Minutes · No Experience Required</span>
           </div>
-          <h1 class="hero-title">Got 90 Minutes to See<br>What <em>7-Figure Traders</em> Do?</h1>
+          <h1 class="hero-title">Your Deals Still 90+ Days Out?<br><em>See What Veteran Traders Do in Minutes</em></h1>
           <p class="hero-subtitle">No appraisals. No contractors. No rate hikes. No loan denials. Trading is the one wealth-building skill where outside forces don't decide your outcome — <em style="-webkit-text-fill-color:inherit;font-style:italic;">you</em> do.<br><br>
             In this free 90-minute workshop, you'll learn exactly how money is made in the markets, the mindset consistent traders operate from, and two strategies you can start building from today. Whether you're brand new or you've tried everything else — <em style="-webkit-text-fill-color:inherit;font-style:italic;">this is your foundation.</em></p>
           <div class="hero-badges">
@@ -1309,17 +1312,7 @@
             <div class="hero-badge">🎓 <span>Complete Beginners Welcome</span></div>
             <div class="hero-badge">💡 <span>Walk Away With a Real Plan</span></div>
           </div>
-          <form class="webinar-form" onsubmit="return submitForm(event)">
-            <div class="email-bar">
-              <div class="name-row">
-                <input type="text" id="hero-name" name="first-name" placeholder="First name" required>
-                <input type="text" id="hero-last-name" name="last-name" placeholder="Last name" required>
-              </div>
-              <input type="email" id="hero-email" name="email" placeholder="Enter your email address" required>
-            </div>
-            <button type="submit" class="reserve-btn">Reserve My Free Seat →</button>
-            <input type="hidden" name="page" value="long-hero">
-          </form>
+          <button class="reserve-btn" onclick="openCalendly()">Reserve My Free Seat →</button>
           <p class="email-privacy">🔒 Private & secure. No spam. Cancel anytime.</p>
           <p class="hero-membership-note">At the end of the session, you'll learn how to apply for the MarketEye mentorship — <strong>accepted by interview only.</strong></p>
         </div>
@@ -1637,30 +1630,7 @@
         <h2>90 Minutes Could Change the Way<br>You Think About Money Forever</h2>
         <p>Reserve your free seat and see exactly how markets work, what consistent traders do differently, and whether the MarketEye path is right for you. No experience required. No obligation after.</p>
 
-        <form class="form-container" onsubmit="return submitCtaForm(event)">
-          <div class="form-row" style="justify-content:center;">
-            <div class="form-field">
-              <label class="form-label">First Name</label>
-              <input type="text" id="cta-name" name="first-name" class="form-input" placeholder="Your first name"
-                required>
-            </div>
-            <div class="form-field">
-              <label class="form-label">Last Name</label>
-              <input type="text" id="cta-last-name" name="last-name" class="form-input" placeholder="Your last name"
-                required>
-            </div>
-          </div>
-          <div class="form-row full" style="justify-content:center;">
-            <div class="form-field">
-              <label class="form-label">Email Address</label>
-              <input type="email" id="cta-email" name="email" class="form-input" placeholder="your@email.com" required>
-            </div>
-          </div>
-          <input type="hidden" name="page" value="long-cta">
-          <button type="submit" class="form-submit">Reserve My Free Seat →</button>
-          <p style="font-size:0.75rem;color:var(--muted);text-align:center;margin-top:12px;">🔒 Your data is private. No
-            spam. Ever.</p>
-        </form>
+        <button class="form-submit" onclick="openCalendly()">Reserve My Free Seat →</button>
       </div>
     </div>
   </section>
@@ -1754,6 +1724,15 @@
           console.error('Form submission error:', err);
           window.location.href = 'https://apply.marketeye.io/free-workshop';
         });
+    }
+  </script>
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <script>
+    function openCalendly() {
+      Calendly.initPopupWidget({
+        url: 'https://calendly.com/marketeye/7-figure-trading-2026?background_color=04091C&text_color=C8D8F0&primary_color=00C8FF&hide_gdpr_banner=1'
+      });
+      return false;
     }
   </script>
 </body>
