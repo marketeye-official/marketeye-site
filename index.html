@@ -1246,6 +1246,37 @@
         grid-template-columns: 1fr;
       }
     }
+  .disclaimer-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+    cursor: pointer;
+    color: var(--blue);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .disclaimer-chevron {
+    transition: transform 0.3s ease;
+    font-size: 0.75rem;
+  }
+  .disclaimer-toggle[aria-expanded="true"] .disclaimer-chevron {
+    transform: rotate(180deg);
+  }
+  .disclaimer-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .disclaimer-body.open {
+    max-height: 2000px;
+  }
   </style>
 </head>
 
@@ -1663,17 +1694,20 @@
   </footer>
 
   <!-- COMPLIANCE DISCLAIMER -->
-  <div style="background:rgba(0,200,255,0.04);border-top:1px solid rgba(0,200,255,0.12);padding:28px 0;margin-top:0;">
+  <div style="background:rgba(0,200,255,0.04);border-top:1px solid rgba(0,200,255,0.12);margin-top:0;">
     <div class="container">
-      <div style="font-size:0.8125rem;color:var(--text);line-height:1.75;">
-        <strong style="color:var(--blue);">IMPORTANT DISCLAIMER:</strong> Trading futures, stocks, forex, and
-        cryptocurrencies involves substantial risk of loss and is not suitable for all investors. Past performance,
-        hypothetical or actual, does not guarantee future results. No representation is being made that any account will
-        achieve or is likely to achieve profits or losses similar to those discussed on this website. Trading involves
-        the risk of loss and traders should only use capital they can afford to lose. Results may vary based on
-        individual discipline, market conditions, and execution. Educational content on this site is for informational
-        purposes only and does not constitute trading advice or recommendations. Always consult with a qualified
-        financial advisor before making investment decisions.
+      <button class="disclaimer-toggle" onclick="toggleDisclaimer()" aria-expanded="false" aria-controls="disclaimer-body">
+        <span>Important Disclaimers</span>
+        <span class="disclaimer-chevron">&#9660;</span>
+      </button>
+      <div class="disclaimer-body" id="disclaimer-body">
+        <div style="font-size:0.8125rem;color:var(--text);line-height:1.75;padding-bottom:24px;">
+          <strong>Educational Content Only.</strong> MarketEye, LLC is a trading education community. We do not provide investment advice, trading signals, trade alerts, or specific buy/sell recommendations of any kind. Nothing produced, published, or communicated by MarketEye, LLC constitutes a recommendation to buy, sell, or hold any security, futures contract, forex position, cryptocurrency, or other financial instrument.<br><br>
+          <strong>No Fund Management.</strong> MarketEye, LLC does not manage, solicit, or accept client funds or assets in any capacity. We are not a registered investment adviser (RIA), broker-dealer, commodity pool operator (CPO), or commodity trading adviser (CTA) under the Securities Exchange Act of 1934, the Investment Advisers Act of 1940, or the Commodity Exchange Act. We are not registered with or regulated by the SEC, CFTC, or NFA.<br><br>
+          <strong>No Funded Accounts.</strong> MarketEye, LLC does not provide, broker, sell, or facilitate access to funded trading accounts through any proprietary trading firm or third-party programme.<br><br>
+          <strong>No Platform Affiliation.</strong> MarketEye, LLC is not affiliated with, endorsed by, sponsored by, or in any way associated with Google LLC, Meta Platforms, Inc. (including Facebook and Instagram), TikTok / ByteDance Ltd., YouTube, X (Twitter), or any other social media or digital advertising platform. Any ads appearing on these platforms are paid placements only.<br><br>
+          <strong>Risk Disclosure.</strong> Trading futures, forex, equities, options, and other financial instruments involves a substantial risk of loss and is not suitable for all investors. You may lose some or all of your capital. Past performance — whether actual or hypothetical — is not indicative of future results. CFTC Rule 4.41: hypothetical or simulated performance results have certain inherent limitations and do not represent actual trading results.
+        </div>
       </div>
     </div>
   </div>
@@ -1727,6 +1761,14 @@
           console.error('Form submission error:', err);
           window.location.href = 'https://apply.marketeye.io/free-workshop';
         });
+    }
+
+    function toggleDisclaimer() {
+      const btn = document.querySelector('.disclaimer-toggle');
+      const body = document.getElementById('disclaimer-body');
+      const isOpen = body.classList.contains('open');
+      body.classList.toggle('open');
+      btn.setAttribute('aria-expanded', !isOpen);
     }
   </script>
   <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
