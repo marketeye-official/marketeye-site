@@ -1846,8 +1846,12 @@
 
   <script>
     function openCalendly() {
-      document.getElementById('calendly-overlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
+      if (window.innerWidth < 768) {
+        window.open('https://calendly.com/marketeye/free-webinar', '_blank');
+      } else {
+        document.getElementById('calendly-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
       return false;
     }
     function closeCalendly(e) {
