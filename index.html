@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="marketeye-icon.png">
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+  <link rel="preconnect" href="https://calendly.com">
+  <link rel="dns-prefetch" href="https://calendly.com">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MarketEye — Right Markets. Right Strategies. Real Process.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -934,6 +935,65 @@
       border-radius: 2px;
     }
 
+    /* ── CALENDLY OVERLAY ── */
+    #calendly-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.8);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    #calendly-overlay.open {
+      display: flex;
+    }
+    #calendly-modal {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      height: 85vh;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #04091C;
+      border: 1px solid rgba(0, 200, 255, 0.15);
+    }
+    #calendly-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    #calendly-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    #calendly-close:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+    @media (max-width: 600px) {
+      #calendly-modal {
+        height: 92vh;
+        border-radius: 8px;
+      }
+    }
+
     /* ── REVIEWS ── */
     .review-grid {
       display: grid;
@@ -1772,14 +1832,33 @@
       btn.setAttribute('aria-expanded', !isOpen);
     }
   </script>
-  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <!-- CALENDLY OVERLAY -->
+  <div id="calendly-overlay" onclick="closeCalendly(event)">
+    <div id="calendly-modal">
+      <button id="calendly-close" onclick="closeCalendly()" aria-label="Close">✕</button>
+      <iframe id="calendly-iframe"
+        src="https://calendly.com/marketeye/free-webinar?background_color=04091C&text_color=C8D8F0&primary_color=00C8FF&hide_gdpr_banner=1"
+        frameborder="0"
+        allow="camera; microphone; fullscreen"
+        loading="eager"></iframe>
+    </div>
+  </div>
+
   <script>
     function openCalendly() {
-      Calendly.initPopupWidget({
-        url: 'https://apply.marketeye.io/register-free-workshop?background_color=04091C&text_color=C8D8F0&primary_color=00C8FF&hide_gdpr_banner=1'
-      });
+      document.getElementById('calendly-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
       return false;
     }
+    function closeCalendly(e) {
+      if (!e || e.target === document.getElementById('calendly-overlay')) {
+        document.getElementById('calendly-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeCalendly();
+    });
   </script>
 </body>
 
