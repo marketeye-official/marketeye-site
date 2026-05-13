@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>You're Registered! — MarketEye Free Workshop</title>
+<link rel="icon" type="image/png" href="marketeye-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -257,13 +258,7 @@ footer p strong{color:rgba(143,163,192,0.7);}
 <!-- LOGO -->
 <div style="border-bottom:1px solid var(--border);">
   <div class="logo-row">
-    <!-- MarketEye Logo SVG (inline, matching existing pages) -->
-    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="36" height="36" rx="6" fill="url(#lg)"/>
-      <path d="M8 24L14 14l5 8 4-6 5 8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="27" cy="12" r="3" fill="#00C8FF" opacity="0.9"/>
-      <defs><linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#00C8FF"/><stop offset="0.5" stop-color="#2B72E8"/><stop offset="1" stop-color="#5033C3"/></linearGradient></defs>
-    </svg>
+    <img class="logo-icon" src="marketeye-icon.png" alt="MarketEye">
     <div>
       <div class="logo-text">MarketEye</div>
       <div class="logo-tag">Right market. Right strategy. Real process.</div>
@@ -274,9 +269,9 @@ footer p strong{color:rgba(143,163,192,0.7);}
 <!-- HERO -->
 <section class="hero">
   <div class="congrats-badge">Registration Confirmed</div>
-  <h1>You're In. <em>See You Inside.</em></h1>
+  <h1 id="heroHeading">You're In. <em>See You Inside.</em></h1>
   <p class="hero-sub">
-    Your spot for <strong style="color:var(--text);">Trading Essentials: The Keys to the Kingdom</strong> with John Lee is secured.
+    Your spot for <strong style="color:var(--text);">Trading Essentials: The Keys to the Kingdom</strong> with MarketEye is secured.
     Here's what to do right now to make sure you don't miss a thing.
   </p>
 </section>
@@ -348,13 +343,15 @@ footer p strong{color:rgba(143,163,192,0.7);}
   /* ── Parse URL params from Calendly redirect ── */
   var params = new URLSearchParams(window.location.search);
 
-  /*
-    Calendly passes these on redirect:
-      event_start_time  – ISO 8601, e.g. "2026-05-20T10:00:00+08:00"
-      assigned_to       – host name(s)
-      invitee_uuid      – registrant ID (not displayed)
-    You can also pass custom UTM params if needed.
-  */
+  /* Personalise heading with first name if Calendly passes invitee_full_name */
+  var fullName = params.get('invitee_full_name');
+  if(fullName){
+    var firstName = decodeURIComponent(fullName).split(/[\s+]/)[0];
+    if(firstName){
+      var heading = document.getElementById('heroHeading');
+      heading.innerHTML = 'You\'re In, ' + firstName + '. <em>See You Inside.</em>';
+    }
+  }
 
   var startParam = params.get('event_start_time') || params.get('start_time') || params.get('date');
 
