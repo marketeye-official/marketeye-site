@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're Registered! — MarketEye Free Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#00C8FF;
+  --blue-mid:#2B72E8;
+  --indigo:#5033C3;
+  --grad:linear-gradient(135deg,#00C8FF 0%,#2B72E8 45%,#5033C3 100%);
+  --grad-text:linear-gradient(90deg,#00C8FF,#6B8EFF);
+  --navy:#04091C;
+  --navy-mid:#070E25;
+  --navy-card:#0A1530;
+  --border:rgba(0,200,255,0.12);
+  --border-bright:rgba(0,200,255,0.3);
+  --text:#D0DEFF;
+  --muted:#8FA3C0;
+  --cream:#FFFFFF;
+}
+
+html{font-size:18px;}
+body{
+  font-family:'Barlow',sans-serif;
+  background:var(--navy);
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* TOP BANNER */
+.top-banner{
+  background:linear-gradient(90deg,#1a6b1a,#0d4d0d,#1a6b1a);
+  padding:13px 20px;
+  text-align:center;
+  position:sticky;top:0;z-index:100;
+  border-bottom:1px solid rgba(0,200,0,0.3);
+}
+.top-banner p{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(0.7rem,2.2vw,0.875rem);
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:#7fff7f;
+}
+
+/* TICKER */
+.ticker-bar{
+  background:linear-gradient(90deg,#0A1848,#051028,#0A1848);
+  border-bottom:1px solid var(--border);
+  height:32px;overflow:hidden;display:flex;align-items:center;
+}
+.ticker-track{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
+.ticker-track span{font-size:0.6875rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;padding:0 24px;}
+.ticker-track span.up{color:#22D98A;}
+.ticker-track span.dn{color:#FF5A5A;}
+.ticker-track span.up::before{content:'▲ ';}
+.ticker-track span.dn::before{content:'▼ ';}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* LOGO ROW */
+.logo-row{
+  display:flex;align-items:center;gap:10px;
+  padding:20px 32px;
+  border-bottom:1px solid var(--border);
+  max-width:900px;margin:0 auto;width:100%;
+}
+.logo-icon{width:36px;height:36px;}
+.logo-text{
+  font-family:'Exo 2',sans-serif;font-size:1.25rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:0.04em;
+}
+.logo-tag{font-size:0.625rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-left:4px;}
+
+/* HERO SECTION */
+.hero{
+  max-width:900px;margin:0 auto;width:100%;
+  padding:52px 32px 40px;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.congrats-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 16px;
+  background:linear-gradient(90deg,rgba(0,200,100,0.15),rgba(0,200,100,0.08));
+  border:1px solid rgba(0,200,100,0.3);border-radius:20px;
+  font-size:0.6875rem;letter-spacing:0.16em;text-transform:uppercase;color:#4dff9a;
+  font-weight:700;margin-bottom:24px;
+}
+.congrats-badge::before{content:'✓';font-size:0.75rem;}
+.hero h1{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(1.6rem,4vw,2.5rem);
+  font-weight:800;line-height:1.1;
+  color:var(--cream);margin-bottom:12px;
+}
+.hero h1 em{
+  font-style:italic;
+  background:var(--grad-text);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:1rem;color:var(--muted);line-height:1.6;
+  max-width:560px;margin:0 auto 32px;
+}
+
+/* WHAT'S NEXT CARDS */
+.next-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  max-width:900px;margin:0 auto;width:100%;
+  padding:40px 32px;
+  border-bottom:1px solid var(--border);
+}
+@media(max-width:640px){.next-cards{grid-template-columns:1fr;}}
+.next-card{
+  background:var(--navy-card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:24px 20px;
+  text-align:center;
+  position:relative;
+}
+.next-card-num{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--grad);
+  font-family:'Exo 2',sans-serif;font-size:1.125rem;font-weight:800;
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+}
+.next-card-icon{font-size:1.5rem;margin-bottom:12px;display:block;}
+.next-card h3{
+  font-family:'Exo 2',sans-serif;font-size:0.9375rem;font-weight:700;
+  color:var(--cream);margin-bottom:8px;
+}
+.next-card p{font-size:0.8125rem;color:var(--muted);line-height:1.55;}
+.next-card p strong{color:var(--text);}
+
+/* CALENDAR SECTION */
+.calendar-section{
+  max-width:900px;margin:0 auto;width:100%;
+  padding:48px 32px;
+  border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.calendar-section h2{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(1.3rem,3.5vw,1.875rem);
+  font-weight:800;color:var(--cream);
+  margin-bottom:8px;
+}
+.calendar-section .sub{
+  font-size:0.875rem;color:var(--muted);margin-bottom:32px;
+}
+.calendar-card{
+  background:var(--navy-card);
+  border:1px solid var(--border-bright);
+  border-radius:8px;
+  padding:32px;
+  max-width:560px;
+  margin:0 auto;
+}
+.calendar-date{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(1.1rem,2.8vw,1.5rem);
+  font-weight:800;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:20px;
+}
+.calendar-icon{font-size:2rem;margin-bottom:12px;display:block;}
+.time-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px 24px;
+  text-align:left;
+}
+.time-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+.time-row:last-child{border-bottom:none;}
+.time-zone{font-size:0.8125rem;color:var(--muted);}
+.time-val{font-size:0.875rem;font-weight:600;color:var(--cream);font-family:'Exo 2',sans-serif;}
+.cal-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;}
+.cal-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;
+  border-radius:4px;
+  font-family:'Exo 2',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  text-decoration:none;border:1px solid var(--border-bright);
+  color:var(--blue);background:rgba(0,200,255,0.04);
+  transition:background 0.2s,border-color 0.2s;cursor:pointer;
+}
+.cal-btn:hover{background:rgba(0,200,255,0.1);border-color:var(--blue);}
+
+/* CTA BANNER */
+.cta-banner{
+  background:linear-gradient(90deg,rgba(0,200,255,0.08),rgba(43,114,232,0.12),rgba(0,200,255,0.08));
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:28px 32px;
+  text-align:center;
+}
+.cta-banner p{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(0.9rem,2.5vw,1.25rem);
+  font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:0.02em;
+}
+
+/* FOOTER */
+footer{
+  max-width:900px;margin:0 auto;width:100%;
+  padding:24px 32px;
+  text-align:center;
+}
+.footer-logo{
+  font-family:'Exo 2',sans-serif;font-size:0.875rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px;
+}
+footer p{font-size:0.5625rem;color:rgba(143,163,192,0.5);line-height:1.55;margin-bottom:4px;}
+footer p strong{color:rgba(143,163,192,0.7);}
+</style>
+</head>
+<body>
+
+<!-- TOP STICKY BANNER -->
+<div class="top-banner">
+  <p>🎉 Congratulations, you're registered! &nbsp;—&nbsp; Do not exit this page</p>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track" id="tickerTrack">
+    <span class="up">S&amp;P 500 5,892.34</span>
+    <span class="dn">NASDAQ 18,447.61</span>
+    <span class="up">AAPL 211.53</span>
+    <span class="up">TSLA 248.80</span>
+    <span class="dn">NVDA 897.22</span>
+    <span class="up">Gold 2,341.10</span>
+    <span class="dn">BTC/USD 63,120.00</span>
+    <span class="up">EUR/USD 1.0882</span>
+    <span class="up">S&amp;P 500 5,892.34</span>
+    <span class="dn">NASDAQ 18,447.61</span>
+    <span class="up">AAPL 211.53</span>
+    <span class="up">TSLA 248.80</span>
+    <span class="dn">NVDA 897.22</span>
+    <span class="up">Gold 2,341.10</span>
+    <span class="dn">BTC/USD 63,120.00</span>
+    <span class="up">EUR/USD 1.0882</span>
+  </div>
+</div>
+
+<!-- LOGO -->
+<div style="border-bottom:1px solid var(--border);">
+  <div class="logo-row">
+    <!-- MarketEye Logo SVG (inline, matching existing pages) -->
+    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="6" fill="url(#lg)"/>
+      <path d="M8 24L14 14l5 8 4-6 5 8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="27" cy="12" r="3" fill="#00C8FF" opacity="0.9"/>
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#00C8FF"/><stop offset="0.5" stop-color="#2B72E8"/><stop offset="1" stop-color="#5033C3"/></linearGradient></defs>
+    </svg>
+    <div>
+      <div class="logo-text">MarketEye</div>
+      <div class="logo-tag">Right market. Right strategy. Real process.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="congrats-badge">Registration Confirmed</div>
+  <h1>You're In. <em>See You Inside.</em></h1>
+  <p class="hero-sub">
+    Your spot for <strong style="color:var(--text);">Trading Essentials: The Keys to the Kingdom</strong> with John Lee is secured.
+    Here's what to do right now to make sure you don't miss a thing.
+  </p>
+</section>
+
+<!-- 3-STEP SECTION -->
+<div class="next-cards">
+  <div class="next-card">
+    <div class="next-card-num">1</div>
+    <h3>Check Your Email</h3>
+    <p>A confirmation has been sent to your inbox. If you can't find it, <strong>check your spam/junk or promotions folder</strong> and move it to your inbox.</p>
+  </div>
+  <div class="next-card">
+    <div class="next-card-num">2</div>
+    <h3>Click the Link Inside</h3>
+    <p>If you've never heard from us before, click the confirmation link inside the email so you're guaranteed to receive the workshop details and reminders.</p>
+  </div>
+  <div class="next-card">
+    <div class="next-card-num">3</div>
+    <h3>Show Up &amp; Take Notes</h3>
+    <p>We can't wait to see you live. Block your calendar now — this is the exact session that could change how you trade forever.</p>
+  </div>
+</div>
+
+<!-- CALENDAR SECTION -->
+<section class="calendar-section">
+  <h2>Don't Forget To Mark Your Calendar</h2>
+  <p class="sub">Add the event now so you don't miss it — seats are limited per session.</p>
+
+  <div class="calendar-card">
+    <span class="calendar-icon">📅</span>
+    <div class="calendar-date" id="eventDateDisplay">Loading your session details...</div>
+
+    <div class="time-grid" id="timeGrid" style="display:none;">
+      <div class="time-row"><span class="time-zone">🇸🇬 Singapore / Malaysia</span><span class="time-val" id="tzSG">—</span></div>
+      <div class="time-row"><span class="time-zone">🇦🇪 Dubai</span><span class="time-val" id="tzDXB">—</span></div>
+      <div class="time-row"><span class="time-zone">🇬🇧 UK</span><span class="time-val" id="tzUK">—</span></div>
+      <div class="time-row"><span class="time-zone">🇺🇸 Eastern</span><span class="time-val" id="tzET">—</span></div>
+      <div class="time-row"><span class="time-zone">🇺🇸 Pacific</span><span class="time-val" id="tzPT">—</span></div>
+      <div class="time-row"><span class="time-zone">🇦🇺 Sydney</span><span class="time-val" id="tzAU">—</span></div>
+    </div>
+
+    <div class="cal-buttons" id="calButtons" style="display:none;">
+      <a class="cal-btn" id="gcalLink" href="#" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2"/></svg>
+        Google Calendar
+      </a>
+      <a class="cal-btn" id="icsLink" href="#" download="marketeye-workshop.ics">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 16v-8m0 8l-3-3m3 3l3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="2"/></svg>
+        Apple / Outlook
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <p>Confirm Your Email Now &mdash; Your Future Self Will Thank You</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MarketEye</div>
+  <p>&copy;2026 MarketEye. All rights reserved.</p>
+  <p><strong>Risk Disclaimer:</strong> Trading futures, forex, stocks, and other financial instruments involves substantial risk of loss. Past performance is not indicative of future results. This workshop is for educational purposes only and does not constitute investment advice. CFTC Rule 4.41 applies.</p>
+</footer>
+
+<script>
+(function(){
+  /* ── Parse URL params from Calendly redirect ── */
+  var params = new URLSearchParams(window.location.search);
+
+  /*
+    Calendly passes these on redirect:
+      event_start_time  – ISO 8601, e.g. "2026-05-20T10:00:00+08:00"
+      assigned_to       – host name(s)
+      invitee_uuid      – registrant ID (not displayed)
+    You can also pass custom UTM params if needed.
+  */
+
+  var startParam = params.get('event_start_time') || params.get('start_time') || params.get('date');
+
+  var dateDisplay = document.getElementById('eventDateDisplay');
+  var timeGrid    = document.getElementById('timeGrid');
+  var calButtons  = document.getElementById('calButtons');
+  var gcalLink    = document.getElementById('gcalLink');
+  var icsLink     = document.getElementById('icsLink');
+
+  if(startParam){
+    try{
+      var dt = new Date(decodeURIComponent(startParam));
+      if(isNaN(dt.getTime())) throw new Error('bad date');
+
+      /* Friendly date label */
+      var longDate = dt.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});
+      dateDisplay.textContent = longDate;
+
+      /* Helper: format time in a given IANA timezone */
+      function fmt(tz){
+        return dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:tz});
+      }
+
+      document.getElementById('tzSG').textContent  = fmt('Asia/Singapore');
+      document.getElementById('tzDXB').textContent = fmt('Asia/Dubai');
+      document.getElementById('tzUK').textContent  = fmt('Europe/London');
+      document.getElementById('tzET').textContent  = fmt('America/New_York');
+      document.getElementById('tzPT').textContent  = fmt('America/Los_Angeles');
+      document.getElementById('tzAU').textContent  = fmt('Australia/Sydney');
+
+      timeGrid.style.display   = 'grid';
+      calButtons.style.display = 'flex';
+
+      /* Google Calendar link */
+      function pad(n){return n<10?'0'+n:n;}
+      function toGcalDT(d){
+        return d.getUTCFullYear()+''
+          +pad(d.getUTCMonth()+1)
+          +pad(d.getUTCDate())+'T'
+          +pad(d.getUTCHours())
+          +pad(d.getUTCMinutes())+'00Z';
+      }
+      var end = new Date(dt.getTime() + 120*60*1000); /* assume 2-hour session */
+      var gcalParams = new URLSearchParams({
+        action:'TEMPLATE',
+        text:'Trading Essentials: The Keys to the Kingdom — MarketEye',
+        dates:toGcalDT(dt)+'/'+toGcalDT(end),
+        details:'Your registered MarketEye live workshop with John Lee. Check your email for the join link.',
+        location:'Online (check your email for the link)'
+      });
+      gcalLink.href = 'https://calendar.google.com/calendar/render?' + gcalParams.toString();
+
+      /* ICS file */
+      var ics = [
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//MarketEye//Workshop//EN',
+        'BEGIN:VEVENT',
+        'DTSTART:'+toGcalDT(dt),
+        'DTEND:'+toGcalDT(end),
+        'SUMMARY:Trading Essentials: The Keys to the Kingdom — MarketEye',
+        'DESCRIPTION:Your registered MarketEye live workshop with John Lee. Check your email for the join link.',
+        'LOCATION:Online (check your email for the link)',
+        'END:VEVENT','END:VCALENDAR'
+      ].join('\r\n');
+      icsLink.href = 'data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
+
+    }catch(e){
+      dateDisplay.textContent = 'Check your email for your session date and time.';
+    }
+  } else {
+    dateDisplay.textContent = 'Check your email for your session date and time.';
+  }
+})();
+</script>
+</body>
+</html>
