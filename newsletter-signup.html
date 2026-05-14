@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketEye — Join the Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#00C8FF;
+  --blue-mid:#2B72E8;
+  --indigo:#5033C3;
+  --grad:linear-gradient(135deg,#00C8FF 0%,#2B72E8 45%,#5033C3 100%);
+  --grad-text:linear-gradient(90deg,#00C8FF,#6B8EFF);
+  --navy:#04091C;
+  --navy-mid:#070E25;
+  --navy-card:#0A1530;
+  --border:rgba(0,200,255,0.12);
+  --border-bright:rgba(0,200,255,0.3);
+  --text:#D0DEFF;
+  --muted:#8FA3C0;
+  --cream:#FFFFFF;
+}
+
+html{font-size:18px;}
+body{
+  font-family:'Barlow',sans-serif;
+  background:var(--navy);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 40%,rgba(0,200,255,0.05) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 60% at 20% 80%,rgba(80,51,195,0.04) 0%,transparent 50%);
+  pointer-events:none;z-index:0;
+}
+
+/* TICKER */
+.ticker-bar{
+  background:linear-gradient(90deg,#0A1848,#051028,#0A1848);
+  border-bottom:1px solid var(--border);
+  height:32px;overflow:hidden;display:flex;align-items:center;
+  flex-shrink:0;position:relative;z-index:10;
+}
+.ticker-track{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
+.ticker-track span{font-size:0.6875rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;padding:0 24px;}
+.ticker-track span.up{color:#22D98A;}
+.ticker-track span.dn{color:#FF5A5A;}
+.ticker-track span.up::before{content:'▲ ';}
+.ticker-track span.dn::before{content:'▼ ';}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* PAGE CONTENT */
+main{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:48px 20px;
+  position:relative;z-index:1;
+}
+
+.card{
+  width:100%;max-width:480px;
+  background:var(--navy-mid);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:40px 36px 32px;
+}
+
+/* LOGO */
+.logo-row{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.logo-icon{width:34px;height:34px;}
+.logo-text{
+  font-family:'Exo 2',sans-serif;font-size:1.2rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:0.04em;
+}
+.logo-tag{font-size:0.625rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;}
+
+/* HEADING */
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.eyebrow-line{height:1px;width:28px;background:var(--blue);flex-shrink:0;}
+.eyebrow-text{font-size:0.625rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);font-weight:600;}
+
+.card-title{
+  font-family:'Exo 2',sans-serif;font-size:1.5rem;font-weight:800;
+  color:var(--cream);line-height:1.15;margin-bottom:6px;
+}
+.card-sub{font-size:0.875rem;color:var(--muted);margin-bottom:22px;line-height:1.5;}
+
+.grad-divider{height:1px;background:var(--grad);opacity:0.2;margin-bottom:22px;}
+
+/* FORM */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-group{margin-bottom:12px;}
+.form-group label{
+  display:block;font-size:0.6875rem;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:5px;
+}
+.form-group input[type="text"],
+.form-group input[type="email"]{
+  width:100%;background:rgba(0,200,255,0.03);
+  border:1px solid rgba(0,200,255,0.15);border-radius:3px;
+  padding:10px 13px;font-family:'Barlow',sans-serif;font-size:0.875rem;
+  color:var(--text);outline:none;transition:border-color 0.2s;
+}
+.form-group input:focus{border-color:rgba(0,200,255,0.5);}
+.form-group input::placeholder{color:rgba(90,106,138,0.5);}
+
+/* CHECKBOX */
+.consent-group{
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:20px;cursor:pointer;
+}
+.consent-group input[type="checkbox"]{
+  appearance:none;-webkit-appearance:none;
+  width:16px;height:16px;flex-shrink:0;
+  margin-top:2px;
+  background:rgba(0,200,255,0.03);
+  border:1px solid rgba(0,200,255,0.3);border-radius:2px;
+  cursor:pointer;transition:background 0.15s,border-color 0.15s;
+  position:relative;
+}
+.consent-group input[type="checkbox"]:checked{
+  background:var(--blue-mid);border-color:var(--blue);
+}
+.consent-group input[type="checkbox"]:checked::after{
+  content:'';
+  position:absolute;top:2px;left:5px;
+  width:4px;height:8px;
+  border:2px solid #fff;border-top:none;border-left:none;
+  transform:rotate(45deg);
+}
+.consent-group input[type="checkbox"]:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+.consent-label{
+  font-size:0.8125rem;color:var(--muted);line-height:1.5;cursor:pointer;
+}
+
+/* CTA */
+.cta-btn{
+  width:100%;padding:13px;border:none;border-radius:3px;
+  background:var(--grad);
+  font-family:'Exo 2',sans-serif;font-size:0.75rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;color:#fff;
+  cursor:pointer;transition:opacity 0.2s,transform 0.1s;
+}
+.cta-btn:hover{opacity:0.92;}
+.cta-btn:active{transform:scale(0.99);}
+.cta-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+.form-privacy{font-size:0.75rem;color:rgba(143,163,192,0.7);text-align:center;margin-top:10px;line-height:1.5;}
+
+.disclaimer{font-size:0.6562rem;color:rgba(143,163,192,0.45);line-height:1.55;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+
+/* ERROR */
+.field-error{font-size:0.6875rem;color:#FF5A5A;margin-top:4px;}
+
+@media(max-width:480px){
+  .card{padding:28px 20px 24px;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track">
+    <span class="up">ES +0.42%</span><span class="dn">NQ -0.18%</span>
+    <span class="up">GC +0.71%</span><span class="dn">CL -1.03%</span>
+    <span class="up">ZB +0.15%</span><span class="up">YM +0.38%</span>
+    <span class="dn">RTY -0.27%</span><span class="up">SI +0.56%</span>
+    <span class="up">ES +0.42%</span><span class="dn">NQ -0.18%</span>
+    <span class="up">GC +0.71%</span><span class="dn">CL -1.03%</span>
+    <span class="up">ZB +0.15%</span><span class="up">YM +0.38%</span>
+    <span class="dn">RTY -0.27%</span><span class="up">SI +0.56%</span>
+  </div>
+</div>
+
+<main>
+  <div class="card">
+
+    <div class="logo-row">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="36" height="36" rx="6" fill="url(#lg)"/>
+        <path d="M8 24 L13 16 L18 20 L23 12 L28 18" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="28" cy="18" r="2.5" fill="#00C8FF"/>
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#00C8FF"/><stop offset="0.45" stop-color="#2B72E8"/><stop offset="1" stop-color="#5033C3"/></linearGradient></defs>
+      </svg>
+      <div>
+        <div class="logo-text">MarketEye</div>
+        <div class="logo-tag">right strategy. real process.</div>
+      </div>
+    </div>
+
+    <div class="eyebrow">
+      <div class="eyebrow-line"></div>
+      <div class="eyebrow-text">Member Access</div>
+    </div>
+    <div class="card-title">Join the Community</div>
+    <div class="card-sub">Create your free account to access resources, updates, and member-only content.</div>
+
+    <div class="grad-divider"></div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" placeholder="First name" autocomplete="given-name">
+        <div class="field-error" id="fname-err"></div>
+      </div>
+      <div class="form-group">
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" placeholder="Last name" autocomplete="family-name">
+        <div class="field-error" id="lname-err"></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="your@email.com" autocomplete="email">
+      <div class="field-error" id="email-err"></div>
+    </div>
+
+    <label class="consent-group">
+      <input type="checkbox" id="consent">
+      <span class="consent-label">I agree to receive emails from MarketEye, including updates, educational content, and promotional offers. I understand I can unsubscribe at any time.</span>
+    </label>
+    <div class="field-error" id="consent-err" style="margin-top:-14px;margin-bottom:14px;"></div>
+
+    <button class="cta-btn" id="submit-btn" onclick="submitForm()">Create My Free Account &rarr;</button>
+    <p class="form-privacy">&#128274; Your information is private and secure.</p>
+
+    <p class="disclaimer"><strong>Risk Disclaimer:</strong> Trading futures, forex, stocks, and other financial instruments involves substantial risk of loss. Past performance is not indicative of future results. Content provided by MarketEye is for educational purposes only and does not constitute investment advice.</p>
+
+  </div>
+</main>
+
+<script>
+function submitForm(){
+  var fname=document.getElementById('fname').value.trim();
+  var lname=document.getElementById('lname').value.trim();
+  var email=document.getElementById('email').value.trim();
+  var consent=document.getElementById('consent').checked;
+  var ok=true;
+
+  document.getElementById('fname-err').textContent='';
+  document.getElementById('lname-err').textContent='';
+  document.getElementById('email-err').textContent='';
+  document.getElementById('consent-err').textContent='';
+
+  if(!fname){document.getElementById('fname-err').textContent='First name is required.';ok=false;}
+  if(!lname){document.getElementById('lname-err').textContent='Last name is required.';ok=false;}
+  if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('email-err').textContent='Please enter a valid email address.';ok=false;}
+  if(!consent){document.getElementById('consent-err').textContent='You must agree to receive emails to continue.';ok=false;}
+
+  if(!ok) return;
+
+  var btn=document.getElementById('submit-btn');
+  btn.disabled=true;
+  btn.textContent='Submitting…';
+
+  fetch('https://api.web3forms.com/submit',{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:new URLSearchParams({
+      'access_key':'b03f064d-8aa1-471d-9885-02e5f40cc2b9',
+      'first-name':fname,
+      'last-name':lname,
+      'email':email,
+      'consent':'Yes — agreed to receive emails',
+      'subject':'New Member Signup',
+      'page':'me-signup'
+    }).toString()
+  }).catch(function(err){console.error('Form error:',err);});
+
+  window.location.href='https://marketeye.io/confirmed';
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter') submitForm();
+});
+</script>
+
+</body>
+</html>
