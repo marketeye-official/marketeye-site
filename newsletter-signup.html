@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MarketEye — Join the Community</title>
+<title>MarketEye — Newsletter Sign Up</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -205,10 +205,10 @@ main{
 
     <div class="eyebrow">
       <div class="eyebrow-line"></div>
-      <div class="eyebrow-text">Member Access</div>
+      <div class="eyebrow-text">Newsletter Sign Up</div>
     </div>
-    <div class="card-title">Join the Community</div>
-    <div class="card-sub">Create your free account to access resources, updates, and member-only content.</div>
+    <div class="card-title">Stay in the Loop</div>
+    <div class="card-sub">Get market insights, trading education, and updates delivered straight to your inbox.</div>
 
     <div class="grad-divider"></div>
 
@@ -237,7 +237,7 @@ main{
     </label>
     <div class="field-error" id="consent-err" style="margin-top:-14px;margin-bottom:14px;"></div>
 
-    <button class="cta-btn" id="submit-btn" onclick="submitForm()">Create My Free Account &rarr;</button>
+    <button class="cta-btn" id="submit-btn" onclick="submitForm()">Subscribe to the Newsletter &rarr;</button>
     <p class="form-privacy">&#128274; Your information is private and secure.</p>
 
     <p class="disclaimer"><strong>Risk Disclaimer:</strong> Trading futures, forex, stocks, and other financial instruments involves substantial risk of loss. Past performance is not indicative of future results. Content provided by MarketEye is for educational purposes only and does not constitute investment advice.</p>
@@ -278,7 +278,7 @@ function submitForm(){
       'last-name':lname,
       'email':email,
       'consent':'Yes — agreed to receive emails',
-      'subject':'New Member Signup',
+      'subject':'New Newsletter Signup',
       'page':'me-signup'
     }).toString()
   }).catch(function(err){console.error('Form error:',err);});
