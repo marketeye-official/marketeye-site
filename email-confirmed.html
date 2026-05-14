@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketEye — Email Confirmed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#00C8FF;
+  --blue-mid:#2B72E8;
+  --indigo:#5033C3;
+  --grad:linear-gradient(135deg,#00C8FF 0%,#2B72E8 45%,#5033C3 100%);
+  --grad-text:linear-gradient(90deg,#00C8FF,#6B8EFF);
+  --navy:#04091C;
+  --navy-mid:#070E25;
+  --navy-card:#0A1530;
+  --border:rgba(0,200,255,0.12);
+  --border-bright:rgba(0,200,255,0.3);
+  --text:#D0DEFF;
+  --muted:#8FA3C0;
+  --cream:#FFFFFF;
+  --green:#22D98A;
+}
+
+html{font-size:18px;}
+
+body{
+  font-family:'Barlow',sans-serif;
+  background:var(--navy);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 30%,rgba(0,200,255,0.05) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 40% at 80% 80%,rgba(80,51,195,0.04) 0%,transparent 50%);
+  pointer-events:none;z-index:0;
+}
+
+/* TICKER */
+.ticker-bar{
+  background:linear-gradient(90deg,#0A1848,#051028,#0A1848);
+  border-bottom:1px solid var(--border);
+  height:32px;overflow:hidden;display:flex;align-items:center;
+  flex-shrink:0;position:relative;z-index:10;
+}
+.ticker-track{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
+.ticker-track span{font-size:0.6875rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;padding:0 24px;}
+.ticker-track span.up{color:#22D98A;}
+.ticker-track span.dn{color:#FF5A5A;}
+.ticker-track span.up::before{content:'▲ ';}
+.ticker-track span.dn::before{content:'▼ ';}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* PAGE LAYOUT */
+.page{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:52px 24px 40px;
+  position:relative;z-index:1;
+}
+
+/* LOGO */
+.logo-row{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:48px;}
+.logo-inner{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:36px;height:36px;}
+.logo-text{
+  font-family:'Exo 2',sans-serif;font-size:1.25rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:0.04em;
+}
+.logo-tag{font-size:0.625rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;}
+
+/* CARD */
+.card{
+  width:100%;max-width:580px;
+  background:var(--navy-mid);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:48px 44px 40px;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+}
+
+/* SUCCESS ICON */
+.check-ring{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(0,200,255,0.08),rgba(80,51,195,0.08));
+  border:1px solid rgba(0,200,255,0.25);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:28px;
+  position:relative;
+}
+.check-ring::before{
+  content:'';
+  position:absolute;inset:-1px;border-radius:50%;
+  background:var(--grad);opacity:0.15;
+}
+.check-icon{
+  width:36px;height:36px;
+}
+
+/* EYEBROW */
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:14px;justify-content:center;}
+.eyebrow-line{height:1px;width:28px;background:var(--green);flex-shrink:0;}
+.eyebrow-text{font-size:0.625rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--green);font-weight:600;}
+
+/* HEADINGS */
+h1{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(26px,3.5vw,36px);
+  font-weight:800;line-height:1.1;
+  color:var(--cream);margin-bottom:12px;
+}
+h1 em{
+  font-style:italic;
+  background:var(--grad-text);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.subtitle{font-size:0.9375rem;color:var(--muted);line-height:1.65;max-width:440px;margin-bottom:36px;}
+
+/* DIVIDER */
+.grad-divider{height:1px;background:var(--grad);opacity:0.18;width:100%;margin-bottom:32px;}
+
+/* NEXT STEPS */
+.steps-label{
+  font-size:0.625rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:18px;
+}
+.steps{display:flex;flex-direction:column;gap:14px;width:100%;margin-bottom:36px;}
+.step{
+  display:flex;align-items:flex-start;gap:14px;text-align:left;
+  padding:14px 16px;
+  background:rgba(0,200,255,0.03);
+  border:1px solid var(--border);
+  border-radius:4px;
+}
+.step-num{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:rgba(0,200,255,0.08);border:1px solid rgba(0,200,255,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Exo 2',sans-serif;font-size:0.75rem;font-weight:700;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  position:relative;
+}
+.step-num::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.25);
+  z-index:-1;
+}
+.step-body{}
+.step-title{font-family:'Exo 2',sans-serif;font-size:0.9375rem;font-weight:700;color:var(--cream);margin-bottom:3px;}
+.step-desc{font-size:0.8125rem;color:var(--muted);line-height:1.5;}
+
+/* CTA */
+.cta-btn{
+  display:inline-block;padding:13px 36px;border:none;border-radius:3px;
+  background:var(--grad);
+  font-family:'Exo 2',sans-serif;font-size:0.75rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;color:#fff;
+  cursor:pointer;transition:opacity 0.2s,transform 0.1s;
+  text-decoration:none;
+}
+.cta-btn:hover{opacity:0.9;}
+.cta-btn:active{transform:scale(0.99);}
+
+/* DISCLAIMER */
+.disclaimer-wrap{
+  width:100%;max-width:580px;margin-top:28px;
+  padding-top:14px;border-top:1px solid var(--border);
+}
+.disclaimer{font-size:0.625rem;color:rgba(143,163,192,0.55);line-height:1.6;text-align:center;}
+
+/* RESPONSIVE */
+@media(max-width:520px){
+  .card{padding:36px 24px 30px;}
+  h1{font-size:clamp(22px,7vw,30px);}
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track">
+    <span class="up">ES +0.42%</span>
+    <span class="dn">NQ -0.18%</span>
+    <span class="up">CL +1.03%</span>
+    <span class="dn">GC -0.27%</span>
+    <span class="up">ZB +0.11%</span>
+    <span class="dn">YM -0.09%</span>
+    <span class="up">RTY +0.55%</span>
+    <span class="dn">SI -0.34%</span>
+    <span class="up">HG +0.22%</span>
+    <span class="up">ZN +0.08%</span>
+    <span class="up">ES +0.42%</span>
+    <span class="dn">NQ -0.18%</span>
+    <span class="up">CL +1.03%</span>
+    <span class="dn">GC -0.27%</span>
+    <span class="up">ZB +0.11%</span>
+    <span class="dn">YM -0.09%</span>
+    <span class="up">RTY +0.55%</span>
+    <span class="dn">SI -0.34%</span>
+    <span class="up">HG +0.22%</span>
+    <span class="up">ZN +0.08%</span>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- LOGO -->
+  <div class="logo-row">
+    <div class="logo-inner">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#00C8FF"/>
+            <stop offset="45%" stop-color="#2B72E8"/>
+            <stop offset="100%" stop-color="#5033C3"/>
+          </linearGradient>
+        </defs>
+        <circle cx="18" cy="18" r="17" stroke="url(#lg1)" stroke-width="1.5" fill="none" opacity="0.4"/>
+        <ellipse cx="18" cy="18" rx="10" ry="6.5" stroke="url(#lg1)" stroke-width="1.5" fill="none"/>
+        <circle cx="18" cy="18" r="3" fill="url(#lg1)"/>
+        <line x1="4" y1="18" x2="10" y2="18" stroke="url(#lg1)" stroke-width="1.2" opacity="0.5"/>
+        <line x1="26" y1="18" x2="32" y2="18" stroke="url(#lg1)" stroke-width="1.2" opacity="0.5"/>
+      </svg>
+      <div class="logo-text">MarketEye</div>
+    </div>
+    <div class="logo-tag">right strategy. real process.</div>
+  </div>
+
+  <!-- CARD -->
+  <div class="card">
+
+    <!-- CHECK ICON -->
+    <div class="check-ring">
+      <svg class="check-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg2" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#00C8FF"/>
+            <stop offset="100%" stop-color="#5033C3"/>
+          </linearGradient>
+        </defs>
+        <polyline points="6,19 14,27 30,10" stroke="url(#lg2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- EYEBROW -->
+    <div class="eyebrow">
+      <div class="eyebrow-line"></div>
+      <div class="eyebrow-text">Registration Complete</div>
+      <div class="eyebrow-line"></div>
+    </div>
+
+    <h1>You're <em>confirmed.</em></h1>
+
+    <p class="subtitle">Your email has been verified and your spot in the workshop is locked in. Here's what to expect before we meet.</p>
+
+    <div class="grad-divider"></div>
+
+    <div class="steps-label">What happens next</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Check your inbox</div>
+          <div class="step-desc">A confirmation with your workshop details, date, and access link is on its way. Check your spam folder if you don't see it within a few minutes.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Add it to your calendar</div>
+          <div class="step-desc">Block the time now so nothing gets in the way. The confirmation email includes a one-click calendar invite.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Show up ready to work</div>
+          <div class="step-desc">This is a live, interactive session — not a recording. Come with questions and be prepared to dig into real strategy and process.</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="#" class="cta-btn">Add to Calendar</a>
+
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer-wrap">
+    <p class="disclaimer"><strong>Risk Disclaimer:</strong> Trading futures, forex, stocks, and other financial instruments involves substantial risk of loss. Past performance is not indicative of future results. This workshop is for educational purposes only and does not constitute investment advice. CFTC Rule 4.41 applies. Please read full risk disclosure before trading.</p>
+  </div>
+
+</div><!-- /page -->
+
+</body>
+</html>
