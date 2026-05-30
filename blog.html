@@ -10,129 +10,212 @@ permalink: /blog.html
   <title>Blog — MarketEye</title>
   <link rel="icon" type="image/png" href="/marketeye-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Barlow:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #04091C;
+      --navy-mid: #060D22;
+      --navy-card: #0A1530;
+      --border: rgba(0, 200, 255, 0.12);
+      --border-bright: rgba(0, 200, 255, 0.3);
+      --text: #C8D8F0;
+      --muted: #6B7FA3;
+      --cyan: #00C8FF;
+      --grad: linear-gradient(135deg, #00C8FF 0%, #2B72E8 45%, #5033C3 100%);
+    }
 
     body {
-      margin: 0;
       font-family: 'Barlow', sans-serif;
-      font-size: 18px;
-      line-height: 1.7;
-      color: #1a1a2e;
-      background: #f9f9fb;
+      background: var(--navy);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    header {
-      background: #1a1a2e;
-      padding: 1.2rem 2rem;
+    /* NAV */
+    nav {
+      background: rgba(4, 9, 28, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 1rem;
+      padding: 0 32px;
+      height: 54px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    header a {
-      color: #fff;
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       text-decoration: none;
-      font-family: 'Exo 2', sans-serif;
+    }
+
+    .nav-logo img { height: 28px; width: auto; }
+
+    .nav-logo-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
       font-weight: 700;
-      font-size: 1.25rem;
-      letter-spacing: 0.03em;
+      color: #fff;
+      letter-spacing: 0.04em;
     }
 
-    header nav { margin-left: auto; }
+    .nav-links {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
 
-    header nav a {
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
       font-size: 0.95rem;
-      font-weight: 400;
-      margin-left: 1.5rem;
-      opacity: 0.85;
+      opacity: 0.8;
+      transition: opacity 0.2s;
     }
 
-    header nav a:hover { opacity: 1; }
+    .nav-links a:hover { opacity: 1; }
 
-    .page-wrapper {
-      max-width: 760px;
-      margin: 3rem auto;
-      padding: 0 1.5rem 4rem;
+    .nav-cta {
+      padding: 7px 18px;
+      background: var(--grad);
+      color: #fff !important;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.875rem !important;
+      opacity: 1 !important;
+      transition: filter 0.2s !important;
+    }
+
+    .nav-cta:hover { filter: brightness(1.1); }
+
+    /* PAGE */
+    main {
+      flex: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+      width: 100%;
+    }
+
+    .page-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.75rem;
     }
 
     h1 {
-      font-family: 'Exo 2', sans-serif;
-      font-size: 2.4rem;
-      font-weight: 800;
-      margin: 0 0 0.5rem;
-      color: #1a1a2e;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
     }
 
     .subtitle {
-      color: #666;
+      color: var(--muted);
       font-size: 1rem;
       margin-bottom: 3rem;
     }
 
+    /* POST LIST */
     .post-list {
       list-style: none;
-      padding: 0;
-      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
 
-    .post-list li {
-      border-bottom: 1px solid #e5e5e5;
-      padding: 1.5rem 0;
+    .post-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.75rem 2rem;
+      transition: border-color 0.2s;
     }
 
-    .post-list li:first-child { padding-top: 0; }
+    .post-card:hover { border-color: var(--border-bright); }
 
     .post-date {
-      font-size: 0.85rem;
-      color: #888;
-      margin-bottom: 0.3rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
     }
 
-    .post-list a {
-      font-family: 'Exo 2', sans-serif;
-      font-size: 1.35rem;
+    .post-card a {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.15rem;
       font-weight: 700;
-      color: #1a1a2e;
+      color: #fff;
       text-decoration: none;
+      line-height: 1.3;
+      transition: color 0.2s;
     }
 
-    .post-list a:hover { color: #1a73e8; }
+    .post-card a:hover { color: var(--cyan); }
 
     .post-description {
-      margin: 0.3rem 0 0;
-      font-size: 0.97rem;
-      color: #555;
+      margin-top: 0.6rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
     }
 
     .no-posts {
-      color: #888;
+      color: var(--muted);
       font-style: italic;
     }
 
+    /* FOOTER */
     footer {
       text-align: center;
-      padding: 2rem;
-      font-size: 0.85rem;
-      color: #999;
-      border-top: 1px solid #e5e5e5;
+      padding: 1.5rem 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--cyan); }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.75rem; }
+      nav { padding: 0 16px; }
+      main { padding: 2.5rem 1.25rem 4rem; }
+      .post-card { padding: 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <a href="/">MarketEye</a>
-    <nav>
+  <nav>
+    <a class="nav-logo" href="/">
+      <img src="/marketeye-icon.png" alt="MarketEye">
+      <span class="nav-logo-text">MarketEye</span>
+    </a>
+    <div class="nav-links">
       <a href="/">Home</a>
       <a href="/blog.html">Blog</a>
-    </nav>
-  </header>
+      <a class="nav-cta" href="/#cta-section">Claim Your Seat</a>
+    </div>
+  </nav>
 
-  <main class="page-wrapper">
+  <main>
+    <p class="page-eyebrow">MarketEye</p>
     <h1>Blog</h1>
     <p class="subtitle">Markets. Strategy. Process.</p>
 
@@ -140,7 +223,7 @@ permalink: /blog.html
     {% if posts.length %}
       <ul class="post-list">
         {% for post in posts %}
-          <li>
+          <li class="post-card">
             <p class="post-date">{{ post.date | readableDate }}</p>
             <a href="{{ post.url }}">{{ post.data.title }}</a>
             {% if post.data.description %}

@@ -6,150 +6,240 @@
   <title>{{ title }} — MarketEye</title>
   <link rel="icon" type="image/png" href="/marketeye-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Barlow:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #04091C;
+      --navy-mid: #060D22;
+      --navy-card: #0A1530;
+      --border: rgba(0, 200, 255, 0.12);
+      --border-bright: rgba(0, 200, 255, 0.3);
+      --text: #C8D8F0;
+      --muted: #6B7FA3;
+      --cyan: #00C8FF;
+      --grad: linear-gradient(135deg, #00C8FF 0%, #2B72E8 45%, #5033C3 100%);
+    }
 
     body {
-      margin: 0;
       font-family: 'Barlow', sans-serif;
-      font-size: 18px;
+      background: var(--navy);
+      color: var(--text);
       line-height: 1.7;
-      color: #1a1a2e;
-      background: #f9f9fb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    header {
-      background: #1a1a2e;
-      padding: 1.2rem 2rem;
+    /* NAV */
+    nav {
+      background: rgba(4, 9, 28, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 1rem;
+      padding: 0 32px;
+      height: 54px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    header a {
-      color: #fff;
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       text-decoration: none;
-      font-family: 'Exo 2', sans-serif;
+    }
+
+    .nav-logo img { height: 28px; width: auto; }
+
+    .nav-logo-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
       font-weight: 700;
-      font-size: 1.25rem;
-      letter-spacing: 0.03em;
+      color: #fff;
+      letter-spacing: 0.04em;
     }
 
-    header nav {
+    .nav-links {
       margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
     }
 
-    header nav a {
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
       font-size: 0.95rem;
-      font-weight: 400;
-      margin-left: 1.5rem;
-      opacity: 0.85;
+      opacity: 0.8;
+      transition: opacity 0.2s;
     }
 
-    header nav a:hover { opacity: 1; }
+    .nav-links a:hover { opacity: 1; }
 
-    .post-wrapper {
+    .nav-cta {
+      padding: 7px 18px;
+      background: var(--grad);
+      color: #fff !important;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.875rem !important;
+      opacity: 1 !important;
+      transition: filter 0.2s !important;
+    }
+
+    .nav-cta:hover { filter: brightness(1.1); }
+
+    /* POST */
+    main {
+      flex: 1;
       max-width: 760px;
-      margin: 3rem auto;
-      padding: 0 1.5rem 4rem;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+      width: 100%;
     }
 
     .post-meta {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
     }
 
     h1.post-title {
       font-family: 'Exo 2', sans-serif;
-      font-size: 2.4rem;
-      font-weight: 800;
-      margin: 0 0 0.4rem;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
       line-height: 1.2;
-      color: #1a1a2e;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
     }
 
-    .post-body {
-      margin-top: 2rem;
+    /* POST BODY */
+    .post-body { font-size: 1.05rem; }
+
+    .post-body h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 2.5rem 0 1rem;
     }
 
     .post-body h2 {
-      font-family: 'Exo 2', sans-serif;
-      font-size: 1.6rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.25rem;
       font-weight: 700;
-      margin-top: 2.5rem;
-      color: #1a1a2e;
+      color: #fff;
+      margin: 2.5rem 0 1rem;
     }
 
     .post-body h3 {
-      font-family: 'Exo 2', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-top: 2rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--cyan);
+      margin: 2rem 0 0.75rem;
     }
 
-    .post-body a { color: #1a73e8; }
+    .post-body p { margin-bottom: 1.25rem; }
+
+    .post-body a { color: var(--cyan); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+
+    .post-body ul, .post-body ol {
+      margin: 0 0 1.25rem 1.5rem;
+    }
+
+    .post-body li { margin-bottom: 0.4rem; }
 
     .post-body blockquote {
-      border-left: 4px solid #1a73e8;
-      margin: 1.5rem 0;
-      padding: 0.5rem 1.25rem;
-      background: #eef4ff;
-      border-radius: 0 4px 4px 0;
+      border-left: 3px solid var(--cyan);
+      margin: 1.75rem 0;
+      padding: 0.75rem 1.25rem;
+      background: var(--navy-card);
+      border-radius: 0 6px 6px 0;
       font-style: italic;
-      color: #333;
+      color: var(--text);
     }
 
     .post-body code {
-      background: #eee;
+      background: var(--navy-card);
+      border: 1px solid var(--border);
       padding: 0.15em 0.4em;
       border-radius: 3px;
-      font-size: 0.9em;
+      font-size: 0.88em;
+      color: var(--cyan);
     }
 
     .post-body pre {
-      background: #1a1a2e;
-      color: #e8e8f0;
+      background: var(--navy-card);
+      border: 1px solid var(--border);
       padding: 1.25rem;
       border-radius: 6px;
       overflow-x: auto;
+      margin-bottom: 1.25rem;
     }
 
-    .post-body pre code { background: none; padding: 0; }
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
 
     .back-link {
       display: inline-block;
       margin-top: 3rem;
-      color: #1a73e8;
+      color: var(--cyan);
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+      transition: opacity 0.2s;
     }
 
-    .back-link:hover { text-decoration: underline; }
+    .back-link:hover { opacity: 1; }
 
+    /* FOOTER */
     footer {
       text-align: center;
-      padding: 2rem;
-      font-size: 0.85rem;
-      color: #999;
-      border-top: 1px solid #e5e5e5;
+      padding: 1.5rem 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--cyan); }
+
+    @media (max-width: 600px) {
+      h1.post-title { font-size: 1.5rem; }
+      nav { padding: 0 16px; }
+      main { padding: 2.5rem 1.25rem 4rem; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <a href="/">MarketEye</a>
-    <nav>
+  <nav>
+    <a class="nav-logo" href="/">
+      <img src="/marketeye-icon.png" alt="MarketEye">
+      <span class="nav-logo-text">MarketEye</span>
+    </a>
+    <div class="nav-links">
       <a href="/">Home</a>
       <a href="/blog.html">Blog</a>
-    </nav>
-  </header>
+      <a class="nav-cta" href="/#cta-section">Claim Your Seat</a>
+    </div>
+  </nav>
 
-  <main class="post-wrapper">
+  <main>
     <p class="post-meta">
       {% if date %}{{ date | readableDate }}{% endif %}
       {% if tags %}&nbsp;·&nbsp;{{ tags | join(", ") }}{% endif %}
