@@ -24,7 +24,11 @@ module.exports = function (eleventyConfig) {
 
   // Date filters for Nunjucks templates
   eleventyConfig.addFilter("readableDate", (date) => {
-    return new Date(date).toLocaleDateString("en-US", {
+    const d = new Date(date);
+    const year = d.getUTCFullYear();
+    const month = d.getUTCMonth();
+    const day = d.getUTCDate();
+    return new Date(year, month, day).toLocaleDateString("en-US", {
       year: "numeric", month: "long", day: "numeric"
     });
   });
