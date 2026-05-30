@@ -4,7 +4,8 @@
   "description": "MarketEye static site with Eleventy blog engine",
   "scripts": {
     "start": "eleventy --serve",
-    "build": "eleventy"
+    "build": "eleventy",
+    "publish": "git add _posts/ && git commit -m \"Publish new blog post\" && git push origin main"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0"
