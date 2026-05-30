@@ -1,0 +1,164 @@
+---
+title: Blog
+permalink: /blog.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — MarketEye</title>
+  <link rel="icon" type="image/png" href="/marketeye-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Barlow:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Barlow', sans-serif;
+      font-size: 18px;
+      line-height: 1.7;
+      color: #1a1a2e;
+      background: #f9f9fb;
+    }
+
+    header {
+      background: #1a1a2e;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.03em;
+    }
+
+    header nav { margin-left: auto; }
+
+    header nav a {
+      font-size: 0.95rem;
+      font-weight: 400;
+      margin-left: 1.5rem;
+      opacity: 0.85;
+    }
+
+    header nav a:hover { opacity: 1; }
+
+    .page-wrapper {
+      max-width: 760px;
+      margin: 3rem auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    h1 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin: 0 0 0.5rem;
+      color: #1a1a2e;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .post-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .post-list li {
+      border-bottom: 1px solid #e5e5e5;
+      padding: 1.5rem 0;
+    }
+
+    .post-list li:first-child { padding-top: 0; }
+
+    .post-date {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 0.3rem;
+    }
+
+    .post-list a {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-decoration: none;
+    }
+
+    .post-list a:hover { color: #1a73e8; }
+
+    .post-description {
+      margin: 0.3rem 0 0;
+      font-size: 0.97rem;
+      color: #555;
+    }
+
+    .no-posts {
+      color: #888;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #999;
+      border-top: 1px solid #e5e5e5;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/">MarketEye</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/blog.html">Blog</a>
+    </nav>
+  </header>
+
+  <main class="page-wrapper">
+    <h1>Blog</h1>
+    <p class="subtitle">Markets. Strategy. Process.</p>
+
+    {% set posts = collections.posts %}
+    {% if posts.length %}
+      <ul class="post-list">
+        {% for post in posts %}
+          <li>
+            <p class="post-date">{{ post.date | readableDate }}</p>
+            <a href="{{ post.url }}">{{ post.data.title }}</a>
+            {% if post.data.description %}
+              <p class="post-description">{{ post.data.description }}</p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="no-posts">No posts yet — check back soon.</p>
+    {% endif %}
+  </main>
+
+  <footer>
+    &copy; {{ "" | year }} MarketEye. All rights reserved.
+    &nbsp;·&nbsp;<a href="/privacy.html">Privacy</a>
+    &nbsp;·&nbsp;<a href="/terms-of-service.html">Terms</a>
+  </footer>
+
+</body>
+</html>

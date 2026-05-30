@@ -1,0 +1,12 @@
+{
+  "name": "marketeye-site",
+  "version": "1.0.0",
+  "description": "MarketEye static site with Eleventy blog engine",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}

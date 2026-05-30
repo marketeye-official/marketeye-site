@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} — MarketEye</title>
+  <link rel="icon" type="image/png" href="/marketeye-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Barlow:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Barlow', sans-serif;
+      font-size: 18px;
+      line-height: 1.7;
+      color: #1a1a2e;
+      background: #f9f9fb;
+    }
+
+    header {
+      background: #1a1a2e;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.03em;
+    }
+
+    header nav {
+      margin-left: auto;
+    }
+
+    header nav a {
+      font-size: 0.95rem;
+      font-weight: 400;
+      margin-left: 1.5rem;
+      opacity: 0.85;
+    }
+
+    header nav a:hover { opacity: 1; }
+
+    .post-wrapper {
+      max-width: 760px;
+      margin: 3rem auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    .post-meta {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    h1.post-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin: 0 0 0.4rem;
+      line-height: 1.2;
+      color: #1a1a2e;
+    }
+
+    .post-body {
+      margin-top: 2rem;
+    }
+
+    .post-body h2 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-top: 2.5rem;
+      color: #1a1a2e;
+    }
+
+    .post-body h3 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-top: 2rem;
+    }
+
+    .post-body a { color: #1a73e8; }
+
+    .post-body blockquote {
+      border-left: 4px solid #1a73e8;
+      margin: 1.5rem 0;
+      padding: 0.5rem 1.25rem;
+      background: #eef4ff;
+      border-radius: 0 4px 4px 0;
+      font-style: italic;
+      color: #333;
+    }
+
+    .post-body code {
+      background: #eee;
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    .post-body pre {
+      background: #1a1a2e;
+      color: #e8e8f0;
+      padding: 1.25rem;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    .post-body pre code { background: none; padding: 0; }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 3rem;
+      color: #1a73e8;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .back-link:hover { text-decoration: underline; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #999;
+      border-top: 1px solid #e5e5e5;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/">MarketEye</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/blog.html">Blog</a>
+    </nav>
+  </header>
+
+  <main class="post-wrapper">
+    <p class="post-meta">
+      {% if date %}{{ date | readableDate }}{% endif %}
+      {% if tags %}&nbsp;·&nbsp;{{ tags | join(", ") }}{% endif %}
+    </p>
+    <h1 class="post-title">{{ title }}</h1>
+
+    <div class="post-body">
+      {{ content }}
+    </div>
+
+    <a class="back-link" href="/blog.html">← Back to Blog</a>
+  </main>
+
+  <footer>
+    &copy; {{ "" | year }} MarketEye. All rights reserved.
+    &nbsp;·&nbsp;<a href="/privacy.html">Privacy</a>
+    &nbsp;·&nbsp;<a href="/terms-of-service.html">Terms</a>
+  </footer>
+
+</body>
+</html>
