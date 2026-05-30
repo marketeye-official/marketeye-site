@@ -21,6 +21,7 @@ module.exports = function (eleventyConfig) {
 
   // Pass through static assets
   eleventyConfig.addPassthroughCopy("marketeye-icon.png");
+  eleventyConfig.addPassthroughCopy("og-default.png");
 
   // Date filters for Nunjucks templates
   eleventyConfig.addFilter("readableDate", (date) => {
