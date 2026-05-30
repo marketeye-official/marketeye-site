@@ -3,32 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You're Registered! — MarketEye Free Workshop</title>
+<title>Welcome to Trading Essentials — MarketEye</title>
 <link rel="icon" type="image/png" href="marketeye-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-TS6V32CR');</script>
-  <!-- End Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TS6V32CR');</script>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G96FR64Z2H"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G96FR64Z2H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G96FR64Z2H');</script>
 
-    gtag('config', 'G-G96FR64Z2H');
-  </script>  
-  
+<!-- Meta Pixel -->
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','2676371816078997');
+  fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2676371816078997&ev=PageView&noscript=1"/></noscript>
+
+<!-- iD Pixel -->
+<script src="https://cdn.idpixel.app/v1/idp-analytics-69ec35dad233fe5c1d74bffa.min.js" defer></script>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -46,6 +45,9 @@
   --text:#D0DEFF;
   --muted:#8FA3C0;
   --cream:#FFFFFF;
+  --green:#22D98A;
+  --green-bg:rgba(34,217,138,0.06);
+  --green-border:rgba(34,217,138,0.25);
 }
 
 html{font-size:18px;}
@@ -54,23 +56,16 @@ body{
   background:var(--navy);
   color:var(--text);
   min-height:100vh;
+  position:relative;
 }
 
-/* TOP BANNER */
-.top-banner{
-  background:linear-gradient(90deg,#1a6b1a,#0d4d0d,#1a6b1a);
-  padding:13px 20px;
-  text-align:center;
-  position:sticky;top:0;z-index:100;
-  border-bottom:1px solid rgba(0,200,0,0.3);
-}
-.top-banner p{
-  font-family:'Exo 2',sans-serif;
-  font-size:clamp(0.7rem,2.2vw,0.875rem);
-  font-weight:700;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  color:#7fff7f;
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 20%,rgba(0,200,255,0.04) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 50% at 15% 85%,rgba(80,51,195,0.04) 0%,transparent 55%);
+  pointer-events:none;z-index:0;
 }
 
 /* TICKER */
@@ -78,6 +73,7 @@ body{
   background:linear-gradient(90deg,#0A1848,#051028,#0A1848);
   border-bottom:1px solid var(--border);
   height:32px;overflow:hidden;display:flex;align-items:center;
+  position:relative;z-index:10;
 }
 .ticker-track{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
 .ticker-track span{font-size:0.6875rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;padding:0 24px;}
@@ -87,12 +83,14 @@ body{
 .ticker-track span.dn::before{content:'▼ ';}
 @keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-/* LOGO ROW */
-.logo-row{
-  display:flex;align-items:center;gap:10px;
-  padding:20px 32px;
+/* HEADER */
+.site-header{
   border-bottom:1px solid var(--border);
-  max-width:900px;margin:0 auto;width:100%;
+  position:relative;z-index:1;
+}
+.header-inner{
+  max-width:960px;margin:0 auto;padding:18px 32px;
+  display:flex;align-items:center;gap:10px;
 }
 .logo-icon{width:36px;height:36px;}
 .logo-text{
@@ -100,353 +98,588 @@ body{
   background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;letter-spacing:0.04em;
 }
-.logo-tag{font-size:0.625rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-left:4px;}
+.logo-tag{font-size:0.5625rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-left:4px;}
 
-/* HERO SECTION */
+/* LAYOUT */
+.content-wrap{
+  max-width:960px;margin:0 auto;
+  padding:0 32px 72px;
+  position:relative;z-index:1;
+}
+
+/* HERO */
 .hero{
-  max-width:900px;margin:0 auto;width:100%;
-  padding:52px 32px 40px;
-  text-align:center;
+  padding:56px 0 48px;
   border-bottom:1px solid var(--border);
 }
-.congrats-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:5px 16px;
-  background:linear-gradient(90deg,rgba(0,200,100,0.15),rgba(0,200,100,0.08));
-  border:1px solid rgba(0,200,100,0.3);border-radius:20px;
-  font-size:0.6875rem;letter-spacing:0.16em;text-transform:uppercase;color:#4dff9a;
-  font-weight:700;margin-bottom:24px;
+.hero-eyebrow{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;
 }
-.congrats-badge::before{content:'✓';font-size:0.75rem;}
+.eyebrow-line{height:1px;width:28px;background:var(--blue);flex-shrink:0;}
+.eyebrow-text{font-size:0.5625rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);font-weight:600;}
+.welcome-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:5px 16px;
+  background:var(--green-bg);
+  border:1px solid var(--green-border);
+  border-radius:20px;
+  font-size:0.625rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--green);font-weight:700;
+  margin-bottom:22px;
+}
 .hero h1{
   font-family:'Exo 2',sans-serif;
-  font-size:clamp(1.6rem,4vw,2.5rem);
-  font-weight:800;line-height:1.1;
-  color:var(--cream);margin-bottom:12px;
+  font-size:clamp(1.9rem,4.5vw,3rem);
+  font-weight:800;line-height:1.05;
+  color:var(--cream);margin-bottom:16px;
+  letter-spacing:-0.01em;
 }
 .hero h1 em{
   font-style:italic;
-  background:var(--grad-text);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
 }
 .hero-sub{
-  font-size:1rem;color:var(--muted);line-height:1.6;
-  max-width:560px;margin:0 auto 32px;
+  font-size:1.0625rem;color:var(--muted);line-height:1.7;
+  max-width:600px;margin-bottom:28px;
+  font-weight:300;
 }
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:12px;
+}
+.hero-stat{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;
+  background:rgba(0,200,255,0.05);
+  border:1px solid var(--border);
+  border-radius:20px;
+  font-size:0.75rem;color:var(--muted);
+}
+.hero-stat span{color:var(--blue);font-weight:600;}
 
-/* WHAT'S NEXT CARDS */
-.next-cards{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
-  max-width:900px;margin:0 auto;width:100%;
-  padding:40px 32px;
-  border-bottom:1px solid var(--border);
+/* SECTIONS */
+.section-wrap{padding:48px 0;border-bottom:1px solid var(--border);}
+.section-wrap:last-of-type{border-bottom:none;}
+
+.section-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.section-title{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(1.25rem,3vw,1.75rem);
+  font-weight:800;color:var(--cream);line-height:1.1;
+  margin-bottom:10px;
 }
-@media(max-width:640px){.next-cards{grid-template-columns:1fr;}}
-.next-card{
+.section-title em{
+  font-style:italic;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.section-sub{font-size:0.9375rem;color:var(--muted);line-height:1.65;max-width:640px;margin-bottom:32px;}
+
+/* CURRICULUM */
+.curriculum-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+}
+@media(max-width:600px){.curriculum-grid{grid-template-columns:1fr;}}
+
+.curriculum-card{
   background:var(--navy-card);
   border:1px solid var(--border);
   border-radius:6px;
-  padding:24px 20px;
-  text-align:center;
-  position:relative;
+  padding:22px 22px;
+  display:flex;gap:16px;align-items:flex-start;
 }
-.next-card-num{
+.curriculum-icon{
+  font-size:1.375rem;flex-shrink:0;
+  margin-top:2px;
+}
+.curriculum-title{
+  font-family:'Exo 2',sans-serif;font-size:0.9375rem;font-weight:700;
+  color:var(--cream);margin-bottom:6px;
+}
+.curriculum-desc{font-size:0.8125rem;color:var(--muted);line-height:1.6;}
+.curriculum-desc strong{color:var(--text);}
+
+/* SESSIONS INFO */
+.sessions-card{
+  background:var(--navy-card);
+  border:1px solid var(--border-bright);
+  border-radius:8px;
+  padding:28px 32px;
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+}
+@media(max-width:580px){.sessions-card{grid-template-columns:1fr;}}
+.session-col{}
+.session-col-label{
+  font-size:0.5625rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--blue);font-weight:700;margin-bottom:12px;
+}
+.session-detail{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;
+  border-bottom:1px solid var(--border);
+  font-size:0.875rem;
+}
+.session-detail:last-child{border-bottom:none;}
+.session-detail .dl{color:var(--muted);}
+.session-detail .dv{font-family:'Exo 2',sans-serif;font-weight:700;color:var(--cream);font-size:0.875rem;}
+.sessions-note{
+  grid-column:1 / -1;
+  border-top:1px solid var(--border);
+  padding-top:16px;
+  font-size:0.8125rem;color:var(--muted);line-height:1.6;
+}
+.sessions-note strong{color:var(--text);}
+
+/* COMMUNITY SPLIT */
+.community-split{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+}
+@media(max-width:580px){.community-split{grid-template-columns:1fr;}}
+.community-card{
+  background:var(--navy-card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:24px 22px;
+}
+.community-card-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;
+}
+.community-icon-ring{
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(0,200,255,0.07);
+  border:1px solid var(--border-bright);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1875rem;flex-shrink:0;
+}
+.community-card-name{
+  font-family:'Exo 2',sans-serif;font-size:1rem;font-weight:700;color:var(--cream);
+}
+.community-card-type{font-size:0.625rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+.community-list{list-style:none;padding:0;}
+.community-list li{
+  font-size:0.8125rem;color:var(--muted);line-height:1.55;
+  padding:7px 0 7px 16px;
+  position:relative;
+  border-bottom:1px solid rgba(0,200,255,0.06);
+}
+.community-list li:last-child{border-bottom:none;}
+.community-list li::before{
+  content:'';position:absolute;left:0;top:13px;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--blue);opacity:0.55;
+}
+.community-list li strong{color:var(--text);}
+
+/* THE APPROACH */
+.approach-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+@media(max-width:640px){.approach-row{grid-template-columns:1fr;}}
+.approach-card{
+  background:var(--navy-card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:22px 18px;
+  text-align:center;
+}
+.approach-num{
   width:40px;height:40px;border-radius:50%;
   background:var(--grad);
   font-family:'Exo 2',sans-serif;font-size:1.125rem;font-weight:800;
   color:#fff;display:flex;align-items:center;justify-content:center;
-  margin:0 auto 16px;
+  margin:0 auto 14px;
 }
-.next-card-icon{font-size:1.5rem;margin-bottom:12px;display:block;}
-.next-card h3{
+.approach-title{
   font-family:'Exo 2',sans-serif;font-size:0.9375rem;font-weight:700;
   color:var(--cream);margin-bottom:8px;
 }
-.next-card p{font-size:0.8125rem;color:var(--muted);line-height:1.55;}
-.next-card p strong{color:var(--text);}
+.approach-body{font-size:0.8125rem;color:var(--muted);line-height:1.6;}
+.approach-body strong{color:var(--text);}
 
-/* CALENDAR SECTION */
-.calendar-section{
-  max-width:900px;margin:0 auto;width:100%;
-  padding:48px 32px;
-  border-bottom:1px solid var(--border);
-  text-align:center;
+/* FAQ */
+.faq-list{
+  display:flex;flex-direction:column;gap:12px;
 }
-.calendar-section h2{
-  font-family:'Exo 2',sans-serif;
-  font-size:clamp(1.3rem,3.5vw,1.875rem);
-  font-weight:800;color:var(--cream);
-  margin-bottom:8px;
-}
-.calendar-section .sub{
-  font-size:0.875rem;color:var(--muted);margin-bottom:32px;
-}
-.calendar-card{
+.faq-item{
   background:var(--navy-card);
-  border:1px solid var(--border-bright);
-  border-radius:8px;
-  padding:32px;
-  max-width:560px;
-  margin:0 auto;
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:18px 22px;
 }
-.calendar-date{
-  font-family:'Exo 2',sans-serif;
-  font-size:clamp(1.1rem,2.8vw,1.5rem);
-  font-weight:800;
-  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:20px;
+.faq-q{
+  font-family:'Exo 2',sans-serif;font-size:0.9375rem;font-weight:700;
+  color:var(--cream);margin-bottom:8px;
+  cursor:pointer;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
 }
-.calendar-icon{font-size:2rem;margin-bottom:12px;display:block;}
-.time-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:10px 24px;
-  text-align:left;
+.faq-q::after{
+  content:'→';
+  color:var(--blue);font-size:0.875rem;flex-shrink:0;
 }
-.time-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
-.time-row:last-child{border-bottom:none;}
-.time-zone{font-size:0.8125rem;color:var(--muted);}
-.time-val{font-size:0.875rem;font-weight:600;color:var(--cream);font-family:'Exo 2',sans-serif;}
-.cal-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;}
-.cal-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:9px 18px;
-  border-radius:4px;
-  font-family:'Exo 2',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
-  text-decoration:none;border:1px solid var(--border-bright);
-  color:var(--blue);background:rgba(0,200,255,0.04);
-  transition:background 0.2s,border-color 0.2s;cursor:pointer;
-}
-.cal-btn:hover{background:rgba(0,200,255,0.1);border-color:var(--blue);}
+.faq-a{font-size:0.875rem;color:var(--muted);line-height:1.7;}
+.faq-a strong{color:var(--text);}
+.faq-a a{color:var(--blue);text-decoration:none;}
+.faq-a a:hover{text-decoration:underline;}
 
-/* CTA BANNER */
+/* BANNER */
 .cta-banner{
-  background:linear-gradient(90deg,rgba(0,200,255,0.08),rgba(43,114,232,0.12),rgba(0,200,255,0.08));
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
+  background:linear-gradient(90deg,rgba(0,200,255,0.07),rgba(43,114,232,0.1),rgba(0,200,255,0.07));
+  border:1px solid var(--border);
+  border-radius:6px;
   padding:28px 32px;
   text-align:center;
+  margin-top:8px;
 }
 .cta-banner p{
   font-family:'Exo 2',sans-serif;
-  font-size:clamp(0.9rem,2.5vw,1.25rem);
+  font-size:clamp(0.9rem,2.5vw,1.2rem);
   font-weight:700;
-  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
   letter-spacing:0.02em;
+  margin-bottom:12px;
 }
+.support-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Exo 2',sans-serif;font-size:0.8125rem;font-weight:700;
+  color:var(--blue);text-decoration:none;letter-spacing:0.06em;
+  transition:color 0.2s;
+}
+.support-link:hover{color:var(--cream);}
 
 /* FOOTER */
-footer{
-  max-width:900px;margin:0 auto;width:100%;
-  padding:24px 32px;
+.site-footer{
+  border-top:1px solid var(--border);
+  padding:28px 32px;
   text-align:center;
+  position:relative;z-index:1;
 }
+.footer-inner{max-width:960px;margin:0 auto;}
 .footer-logo{
   font-family:'Exo 2',sans-serif;font-size:0.875rem;font-weight:700;
-  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:8px;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:10px;
 }
-footer p{font-size:0.5625rem;color:rgba(143,163,192,0.5);line-height:1.55;margin-bottom:4px;}
-footer p strong{color:rgba(143,163,192,0.7);}
+.site-footer p{font-size:0.5625rem;color:rgba(143,163,192,0.5);line-height:1.6;margin-bottom:4px;}
+.site-footer p strong{color:rgba(143,163,192,0.7);}
+.footer-links{display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:center;margin-top:12px;}
+.footer-links a{font-size:0.625rem;color:rgba(143,163,192,0.5);text-decoration:none;}
+.footer-links a:hover{color:var(--blue);}
+
+@media(max-width:640px){
+  .header-inner,.content-wrap{padding-left:20px;padding-right:20px;}
+  .hero{padding:40px 0 36px;}
+  .sessions-card{padding:20px 18px;}
+  .cta-banner{padding:22px 20px;}
+}
 </style>
 </head>
 <body>
 
-<!-- TOP STICKY BANNER -->
-<div class="top-banner">
-  <p>🎉 Congratulations, you're registered! &nbsp;—&nbsp; Do not exit this page</p>
-</div>
+<!-- GTM noscript -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TS6V32CR" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- TICKER -->
 <div class="ticker-bar">
-  <div class="ticker-track" id="tickerTrack">
-    <span class="up">S&amp;P 500 5,892.34</span>
-    <span class="dn">NASDAQ 18,447.61</span>
-    <span class="up">AAPL 211.53</span>
-    <span class="up">TSLA 248.80</span>
-    <span class="dn">NVDA 897.22</span>
-    <span class="up">Gold 2,341.10</span>
-    <span class="dn">BTC/USD 63,120.00</span>
-    <span class="up">EUR/USD 1.0882</span>
-    <span class="up">S&amp;P 500 5,892.34</span>
-    <span class="dn">NASDAQ 18,447.61</span>
-    <span class="up">AAPL 211.53</span>
-    <span class="up">TSLA 248.80</span>
-    <span class="dn">NVDA 897.22</span>
-    <span class="up">Gold 2,341.10</span>
-    <span class="dn">BTC/USD 63,120.00</span>
-    <span class="up">EUR/USD 1.0882</span>
+  <div class="ticker-track">
+    <span class="up">ES 5,842.25 +18.50</span>
+    <span class="dn">NQ 20,421.00 &minus;32.75</span>
+    <span class="up">GC 2,398.40 +12.10</span>
+    <span class="up">CL 79.82 +1.24</span>
+    <span class="dn">EUR/USD 1.0843 &minus;0.0012</span>
+    <span class="up">BTC 97,468 +1,240</span>
+    <span class="up">RTY 2,104.50 +8.30</span>
+    <span class="dn">YM 43,218 &minus;95</span>
+    <span class="up">ES 5,842.25 +18.50</span>
+    <span class="dn">NQ 20,421.00 &minus;32.75</span>
+    <span class="up">GC 2,398.40 +12.10</span>
+    <span class="up">CL 79.82 +1.24</span>
+    <span class="dn">EUR/USD 1.0843 &minus;0.0012</span>
+    <span class="up">BTC 97,468 +1,240</span>
+    <span class="up">RTY 2,104.50 +8.30</span>
+    <span class="dn">YM 43,218 &minus;95</span>
   </div>
 </div>
 
-<!-- LOGO -->
-<div style="border-bottom:1px solid var(--border);">
-  <div class="logo-row">
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
     <img class="logo-icon" src="marketeye-icon.png" alt="MarketEye">
-    <div>
-      <div class="logo-text">MarketEye</div>
-      <div class="logo-tag">Right market. Right strategy. Real process.</div>
+    <span class="logo-text">MarketEye</span>
+    <span class="logo-tag">right strategy. real process.</span>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="content-wrap">
+
+  <!-- ─────────── HERO ─────────── -->
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Trading Essentials</span>
     </div>
-  </div>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="congrats-badge">Registration Confirmed</div>
-  <h1 id="heroHeading">You're In. <em>See You Inside.</em></h1>
-  <p class="hero-sub">
-    Your spot for <strong style="color:var(--text);">Trading Essentials: The Keys to the Kingdom</strong> with MarketEye is secured.
-    Here's what to do right now to make sure you don't miss a thing.
-  </p>
-</section>
-
-<!-- 3-STEP SECTION -->
-<div class="next-cards">
-  <div class="next-card">
-    <div class="next-card-num">1</div>
-    <h3>Check Your Email</h3>
-    <p>A confirmation has been sent to your inbox. If you can't find it, <strong>check your spam/junk or promotions folder</strong> and move it to your inbox.</p>
-  </div>
-  <div class="next-card">
-    <div class="next-card-num">2</div>
-    <h3>Click the Link Inside</h3>
-    <p>If you've never heard from us before, click the confirmation link inside the email so you're guaranteed to receive the workshop details and reminders.</p>
-  </div>
-  <div class="next-card">
-    <div class="next-card-num">3</div>
-    <h3>Show Up &amp; Take Notes</h3>
-    <p>We can't wait to see you live. Block your calendar now — this is the exact session that could change how you trade forever.</p>
-  </div>
-</div>
-
-<!-- CALENDAR SECTION -->
-<section class="calendar-section">
-  <h2>Don't Forget To Mark Your Calendar</h2>
-  <p class="sub">Add the event now so you don't miss it — seats are limited per session.</p>
-
-  <div class="calendar-card">
-    <span class="calendar-icon">📅</span>
-    <div class="calendar-date" id="eventDateDisplay">Loading your session details...</div>
-
-    <div class="time-grid" id="timeGrid" style="display:none;">
-      <div class="time-row"><span class="time-zone">🇸🇬 Singapore / Malaysia</span><span class="time-val" id="tzSG">—</span></div>
-      <div class="time-row"><span class="time-zone">🇦🇪 Dubai</span><span class="time-val" id="tzDXB">—</span></div>
-      <div class="time-row"><span class="time-zone">🇬🇧 UK</span><span class="time-val" id="tzUK">—</span></div>
-      <div class="time-row"><span class="time-zone">🇺🇸 Eastern</span><span class="time-val" id="tzET">—</span></div>
-      <div class="time-row"><span class="time-zone">🇺🇸 Pacific</span><span class="time-val" id="tzPT">—</span></div>
-      <div class="time-row"><span class="time-zone">🇦🇺 Sydney</span><span class="time-val" id="tzAU">—</span></div>
+    <div class="welcome-badge">&#10003; Welcome to the Programme</div>
+    <h1 id="heroHeading">Welcome to<br><em>Trading Essentials.</em></h1>
+    <p class="hero-sub">
+      Here's everything you need to know about your MarketEye programme — how sessions work, what you'll learn, where the community lives, and what to focus on first.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span>28-day</span> trial period</div>
+      <div class="hero-stat"><span>$28</span> one-time trial fee</div>
+      <div class="hero-stat"><span>Live</span> sessions weekly</div>
+      <div class="hero-stat"><span>Slack + ClickUp</span> community access</div>
     </div>
+  </section>
 
-    <div class="cal-buttons" id="calButtons" style="display:none;">
-      <a class="cal-btn" id="gcalLink" href="#" target="_blank" rel="noopener">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2"/></svg>
-        Google Calendar
-      </a>
-      <a class="cal-btn" id="icsLink" href="#" download="marketeye-workshop.ics">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 16v-8m0 8l-3-3m3 3l3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="2"/></svg>
-        Apple / Outlook
-      </a>
+  <!-- ─────────── CURRICULUM ─────────── -->
+  <section class="section-wrap">
+    <div class="section-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">The programme</span>
     </div>
-  </div>
-</section>
+    <h2 class="section-title">What <em>Trading Essentials</em> covers</h2>
+    <p class="section-sub">The programme is structured around the fundamentals that separate consistent traders from everyone else — not tips, not signals, not shortcuts.</p>
 
-<!-- CTA BANNER -->
-<div class="cta-banner">
-  <p>Confirm Your Email Now &mdash; Your Future Self Will Thank You</p>
-</div>
+    <div class="curriculum-grid">
+      <div class="curriculum-card">
+        <span class="curriculum-icon">📐</span>
+        <div>
+          <div class="curriculum-title">Price Action &amp; Market Structure</div>
+          <div class="curriculum-desc">How to read a chart without relying on indicators. <strong>You'll learn to identify support, resistance, trend, and breakdowns</strong> directly from price — the foundation of every other skill in the programme.</div>
+        </div>
+      </div>
+      <div class="curriculum-card">
+        <span class="curriculum-icon">🛡️</span>
+        <div>
+          <div class="curriculum-title">Risk Management &amp; the Pre-Trade Checklist</div>
+          <div class="curriculum-desc">The single biggest differentiator between traders who last and those who blow up. <strong>Every member gets the MarketEye pre-trade checklist</strong> — a simple decision framework that removes guesswork before you ever place a trade.</div>
+        </div>
+      </div>
+      <div class="curriculum-card">
+        <span class="curriculum-icon">📈</span>
+        <div>
+          <div class="curriculum-title">Going Long — Profiting from Rising Markets</div>
+          <div class="curriculum-desc">The strategy most beginners start with. You'll learn to identify high-probability long setups, <strong>set entries with logic, and manage the trade from open to close</strong> — including where and why to exit.</div>
+        </div>
+      </div>
+      <div class="curriculum-card">
+        <span class="curriculum-icon">📉</span>
+        <div>
+          <div class="curriculum-title">Going Short — Profiting from Falling Markets</div>
+          <div class="curriculum-desc">Most traders only know how to profit when prices rise. <strong>Going short is one of the most powerful and misunderstood tools in trading</strong> — we demonstrate both directions live, using real markets and real setups.</div>
+        </div>
+      </div>
+      <div class="curriculum-card">
+        <span class="curriculum-icon">🧠</span>
+        <div>
+          <div class="curriculum-title">Trader Psychology &amp; Discipline</div>
+          <div class="curriculum-desc">Why intelligent people blow up accounts, and what consistent traders do differently. <strong>Psychology is not separate from strategy</strong> — it's built into how we approach every session and every trade.</div>
+        </div>
+      </div>
+      <div class="curriculum-card">
+        <span class="curriculum-icon">📊</span>
+        <div>
+          <div class="curriculum-title">Markets, Instruments &amp; Timeframes</div>
+          <div class="curriculum-desc">Futures, forex, indices, commodities. How to choose what to trade, when to trade it, and on what timeframe — <strong>matched to your schedule, your risk tolerance, and your goals</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── SESSIONS ─────────── -->
+  <section class="section-wrap">
+    <div class="section-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Live sessions</span>
+    </div>
+    <h2 class="section-title">How <em>sessions</em> work</h2>
+    <p class="section-sub">Sessions are live, interactive, and recorded. You don't have to attend every one — but the members who do progress fastest.</p>
+
+    <div class="sessions-card">
+      <div class="session-col">
+        <div class="session-col-label">Session format</div>
+        <div class="session-detail">
+          <span class="dl">Format</span>
+          <span class="dv">Live via Zoom</span>
+        </div>
+        <div class="session-detail">
+          <span class="dl">Duration</span>
+          <span class="dv">~2 hours</span>
+        </div>
+        <div class="session-detail">
+          <span class="dl">Q&amp;A time</span>
+          <span class="dv">Included</span>
+        </div>
+        <div class="session-detail">
+          <span class="dl">Recordings</span>
+          <span class="dv">Available within 24h</span>
+        </div>
+      </div>
+      <div class="session-col">
+        <div class="session-col-label">What happens in a session</div>
+        <div class="session-detail" style="border-bottom:none;">
+          <span class="dl" style="font-size:0.8125rem;color:var(--text);line-height:1.65;">
+            Each session opens with a live market scan — we look at real setups, real price action, right now. No prepared slides, no rehearsed content. You'll see us identify a setup, explain the logic, manage the trade, and answer questions in real time. Then recordings go straight to ClickUp.
+          </span>
+        </div>
+      </div>
+      <div class="sessions-note">
+        <strong>Where to find session links:</strong> All Zoom links and schedules are posted in the <strong>#sessions</strong> channel in Slack. New members are notified by email for the first session.
+        If you're ever unsure of the next session date, ask in <strong>#general</strong> in Slack or email <a href="mailto:support@marketeye.io" style="color:var(--blue);">support@marketeye.io</a>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── COMMUNITY ─────────── -->
+  <section class="section-wrap">
+    <div class="section-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Your community</span>
+    </div>
+    <h2 class="section-title">Where the <em>programme lives</em></h2>
+    <p class="section-sub">The community is not a bonus feature. It's core to the programme. These two platforms are where learning, accountability, and real-time access happen.</p>
+
+    <div class="community-split">
+      <div class="community-card">
+        <div class="community-card-head">
+          <div class="community-icon-ring">💬</div>
+          <div>
+            <div class="community-card-name">Slack Workspace</div>
+            <div class="community-card-type">Real-time · Always on</div>
+          </div>
+        </div>
+        <ul class="community-list">
+          <li><strong>#introductions</strong> — Introduce yourself when you join. This matters.</li>
+          <li><strong>#trade-alerts</strong> — Live alerts when a setup forms. Turn on notifications.</li>
+          <li><strong>#sessions</strong> — Zoom links, dates, and session reminders.</li>
+          <li><strong>#general</strong> — Daily discussion, questions, market commentary.</li>
+          <li><strong>#wins-and-lessons</strong> — Share what's working and what isn't. Both count.</li>
+          <li>Direct access to mentors and fellow traders at all levels.</li>
+        </ul>
+      </div>
+      <div class="community-card">
+        <div class="community-card-head">
+          <div class="community-icon-ring">📋</div>
+          <div>
+            <div class="community-card-name">ClickUp Portal</div>
+            <div class="community-card-type">Your home base · Always accessible</div>
+          </div>
+        </div>
+        <ul class="community-list">
+          <li><strong>28-day onboarding checklist</strong> — Your step-by-step guide through the trial.</li>
+          <li><strong>Session recordings archive</strong> — Every session uploaded within 24 hours.</li>
+          <li><strong>Pre-trade checklist template</strong> — The framework behind every trade decision.</li>
+          <li><strong>Strategy playbooks</strong> — Written guides for each strategy covered in sessions.</li>
+          <li><strong>Resource library</strong> — Recommended reading, tools, and references.</li>
+          <li>Organised, searchable, updated as the programme evolves.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── THE APPROACH ─────────── -->
+  <section class="section-wrap">
+    <div class="section-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">The MarketEye way</span>
+    </div>
+    <h2 class="section-title">Right strategy. <em>Real process.</em></h2>
+    <p class="section-sub">Three ideas that underpin everything we do. Not slogans — actual principles that show up in every session, every trade, every conversation in the community.</p>
+
+    <div class="approach-row">
+      <div class="approach-card">
+        <div class="approach-num">1</div>
+        <div class="approach-title">Process beats prediction</div>
+        <div class="approach-body">Nobody can predict markets. <strong>Consistent traders don't try to.</strong> Instead they follow a repeatable process — one that stacks the odds in their favour over many trades, not just one.</div>
+      </div>
+      <div class="approach-card">
+        <div class="approach-num">2</div>
+        <div class="approach-title">Small losses. Medium wins.</div>
+        <div class="approach-body">The math of successful trading is simple: <strong>keep losses small, let winners run.</strong> The pre-trade checklist and risk management framework is built entirely around this one principle.</div>
+      </div>
+      <div class="approach-card">
+        <div class="approach-num">3</div>
+        <div class="approach-title">You learn by doing</div>
+        <div class="approach-body">No amount of reading replaces being in the room during a live session. <strong>The members who improve fastest are the ones who show up, ask questions, and stay active in the community</strong> — not the ones who watch recordings in silence.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── FAQ ─────────── -->
+  <section class="section-wrap">
+    <div class="section-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Common questions</span>
+    </div>
+    <h2 class="section-title">Things people ask <em>early on</em></h2>
+    <p class="section-sub" style="margin-bottom:24px;">Honest answers. No fluff.</p>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Do I need prior trading experience?</div>
+        <div class="faq-a">No. Trading Essentials is built to work for complete beginners. You'll hear terms you don't recognise in the first session — write them down and ask in Slack. <strong>Every experienced member in the community was a beginner once.</strong></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What markets does MarketEye trade?</div>
+        <div class="faq-a">Primarily <strong>futures (ES, NQ, GC, CL), forex, and indices</strong>. Sessions cover the most active markets at the time. You're not locked into any single instrument.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How much time do I need to commit each week?</div>
+        <div class="faq-a">Minimum two to three hours per week — one live session plus follow-up in Slack and ClickUp. <strong>More time = faster progress.</strong> Many members carve out 30 minutes per day.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What happens if I miss a session?</div>
+        <div class="faq-a">Every session is recorded and uploaded to ClickUp within 24 hours. You won't fall behind. <strong>Attend live whenever possible</strong> — but the recordings are full-quality and include all Q&amp;A.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What happens after my 28-day trial?</div>
+        <div class="faq-a">Your membership transitions automatically to <strong>$900 billed every 90 days</strong>. You can cancel before day 28 by emailing <a href="mailto:support@marketeye.io">support@marketeye.io</a>. See our <a href="membership-billing-terms.html">Billing Terms</a> and <a href="cancellation-instructions.html">Cancellation Instructions</a> for full details.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── CTA BANNER ─────────── -->
+  <div class="cta-banner">
+    <p>The next session is in Slack. Your checklist is in ClickUp. Go.</p>
+    <a href="mailto:support@marketeye.io" class="support-link">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="#00C8FF" stroke-width="1.5"/><path d="M1 5l7 5 7-5" stroke="#00C8FF" stroke-width="1.5"/></svg>
+      Questions? support@marketeye.io
+    </a>
+  </div>
+
+</div><!-- /content-wrap -->
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-logo">MarketEye</div>
-  <p>&copy;2026 MarketEye. All rights reserved.</p>
-  <p><strong>Risk Disclaimer:</strong> Trading futures, forex, stocks, and other financial instruments involves substantial risk of loss. Past performance is not indicative of future results. This workshop is for educational purposes only and does not constitute investment advice. CFTC Rule 4.41 applies.</p>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">MarketEye</div>
+    <p>&copy; 2026 MarketEye, LLC. All rights reserved.</p>
+    <p><strong>Risk Disclaimer:</strong> Trading futures, forex, stocks, and other financial instruments involves substantial risk of loss. Past performance is not indicative of future results. This programme is for educational purposes only and does not constitute investment advice. CFTC Rule 4.41 applies.</p>
+    <div class="footer-links">
+      <a href="membership-billing-terms.html">Billing Terms</a>
+      <a href="refund-policy.html">Refund Policy</a>
+      <a href="cancellation-instructions.html">Cancellation</a>
+      <a href="mkt-i-privacy-tos/privacy-policy.html">Privacy Policy</a>
+      <a href="mkt-i-privacy-tos/terms-of-service.html">Terms of Service</a>
+      <a href="mailto:support@marketeye.io">Support</a>
+    </div>
+  </div>
 </footer>
 
 <script>
 (function(){
-  /* ── Parse URL params from Calendly redirect ── */
   var params = new URLSearchParams(window.location.search);
-
-  /* Personalise heading with first name if Calendly passes invitee_full_name */
-  var fullName = params.get('invitee_full_name');
-  if(fullName){
-    var firstName = decodeURIComponent(fullName).split(/[\s+]/)[0];
+  var firstName = params.get('first_name') || params.get('name');
+  if(firstName){
+    firstName = decodeURIComponent(firstName).split(/[\s+]/)[0];
     if(firstName){
-      var heading = document.getElementById('heroHeading');
-      heading.innerHTML = 'You\'re In, ' + firstName + '. <em>See You Inside.</em>';
+      var el = document.getElementById('heroHeading');
+      el.innerHTML = 'Welcome, ' + firstName + '.<br><em>Trading Essentials</em> starts now.';
     }
-  }
-
-  var startParam = params.get('event_start_time') || params.get('start_time') || params.get('date');
-
-  var dateDisplay = document.getElementById('eventDateDisplay');
-  var timeGrid    = document.getElementById('timeGrid');
-  var calButtons  = document.getElementById('calButtons');
-  var gcalLink    = document.getElementById('gcalLink');
-  var icsLink     = document.getElementById('icsLink');
-
-  if(startParam){
-    try{
-      var dt = new Date(decodeURIComponent(startParam));
-      if(isNaN(dt.getTime())) throw new Error('bad date');
-
-      /* Friendly date label */
-      var longDate = dt.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});
-      dateDisplay.textContent = longDate;
-
-      /* Helper: format time in a given IANA timezone */
-      function fmt(tz){
-        return dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:tz});
-      }
-
-      document.getElementById('tzSG').textContent  = fmt('Asia/Singapore');
-      document.getElementById('tzDXB').textContent = fmt('Asia/Dubai');
-      document.getElementById('tzUK').textContent  = fmt('Europe/London');
-      document.getElementById('tzET').textContent  = fmt('America/New_York');
-      document.getElementById('tzPT').textContent  = fmt('America/Los_Angeles');
-      document.getElementById('tzAU').textContent  = fmt('Australia/Sydney');
-
-      timeGrid.style.display   = 'grid';
-      calButtons.style.display = 'flex';
-
-      /* Google Calendar link */
-      function pad(n){return n<10?'0'+n:n;}
-      function toGcalDT(d){
-        return d.getUTCFullYear()+''
-          +pad(d.getUTCMonth()+1)
-          +pad(d.getUTCDate())+'T'
-          +pad(d.getUTCHours())
-          +pad(d.getUTCMinutes())+'00Z';
-      }
-      var end = new Date(dt.getTime() + 120*60*1000); /* assume 2-hour session */
-      var gcalParams = new URLSearchParams({
-        action:'TEMPLATE',
-        text:'Trading Essentials: The Keys to the Kingdom — MarketEye',
-        dates:toGcalDT(dt)+'/'+toGcalDT(end),
-        details:'Your registered MarketEye live workshop with John Lee. Check your email for the join link.',
-        location:'Online (check your email for the link)'
-      });
-      gcalLink.href = 'https://calendar.google.com/calendar/render?' + gcalParams.toString();
-
-      /* ICS file */
-      var ics = [
-        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//MarketEye//Workshop//EN',
-        'BEGIN:VEVENT',
-        'DTSTART:'+toGcalDT(dt),
-        'DTEND:'+toGcalDT(end),
-        'SUMMARY:Trading Essentials: The Keys to the Kingdom — MarketEye',
-        'DESCRIPTION:Your registered MarketEye live workshop with John Lee. Check your email for the join link.',
-        'LOCATION:Online (check your email for the link)',
-        'END:VEVENT','END:VCALENDAR'
-      ].join('\r\n');
-      icsLink.href = 'data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
-
-    }catch(e){
-      dateDisplay.textContent = 'Check your email for your session date and time.';
-    }
-  } else {
-    dateDisplay.textContent = 'Check your email for your session date and time.';
   }
 })();
 </script>
+
 </body>
 </html>
