@@ -1,8 +1,14 @@
 ---
 title: Why Most People Fail at Trading Before They Ever Place a Trade
-date: 2026-05-30
-tags: [markets, strategy]
-description: One sentence summary shown on the blog listing page.
+date: 2025-09-01
+tags: 
+- trading 
+- trading education 
+- beginner trading 
+- risk management 
+- trading psychology 
+- marketeye
+description: Most trading failures begin with unrealistic expectations, poor preparation, and a lack of understanding about risk management and process.
 layout: post
 ---
 
