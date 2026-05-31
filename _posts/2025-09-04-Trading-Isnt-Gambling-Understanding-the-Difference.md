@@ -1,6 +1,6 @@
 ---
 title: "Trading Isn't Gambling: Understanding the Difference"
-date: 2026-09-04
+date: 2025-09-04
 tags:
   - trading vs gambling
   - trading mindset
