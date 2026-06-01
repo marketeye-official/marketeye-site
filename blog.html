@@ -1,6 +1,10 @@
 ---
 title: Blog
-permalink: /blog.html
+pagination:
+  data: collections.posts
+  size: 4
+  alias: posts
+permalink: "{% if pagination.pageNumber == 0 %}blog.html{% else %}blog/page/{{ pagination.pageNumber + 1 }}/index.html{% endif %}"
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -183,6 +187,44 @@ permalink: /blog.html
       font-style: italic;
     }
 
+    /* PAGINATION */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 3rem;
+    }
+
+    .pagination a, .pagination span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+      height: 2.25rem;
+      padding: 0 0.75rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .pagination a:hover { border-color: var(--border-bright); color: var(--cyan); }
+
+    .pagination .current {
+      background: var(--grad);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    .pagination .disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
     /* FOOTER */
     footer {
       text-align: center;
@@ -222,7 +264,6 @@ permalink: /blog.html
     <h1>Blog</h1>
     <p class="subtitle">Markets. Strategy. Process.</p>
 
-    {% set posts = collections.posts %}
     {% if posts.length %}
       <ul class="post-list">
         {% for post in posts %}
@@ -235,6 +276,31 @@ permalink: /blog.html
           </li>
         {% endfor %}
       </ul>
+
+      {% if pagination.pages.length > 1 %}
+        <nav class="pagination" aria-label="Blog pages">
+          {% if pagination.href.previous %}
+            <a href="{{ pagination.href.previous }}" aria-label="Previous page">&larr;</a>
+          {% else %}
+            <span class="disabled" aria-hidden="true">&larr;</span>
+          {% endif %}
+
+          {% for href in pagination.hrefs %}
+            {% set pageNum = loop.index %}
+            {% if href == page.url %}
+              <span class="current" aria-current="page">{{ pageNum }}</span>
+            {% else %}
+              <a href="{{ href }}">{{ pageNum }}</a>
+            {% endif %}
+          {% endfor %}
+
+          {% if pagination.href.next %}
+            <a href="{{ pagination.href.next }}" aria-label="Next page">&rarr;</a>
+          {% else %}
+            <span class="disabled" aria-hidden="true">&rarr;</span>
+          {% endif %}
+        </nav>
+      {% endif %}
     {% else %}
       <p class="no-posts">No posts yet — check back soon.</p>
     {% endif %}

@@ -8,21 +8,15 @@
   <link rel="dns-prefetch" href="https://calendly.com">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MarketEye — Right Markets. Right Strategies. Real Process.</title>
+  <meta name="description" content="MarketEye teaches traders the right markets, strategies, and process to build consistency. Join our free live workshop.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style"
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Barlow:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
-
-  <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-TS6V32CR');</script>
-  <!-- End Google Tag Manager -->
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Barlow:wght@300;400;500;600&display=swap"
+    rel="stylesheet"></noscript>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-G96FR64Z2H"></script>
@@ -34,9 +28,6 @@
     gtag('config', 'G-G96FR64Z2H');
   </script>
 
-  <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=2676371816078997&ev=PageView&noscript=1" /></noscript>
-  <!-- End Meta Pixel Code -->
   <!-- iD Pixel -->
   <script src="https://cdn.idpixel.app/v1/idp-analytics-69ec35dad233fe5c1d74bffa.min.js" defer></script>
   <!-- End -->
@@ -61,7 +52,7 @@
       --border: rgba(0, 200, 255, 0.12);
       --border-bright: rgba(0, 200, 255, 0.3);
       --text: #C8D8F0;
-      --muted: #5A6A8A;
+      --muted: #7B8DAA;
       --cream: #FFFFFF;
     }
 
@@ -349,7 +340,7 @@
 
     .email-privacy {
       font-size: 0.6875rem;
-      color: rgba(90, 106, 138, 0.5);
+      color: var(--muted);
       margin-bottom: 4px;
     }
 
@@ -871,8 +862,7 @@
       font-family: 'Exo 2', sans-serif;
       font-size: 2.5rem;
       font-weight: 800;
-      color: var(--blue);
-      opacity: 0.25;
+      color: rgba(0, 200, 255, 0.5);
       line-height: 1;
       min-width: 52px;
       padding-top: 4px;
@@ -1462,7 +1452,7 @@
   <!-- NAVIGATION -->
   <nav style="position:relative;top:auto;">
     <div class="nav-logo">
-      <img src="marketeye-icon.png" alt="MarketEye">
+      <img src="marketeye-icon.png" alt="MarketEye" width="32" height="32">
       <span class="nav-logo-text">MarketEye</span>
     </div>
     <a href="/blog.html" style="color:#C8D8F0;text-decoration:none;font-family:'Barlow',sans-serif;font-size:0.95rem;margin-right:auto;margin-left:2rem;opacity:0.85;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.85">Blog</a>
@@ -1470,6 +1460,7 @@
   </nav>
   </div><!-- end sticky header wrapper -->
 
+  <main>
   <!-- HERO SECTION -->
   <section class="section section-hero">
     <div class="container">
@@ -1563,7 +1554,7 @@
     <div class="container">
       <div class="proof-inner">
         <div class="proof-avatars">
-          <div class="p-avatar" style="background:#2B72E8;margin-left:0;">JM</div>
+          <div class="p-avatar" style="background:#1F5CC8;margin-left:0;">JM</div>
           <div class="p-avatar" style="background:#00C8FF;color:#04091C;">TR</div>
           <div class="p-avatar" style="background:#5033C3;">KL</div>
           <div class="p-avatar" style="background:#3A1E8A;">+</div>
@@ -1812,6 +1803,8 @@
   </section>
 
   <!-- FOOTER -->
+  </main>
+
   <footer>
     <div class="container">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:24px 0;border-bottom:1px solid var(--border);margin-bottom:24px;">
@@ -1823,7 +1816,7 @@
       </div>
       <div class="footer-inner">
         <div class="footer-logo">
-          <img src="marketeye-icon.png" alt="MarketEye">
+          <img src="marketeye-icon.png" alt="MarketEye" width="28" height="28">
           <div>
             <div class="footer-logo-text">MarketEye</div>
             <span style="font-size:0.6875rem;color:var(--muted);">· Empowering Traders One Trade at a Time</span>
@@ -1928,10 +1921,10 @@
     <div id="calendly-modal">
       <button id="calendly-close" onclick="closeCalendly()" aria-label="Close">✕</button>
       <iframe id="calendly-iframe"
-        src="https://calendly.com/marketeye/free-webinar?background_color=04091C&text_color=C8D8F0&primary_color=00C8FF&hide_gdpr_banner=1"
+        src=""
+        data-src="https://calendly.com/marketeye/free-webinar?background_color=04091C&text_color=C8D8F0&primary_color=00C8FF&hide_gdpr_banner=1"
         frameborder="0"
-        allow="camera; microphone; fullscreen"
-        loading="eager"></iframe>
+        allow="camera; microphone; fullscreen"></iframe>
     </div>
   </div>
 
@@ -1940,6 +1933,8 @@
       if (window.innerWidth < 768) {
         window.open('https://calendly.com/marketeye/free-webinar', '_blank');
       } else {
+        const iframe = document.getElementById('calendly-iframe');
+        if (!iframe.src) iframe.src = iframe.dataset.src;
         document.getElementById('calendly-overlay').classList.add('open');
         document.body.style.overflow = 'hidden';
       }
@@ -1955,6 +1950,44 @@
       if (e.key === 'Escape') closeCalendly();
     });
   </script>
+
+  <!-- Meta Pixel Code (deferred until page idle) -->
+  <script>
+    function loadFBPixel() {
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window,document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '2676371816078997');
+      fbq('track', 'PageView');
+    }
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadFBPixel, { timeout: 4000 });
+    } else {
+      window.addEventListener('load', function() { setTimeout(loadFBPixel, 2000); });
+    }
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=2676371816078997&ev=PageView&noscript=1"></noscript>
+  <!-- End Meta Pixel Code -->
+
+  <!-- Google Tag Manager (deferred until page idle) -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function loadGTM() {
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TS6V32CR');
+    }
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadGTM, { timeout: 4000 });
+    } else {
+      window.addEventListener('load', function() { setTimeout(loadGTM, 2000); });
+    }
+  </script>
+  <!-- End Google Tag Manager -->
 </body>
 
 </html>
