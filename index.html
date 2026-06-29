@@ -4,8 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="marketeye-icon.png">
-  <link rel="preconnect" href="https://calendly.com">
-  <link rel="dns-prefetch" href="https://calendly.com">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MarketEye — Right Markets. Right Strategies. Real Process.</title>
   <meta name="description" content="MarketEye teaches traders the right markets, strategies, and process to build consistency. Join our free live workshop.">
@@ -912,64 +910,6 @@
       border-radius: 2px;
     }
 
-    /* ── CALENDLY OVERLAY ── */
-    #calendly-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(0, 0, 0, 0.8);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    #calendly-overlay.open {
-      display: flex;
-    }
-    #calendly-modal {
-      position: relative;
-      width: 100%;
-      max-width: 1100px;
-      height: 85vh;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #04091C;
-      border: 1px solid rgba(0, 200, 255, 0.15);
-    }
-    #calendly-iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-    #calendly-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      z-index: 10;
-      background: rgba(255, 255, 255, 0.12);
-      border: none;
-      color: #fff;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 1rem;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-    }
-    #calendly-close:hover {
-      background: rgba(255, 255, 255, 0.22);
-    }
-    @media (max-width: 600px) {
-      #calendly-modal {
-        height: 92vh;
-        border-radius: 8px;
-      }
-    }
 
     /* ── REVIEWS ── */
     .review-grid {
@@ -1474,14 +1414,14 @@
           </div>
           <h1 class="hero-title">Your Deals Still 90+ Days Out?<br><em>See What Veteran Traders Do in Minutes</em></h1>
           <p class="hero-subtitle">No appraisals. No contractors. No rate hikes. No loan denials. Trading is a business where outside forces don't decide your outcome — <em style="-webkit-text-fill-color:inherit;font-style:italic;">you</em> do.<br><br>
-            In this free 90-minute workshop, you'll learn exactly how money is made in the markets, the mindset consistent traders operate from, and two strategies you can start building from today. Whether you're brand new or you've tried everything else — <em style="-webkit-text-fill-color:inherit;font-style:italic;">this is your foundation.</em></p>
+            For a limited time, new members get 50% off their first month. Full access to the MarketEye methodology, the community, and the frameworks professional traders use to stay consistent - at half the price. No experience needed, no signals to follow. Just a clear, structured approach to learning how markets actually work. Use code <strong>COMMUNITY</strong> at checkout. <em style="-webkit-text-fill-color:inherit;font-style:italic;">Spots are limited.</em></p>
           <div class="hero-badges">
             <div class="hero-badge">📈 <span>Stocks · Futures · Forex · Crypto</span></div>
             <div class="hero-badge">⏰ <span>90-Minute Live Session</span></div>
             <div class="hero-badge">🎓 <span>Complete Beginners Welcome</span></div>
             <div class="hero-badge">💡 <span>Walk Away With a Real Plan</span></div>
           </div>
-          <button class="cta-btn" onclick="openCalendly()">Get 50% Off →</button>
+          <a href="https://buy.stripe.com/00wbJ13RW0nF4va8Bcc3m01" class="cta-btn" style="text-decoration:none;" target="_blank" rel="noopener">Get 50% Off →</a>
           <p class="email-privacy">🔒 Private & secure. No spam. Cancel anytime.</p>
           <p class="hero-membership-note">At the end of the session, you'll learn how to apply for the MarketEye mentorship — <strong>accepted by interview only.</strong></p>
         </div>
@@ -1800,7 +1740,7 @@
         <h2>90 Minutes to Understand How Professional Traders Approach Markets</h2>
         <p>Reserve your free seat and see exactly how markets work, what consistent traders do differently, and whether the MarketEye path is right for you. No experience required. No obligation after.</p>
 
-        <a href="https://buy.stripe.com/00wbJ13RW0nF4va8Bcc3m01" class="form-submit" style="display:inline-block;text-decoration:none;">Get 50% Off →</a>
+        <a href="https://buy.stripe.com/00wbJ13RW0nF4va8Bcc3m01" class="form-submit" style="display:inline-block;text-decoration:none;" target="_blank" rel="noopener">Get 50% Off →</a>
         <p style="font-size:0.6875rem;color:var(--muted);margin-top:10px;">Use code <strong style="color:var(--blue);">COMMUNITY</strong> at checkout to redeem your discount.</p>
       </div>
     </div>
@@ -1919,40 +1859,6 @@
       body.classList.toggle('open');
       btn.setAttribute('aria-expanded', !isOpen);
     }
-  </script>
-  <!-- CALENDLY OVERLAY -->
-  <div id="calendly-overlay" onclick="closeCalendly(event)">
-    <div id="calendly-modal">
-      <button id="calendly-close" onclick="closeCalendly()" aria-label="Close">✕</button>
-      <iframe id="calendly-iframe"
-        src=""
-        data-src="https://calendly.com/marketeye/free-webinar?background_color=04091C&text_color=C8D8F0&primary_color=00C8FF&hide_gdpr_banner=1"
-        frameborder="0"
-        allow="camera; microphone; fullscreen"></iframe>
-    </div>
-  </div>
-
-  <script>
-    function openCalendly() {
-      if (window.innerWidth < 768) {
-        window.open('https://buy.stripe.com/00wbJ13RW0nF4va8Bcc3m01', '_blank');
-      } else {
-        const iframe = document.getElementById('calendly-iframe');
-        if (!iframe.src) iframe.src = iframe.dataset.src;
-        document.getElementById('calendly-overlay').classList.add('open');
-        document.body.style.overflow = 'hidden';
-      }
-      return false;
-    }
-    function closeCalendly(e) {
-      if (!e || e.target === document.getElementById('calendly-overlay')) {
-        document.getElementById('calendly-overlay').classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    }
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeCalendly();
-    });
   </script>
 
   <!-- Tracking scripts — deferred 6s to avoid blocking TTI -->
