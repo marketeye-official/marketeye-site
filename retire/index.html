@@ -60,6 +60,14 @@
     z-index:0;
   }
 
+  /* ---------- Section divider ---------- */
+  .section-divider{
+    max-width:1100px;
+    margin:0 auto;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--line) 20%, rgba(255,255,255,0.22) 50%, var(--line) 80%, transparent);
+  }
+
   /* ---------- Ticker bar (TradingView live data) ---------- */
   .ticker-bar{
     background:var(--navy-deep);
@@ -907,6 +915,8 @@
     </div>
   </div>
 </section>
+
+<div class="section-divider" aria-hidden="true"></div>
 
 <section class="proof" id="proof">
   <div class="wrap">
