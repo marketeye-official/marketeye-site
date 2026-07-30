@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TS6V32CR');</script>
-<!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MarketEye — Stop Guessing. Start Planning.</title>
@@ -718,11 +711,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TS6V32CR"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-
 <!-- Live market data ticker powered by TradingView -->
 <div class="ticker-bar">
   <div class="tradingview-widget-container">
@@ -761,7 +749,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="#faq">FAQ</a>
       <a href="#community">Community</a>
     </div>
-    <a class="nav-cta mkt-lp-cta" href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener">
+    <a class="nav-cta" href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener">
       Join Now →
     </a>
   </div>
@@ -784,7 +772,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         See Your Number
         <span>→</span>
       </a>
-      <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-ghost mkt-lp-cta">
+      <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-ghost">
         Join the Community
       </a>
     </div>
@@ -918,7 +906,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="section-cta">
-      <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary mkt-lp-cta">
+      <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary">
         Join Now
         <span>→</span>
       </a>
@@ -966,7 +954,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="section-cta">
-      <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary mkt-lp-cta">
+      <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary">
         Join Now
         <span>→</span>
       </a>
@@ -993,7 +981,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="section-cta">
-      <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary mkt-lp-cta">
+      <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary">
         Join Now
         <span>→</span>
       </a>
@@ -1042,7 +1030,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="section-eyebrow" style="text-align:left;">The community</div>
         <h2 class="section-title" style="text-align:left;">Real people, figuring it out together</h2>
         <p>Questions get asked out loud here. Wins and mistakes both get talked through — this is a group of beginners and experienced traders learning side by side, not a solo grind.</p>
-        <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary mkt-lp-cta" style="margin-top:8px;">
+        <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary" style="margin-top:8px;">
           Join Now
           <span>→</span>
         </a>
@@ -1062,7 +1050,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <h2>Ready to trade guessing for a plan?</h2>
     <p class="lead">Join the MarketEye community and start learning at your own pace — no experience required.</p>
-    <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary mkt-lp-cta">
+    <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary">
       Join Now
       <span>→</span>
     </a>
@@ -1352,26 +1340,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   })();
 
 
-</script>
-
-<!-- Forward incoming ad parameters (fbclid, utm_*) to the Final LP.
-     Appends the LP's own query string onto every mkt-lp-cta href so ad->LP->Skool
-     attribution stays intact. Part of the standard LP build. -->
-<script>
-(function () {
-  var incoming = window.location.search;                // e.g. "?fbclid=...&utm_content=..."
-  if (!incoming || incoming.length < 2) return;
-  var incomingParams = new URLSearchParams(incoming);
-  document.querySelectorAll('a.mkt-lp-cta').forEach(function (a) {
-    try {
-      var dest = new URL(a.href, window.location.origin);
-      incomingParams.forEach(function (val, key) {
-        if (!dest.searchParams.has(key)) dest.searchParams.set(key, val); // don't overwrite CTA-set params
-      });
-      a.href = dest.toString();
-    } catch (e) { /* leave link as-is if unparseable */ }
-  });
-})();
 </script>
 
 </body>
