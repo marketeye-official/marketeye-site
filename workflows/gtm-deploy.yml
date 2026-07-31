@@ -1,1 +1,52 @@
+name: Deploy with GTM
+
+on:
+  push:
+    branches:
+      - test-gtm # Run only on your test branch
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Inject GTM Snippets (Exact Matching)
+        run: |
+          # 1. Define your exact Head script
+          GTM_HEAD='<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"\''gtm.start"\'' :new Date().getTime(),event:"\''gtm.js"\''});var f=d.getElementsByTagName(s),j=d.createElement(s),dl=l!="\''dataLayer"\''?"\''&l="\''+l:"\''"\'' ;j.async=true;j.src="\''https://googletagmanager.com"\''+i+dl;f.parentNode.insertBefore(j,f);})(window,document,"\''script"\'' ,"\''dataLayer"\'' ,"\''GTM-TS6V32CR"\'' );</script><!-- End Google Tag Manager -->'
+          
+          # 2. Define your exact Body noscript iframe
+          GTM_BODY='<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TS6V32CR" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->'
+          
+          # 3. Inject Head snippet right after the opening <head> tag
+          find . -name "*.html" -type f -exec sed -i "s|<head>|<head>${GTM_HEAD}|g" {} +
+          
+          # 4. Inject Body snippet right after any body tag (handles regular <body> and <body class...>)
+          find . -name "*.html" -type f -exec sed -E -i "s|(<body[^>]*>)|\1${GTM_BODY}|g" {} +
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
