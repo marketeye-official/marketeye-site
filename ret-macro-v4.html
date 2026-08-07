@@ -172,13 +172,15 @@
   header.hero{
     position:relative;
     padding:76px 0 60px;
-    min-height:620px;
     display:flex;
     align-items:center;
     text-align:center;
     overflow:hidden;
   }
   header.hero > .wrap{width:100%;}
+  @media (min-width:901px){
+    header.hero{min-height:620px;}
+  }
   .hero-logo{width:108px; height:96px; object-fit:contain; margin:0 auto 18px;}
   .hero-brand{font-family:'Orbitron', sans-serif; font-size:34px; font-weight:800; margin-bottom:4px;}
   .tagline{
