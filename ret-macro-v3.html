@@ -134,7 +134,7 @@
   header.hero{
     position:relative;
     padding:76px 0 60px;
-    min-height:480px;
+    min-height:620px;
     display:flex;
     align-items:center;
     text-align:center;
@@ -226,10 +226,11 @@
   }
   .hero-copy .headline{
     text-align:left;
-    font-size:2.2rem;
-    line-height:1.04;
+    font-size:2rem;
+    line-height:1.12;
     letter-spacing:-0.01em;
   }
+  @media (max-width:480px){ .hero-copy .headline{font-size:1.65rem;} }
   .hero-copy .sub{
     text-align:left;
     margin:22px 0 30px;
@@ -266,9 +267,9 @@
   .app-card__body{padding:24px 22px 22px;}
   .app-runway-label{font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); margin-bottom:20px;}
   .app-track{position:relative; height:10px; border-radius:999px; background:rgba(255,255,255,0.08);}
-  .app-fill{position:absolute; left:0; top:0; bottom:0; width:48%; border-radius:999px; background:linear-gradient(90deg, var(--blue), var(--indigo));}
+  .app-fill{position:absolute; left:0; top:0; bottom:0; width:20%; border-radius:999px; background:linear-gradient(90deg, var(--blue), var(--indigo));}
   .app-chip{
-    position:absolute; left:48%; top:-7px; transform:translateX(-50%);
+    position:absolute; left:20%; top:-7px; transform:translateX(-50%);
     background:var(--blue); color:var(--navy);
     font-family:'Exo 2', sans-serif; font-weight:800; font-size:12px;
     padding:4px 10px; border-radius:999px; white-space:nowrap;
@@ -377,22 +378,22 @@
     position:relative;
     height:10px;
     border-radius:999px;
-    background:rgba(255,255,255,0.08);
+    background:linear-gradient(90deg, #ff6b6b 0%, #ffb86b 38%, #65CEF6 68%, #34d399 100%);
     overflow:hidden;
   }
   .runway-fill{
     position:absolute; left:0; top:0; bottom:0;
     width:0%;
-    background:linear-gradient(90deg, var(--blue), var(--indigo));
+    background:#ffb86b;
     border-radius:999px;
-    transition:width .2s ease;
+    transition:width .2s ease, background .2s ease;
   }
   .runway-chip{
     position:absolute; left:0; top:-4px;
     transform:translateX(-50%);
-    transition:left .2s ease;
+    transition:left .2s ease, background .2s ease;
     white-space:nowrap;
-    background:var(--blue);
+    background:#ffb86b;
     color:var(--navy);
     font-family:'Exo 2'; font-weight:800; font-size:13px;
     padding:5px 12px;
@@ -1007,18 +1008,17 @@
         <div class="app-card__bar">
           <span class="app-dot"></span><span class="app-dot"></span><span class="app-dot"></span>
           <span class="app-title">MarketEye · Retirement Runway</span>
-          <span class="app-tag">Example</span>
         </div>
         <div class="app-card__body">
           <div class="app-runway-label">How long a nest egg could last</div>
           <div class="app-track">
             <div class="app-fill"></div>
-            <span class="app-chip">AGE 84</span>
+            <span class="app-chip">Age 73</span>
           </div>
           <div class="app-ticks"><span>65</span><span>75</span><span>85</span><span>95</span><span>105+</span></div>
           <div class="app-stats">
             <div class="app-stat"><div class="app-stat__num">$4,180/mo</div><div class="app-stat__lbl">Illustrative income</div></div>
-            <div class="app-stat"><div class="app-stat__num">$1.02M</div><div class="app-stat__lbl">Example nest egg</div></div>
+            <div class="app-stat"><div class="app-stat__num">$1.02M</div><div class="app-stat__lbl">Illustrative nest egg</div></div>
           </div>
           <div class="app-hint">Try the live calculator ↓</div>
         </div>
@@ -1538,14 +1538,31 @@
         ? 'an illustrative spending level of ' + fmt(BENCHMARK_MONTHLY_TODAY) + '/mo (today\u2019s dollars)'
         : 'the withdrawal these assumptions produce';
 
+      // Dynamic color: red/orange (short runway) -> orange -> green (full runway).
+      // Calibrated so the DEFAULT inputs (fillPct 20%) render orange, matching the
+      // static hero-card illustration; adjusting toward a longer runway shifts
+      // toward green, a shorter one shifts toward red.
+      function runwayColor(pct){
+        function hexToRgb(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
+        function toHex(v){v=Math.round(Math.max(0,Math.min(255,v)));var s=v.toString(16);return s.length<2?'0'+s:s;}
+        function mix(c1,c2,t){var a=hexToRgb(c1),b=hexToRgb(c2);return '#'+toHex(a[0]+(b[0]-a[0])*t)+toHex(a[1]+(b[1]-a[1])*t)+toHex(a[2]+(b[2]-a[2])*t);}
+        if (pct <= 20) return mix('#ff6b6b', '#ffb86b', pct / 20);
+        return mix('#ffb86b', '#34d399', (pct - 20) / 80);
+      }
+
       if (monthCount >= capMonths) {
         runwayFill.style.width = '100%';
+        runwayFill.style.background = '#34d399';
+        runwayChip.style.background = '#34d399';
         runwayChip.textContent = capAge + '+';
         outRunwayAge.textContent = capAge + '+';
         outRunwayAge.classList.add('ok');
         runwayMsg.textContent = 'At ' + spendLabel + ', a nest egg like this could support spending well beyond a typical 30-year retirement.';
       } else {
         runwayFill.style.width = fillPct + '%';
+        var runwayHue = runwayColor(fillPct);
+        runwayFill.style.background = runwayHue;
+        runwayChip.style.background = runwayHue;
         var roundedDepletionAge = Math.max(retireAge, Math.floor(depletionAge));
         runwayChip.textContent = roundedDepletionAge;
         outRunwayAge.classList.remove('ok');
