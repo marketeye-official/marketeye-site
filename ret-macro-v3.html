@@ -25,6 +25,15 @@
     --amber: #ffb86b; /* accent for "today's spending power" stat tile */
     --radius: 18px;
     --maxw: 1180px;
+    /* --- added for the new calculator module --- */
+    --navy-raise: #123067;
+    --ink-soft: #c9dbf5;
+    --ink-mute: #a8c0e0;
+    --line-strong: rgba(255,255,255,0.20);
+    --pos: #4ade80;
+    --neg: #fb7185;
+    --warn: #fbbf24;
+    --grad: linear-gradient(95deg, var(--blue) 0%, var(--indigo) 100%);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth; overflow-x:hidden; max-width:100%;}
@@ -267,11 +276,11 @@
   }
   .app-card__body{padding:24px 22px 22px;}
   .app-runway-label{font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); margin-bottom:20px;}
-  .app-track{position:relative; height:10px; border-radius:999px; background:rgba(255,255,255,0.08);}
-  .app-fill{position:absolute; left:0; top:0; bottom:0; width:20%; border-radius:999px; background:linear-gradient(90deg, var(--blue), var(--indigo));}
+  .app-track{position:relative; height:10px; border-radius:999px; background:linear-gradient(90deg, #ff6b6b 0%, #ffb86b 38%, #65CEF6 68%, #34d399 100%);}
+  .app-fill{position:absolute; left:20%; top:-4px; bottom:-4px; width:3px; border-radius:999px; background:#ffb86b; box-shadow:0 0 8px rgba(255,184,107,0.7);}
   .app-chip{
     position:absolute; left:20%; top:-7px; transform:translateX(-50%);
-    background:var(--blue); color:var(--navy);
+    background:#ffb86b; color:var(--navy);
     font-family:'Exo 2', sans-serif; font-weight:800; font-size:12px;
     padding:4px 10px; border-radius:999px; white-space:nowrap;
   }
@@ -950,6 +959,318 @@
   @media (max-width: 640px){
     header.hero{padding:56px 0 44px;}
   }
+
+
+  /* ===================================================================
+     New calculator module (2026-08-08 export), scoped entirely under
+     #calculator so it cannot collide with shared classes (.stat-tile,
+     .moves, etc.) reused elsewhere on the page. Old calculator CSS left
+     in place above as inert dead code -- it no longer matches any
+     element once the HTML below is replaced.
+     =================================================================== */
+#calculator .section-eyebrow{
+  font-family:var(--head);font-weight:700;font-size:.875rem;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:.5rem;
+}
+#calculator .calc{position:relative;padding-block:1.25rem 4rem;}
+#calculator .calc-card{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:1.5rem;
+  padding:.5rem;
+  box-shadow:0 1.875rem 4.375rem -1.875rem rgba(0,0,0,.6);
+  display:flex;flex-direction:column;
+}
+#calculator .calc-card-head{padding:1.125rem 1rem .75rem;text-align:center;order:1;}
+#calculator .calc-card-head h2{font-size:1.3125rem;font-weight:800;}
+#calculator .calc-card-head p{color:var(--ink-soft);font-size:1rem;margin-top:.5rem;}
+#calculator .runway-panel{
+  margin:1.125rem .875rem;                 
+  border:1px solid var(--line);
+  border-radius:1.125rem;
+  padding:1.25rem .875rem;
+  text-align:center;
+  background:rgba(255,255,255,.03);
+}
+#calculator .runway-panel-label{
+  font-size:1rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-mute);margin-bottom:1.125rem;
+}
+#calculator .runway-track-wrap{position:relative;padding-top:.875rem;margin-bottom:1rem;}
+#calculator .runway-track{
+  position:relative;height:.625rem;border-radius:999px;
+  background:rgba(255,255,255,.08);overflow:hidden;
+}
+#calculator .runway-track{container-type:inline-size;}
+#calculator .runway-fill{
+  position:absolute;inset-block:0;inset-inline-start:0;width:0%;
+  border-radius:999px;transition:width .2s ease;overflow:hidden;
+}
+#calculator .runway-fill::before{
+  content:"";position:absolute;inset-block:0;inset-inline-start:0;
+  width:100cqw;min-width:20rem;
+  background:linear-gradient(90deg,#FF6666 0%,#FF9147 25%,#FFC93C 50%,#A8E05F 75%,#2EE6A6 100%);
+}
+@supports not (width:100cqw){
+#calculator .runway-fill{background:linear-gradient(90deg,#FF6666,#FFC93C,#2EE6A6);}
+#calculator .runway-fill::before{display:none;}
+}
+#calculator .runway-chip{
+  position:absolute;inset-inline-start:0;top:-.25rem;
+  transform:translateX(-50%);transition:left .2s ease;
+  white-space:nowrap;background:var(--blue);color:var(--navy);
+  font-family:var(--head);font-weight:800;font-size:1rem;
+  padding:.25rem .75rem;border-radius:999px;
+}
+#calculator .runway-ticks{
+  display:flex;justify-content:space-between;margin-top:.625rem;
+  font-size:1rem;color:var(--ink-mute);font-variant-numeric:tabular-nums;
+}
+#calculator .runway-panel{--runway-t:0;--runway-col:#FF6666;}
+#calculator .runway-age{
+  font-family:var(--head);font-size:2.5rem;font-weight:900;
+  margin:.625rem 0 .75rem;line-height:1;letter-spacing:-.02em;
+  color:var(--runway-col);
+  text-shadow:0 0 1.625rem color-mix(in srgb,var(--runway-col) 55%,transparent),
+              0 0 4rem color-mix(in srgb,var(--runway-col) 22%,transparent);
+  transition:color .25s ease,text-shadow .25s ease;
+}
+#calculator .runway-age.ok{--runway-col:var(--pos);}
+#calculator .runway-msg{font-size:1rem;color:var(--ink-soft);line-height:1.6;max-width:30rem;margin-inline:auto;}
+#calculator .runway-callout{
+  display:none;margin-top:1.125rem;text-align:start;gap:.625rem;
+  padding:1rem 1.125rem;border:1px solid var(--line);
+  border-inline-start:.1875rem solid var(--blue);
+  background:rgba(101,206,246,.12);border-radius:.875rem;
+  font-size:1rem;color:#e8eefc;line-height:1.6;
+}
+#calculator .runway-callout.show{display:flex;}
+#calculator .runway-callout .warn-icon{flex:0 0 auto;color:var(--blue);font-weight:800;font-size:1rem;}
+#calculator .runway-callout b{color:var(--warn);}
+#calculator .calc-body{display:contents;}
+#calculator .calc-inputs{order:2;margin:.625rem .875rem 0;}
+#calculator .runway-panel{order:3;}
+#calculator .calc-results{order:4;margin:0 .875rem 1.25rem;}
+#calculator .calc-inputs{
+  background:#03102b;border:1px solid var(--line);
+  border-radius:1.125rem;padding:1.25rem 1rem;min-width:0;
+}
+#calculator .field{margin-bottom:1.375rem;min-width:0;}
+#calculator .field-accent{
+  padding:.875rem 1rem 1rem;
+  margin-block:.25rem 0;
+  background:rgba(101,206,246,.07);
+  border-radius:.75rem;
+  box-shadow:0 0 0 1px rgba(101,206,246,.32), 0 0 1.5rem rgba(101,206,246,.10);
+}
+#calculator .field-note{
+  font-size:1rem;line-height:1.45;color:var(--ink-mute);
+  margin:.5rem 0 0;
+}
+#calculator .field-note a{color:var(--ink-soft);text-decoration:underline;}
+#calculator .field-tag{
+  font-size:1rem;
+  line-height:1.45;
+  color:var(--blue);
+  margin:-.125rem 0 .625rem;
+}
+#calculator .field:last-child{margin-bottom:0;}
+#calculator .field-label{
+  display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;
+  font-size:1rem;font-weight:600;color:#e8eefc;margin-bottom:.625rem;
+}
+#calculator .field-val{
+  font-family:var(--head);font-weight:800;color:var(--blue);font-size:1.0625rem;
+  flex:0 0 auto;min-width:4.5ch;text-align:end;
+  font-variant-numeric:tabular-nums;
+}
+#calculator .field-label > span:first-child{min-width:0;}
+#calculator .field-note{font-size:1rem;color:var(--ink-mute);margin-top:.5rem;line-height:1.55;}
+#calculator .field-number .field-label{margin-bottom:.5rem;}
+#calculator .num-wrap{position:relative;}
+#calculator .num-prefix{
+  position:absolute;inset-inline-start:.875rem;top:50%;transform:translateY(-50%);
+  color:var(--ink-mute);font-family:var(--head);font-weight:700;font-size:1.0625rem;
+  pointer-events:none;
+}
+#calculator .num-wrap input.numfield{padding-inline-start:1.625rem;}
+#calculator input.numfield{
+  width:100%;min-height:2.75rem;
+  background:#03102b;border:1px solid var(--line);color:var(--white);
+  font-family:var(--head);font-weight:700;font-size:1.0625rem;
+  padding:.75rem .875rem;border-radius:.625rem;outline:none;
+  font-variant-numeric:tabular-nums;
+}
+#calculator input.numfield:focus{border-color:var(--blue);}
+#calculator input.slider{
+  -webkit-appearance:none;appearance:none;display:block;
+  width:100%;height:2.75rem;margin:0;padding:0;
+  background:transparent;outline:none;cursor:pointer;
+}
+#calculator input.slider::-webkit-slider-runnable-track{height:.375rem;border-radius:999px;background:var(--grad);}
+#calculator input.slider::-moz-range-track{height:.375rem;border-radius:999px;background:var(--grad);}
+#calculator input.slider::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:1.25rem;height:1.25rem;border-radius:50%;
+  background:var(--white);border:.1875rem solid var(--blue);cursor:pointer;
+  box-shadow:0 .125rem .5rem rgba(0,0,0,.4);
+  margin-top:-.4375rem;
+}
+#calculator input.slider::-moz-range-thumb{
+  width:1.25rem;height:1.25rem;border-radius:50%;
+  background:var(--white);border:.1875rem solid var(--blue);cursor:pointer;
+  box-shadow:0 .125rem .5rem rgba(0,0,0,.4);
+}
+#calculator .calc-results{display:flex;flex-direction:column;gap:1rem;min-width:0;}
+#calculator .calc-results > *{min-width:0;}
+#calculator .results-heading{
+  font-size:1rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-mute);
+}
+#calculator .stat-grid-2x2{display:grid;grid-template-columns:1fr;gap:.875rem;}
+#calculator .stat-grid-2x2 > *{min-width:0;}
+#calculator .stat-tile{
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:1rem;padding:1.25rem 1rem;text-align:center;
+}
+#calculator .stat-tile-num{
+  font-family:var(--head);font-size:clamp(1.125rem,5.4vw,1.5rem);
+  font-weight:800;margin-bottom:.375rem;overflow-wrap:anywhere;
+}
+#calculator .stat-tile-label{font-size:1rem;color:var(--ink-soft);}
+#calculator .income-flow-tile{
+  grid-column:1 / -1;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:1rem;padding:1.25rem .875rem 1rem;
+  transition:background .2s ease,border-color .2s ease;
+}
+#calculator .income-flow-tile:hover{border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.05);}
+#calculator .if-grid{display:grid;grid-template-columns:1fr;gap:.25rem;text-align:center;}
+#calculator .if-grid > *{min-width:0;}
+#calculator .if-num{
+  font-family:var(--head);font-size:clamp(1.125rem,5.4vw,1.5rem);
+  font-weight:800;overflow-wrap:anywhere;color:var(--indigo);
+}
+#calculator .if-num.if-b{color:var(--warn);}
+#calculator .if-num.if-b.warn{color:var(--neg);}
+#calculator .if-lab{font-size:1rem;color:var(--ink-soft);margin-bottom:.25rem;}
+#calculator .if-lab-b{margin-bottom:0;}
+#calculator .if-chev{
+  width:2rem;height:2rem;display:block;cursor:pointer;
+  rotate:90deg;margin:-.125rem auto 0;
+  transition:filter .2s ease;transform-origin:center;
+}
+#calculator .if-chev:hover, #calculator .if-chev:focus{filter:brightness(1.3);outline:none;}
+@keyframes chevron-alert-pulse{
+#calculator 0%{transform:translateX(0) scale(1);opacity:1;}
+#calculator 50%{transform:translateX(.625rem) scale(1.14);opacity:.7;}
+#calculator 100%{transform:translateX(0) scale(1);opacity:1;}
+}
+#calculator .tile-amber{border-color:rgba(251,191,36,.3);}
+#calculator .tile-amber .stat-tile-num{color:var(--warn);}
+#calculator .tile-amber.warn{border-color:rgba(251,113,133,.4);background:rgba(251,113,133,.08);}
+#calculator .tile-amber.warn .stat-tile-num{color:var(--neg);}
+#calculator .tile-green .stat-tile-num{color:var(--pos);}
+#calculator .tile-red .stat-tile-num{color:var(--blue);font-size:clamp(1rem,4.8vw,1.375rem);}
+#calculator .stat-tile-warn{font-size:1rem;color:var(--neg);margin-top:.5rem;line-height:1.5;}
+#calculator .income-flow-tile .stat-tile-warn{text-align:center;color:var(--ink-mute);margin-top:.5rem;}
+#calculator .gap-meter{
+  grid-column:1 / -1;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:1rem;padding:1.25rem 1rem 1.375rem;
+}
+#calculator .gap-meter-label{
+  font-size:1rem;color:var(--ink-mute);text-align:center;
+  margin-bottom:1rem;line-height:1.45;
+}
+#calculator .gap-figures{
+  display:grid;grid-template-columns:1fr;gap:.75rem;
+  align-items:end;margin-bottom:.875rem;
+}
+#calculator .gap-figure{text-align:center;min-width:0;}
+#calculator .gap-figure-num{
+  font-family:var(--head);font-size:clamp(1.125rem,5.4vw,1.5rem);
+  font-weight:800;overflow-wrap:anywhere;line-height:1.15;margin-bottom:.25rem;
+}
+#calculator .gap-figure-have .gap-figure-num{color:var(--pos);}
+#calculator .gap-figure-need .gap-figure-num{color:var(--blue);}
+#calculator .gap-meter.met .gap-figure-need .gap-figure-num{color:var(--pos);}
+#calculator .gap-figure-lab{font-size:.9375rem;color:var(--ink-soft);line-height:1.35;}
+#calculator .gap-track{
+  position:relative;height:1.875rem;border-radius:.625rem;overflow:hidden;
+  background:repeating-linear-gradient(135deg,rgba(255,102,102,.22) 0 .5rem,rgba(255,102,102,.10) .5rem 1rem);
+  border:1px solid rgba(255,102,102,.35);
+}
+#calculator .gap-fill{
+  position:absolute;inset-block:0;inset-inline-start:0;width:0%;
+  background:linear-gradient(90deg,#2EE6A6,#A8E05F);
+  border-radius:.5rem 0 0 .5rem;
+  transition:width .3s ease, background .3s ease;
+}
+#calculator .gap-meter.met .gap-fill{border-radius:.5rem;}
+#calculator .gap-verdict{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;
+  gap:.4375rem;margin-top:.875rem;text-align:center;line-height:1.35;
+}
+#calculator .gap-verdict-num{
+  font-family:var(--head);font-weight:800;
+  font-size:clamp(1.25rem,5.6vw,1.625rem);color:#FF6666;
+}
+#calculator .gap-verdict-lab{font-size:1rem;color:var(--ink-soft);}
+#calculator .gap-meter.met .gap-verdict-num{color:#2EE6A6;}
+#calculator .moves{
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:.875rem;padding:1.125rem 1.25rem;
+}
+#calculator .moves-label{font-size:1rem;font-weight:700;color:var(--blue);margin-bottom:.625rem;}
+#calculator .move-line{font-size:1rem;color:#e8eefc;line-height:1.6;margin-bottom:.25rem;}
+#calculator .move-line:last-child{margin-bottom:0;}
+#calculator .calc-disclaimer{
+  order:5;margin:0 .875rem 1.125rem;
+  font-size:1rem;line-height:1.5;color:var(--ink-mute);text-align:center;
+}
+#calculator .calc-disclaimer a{color:var(--ink-soft);text-decoration:underline;}
+@media (min-width:35rem){
+#calculator .calc-card-head{padding:1.375rem 1.625rem .875rem;}
+#calculator .calc-card-head h2{font-size:1.625rem;}
+#calculator .runway-panel{margin:0 1.625rem 1.375rem;padding:1.625rem 1.5rem;}
+#calculator .runway-age{font-size:3.375rem;}
+#calculator .calc-body{padding:.625rem 1.625rem 1.5rem;gap:1.75rem;}
+#calculator .calc-inputs{padding:1.625rem 1.5rem;}
+#calculator .calc-disclaimer{margin:.25rem 1.625rem 1.375rem;padding:.875rem 1.125rem;}
+#calculator .stat-grid-2x2{grid-template-columns:1fr 1fr;}
+#calculator .if-grid{
+    grid-template-columns:1fr 5rem 1fr;
+    grid-template-areas:"a chev b" "alab chev blab";
+    align-items:center;column-gap:0;row-gap:.375rem;
+  }
+#calculator .if-a{grid-area:a;}
+#calculator .if-lab-a{grid-area:alab;margin-bottom:0;}
+#calculator .if-b{grid-area:b;}
+#calculator .if-lab-b{grid-area:blab;}
+#calculator .if-chev{
+    grid-area:chev;width:100%;height:2.25rem;rotate:none;margin:0;
+    align-self:center;
+    animation:chevron-alert-pulse 1s ease-in-out infinite;
+  }
+#calculator .stat-tile-num{font-size:1.625rem;}
+#calculator .tile-red .stat-tile-num{font-size:1.375rem;}
+#calculator .gap-meter{padding:1.5rem 1.5rem 1.625rem;}
+#calculator .gap-figures{grid-template-columns:1fr 1fr;gap:1rem;}
+#calculator .gap-figure-num{font-size:1.625rem;}
+#calculator .gap-track{height:2.125rem;}
+#calculator .gap-verdict-num{font-size:1.75rem;}
+}
+@media (min-width:53.75rem){
+#calculator .calc-body{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;padding:.625rem 1.625rem 1.5rem;order:2;}
+#calculator .calc-inputs{margin:0;}
+#calculator .calc-results{margin:0;}
+#calculator .runway-panel{order:3;margin:0 1.625rem 1.375rem;}
+}
+@media (prefers-reduced-motion:reduce){
+#calculator .if-chev{animation:none;}
+}
 </style>
 </head>
 <body>
@@ -1077,7 +1398,7 @@
       <div class="calc-card-head">
         <div class="section-eyebrow">Retirement &amp; the macro picture</div>
         <h2>How rising prices can shrink retirement savings over time</h2>
-        <p>This free retirement calculator shows how rising prices — what economists call inflation — can quietly reduce what savings are worth over the years. It runs on example numbers, so it's a teaching tool, not an assessment of anyone's situation. Change the numbers and watch what moves; learning to read forces like these is exactly the kind of framework the community teaches beginners.</p>
+        <p>Rising prices quietly shrink what savings are worth. Change the numbers and watch what moves.</p>
       </div>
 
       <div class="runway-panel">
@@ -1092,7 +1413,7 @@
         </div>
 
         <div class="runway-age" id="outRunwayAge">AGE —</div>
-        <div class="runway-msg" id="runwayMsg">Adjust the assumptions to see how long a hypothetical nest egg could support retirement spending.</div>
+        <div class="runway-msg" id="runwayMsg">Adjust the numbers to see how long savings could last.</div>
 
         <div class="runway-callout" id="runwayCallout">
           <span class="warn-icon">ℹ</span>
@@ -1104,7 +1425,7 @@
         <div class="calc-inputs">
 
           <div class="field field-number">
-            <label class="field-label" for="inAge"><span>Starting age (illustrative)</span></label>
+            <label class="field-label" for="inAge"><span>Current age</span></label>
             <input type="number" min="18" max="85" value="45" id="inAge" class="numfield" inputmode="numeric">
           </div>
 
@@ -1114,7 +1435,7 @@
           </div>
 
           <div class="field field-number">
-            <label class="field-label" for="inPortfolio"><span>A hypothetical starting amount</span></label>
+            <label class="field-label" for="inPortfolio"><span>Current portfolio</span></label>
             <div class="num-wrap">
               <span class="num-prefix">$</span>
               <input type="text" value="100,000" id="inPortfolio" class="numfield" inputmode="numeric" autocomplete="off">
@@ -1122,28 +1443,26 @@
           </div>
 
           <div class="field">
-            <div class="field-label"><span>Monthly contribution (hypothetical)</span><span class="field-val" id="valContribution">$500</span></div>
+            <div class="field-label"><span>Monthly contribution</span><span class="field-val" id="valContribution">$500</span></div>
             <input type="range" min="0" max="5000" step="50" value="500" id="inContribution" class="slider">
           </div>
 
           <div class="field">
-            <div class="field-label"><span>Assumed annual return</span><span class="field-val" id="valRate">7%</span></div>
-            <input type="range" min="2" max="12" step="0.5" value="7" id="inRate" class="slider">
-            <div class="field-note">Illustrative only — not a projection or promise of actual market returns.</div>
-          </div>
-
-          <div class="field">
-            <div class="field-label"><span>Assumed inflation rate</span><span class="field-val" id="valInflation">3%</span></div>
+            <div class="field-label"><span>Inflation rate</span><span class="field-val" id="valInflation">3%</span></div>
             <input type="range" min="0" max="8" step="0.5" value="3" id="inInflation" class="slider">
-            <div class="field-note">Affects what a fixed future income is really worth in today's dollars.</div>
+            <p class="field-note">Historical US annual inflation rate is 3.28%.</p>
           </div>
 
           <div class="field">
-            <div class="field-label"><span>Assumed withdrawal rate</span><span class="field-val" id="valWithdraw">4%</span></div>
+            <div class="field-label"><span>Annual withdrawal rate</span><span class="field-val" id="valWithdraw">4%</span></div>
             <input type="range" min="2" max="8" step="0.5" value="4" id="inWithdraw" class="slider">
-            <div class="field-note">The share of the nest egg withdrawn in year one of retirement, adjusted upward each year for inflation. Higher = more income now, but a greater chance the money runs out earlier.</div>
           </div>
 
+          <div class="field field-accent">
+            <div class="field-label"><span>Annual return</span><span class="field-val" id="valRate">7%</span></div>
+            <div class="field-tag">Everyone types 7%. Almost nobody knows why.</div>
+            <input type="range" min="2" max="12" step="0.5" value="7" id="inRate" class="slider">
+          </div>
         </div>
 
         <div class="calc-results">
@@ -1151,29 +1470,37 @@
 
           <div class="stat-grid-2x2">
             <div class="income-flow-tile">
-              <div class="income-flow-row">
-                <div class="income-flow-col">
-                  <div class="stat-tile-num" id="outIncomeNominal">$0</div>
-                  <div class="stat-tile-label">Monthly income</div>
-                </div>
-                <svg class="income-chevron-svg" tabindex="0" viewBox="0 0 100 60" title="Inflation eats into monthly income — this shows how much real spending power is lost by retirement.">
+              <div class="if-grid">
+                <div class="if-num if-a" id="outIncomeNominal">$0</div>
+                <div class="if-lab if-lab-a">Monthly income at retirement</div>
+                <svg class="if-chev income-chevron-svg" tabindex="0" viewBox="0 0 100 60" title="Inflation erodes what a fixed monthly income buys — this is how much is lost by the retirement year.">
                   <polygon points="10,10 35,30 10,50 20,50 45,30 20,10" fill="#ff6b6b" opacity="0.5"/>
                   <polygon points="35,10 60,30 35,50 45,50 70,30 45,10" fill="#ff3b3b"/>
                 </svg>
-                <div class="income-flow-col tile-amber" id="tileSpendingPower">
-                  <div class="stat-tile-num" id="outIncomeReal">$0</div>
-                  <div class="stat-tile-label">Today's spending power</div>
-                  <div class="stat-tile-warn" id="spendingPowerWarn"></div>
+                <div class="if-num if-b tile-amber" id="tileSpendingPower"><span id="outIncomeReal">$0</span></div>
+                <div class="if-lab if-lab-b">What it buys in today's dollars</div>
+              </div>
+              <div class="stat-tile-warn" id="spendingPowerWarn"></div>
+            </div>
+            <div class="gap-meter" id="gapMeter">
+              <div class="gap-meter-label" id="gapMeterLabel">Target coverage — nest egg vs. what's needed to age 79</div>
+              <div class="gap-figures">
+                <div class="gap-figure gap-figure-have">
+                  <div class="gap-figure-num" id="gapHave">$0</div>
+                  <div class="gap-figure-lab">Nest egg at retirement</div>
+                </div>
+                <div class="gap-figure gap-figure-need">
+                  <div class="gap-figure-num" id="gapNeed">$0</div>
+                  <div class="gap-figure-lab" id="gapNeedLabel">Needed to age 79</div>
                 </div>
               </div>
-            </div>
-            <div class="stat-tile tile-green">
-              <div class="stat-tile-num" id="outNestEgg">$0</div>
-              <div class="stat-tile-label">Nest egg at retirement</div>
-            </div>
-            <div class="stat-tile tile-red" id="tileLastsUntil">
-              <div class="stat-tile-num" id="outLastsUntil">AGE —</div>
-              <div class="stat-tile-label">Money lasts until</div>
+              <div class="gap-track">
+                <div class="gap-fill" id="gapFill"></div>
+              </div>
+              <div class="gap-verdict" id="gapVerdictWrap">
+                <span class="gap-verdict-num" id="gapShort">$0</span>
+                <span class="gap-verdict-lab" id="gapShortLabel">short of target</span>
+              </div>
             </div>
           </div>
 
@@ -1185,10 +1512,7 @@
         </div>
       </div>
 
-      <div class="calc-disclaimer">
-        This calculator is a general illustration, not a personalized calculation or an assessment of any individual's financial situation. The figures are hypothetical illustrations based only on the assumptions selected above; they are not a projection, prediction, or guarantee of any financial outcome, do not reflect actual trading or market performance, and are not financial advice. Inflation and returns are variable and unpredictable.
-      </div>
-    </div>
+      <div class="calc-disclaimer">Illustration only — not advice or a projection. <a href="#disclaimer">Full disclaimer</a>.</div>
 
     <div class="section-cta">
       <a href="https://www.skool.com/marketeye-8941/about" target="_blank" rel="noopener" class="btn-primary mkt-lp-cta lp-community-cta">
@@ -1493,7 +1817,12 @@
     }
   }
 
-  // ---------- Retirement illustration (impersonal / hypothetical) ----------
+/* Retirement runway illustration — RESTORED VERBATIM from RET-MACRO v3.
+   Reverted 2026-08-07: an earlier draft replaced the benchmark spending figure
+   with a slider and dropped the withdrawal-rate input, the nominal-vs-real
+   income comparison, and the max() floor in the runway simulation. That was an
+   unrequested change to a model with deliberate logic behind it. This is the
+   original, unmodified. */
   (function(){
     var inAge = document.getElementById('inAge');
     var inRetireAge = document.getElementById('inRetireAge');
@@ -1520,8 +1849,14 @@
     var outIncomeReal = document.getElementById('outIncomeReal');
     var tileSpendingPower = document.getElementById('tileSpendingPower');
     var spendingPowerWarn = document.getElementById('spendingPowerWarn');
-    var outNestEgg = document.getElementById('outNestEgg');
-    var outLastsUntil = document.getElementById('outLastsUntil');
+    var gapNeed = document.getElementById('gapNeed');
+    var gapNeedLabel = document.getElementById('gapNeedLabel');
+    var gapMeterLabel = document.getElementById('gapMeterLabel');
+    var gapMeter = document.getElementById('gapMeter');
+    var gapFill = document.getElementById('gapFill');
+    var gapHave = document.getElementById('gapHave');
+    var gapShort = document.getElementById('gapShort');
+    var gapShortLabel = document.getElementById('gapShortLabel');
 
     var moveContribution = document.getElementById('moveContribution');
     var moveTimeline = document.getElementById('moveTimeline');
@@ -1530,6 +1865,9 @@
     // illustrative spending level for the runway simulation — never as an assertion
     // about any individual viewer's finances.
     var BENCHMARK_MONTHLY_TODAY = 4281;
+    // Average U.S. life expectancy at birth, CDC/NCHS. Used as the horizon for
+    // the "needed to retire and live to" figure (added 2026-08-07).
+    var LIFE_EXPECTANCY = 79;
 
     // Neutral explanatory note (no shortfall verdict, no warning styling).
     if (runwayCallout) { runwayCallout.classList.remove('show'); }
@@ -1620,40 +1958,22 @@
       }
       var fillPct = Math.min(100, Math.max(0, (Math.min(runwayYears, timelineSpan) / timelineSpan) * 100));
 
-      var spendLabel = benchmarkDrives
-        ? 'an illustrative spending level of ' + fmt(BENCHMARK_MONTHLY_TODAY) + '/mo (today\u2019s dollars)'
-        : 'the withdrawal these assumptions produce';
-
-      // Dynamic color: red/orange (short runway) -> orange -> green (full runway).
-      // Calibrated so the DEFAULT inputs (fillPct 20%) render orange, matching the
-      // static hero-card illustration; adjusting toward a longer runway shifts
-      // toward green, a shorter one shifts toward red.
-      function runwayColor(pct){
-        function hexToRgb(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
-        function toHex(v){v=Math.round(Math.max(0,Math.min(255,v)));var s=v.toString(16);return s.length<2?'0'+s:s;}
-        function mix(c1,c2,t){var a=hexToRgb(c1),b=hexToRgb(c2);return '#'+toHex(a[0]+(b[0]-a[0])*t)+toHex(a[1]+(b[1]-a[1])*t)+toHex(a[2]+(b[2]-a[2])*t);}
-        if (pct <= 20) return mix('#ff6b6b', '#ffb86b', pct / 20);
-        return mix('#ffb86b', '#34d399', (pct - 20) / 80);
-      }
+      // The spending level driving the runway is explained once, in the assumption
+      // note below, rather than repeated here (changed 2026-08-07).
 
       if (monthCount >= capMonths) {
         runwayFill.style.width = '100%';
-        runwayFill.style.background = '#34d399';
-        runwayChip.style.background = '#34d399';
         runwayChip.textContent = capAge + '+';
         outRunwayAge.textContent = capAge + '+';
         outRunwayAge.classList.add('ok');
-        runwayMsg.textContent = 'At ' + spendLabel + ', a nest egg like this could support spending well beyond a typical 30-year retirement.';
+        runwayMsg.textContent = 'These savings could keep paying past age ' + capAge + ' — beyond the range this illustration covers.';
       } else {
         runwayFill.style.width = fillPct + '%';
-        var runwayHue = runwayColor(fillPct);
-        runwayFill.style.background = runwayHue;
-        runwayChip.style.background = runwayHue;
         var roundedDepletionAge = Math.max(retireAge, Math.floor(depletionAge));
         runwayChip.textContent = roundedDepletionAge;
         outRunwayAge.classList.remove('ok');
         outRunwayAge.textContent = 'AGE ' + roundedDepletionAge;
-        runwayMsg.textContent = 'At ' + spendLabel + ', a nest egg like this could support about ' + Math.max(0, Math.floor(runwayYears)) + ' years of retirement spending — to roughly age ' + roundedDepletionAge + '. Change the assumptions to see how sensitive that is.';
+        runwayMsg.textContent = 'Current projection only lasts about ' + Math.max(0, Math.floor(runwayYears)) + ' years into retirement.';
       }
 
       // Position the marker AFTER its label is set, clamping by its own half-width so
@@ -1672,7 +1992,7 @@
       // verdict about the viewer. Neutral styling, no warning language.
       if (runwayCallout && runwayCalloutText) {
         if (benchmarkDrives) {
-          runwayCalloutText.innerHTML = '<b>Assumption note:</b> average U.S. retiree spending runs about ' + fmt(BENCHMARK_MONTHLY_TODAY) + '/mo in today\u2019s dollars. Because that is higher than the withdrawal these assumptions produce, the runway above is modelled at that spending level — which is why it depletes faster than the withdrawal-rate math alone would suggest.';
+          runwayCalloutText.innerHTML = '<b>Why it empties sooner than the withdrawal rate suggests:</b> the runway is based on ' + fmt(BENCHMARK_MONTHLY_TODAY) + '/mo in today\u2019s dollars \u2014 the average retirement income needed in the US \u2014 not the ' + fmt(monthlyIncomeNominal) + '/mo the inputs produce.';
           runwayCallout.classList.add('show');
         } else {
           runwayCallout.classList.remove('show');
@@ -1682,13 +2002,45 @@
       // ---- 2x2 results grid (neutral) ----
       outIncomeNominal.textContent = fmt(monthlyIncomeNominal) + '/mo';
       outIncomeReal.textContent = fmt(monthlyIncomeReal) + '/mo';
-      outNestEgg.textContent = fmt(Math.max(nestEgg, 0));
-      outLastsUntil.textContent = monthCount >= capMonths ? (capAge + '+') : ('AGE ' + Math.max(retireAge, Math.floor(depletionAge)));
+      /* Capital required at retirement to fund the target spend from retireAge
+         through LIFE_EXPECTANCY: present value of a growing annuity, withdrawals
+         rising with inflation while the balance still earns `rate`. */
+      var yearsToLE = Math.max(0, LIFE_EXPECTANCY - retireAge);
+      var nLE = Math.round(yearsToLE * 12);
+      var rM = r, gM = monthlyInflationRate;   // both already computed above
+      var requiredAtRetirement;
+      if (nLE === 0) {
+        requiredAtRetirement = 0;
+      } else if (Math.abs(rM - gM) < 1e-9) {
+        requiredAtRetirement = benchmarkMonthlyNominal * nLE;
+      } else {
+        requiredAtRetirement = benchmarkMonthlyNominal *
+          (1 - Math.pow((1 + gM) / (1 + rM), nLE)) / (rM - gM);
+      }
+      var shortfall = requiredAtRetirement - nestEgg;
+
+      /* Gap meter: filled portion is the projected nest egg as a share of what's
+         required, the hatched remainder is the shortfall. Now the primary result
+         panel — replaces the pair of stat tiles that carried these two figures
+         separately (2026-08-08). */
+      if (gapMeter) {
+        var covered = requiredAtRetirement > 0
+          ? Math.max(0, Math.min(100, (nestEgg / requiredAtRetirement) * 100))
+          : 100;
+        gapFill.style.width = covered + '%';
+        gapHave.textContent = fmt(Math.max(0, nestEgg));
+        gapNeed.textContent = fmt(Math.max(0, requiredAtRetirement));
+        gapNeedLabel.textContent = 'Needed to age ' + LIFE_EXPECTANCY;
+        gapMeterLabel.textContent = 'Target coverage — nest egg vs. what\u2019s needed from age ' + retireAge + ' to ' + LIFE_EXPECTANCY;
+        gapMeter.classList.toggle('met', shortfall <= 0);
+        gapShort.textContent = fmt(Math.abs(shortfall));
+        gapShortLabel.textContent = shortfall > 0 ? 'short of target' : 'ahead of target';
+      }
 
       // Neutral reference figure — NOT a shortfall verdict about the viewer.
       if (tileSpendingPower) tileSpendingPower.classList.remove('warn');
       if (spendingPowerWarn) {
-        spendingPowerWarn.textContent = 'Benchmark for comparison: ' + fmt(BENCHMARK_MONTHLY_TODAY) + '/mo average U.S. retiree spending (today\u2019s dollars).';
+        spendingPowerWarn.textContent = 'With ' + inflationPct + '% inflation factored in';
       }
 
       // ---- Illustrative contribution / timeline maths, stated impersonally ----
@@ -1702,28 +2054,27 @@
       }
       if (moveContribution) {
         if (!isFinite(requiredC) || requiredC <= contribution) {
-          moveContribution.textContent = 'On these assumptions, a monthly contribution at this level already reaches that benchmark spending by age ' + retireAge + '.';
+          moveContribution.textContent = 'This contribution already builds enough to retire at ' + retireAge + ' and cover the target through age ' + LIFE_EXPECTANCY + '.';
         } else {
-          moveContribution.textContent = 'On these assumptions, reaching that benchmark by age ' + retireAge + ' would take a monthly contribution of about ' + fmt(Math.ceil(requiredC / 10) * 10) + '.';
+          moveContribution.textContent = 'A monthly contribution of about ' + fmt(Math.ceil(requiredC / 10) * 10) + ' would cover the target from age ' + retireAge + ' through ' + LIFE_EXPECTANCY + ' \u2014 the average U.S. life expectancy.';
         }
       }
       if (moveTimeline) {
-        if (nestEgg >= targetNominalAtRetirement) {
-          moveTimeline.textContent = 'Reading forces like these is exactly the kind of framework the free community teaches beginners to think through.';
+        /* Three-branch logic (2026-08-08): the previous single comparison of
+           today's-dollars income vs benchmark could report a "shortage" even
+           when the runway simulation carried the money past the illustration
+           horizon — because return > withdrawal rate lets a small monthly gap
+           be absorbed by growth for a long time. The verdict now defers to the
+           capital-required comparison first, so the two lines tell one story. */
+        var gapToday = BENCHMARK_MONTHLY_TODAY - monthlyIncomeReal;
+        if (shortfall <= 0) {
+          moveTimeline.textContent = gapToday >= 0
+            ? 'Comfortably ahead \u2014 the nest egg meets the target through age ' + LIFE_EXPECTANCY + '.'
+            : 'Comfortably ahead \u2014 about ' + fmt(Math.abs(gapToday)) + '/mo above the target in today\u2019s dollars.';
+        } else if (monthCount >= capMonths) {
+          moveTimeline.textContent = 'A small gap of about ' + fmt(gapToday) + '/mo in today\u2019s dollars \u2014 but the projected returns carry it across the illustration horizon.';
         } else {
-          var neededMonths;
-          if (r === 0) {
-            neededMonths = contribution > 0 ? (targetNominalAtRetirement - portfolio) / contribution : Infinity;
-          } else {
-            var num = targetNominalAtRetirement * r + contribution;
-            var den = portfolio * r + contribution;
-            neededMonths = (den > 0 && num / den > 0) ? Math.log(num / den) / Math.log(1 + r) : Infinity;
-          }
-          if (!isFinite(neededMonths) || neededMonths > 12 * 60) {
-            moveTimeline.textContent = 'At this contribution level, that benchmark falls outside the range this calculator illustrates.';
-          } else {
-            moveTimeline.textContent = 'Holding the contribution steady instead, the same benchmark is reached at about age ' + (age + Math.ceil(neededMonths / 12)) + '.';
-          }
+          moveTimeline.textContent = 'A shortage of about ' + fmt(gapToday) + '/mo in today\u2019s dollars against the target.';
         }
       }
     }
@@ -1745,6 +2096,27 @@
 
     recalc();
   })();
+
+/* Presentational only (added 2026-08-07): reads the runway fill width the model
+   already set and maps it onto the same red -> green scale for the age figure.
+   Attached after the calculator IIFE so it runs second; reads the rendered width
+   and changes no model value. */
+(function(){
+  var panel=document.querySelector('.runway-panel'), fill=document.getElementById('runwayFill');
+  if(!panel||!fill) return;
+  var stops=[[255,102,102],[255,145,71],[255,201,60],[168,224,95],[46,230,166]];
+  function paint(){
+    var t=Math.max(0,Math.min(1,(parseFloat(fill.style.width)||0)/100));
+    var i=Math.min(stops.length-2,Math.floor(t*(stops.length-1)));
+    var f=t*(stops.length-1)-i, a=stops[i], b=stops[i+1];
+    var c=a.map(function(v,k){return Math.round(v+(b[k]-v)*f);});
+    panel.style.setProperty('--runway-t',t);
+    panel.style.setProperty('--runway-col','rgb('+c.join(',')+')');
+  }
+  ['inAge','inRetireAge','inPortfolio','inContribution','inRate','inInflation','inWithdraw']
+    .forEach(function(id){var el=document.getElementById(id); if(el) el.addEventListener('input',paint);});
+  paint();
+})();
 
 
 </script>
