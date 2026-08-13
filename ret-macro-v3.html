@@ -1836,6 +1836,22 @@
   paint();
 })();
 
+/* Calculator engagement — fires once per page view on the first input change.
+   A dataLayer push only; the GTM container itself is injected by hosting. */
+(function(){
+  var fired=false;
+  ['inAge','inRetireAge','inPortfolio','inContribution','inRate','inInflation','inWithdraw']
+    .forEach(function(id){
+      var el=document.getElementById(id);
+      if(!el) return;
+      el.addEventListener('input',function(){
+        if(fired) return;
+        fired=true;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({event:'calc_interact', calc_field:id});
+      });
+    });
+})();
 
 </script>
 
