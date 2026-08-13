@@ -37,6 +37,10 @@
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth; overflow-x:hidden; max-width:100%;}
+  /* Safety net: extend the clip to body so a stray wide result number (e.g. from
+     a very large target retirement age) can't force mobile browsers to zoom out
+     the whole page to fit. */
+  body{overflow-x:hidden;}
   body{
     margin:0;
     background:var(--navy);
@@ -1088,12 +1092,12 @@
 
           <div class="field field-number">
             <label class="field-label" for="inAge"><span>Current age</span></label>
-            <input type="number" min="18" max="85" value="45" id="inAge" class="numfield" inputmode="numeric">
+            <input type="text" value="45" id="inAge" class="numfield" inputmode="numeric" autocomplete="off" maxlength="2">
           </div>
 
           <div class="field field-number">
             <label class="field-label" for="inRetireAge"><span>Target retirement age</span></label>
-            <input type="number" min="19" max="90" value="65" id="inRetireAge" class="numfield" inputmode="numeric">
+            <input type="text" value="65" id="inRetireAge" class="numfield" inputmode="numeric" autocomplete="off" maxlength="2">
           </div>
 
           <div class="field field-number">
@@ -1541,12 +1545,15 @@
     }
 
     function recalc(){
-      var age = Math.max(18, +inAge.value || 18);
-      var retireAge = +inRetireAge.value || (age + 1);
-      if (retireAge <= age) {
-        retireAge = age + 1;
-        inRetireAge.value = retireAge;
-      }
+      /* Clamp for computation only. Do NOT write back to the fields here — that
+         was hijacking keystrokes on mobile (typing "36" produced "3636" because
+         each interim digit was ≤ current age and got snapped to age+1, then the
+         next keystroke appended). Field values are normalized on blur below. */
+      var rawAge = parseInt(String(inAge.value).replace(/[^0-9]/g,''), 10);
+      var age = Math.min(85, Math.max(18, isNaN(rawAge) ? 18 : rawAge));
+      var rawRetire = parseInt(String(inRetireAge.value).replace(/[^0-9]/g,''), 10);
+      var retireAge = isNaN(rawRetire) ? (age + 1) : rawRetire;
+      retireAge = Math.min(90, Math.max(age + 1, retireAge));
       var portfolio = Math.max(0, parseFloat(String(inPortfolio.value).replace(/[^0-9.]/g, '')) || 0);
       var contribution = +inContribution.value;
       var ratePct = +inRate.value;
@@ -1741,6 +1748,54 @@
         }
       }
     }
+
+    /* Age fields: strip non-digits while typing; only normalize (clamp to valid
+       range, snap retire ≥ age+1) when the user commits by leaving the field.
+       Snapping during typing was making it impossible to enter a two-digit
+       target retirement age on mobile — see recalc() comment above. */
+    function stripDigits(el){
+      var cleaned = String(el.value).replace(/[^0-9]/g,'');
+      if (el.value !== cleaned) el.value = cleaned;
+    }
+    /* Select-all on focus so a tap in either age field lets the user type the
+       new value immediately without deleting the old one. Works on desktop
+       (click / tab / touch) and mobile. requestAnimationFrame defers the
+       selection until after iOS Safari places its caret, otherwise the caret
+       overrides the selection on touch focus. */
+    function selectOnFocus(el){
+      el.addEventListener('focus', function(){
+        var self = this;
+        requestAnimationFrame(function(){ try { self.select(); } catch(e){} });
+      });
+      /* iOS fires 'focus' before the touch is fully processed; a second pass
+         on mouseup re-applies the selection and prevents the browser from
+         collapsing it to a caret. */
+      el.addEventListener('mouseup', function(e){ e.preventDefault(); });
+    }
+    selectOnFocus(inAge);
+    selectOnFocus(inRetireAge);
+
+    inAge.addEventListener('input', function(){ stripDigits(this); });
+    inRetireAge.addEventListener('input', function(){ stripDigits(this); });
+    inAge.addEventListener('blur', function(){
+      var v = parseInt(this.value, 10);
+      if (isNaN(v)) v = 18;
+      this.value = Math.min(85, Math.max(18, v));
+      /* If current age now pushes retire age below the age+1 floor, bump it. */
+      var r = parseInt(inRetireAge.value, 10);
+      if (!isNaN(r) && r <= +this.value) {
+        inRetireAge.value = Math.min(90, +this.value + 1);
+      }
+      recalc();
+    });
+    inRetireAge.addEventListener('blur', function(){
+      var v = parseInt(this.value, 10);
+      var a = parseInt(inAge.value, 10);
+      if (isNaN(a)) a = 18;
+      if (isNaN(v)) v = a + 1;
+      this.value = Math.min(90, Math.max(a + 1, v));
+      recalc();
+    });
 
     inPortfolio.addEventListener('input', function(){
       var digits = this.value.replace(/[^0-9]/g, '');
