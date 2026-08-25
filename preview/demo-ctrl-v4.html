@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Take Back Control of Your Time — MarketEye Free Community</title>
+<meta name="description" content="The business was supposed to give you freedom. MarketEye is a free community teaching how markets actually work, from the beginning — twenty lessons across four modules.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MarketEye LP — demo-ctrl-v4
+   Layout: LAY-07 primary — problem hero + credibility service page.
+           This build engages LAY-07 anatomy item 6 (alternating
+           text-image feature blocks), which v3 flattened to centered.
+           LAY-05 donor — concrete-outcomes rail as offer breakdown.
+   Structure: Default (Problem -> Solution -> close; urgency = none)
+   Composition: ALTERNATING SPLITS for the three sections that carry a
+                visual (visual right / left / right), CENTERED for the
+                three list-device sections whose device holds the full
+                container. One rule, statable after a single scroll.
+                Bookends (hero, close) sit outside it — composition §3.
+   Tokens: marketeye-brand-guide-merged.md §2-§4.
+           CTA uses BUTTON GRADIENT variant B (§2, revised 2026-08-23) —
+           v3 shipped the identity gradient behind a white label, whose
+           #00C8FF stop computes at 1.96:1. Corrected here.
+   ============================================================ */
+
+/* ---------- tokens ---------- */
+:root{
+  --navy:#071D49;
+  --navy-deep:#050f28;
+  --panel:#0C2758;             /* lifted surface on navy — white 14.5:1 */
+  --white:#FFFFFF;
+  --ink-2:#C9D8F2;             /* secondary body — 12.43:1 on navy */
+  --ink-3:#8FA6CF;             /* labels / chrome — 6.58:1 on navy, AA not AAA */
+  --cyan:#00C8FF;              /* stat + accent AS INK — 8.36:1 on navy */
+  --blue:#65CEF6;
+  --line:rgba(255,255,255,0.12);
+  --line-2:rgba(255,255,255,0.20);
+  --head:'Exo 2', system-ui, -apple-system, sans-serif;
+  --body:'Barlow', system-ui, -apple-system, sans-serif;
+
+  /* identity gradient — ink and decorative fills only, never behind a label */
+  --grad-id:linear-gradient(135deg, rgb(0,200,255) 0%, rgb(43,114,232) 45%, rgb(80,51,195) 100%);
+  /* button gradient (variant B) — the only gradient allowed under white text */
+  --grad-btn:linear-gradient(135deg, rgb(18,114,184) 0%, rgb(43,114,232) 40%, rgb(80,51,195) 100%);
+
+  /* the two width tokens — workflow-lp-composition.md §2 */
+  --wrap:75rem;                /* page container */
+  --measure:38rem;             /* reading measure — PROSE ONLY */
+}
+
+/* ---------- reset / containment (technical rules 2,3) ---------- */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }   /* root font-size deliberately untouched */
+body{
+  margin:0;
+  background:var(--navy);
+  color:var(--white);
+  font-family:var(--body);
+  font-size:1.125rem;
+  line-height:1.6;
+  overflow-wrap:break-word;
+  word-break:break-word;
+}
+img,svg,video{ max-width:100%; }
+h1,h2,h3,p,ul,ol,figure,blockquote,figcaption{ margin:0; }
+a{ color:inherit; }
+ul,ol{ padding:0; list-style:none; }
+
+/* ---------- containers ---------- */
+.wrap{ max-width:var(--wrap); margin-inline:auto; padding-inline:1.25rem; width:100%; }
+
+/* centered composition — the list-device sections */
+.sec-head{ max-width:44rem; margin-inline:auto; text-align:center; }
+.sec-head > p{ max-width:var(--measure); margin-inline:auto; }
+.sec-head h2 + p{ margin-top:.9rem; }   /* the render had the lead crowding the heading */
+
+/* ---------- vertical rhythm (composition §7) ----------
+   Tuned against the render, not the spec sheet: the first pass ran
+   v3's centered-section scale, which on these much taller split
+   sections produced 208-235px of empty navy between them. Deep still
+   pads more than base at every tier; the ceiling just came down. */
+section{ padding-block:2.5rem; }
+@media (min-width:40rem){ section{ padding-block:3.25rem; } }
+@media (min-width:64rem){ section{ padding-block:3.5rem; } }
+/* pad in proportion to depth — splits and the rail run deeper */
+.sec--deep{ padding-block:3rem; }
+@media (min-width:40rem){ .sec--deep{ padding-block:3.75rem; } }
+@media (min-width:64rem){ .sec--deep{ padding-block:4.25rem; } }
+/* intro->device gap stays visibly smaller than the between-section gap */
+.sec-body{ margin-top:1.75rem; }
+@media (min-width:64rem){ .sec-body{ margin-top:2.25rem; } }
+
+/* ---------- type ---------- */
+h1,h2,h3,.stat__num{ font-family:var(--head); letter-spacing:-.02em; line-height:1.12; }
+/* the render showed "zero", "employee" and "hours" each widowed onto a
+   line of their own. Balance the heading blocks; pretty the prose. */
+h1,h2,h3{ text-wrap:balance; }
+p,figcaption{ text-wrap:pretty; }
+h1{ font-size:clamp(2.6rem, 6.6vw, 3.75rem); font-weight:900; }
+h2{ font-size:clamp(1.75rem, 4vw, 2.5rem); font-weight:800; }
+h3{ font-size:1.25rem; font-weight:700; line-height:1.25; }
+.lead{ font-size:1.1875rem; color:var(--ink-2); }
+.prose p{ font-size:1.125rem; color:var(--ink-2); }
+.prose p + p{ margin-top:1rem; }
+.eyebrow{
+  font-family:var(--head); font-size:1rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
+  margin-bottom:.75rem;
+}
+
+/* ---------- skip link ---------- */
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:60;
+  background:var(--panel); color:var(--white); padding:.75rem 1rem;
+  border:2px solid var(--cyan); border-radius:0 0 .5rem 0; font-weight:600;
+}
+.skip:focus{ left:0; }
+
+/* ---------- sticky header (logo left, CTA right — no nav) ---------- */
+.bar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(5,15,40,.94);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.bar__in{
+  display:flex; align-items:center; justify-content:space-between; gap:.5rem;
+  min-height:3.5rem; padding-block:.5rem;
+}
+@media (min-width:40rem){ .bar__in{ gap:1rem; } }
+/* 24px on the smallest phones so the logo and the nowrap CTA share a 320px
+   bar without overflowing — Brand Guide §8 sets 24px as the logo floor. */
+.bar__logo{ height:24px; width:auto; display:block; }
+@media (min-width:40rem){ .bar__logo{ height:34px; } }
+
+/* ---------- buttons ----------
+   Label is 1.1875rem / 800 so the gradient's 40% stop clears its
+   large-text AA floor (Brand Guide §2, button-variant rules). */
+/* inline-block, not inline-flex: when the label wraps on a narrow
+   screen the arrow must stay attached to the last word. As a flex
+   sibling it detached and floated to the button's right edge. */
+.btn{
+  display:inline-block; text-align:center;
+  min-height:44px; padding:.9rem 1.5rem; line-height:1.3;
+  font-family:var(--head); font-size:1.1875rem; font-weight:800;
+  letter-spacing:.04em; text-transform:uppercase; text-decoration:none;
+  color:var(--white); background-image:var(--grad-btn);
+  border:0; border-radius:.625rem;
+  box-shadow:0 .35rem 1.1rem rgba(0,90,180,.30);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn:hover{ transform:translateY(-2px); box-shadow:0 .55rem 1.4rem rgba(0,90,180,.40); }
+.btn--lg{ font-size:1.25rem; padding:1.05rem 2rem; }
+/* header button: label held at the 1.1875rem contrast floor (Brand Guide
+   §2 button-variant rule), so padding and the logo give way instead. */
+.btn--bar{ padding:.6rem .85rem; letter-spacing:0; white-space:nowrap; }
+.btn__arrow{ font-size:1.1em; line-height:1; margin-left:.5rem; }
+/* the bar's arrow is decorative; it is the first thing to go on a 320px
+   screen, where the logo and the label both have to fit and neither can. */
+.btn--bar .btn__arrow{ display:none; }
+@media (min-width:26rem){
+  .btn--bar{ padding:.6rem 1rem; }
+  .btn--bar .btn__arrow{ display:inline; }
+}
+
+/* standalone section CTAs are horizontally centered (design §4) */
+.cta-row{ display:flex; justify-content:center; margin-top:2.4rem; }
+/* mobile: the primary action goes full-width rather than wrapping into
+   a lopsided two-line pill. Reverts to intrinsic width at the tablet tier. */
+.cta-row .btn,.hero__cta .btn{ width:100%; max-width:24rem; }
+@media (min-width:40rem){
+  .cta-row .btn,.hero__cta .btn{ width:auto; max-width:none; }
+}
+/* inside a split column the CTA aligns with its own text, not the page */
+.split__copy .cta-row{ justify-content:flex-start; margin-top:1.85rem; }
+
+/* ---------- focus (quality floor) ---------- */
+a:focus-visible,button:focus-visible,summary:focus-visible{
+  outline:3px solid var(--cyan); outline-offset:3px; border-radius:.375rem;
+}
+
+/* ============================================================
+   HERO — full-bleed photo, scrim, copy LEFT.
+   Derived from the asset: the subject sits in the RIGHT third and
+   the window (brightest, highest-detail region) runs down the right
+   edge, so copy goes left and the scrim darkens the left. This is
+   the standard case in composition §4 — no salvage mirroring needed,
+   unlike v3, whose asset put the subject left.
+   ============================================================ */
+.hero{
+  position:relative;
+  min-height:32rem;
+  display:flex; align-items:center;
+  padding-block:2.5rem 2.75rem;
+  overflow:clip; isolation:isolate;
+  border-bottom:1px solid var(--line);
+}
+.hero-bg{
+  position:absolute; inset:0; z-index:-2;
+  width:100%; height:100%;
+  object-fit:cover; object-position:72% 45%;   /* keeps the subject in frame as it crops */
+}
+/* mobile: text over the full-width image — vertical scrim */
+.hero::after{
+  content:""; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(180deg,
+    rgba(7,29,73,.94) 0%, rgba(7,29,73,.91) 44%,
+    rgba(7,29,73,.87) 70%, rgba(7,29,73,.95) 100%);
+}
+.hero > .wrap{ position:relative; }
+.hero__copy{ max-width:var(--measure); }      /* prose measure on hero copy */
+.hero h1{ text-shadow:0 .125rem 1.5rem rgba(4,16,46,.85); }
+.hero__sub{
+  margin-top:.875rem; font-size:1.0625rem; color:var(--white);
+  text-shadow:0 .0625rem .75rem rgba(4,16,46,.8);
+}
+.hero__cta{ margin-top:1.25rem; }
+
+/* trust chips live INSIDE the hero band, under the CTA (composition §7) */
+.chips{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.15rem; }
+.chip{
+  display:inline-flex; align-items:center;
+  font-size:1rem; font-weight:600; line-height:1.2;
+  padding:.45rem .85rem; border-radius:999px;
+  color:var(--white); background:rgba(7,29,73,.6);
+  border:1px solid var(--line-2);
+}
+.chip b{ font-family:var(--head); font-weight:800; color:var(--cyan); margin-right:.35rem; }
+
+@media (min-width:40rem){
+  .hero{ min-height:38rem; padding-block:3.5rem 3.75rem; }
+  .hero__sub{ font-size:1.1875rem; }
+}
+@media (min-width:64rem){
+  .hero{ min-height:43.75rem; padding-block:5rem 5.25rem; }
+  /* desktop: copy weighted left — horizontal scrim darkening the left.
+     Holds >=.86 through 55% of the width, which is past the copy's
+     right edge (38rem inside a 75rem wrap = 51%). */
+  .hero::after{
+    background:linear-gradient(90deg,
+      rgba(7,29,73,.96) 0%, rgba(7,29,73,.93) 32%,
+      rgba(7,29,73,.86) 55%, rgba(7,29,73,.44) 76%, rgba(7,29,73,.10) 100%);
+  }
+}
+@media (min-width:80rem){
+  .hero{ min-height:46rem; }
+  /* wide tier: vertical rhythm opens, device gaps widen */
+  section{ padding-block:3.75rem; }
+  .sec--deep{ padding-block:4.5rem; }
+  .sec-body{ margin-top:2.75rem; }
+  .split{ gap:4.5rem; }
+  .rail{ column-gap:4rem; }
+  .objs{ gap:1.875rem; }
+  .stats{ gap:2rem 4.5rem; }
+}
+
+/* ============================================================
+   SPLIT — the committed system for the three sections carrying a
+   visual. Real content in both columns, always (composition §3).
+   Below 64rem the columns stack, visual after prose.
+   Column prose needs no .measure: at 64rem the copy column is
+   ~34rem wide, already inside the 50-75ch band by construction.
+   ============================================================ */
+.split{ display:grid; gap:2rem; align-items:center; }
+@media (min-width:40rem){ .split{ gap:2.5rem; } }
+@media (min-width:64rem){
+  .split{ grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:3.5rem; }
+  /* alternation: on these sections the visual takes the left column */
+  .split--vleft > .split__media{ order:-1; }
+}
+.split__copy h2 + .prose{ margin-top:1.15rem; }
+.split__copy .eyebrow + h2{ margin-top:0; }
+
+/* photo frame — Brand Guide §4 card module */
+.shot{
+  margin:0; border-radius:1rem; overflow:hidden;
+  border:1px solid var(--line-2);
+  background:var(--panel);
+  box-shadow:0 1.25rem 2.5rem rgba(2,10,30,.45);
+}
+.shot img{ display:block; width:100%; height:auto; }
+
+/* ============================================================
+   PROBLEM — the statement panel closing the copy column
+   ============================================================ */
+.statement{
+  margin-top:1.75rem;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-left:4px solid var(--cyan);
+  border-radius:.75rem;
+  padding:1.25rem 1.15rem;
+}
+.statement p{
+  font-family:var(--head); font-weight:700;
+  font-size:clamp(1.2rem, 2.4vw, 1.5rem); line-height:1.32;
+  color:var(--white);
+}
+@media (min-width:40rem){ .statement{ padding:1.6rem 1.5rem; } }
+
+/* ============================================================
+   MECHANISM — Rule 12 refusal + the two-pane schematic, which
+   takes the LEFT column here (the alternation's middle beat).
+   Panes stack vertically so the two bar sets align for comparison.
+   ============================================================ */
+.refusal{
+  margin-top:1.6rem;
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--line-2);
+  border-radius:.75rem;
+  padding:1.15rem 1.25rem;
+}
+.refusal__label{
+  font-family:var(--head); font-size:1rem; font-weight:800;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--cyan);
+  margin-bottom:.5rem;
+}
+.refusal p{ font-size:1.0625rem; color:var(--ink-2); }
+
+.panes{ display:grid; gap:1.25rem; }
+.pane{
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:.875rem; padding:1.15rem;
+}
+.pane__label{
+  font-family:var(--head); font-size:1rem; font-weight:800;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+  margin-bottom:.75rem;
+}
+.pane svg{ display:block; width:100%; height:auto; }
+.pane__cap{ margin-top:.85rem; font-size:1.0625rem; color:var(--ink-2); }
+.pane--after .pane__label{ color:var(--cyan); }
+
+/* ============================================================
+   CURRICULUM — LAY-05 rail donor. 1 col base, 2-up at 64rem
+   (composition §6: sequential + prose-heavy, still two-up).
+   row-gap 0 so each column's rail reads as one continuous line.
+   ============================================================ */
+.rail{ display:grid; grid-template-columns:1fr; row-gap:0; margin-top:1.75rem; }
+@media (min-width:64rem){
+  .rail{ grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:3rem; }
+}
+.rail li{
+  position:relative;
+  border-left:2px solid var(--line-2);
+  padding:1.1rem 0 1.35rem 1.6rem;
+}
+.rail li::before{
+  content:""; position:absolute; left:-.4375rem; top:1.45rem;
+  width:.75rem; height:.75rem; border-radius:50%;
+  background:var(--cyan); box-shadow:0 0 0 .25rem var(--navy);
+}
+.rail__pill{
+  display:inline-block; font-family:var(--head); font-size:1rem; font-weight:800;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--cyan);
+  margin-bottom:.35rem;
+}
+.rail h3{ margin-bottom:.4rem; }
+.rail p{ font-size:1.0625rem; color:var(--ink-2); max-width:34rem; }
+.rail__count{ display:block; margin-top:.4rem; font-size:1rem; color:var(--ink-3); }
+.rail__end{
+  margin-top:1.5rem; text-align:center;
+  font-size:1.125rem; color:var(--ink-2);
+  max-width:44rem; margin-inline:auto;
+}
+.rail__end strong{ color:var(--white); font-weight:600; }
+
+/* ============================================================
+   PROOF — the stat row is the low-content escape: a centered
+   inline row, never a card grid (composition §5). It sits inside
+   the proof section, not in a band of its own (§7).
+   ============================================================ */
+.stats{
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:1.75rem 3.5rem; margin-top:2.5rem;
+  padding-block:.5rem;
+  border-top:1px solid var(--line);
+  padding-top:2rem;
+}
+.stat{ text-align:center; }
+.stat__num{ display:block; font-size:clamp(2.2rem,5vw,3rem); font-weight:900; color:var(--cyan); }
+.stat__lab{ display:block; margin-top:.15rem; font-size:1rem; color:var(--ink-2); }
+
+/* ============================================================
+   OBJECTIONS — 3-up card grid (1 / 2 / 3 per composition §5).
+   No icons: none of the three passes the one-word naming test
+   (design §4), so the cards are better without them.
+   ============================================================ */
+.objs{ display:grid; grid-template-columns:1fr; gap:1.25rem; margin-top:1.75rem; }
+@media (min-width:40rem){ .objs{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (min-width:64rem){ .objs{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.5rem; } }
+.obj{
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:.875rem; padding:1.4rem 1.25rem;
+  display:flex; flex-direction:column;
+}
+.obj__q{
+  font-family:var(--head); font-size:1.1875rem; font-weight:700; line-height:1.3;
+  color:var(--white); margin-bottom:.75rem;
+}
+.obj__a{ font-size:1.0625rem; color:var(--ink-2); }
+/* a lone third card spans the row at the 2-up tier rather than half-filling it */
+@media (min-width:40rem) and (max-width:63.999rem){
+  .objs > .obj:last-child:nth-child(odd){ grid-column:1 / -1; }
+}
+
+/* ============================================================
+   FAQ — single vertical accordion, at every viewport (§6).
+   58rem is centered and outside the reading band, so it is a
+   container, not a measure; the ANSWER prose carries the measure.
+   ============================================================ */
+.faq{ max-width:58rem; margin:1.75rem auto 0; }
+.faq details{ border-bottom:1px solid var(--line); }
+.faq details:first-child{ border-top:1px solid var(--line); }
+.faq summary{
+  display:flex; align-items:flex-start; gap:1rem;
+  padding:1.25rem .25rem;
+  cursor:pointer; list-style:none;
+  font-family:var(--head); font-size:1.1875rem; font-weight:700; line-height:1.35;
+  color:var(--white);
+  min-height:44px;
+}
+.faq summary::-webkit-details-marker{ display:none; }
+.faq summary::after{
+  content:"+"; margin-left:auto; flex:0 0 auto;
+  font-size:1.6rem; line-height:1; color:var(--cyan);
+}
+.faq details[open] summary::after{ content:"\2212"; }
+.faq__a{ padding:0 .25rem 1.35rem; }
+.faq__a p{ font-size:1.125rem; color:var(--ink-2); max-width:var(--measure); }
+
+/* ============================================================
+   FINAL CTA — bookend exemption, and it uses it: more vertical
+   weight, larger type, an identity-gradient wash behind it.
+   Evergreen close (urgency = none) — no scarcity language.
+   White on the wash's lightest point computes 11.89:1.
+   ============================================================ */
+.close{
+  text-align:center;
+  border-top:1px solid var(--line);
+  background-image:
+    linear-gradient(135deg, rgba(0,200,255,.16) 0%, rgba(43,114,232,.14) 45%, rgba(80,51,195,.22) 100%);
+  padding-block:3.5rem;
+}
+@media (min-width:40rem){ .close{ padding-block:4.75rem; } }
+@media (min-width:64rem){ .close{ padding-block:6.25rem; } }
+@media (min-width:80rem){ .close{ padding-block:7rem; } }
+.close h2{ font-size:clamp(2rem,5.2vw,3.25rem); }
+.close .lead{ max-width:36rem; margin:1rem auto 0; font-size:1.25rem; color:var(--white); }
+.close .cta-row{ margin-top:2rem; }
+.close .chips{ justify-content:center; margin-top:1.5rem; }
+
+/* ============================================================
+   FOOTER — components/footer.html, unchanged except the logo URL
+   (Brand Guide §10: new builds use the assets/images path) and the
+   container width, aligned to the page's own .wrap.
+   Footer chrome is exempt from the 1rem content floor.
+   ============================================================ */
+.mkt-footer{
+  background:var(--navy-deep); color:var(--white);
+  font-family:var(--body); border-top:1px solid var(--line);
+}
+.mkt-footer__inner{ max-width:var(--wrap); margin:0 auto; padding:2.4rem 1.25rem 1.4rem; }
+.mkt-footer__top{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:2rem; flex-wrap:wrap; padding-bottom:1.6rem; border-bottom:1px solid var(--line);
+}
+.mkt-brand__logo{ height:38px; width:auto; display:block; }
+.mkt-brand__tag{ margin-top:.55rem; color:var(--ink-3); font-size:.9rem; max-width:22rem; line-height:1.45; }
+.mkt-footer__mid{ display:flex; flex-direction:column; gap:.35rem; text-align:center; color:var(--ink-3); font-size:.82rem; }
+/* Footer chrome is exempt from the TYPE floor, not from the 44px tap-target
+   floor (technical §4 rule 4). The component ships this link at 78x21; the
+   padding lifts it to 44 without changing how it reads. Worth landing in
+   components/footer.html so it stops recurring per build. */
+.mkt-footer__mid a{ color:var(--ink-3); text-decoration:none; display:inline-block; padding-block:.75rem; }
+.mkt-footer__mid a:hover{ color:var(--blue); text-decoration:underline; }
+.mkt-connect{ text-align:right; }
+.mkt-connect__label{ font-family:var(--head); font-weight:700; font-size:.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--ink-3); margin-bottom:.7rem; }
+.mkt-social{ display:flex; gap:.7rem; justify-content:flex-end; }
+.mkt-social a{
+  width:44px; height:44px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,0.06); border:1px solid var(--line); color:var(--white);
+  transition:background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.mkt-social a:hover{ background:rgba(101,206,246,0.16); border-color:var(--blue); transform:translateY(-2px); color:var(--blue); }
+.mkt-social svg{ width:19px; height:19px; fill:currentColor; }
+.mkt-disc-inline{ padding-top:1.3rem; }
+.mkt-disc-inline p{ color:var(--ink-3); font-size:.76rem; line-height:1.65; margin:0; max-width:none; }
+.mkt-disc-inline strong{ color:#c3d2ef; font-weight:600; }
+@media (max-width:680px){
+  .mkt-footer__top{ flex-direction:column; align-items:flex-start; gap:1.4rem; }
+  .mkt-footer__mid{ text-align:left; align-items:flex-start; order:3; }
+  .mkt-connect{ text-align:left; order:2; }
+  .mkt-social{ justify-content:flex-start; }
+}
+
+/* ---------- reduced motion (quality floor) ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ transition:none !important; animation:none !important; }
+  .btn:hover{ transform:none; }
+  .mkt-social a:hover{ transform:none; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ============ STICKY HEADER — logo left, CTA right, no nav ============ -->
+<header class="bar">
+  <div class="wrap bar__in">
+    <img class="bar__logo"
+         src="https://raw.githubusercontent.com/marketeye-official/marketeye-site/refs/heads/main/assets/images/MarketEye-Logo-1.03c-Gradient-horizontal%20(1).png"
+         alt="MarketEye" width="180" height="34" decoding="async">
+    <a class="btn btn--bar lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+      Join Free <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO — copy LEFT (subject sits right third in the frame) ============ -->
+  <section class="hero">
+    <img class="hero-bg"
+         src="/assets/images/demo-ctrl-v4/hero.png"
+         alt="A business owner sits at a home-office desk beside a window, chin resting on one hand, looking away from an open laptop toward the light."
+         width="1672" height="941" fetchpriority="high" decoding="async">
+    <div class="wrap">
+      <div class="hero__copy">
+        <h1>Your business was supposed to give you freedom</h1>
+        <p class="hero__sub">Somewhere along the way, the calendar started running you. Here&rsquo;s how to take back control &mdash; starting with the systems most owners never build.</p>
+        <div class="hero__cta">
+          <a class="btn btn--lg lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+            Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+        <!-- LAY-07's under-CTA micro-stat slot, translated to Messaging Pillar 4 -->
+        <ul class="chips">
+          <li class="chip"><b>30+</b> Years trading</li>
+          <li class="chip"><b>100s</b> Traders trained</li>
+          <li class="chip">Real beginners welcome</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEM — split, visual RIGHT ============ -->
+  <section class="sec--deep" aria-labelledby="problem-h">
+    <div class="wrap split">
+      <div class="split__copy">
+        <h2 id="problem-h">You didn&rsquo;t start a business to become its most overworked employee</h2>
+        <div class="prose">
+          <p>But that&rsquo;s where a lot of owners land: every decision routes through you, every day fills with other people&rsquo;s priorities, and the &ldquo;freedom&rdquo; that was supposed to come with ownership keeps getting pushed to next quarter.</p>
+        </div>
+        <div class="statement">
+          <p>The problem isn&rsquo;t effort &mdash; you have plenty of that. The problem is that nobody handed you a system for turning effort into leverage.</p>
+        </div>
+      </div>
+      <figure class="shot split__media">
+        <img src="/assets/images/demo-ctrl-v4/problem.png"
+             alt="A small-business owner works at a desk after dark, lit by a single lamp, a printed schedule and a phone laid out beside the laptop."
+             width="1536" height="1024" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ MECHANISM — split, visual LEFT (the alternation's middle beat) ============ -->
+  <section class="sec--deep" aria-labelledby="mech-h">
+    <div class="wrap split split--vleft">
+      <div class="split__copy">
+        <p class="eyebrow">From control to a skill</p>
+        <h2 id="mech-h">Control comes from structure, not from more hours</h2>
+        <div class="prose">
+          <p>When a business is a set of repeatable systems instead of a pile of tasks only one person can do, the calendar stops being the enemy. The work becomes deciding what to work on, rather than reacting to whatever is loudest.</p>
+          <p>That same instinct &mdash; wanting an outcome that turns on execution rather than on whoever is loudest &mdash; is what brings a lot of owners to the markets. And market understanding is a skill rather than a talent: it can be learned from the beginning, in order, at whatever pace a week allows.</p>
+          <p>That is what the free MarketEye community teaches &mdash; how a market actually works, starting from what a market even is.</p>
+        </div>
+
+        <!-- Rule 12: explicit refusal, adjacent to the claim, not in the footer -->
+        <div class="refusal">
+          <p class="refusal__label">Plainly, so there is no confusion</p>
+          <p>Learning to read a market is not a fix for an overloaded calendar, and this is not a second income. It is one skill, taught from the beginning, and what comes of it depends on the person practicing it.</p>
+        </div>
+
+        <!-- CTA sits inside the copy column, aligned to its text: the reader now
+             knows what this is and what it isn't, and it holds the cadence. -->
+        <div class="cta-row">
+          <a class="btn lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+            Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Schematic of a pattern the curriculum teaches (Rule 13 permitted).
+           Deliberately direction-neutral: horizontal session levels, no trend,
+           no ascending line, no green/up motif. Source: Module 3, lesson 6.
+           Panes stack so the two bar sets align vertically for comparison. -->
+      <div class="panes split__media">
+        <figure class="pane">
+          <p class="pane__label">Before</p>
+          <svg viewBox="0 0 300 170" aria-hidden="true" focusable="false">
+            <g stroke="#8FA6CF" stroke-width="5" stroke-linecap="round" fill="none">
+              <line x1="24"  y1="75"  x2="24"  y2="105"/>
+              <line x1="42"  y1="55"  x2="42"  y2="90"/>
+              <line x1="60"  y1="85"  x2="60"  y2="120"/>
+              <line x1="78"  y1="47"  x2="78"  y2="80"/>
+              <line x1="96"  y1="70"  x2="96"  y2="105"/>
+              <line x1="114" y1="40"  x2="114" y2="73"/>
+              <line x1="132" y1="80"  x2="132" y2="115"/>
+              <line x1="150" y1="53"  x2="150" y2="85"/>
+              <line x1="168" y1="93"  x2="168" y2="127"/>
+              <line x1="186" y1="45"  x2="186" y2="77"/>
+              <line x1="204" y1="73"  x2="204" y2="107"/>
+              <line x1="222" y1="37"  x2="222" y2="70"/>
+              <line x1="240" y1="83"  x2="240" y2="117"/>
+              <line x1="258" y1="57"  x2="258" y2="90"/>
+              <line x1="276" y1="77"  x2="276" y2="110"/>
+            </g>
+          </svg>
+          <figcaption class="pane__cap">Fifteen bars on a chart. Without a reference, it reads as random movement.</figcaption>
+        </figure>
+
+        <figure class="pane pane--after">
+          <p class="pane__label">After</p>
+          <svg viewBox="0 0 300 170" aria-hidden="true" focusable="false">
+            <g stroke="#8FA6CF" stroke-width="5" stroke-linecap="round" fill="none">
+              <line x1="24"  y1="75"  x2="24"  y2="105"/>
+              <line x1="42"  y1="55"  x2="42"  y2="90"/>
+              <line x1="60"  y1="85"  x2="60"  y2="120"/>
+              <line x1="78"  y1="47"  x2="78"  y2="80"/>
+              <line x1="96"  y1="70"  x2="96"  y2="105"/>
+              <line x1="114" y1="40"  x2="114" y2="73"/>
+              <line x1="132" y1="80"  x2="132" y2="115"/>
+              <line x1="150" y1="53"  x2="150" y2="85"/>
+              <line x1="168" y1="93"  x2="168" y2="127"/>
+              <line x1="186" y1="45"  x2="186" y2="77"/>
+              <line x1="204" y1="73"  x2="204" y2="107"/>
+              <line x1="222" y1="37"  x2="222" y2="70"/>
+              <line x1="240" y1="83"  x2="240" y2="117"/>
+              <line x1="258" y1="57"  x2="258" y2="90"/>
+              <line x1="276" y1="77"  x2="276" y2="110"/>
+            </g>
+            <g stroke="#00C8FF" stroke-width="2.5" stroke-dasharray="9 7">
+              <line x1="12" y1="39"  x2="288" y2="39"/>
+              <line x1="12" y1="125" x2="288" y2="125"/>
+            </g>
+            <g fill="#00C8FF">
+              <circle cx="114" cy="39"  r="5"/>
+              <circle cx="222" cy="39"  r="5"/>
+              <circle cx="168" cy="125" r="5"/>
+            </g>
+          </svg>
+          <figcaption class="pane__cap">The same fifteen bars, with the prior day&rsquo;s high and low drawn across them. Three of the turns happen at a marked level. That is Module 3, lesson 6.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROOF — split, visual RIGHT (alternation resolves) ============ -->
+  <section class="sec--deep" aria-labelledby="proof-h">
+    <div class="wrap">
+      <div class="split">
+        <div class="split__copy">
+          <h2 id="proof-h">Credibility from experience, not promises</h2>
+          <div class="prose">
+            <p>This isn&rsquo;t theory from someone who has never run anything. The approach is built on decades of real trading and business experience, taught in plain language &mdash; no jargon, no gatekeeping.</p>
+            <p>Beginners are the assumed starting point here, not the exception &mdash; whether this is the first time considering it or something circled for years.</p>
+          </div>
+        </div>
+        <figure class="shot split__media">
+          <img src="/assets/images/demo-ctrl-v4/credibility.png"
+               alt="Seen over someone's shoulder at a multi-monitor desk: candlestick price charts on each screen, and an open notebook of handwritten annotations beside the keyboard."
+               width="1536" height="1024" loading="lazy" decoding="async">
+        </figure>
+      </div>
+      <!-- low-content escape: four short items as a centered inline row, not cards -->
+      <ul class="stats">
+        <li class="stat"><span class="stat__num">30+</span><span class="stat__lab">Years trading</span></li>
+        <li class="stat"><span class="stat__num">100s</span><span class="stat__lab">Traders trained</span></li>
+        <li class="stat"><span class="stat__num">20</span><span class="stat__lab">Free lessons</span></li>
+        <li class="stat"><span class="stat__num">$0</span><span class="stat__lab">To join</span></li>
+      </ul>
+      <!-- Added after measuring cadence in the render: the mechanism->offer gap
+           came to 1759px, past the ~1500px ceiling. This is also where the CTA
+           is earned rather than merely due — the tenure claim just landed. -->
+      <div class="cta-row">
+        <a class="btn lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+          Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OFFER BREAKDOWN — LAY-05 rail donor, curriculum-sourced ============ -->
+  <section class="sec--deep" aria-labelledby="curr-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Inside the free community</p>
+        <h2 id="curr-h">Four modules, in order, starting from zero</h2>
+        <p class="lead">Every lesson below is in the free tier. It runs as one progression &mdash; what a market is, what futures are, how to read a chart, then one setup end to end.</p>
+      </div>
+
+      <ol class="rail">
+        <li>
+          <span class="rail__pill">Module 1</span>
+          <h3>How Markets Actually Work</h3>
+          <p>What a market is and how price forms. Who actually moves price, and why that changes how a chart reads. Supply, demand and liquidity. The markets the MarketEye approach is built around.</p>
+          <span class="rail__count">4 lessons, plus a welcome</span>
+        </li>
+        <li>
+          <span class="rail__pill">Module 2</span>
+          <h3>Futures 101</h3>
+          <p>What a futures contract actually is. Margin, leverage, tick size, bid and ask &mdash; in plain English. Choosing a market to start on. How to read a quote and place a first trade in simulation.</p>
+          <span class="rail__count">4 lessons</span>
+        </li>
+        <li>
+          <span class="rail__pill">Module 3</span>
+          <h3>Reading the Charts</h3>
+          <p>Candlesticks and what a single bar tells you. Swing points and market structure. Gaps, imbalance and distribution. Liquidity zones. Marking session levels before the open.</p>
+          <span class="rail__count">6 lessons</span>
+        </li>
+        <li>
+          <span class="rail__pill">Module 4</span>
+          <h3>Trade Setups</h3>
+          <p>One setup, taken apart completely: what a pullback is, which zone to target, how to time an entry, how to plan the stop and target, when to skip it, and a full walkthrough from idea to exit.</p>
+          <span class="rail__count">6 lessons</span>
+        </li>
+      </ol>
+
+      <p class="rail__end"><strong>Twenty lessons across four modules</strong> &mdash; plus a discussion space where members work through the same material, and somewhere to ask questions. Self-paced. Nothing to sit through.</p>
+
+      <div class="cta-row">
+        <a class="btn lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+          Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OBJECTIONS — 3-up cards, no icons ============ -->
+  <section aria-labelledby="obj-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="obj-h">The objections worth naming</h2>
+      </div>
+      <ul class="objs">
+        <li class="obj">
+          <p class="obj__q">&ldquo;I don&rsquo;t have time for another program.&rdquo;</p>
+          <p class="obj__a">That&rsquo;s exactly the point &mdash; the foundations here are about buying time back, and you go at your own pace. There is nothing live to miss and nothing scheduled to keep up with.</p>
+        </li>
+        <li class="obj">
+          <p class="obj__q">&ldquo;I&rsquo;ve tried business content before and it was fluff.&rdquo;</p>
+          <p class="obj__a">This is fundamentals, taught plainly, from real experience &mdash; not recycled motivation. Module 1 starts at what a market is, because most courses skip it and then wonder why people finish still feeling lost.</p>
+        </li>
+        <li class="obj">
+          <p class="obj__q">&ldquo;Is this just a funnel to an expensive course?&rdquo;</p>
+          <p class="obj__a">The community is free to join, and the twenty lessons above are the free tier in full. If you ever want more, that&rsquo;s a conversation you choose to start &mdash; not one that gets forced on you.</p>
+        </li>
+      </ul>
+      <div class="cta-row">
+        <a class="btn lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+          Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ — vertical accordion, both baseline items in order ============ -->
+  <section aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="faq-h">Before joining</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>I&rsquo;ve never traded before. Is this really for beginners?</summary>
+          <div class="faq__a">
+            <p>Yes. The community is built for people starting from zero, with lessons and support that assume no prior experience.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Do I need trading experience or a lot of capital to start?</summary>
+          <div class="faq__a">
+            <p>No. Joining the community is free, and the early lessons are built around learning the framework first &mdash; not putting capital on the line.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA — bookend, differentiated, evergreen ============ -->
+  <section class="close" aria-labelledby="close-h">
+    <div class="wrap">
+      <h2 id="close-h">Take back control of your time</h2>
+      <p class="lead">Join the free community and start with the foundations.</p>
+      <div class="cta-row">
+        <a class="btn btn--lg lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+          Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+      <ul class="chips">
+        <li class="chip"><b>30+</b> Years trading</li>
+        <li class="chip"><b>100s</b> Traders trained</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER COMPONENT — carries the base risk disclaimer ============ -->
+<footer class="mkt-footer">
+  <div class="mkt-footer__inner">
+
+    <div class="mkt-footer__top">
+      <div class="mkt-brand">
+        <img class="mkt-brand__logo"
+             src="https://raw.githubusercontent.com/marketeye-official/marketeye-site/refs/heads/main/assets/images/MarketEye-Logo-1.03c-Gradient-horizontal%20(1).png"
+             alt="MarketEye" width="200" height="38" decoding="async">
+        <div class="mkt-brand__tag">Real People. Real Beginners. Real Trading.</div>
+      </div>
+      <div class="mkt-footer__mid">
+        <span>&copy; 2026 MarketEye, LLC. All Rights Reserved.</span>
+        <a href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+      </div>
+      <div class="mkt-connect">
+        <div class="mkt-connect__label">Connect</div>
+        <div class="mkt-social">
+          <a href="https://www.facebook.com/marketeye.society" aria-label="MarketEye on Facebook" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/marketeye.society" aria-label="MarketEye on Instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c-2.72 0-3.06.01-4.12.06-1.07.05-1.79.22-2.43.47-.66.26-1.22.6-1.77 1.15-.55.55-.89 1.11-1.15 1.77-.25.64-.42 1.36-.47 2.43C2.01 8.94 2 9.28 2 12s.01 3.06.06 4.12c.05 1.07.22 1.79.47 2.43.26.66.6 1.22 1.15 1.77.55.55 1.11.89 1.77 1.15.64.25 1.36.42 2.43.47 1.06.05 1.4.06 4.12.06s3.06-.01 4.12-.06c1.07-.05 1.79-.22 2.43-.47.66-.26 1.22-.6 1.77-1.15.55-.55.89-1.11 1.15-1.77.25-.64.42-1.36.47-2.43.05-1.06.06-1.4.06-4.12s-.01-3.06-.06-4.12c-.05-1.07-.22-1.79-.47-2.43a4.9 4.9 0 0 0-1.15-1.77 4.9 4.9 0 0 0-1.77-1.15c-.64-.25-1.36-.42-2.43-.47C15.06 2.01 14.72 2 12 2zm0 1.8c2.67 0 2.99.01 4.04.06.98.04 1.5.21 1.86.35.47.18.8.4 1.15.75.35.35.57.68.75 1.15.14.36.31.88.35 1.86.05 1.05.06 1.37.06 4.04s-.01 2.99-.06 4.04c-.04.98-.21 1.5-.35 1.86-.18.47-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.36.14-.88.31-1.86.35-1.05.05-1.37.06-4.04.06s-2.99-.01-4.04-.06c-.98-.04-1.5-.21-1.86-.35a3.1 3.1 0 0 1-1.15-.75 3.1 3.1 0 0 1-.75-1.15c-.14-.36-.31-.88-.35-1.86-.05-1.05-.06-1.37-.06-4.04s.01-2.99.06-4.04c.04-.98.21-1.5.35-1.86.18-.47.4-.8.75-1.15.35-.35.68-.57 1.15-.75.36-.14.88-.31 1.86-.35C9.01 3.81 9.33 3.8 12 3.8zm0 3.06A5.14 5.14 0 1 0 12 17.14 5.14 5.14 0 0 0 12 6.86zm0 8.47A3.33 3.33 0 1 1 12 8.67a3.33 3.33 0 0 1 0 6.66zm5.34-9.87a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@MarketEyeSociety" aria-label="MarketEye on YouTube" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.11-2.12C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.39.53A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.11 2.12c1.89.53 9.39.53 9.39.53s7.5 0 9.39-.53a3 3 0 0 0 2.11-2.12A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Base risk disclaimer — the only disclaimer placement on the page.
+         No add-on clause triggered: no calculator, no outcome statistic,
+         no testimonials, no evaluation/funded-account mention. -->
+    <div class="mkt-disc-inline">
+      <p><strong>Disclaimer.</strong> MarketEye is an educational community and does not provide personalized financial, investment, or trading advice. Trading futures, stocks, forex, and cryptocurrencies involves substantial risk of loss and is not suitable for all investors. Past performance does not guarantee future results, and passing an evaluation does not guarantee profitability. Results vary based on individual discipline, market conditions, and execution.</p>
+    </div>
+
+  </div>
+</footer>
+
+<!-- Forward incoming ad parameters (fbclid, utm_*) to the Final LP.
+     Appends the LP's own query string onto every lp-community-cta href so ad→LP→Skool
+     attribution stays intact. Part of the standard LP build. -->
+<script>
+(function () {
+  var incoming = window.location.search;                // e.g. "?fbclid=…&utm_content=…"
+  if (!incoming || incoming.length < 2) return;
+  var incomingParams = new URLSearchParams(incoming);
+  document.querySelectorAll('a.lp-community-cta').forEach(function (a) {
+    try {
+      var dest = new URL(a.href, window.location.origin);
+      incomingParams.forEach(function (val, key) {
+        if (!dest.searchParams.has(key)) dest.searchParams.set(key, val); // don't overwrite CTA-set params
+      });
+      a.href = dest.toString();
+    } catch (e) { /* leave link as-is if unparseable */ }
+  });
+})();
+</script>
+
+</body>
+</html>
