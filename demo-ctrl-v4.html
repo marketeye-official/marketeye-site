@@ -504,6 +504,193 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .btn:hover{ transform:none; }
   .mkt-social a:hover{ transform:none; }
 }
+
+/* ============================================================
+   SIGNUP FORM — components/signup-form.html, embedded into the
+   close bookend as .mef--bare (the section already carries the
+   h2 and lead, so the card's own heading block is omitted).
+   Namespaced .mef- throughout: no collision with .btn/.wrap/.chip.
+   Tokens resolve against this page's :root; the var() fallbacks
+   are what let the same block stand alone on a token-less page.
+   ============================================================ */
+.mef, .mef *, .mef *::before, .mef *::after { box-sizing:border-box; }
+
+.mef{
+  --mef-navy:      var(--navy,  #071D49);
+  --mef-panel:     var(--panel, #0C2758);
+  --mef-white:     var(--white, #FFFFFF);
+  --mef-ink-2:     var(--ink-2, #C9D8F2);
+  --mef-ink-3:     var(--ink-3, #8FA6CF);
+  --mef-cyan:      var(--cyan,  #00C8FF);
+  --mef-line:      var(--line,   rgba(255,255,255,0.12));
+  --mef-line-2:    var(--line-2, rgba(255,255,255,0.20));
+  --mef-head:      var(--head, 'Exo 2', system-ui, -apple-system, sans-serif);
+  --mef-body:      var(--body, 'Barlow', system-ui, -apple-system, sans-serif);
+  --mef-grad-btn:  var(--grad-btn, linear-gradient(135deg, rgb(18,114,184) 0%, rgb(43,114,232) 40%, rgb(80,51,195) 100%));
+  --mef-danger:    #FF9AA2;              /* 7.9:1 on navy */
+  --mef-danger-bg: rgba(255,120,130,0.10);
+  --mef-input-bg:  #0A2050;              /* opaque — needed to defeat autofill */
+  --mef-ok:        #7BE7B4;
+
+  display:block; padding-block:2.5rem;
+  font-family:var(--mef-body); color:var(--mef-white);
+  -webkit-text-size-adjust:100%;
+}
+@media (min-width:40rem){ .mef{ padding-block:3.25rem; } }
+@media (min-width:64rem){ .mef{ padding-block:3.5rem; } }
+
+.mef__wrap{ max-width:var(--wrap, 75rem); margin-inline:auto; padding-inline:1.25rem; width:100%; }
+
+.mef__card{
+  max-width:34rem; margin-inline:auto;
+  text-align:left;                /* the close bookend is centred */
+  background:var(--mef-panel);
+  border:1px solid var(--mef-line);
+  border-radius:1rem;
+  padding:1.75rem 1.375rem;
+  box-shadow:0 1.5rem 3rem rgba(0,0,0,0.28);
+}
+@media (min-width:40rem){ .mef__card{ padding:2.25rem 2rem; border-radius:1.25rem; } }
+
+.mef__eyebrow{
+  margin:0 0 .55rem; font-family:var(--mef-head); font-size:.875rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--mef-ink-3);
+}
+.mef__title{
+  margin:0; font-family:var(--mef-head); font-weight:800; line-height:1.14;
+  letter-spacing:-.02em; font-size:clamp(1.6rem, 4.4vw, 2.1rem); color:var(--mef-white);
+  text-wrap:balance;
+}
+.mef__lead{
+  margin:.7rem 0 0; font-size:1.0625rem; line-height:1.55; color:var(--mef-ink-2);
+  text-wrap:pretty;
+}
+
+.mef__form{ margin-top:1.6rem; }
+.mef__row{ display:grid; gap:1rem; }
+@media (min-width:30rem){ .mef__row{ grid-template-columns:1fr 1fr; gap:.875rem; } }
+.mef__field + .mef__field, .mef__row + .mef__field{ margin-top:1rem; }
+/* inside the two-up row the grid owns the gap — the sibling rule above
+   was dropping Last Name a full row below First Name */
+.mef__row .mef__field + .mef__field{ margin-top:0; }
+
+.mef__label{
+  display:block; margin-bottom:.4rem;
+  font-family:var(--mef-head); font-size:.8125rem; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--mef-ink-3);
+}
+
+.mef__input{
+  display:block; width:100%;
+  min-height:3rem; padding:.8rem .95rem;
+  font-family:var(--mef-body); font-size:1.0625rem; line-height:1.4;
+  color:var(--mef-white); background:var(--mef-input-bg);
+  border:1px solid var(--mef-line-2); border-radius:.625rem;
+  appearance:none; -webkit-appearance:none;
+  transition:border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.mef__input::placeholder{ color:var(--mef-ink-3); opacity:.7; }
+.mef__input:hover{ border-color:rgba(255,255,255,0.32); }
+.mef__input:focus{
+  outline:none; border-color:var(--mef-cyan); background:#0B2456;
+  box-shadow:0 0 0 3px rgba(0,200,255,0.22);
+}
+.mef__input[aria-invalid="true"]{ border-color:var(--mef-danger); background:var(--mef-danger-bg); }
+.mef__input[aria-invalid="true"]:focus{ box-shadow:0 0 0 3px rgba(255,154,162,0.24); }
+.mef__input:disabled{ opacity:.55; cursor:not-allowed; }
+
+/* keep Chrome/Safari autofill from painting a white box on the navy card */
+.mef__input:-webkit-autofill,
+.mef__input:-webkit-autofill:hover,
+.mef__input:-webkit-autofill:focus{
+  -webkit-text-fill-color:var(--mef-white);
+  -webkit-box-shadow:inset 0 0 0 100px var(--mef-input-bg);
+  caret-color:var(--mef-white);
+  transition:background-color 9999s ease-out 0s;
+}
+
+.mef__hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+.mef__field--consent{ margin-top:1.15rem; }
+.mef__consent{ display:flex; align-items:flex-start; gap:.7rem; }
+/* custom control — the native dark-mode checkbox renders as a bare white
+   square on this card. appearance:none + a clip-path tick instead. */
+.mef__check{
+  flex:0 0 auto; width:1.3rem; height:1.3rem; margin:.1rem 0 0;
+  appearance:none; -webkit-appearance:none;
+  display:grid; place-content:center;
+  background:var(--mef-input-bg);
+  border:1.5px solid var(--mef-line-2); border-radius:.3rem;
+  cursor:pointer;
+  transition:background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.mef__check::before{
+  content:""; width:.72rem; height:.72rem; transform:scale(0);
+  transition:transform .15s ease-in-out;
+  background:var(--mef-navy);
+  clip-path:polygon(14% 44%, 0 65%, 40% 100%, 100% 16%, 82% 0%, 37% 66%);
+}
+.mef__check:checked{ background:var(--mef-cyan); border-color:var(--mef-cyan); }
+.mef__check:checked::before{ transform:scale(1); }
+.mef__check:hover:not(:disabled){ border-color:rgba(255,255,255,0.35); }
+.mef__check:focus-visible{ outline:2px solid var(--mef-cyan); outline-offset:3px; }
+.mef__check:disabled{ opacity:.55; cursor:not-allowed; }
+.mef__consent-txt{ font-size:.9375rem; line-height:1.5; color:var(--mef-ink-2); cursor:pointer; }
+.mef__legal{ color:var(--mef-cyan); text-decoration:underline; text-underline-offset:2px; }
+.mef__legal:hover{ color:var(--mef-white); }
+.mef__legal:focus-visible{ outline:2px solid var(--mef-cyan); outline-offset:2px; border-radius:2px; }
+.mef__field--consent[data-invalid="true"] .mef__check{ outline:2px solid var(--mef-danger); outline-offset:3px; }
+
+.mef__err{ margin:.45rem 0 0; font-size:.875rem; line-height:1.45; color:var(--mef-danger); }
+.mef__err[hidden]{ display:none; }
+.mef__status{ margin:.9rem 0 0; font-size:.9375rem; line-height:1.5; }
+.mef__status:empty{ display:none; }
+.mef__status[data-state="error"]{ color:var(--mef-danger); }
+.mef__status[data-state="ok"]{ color:var(--mef-ok); }
+.mef__note{
+  margin:1rem 0 0; font-size:.8125rem; line-height:1.5; color:var(--mef-ink-3);
+  text-align:center;
+}
+
+.mef__btn{
+  position:relative; display:block; width:100%; margin-top:1.4rem;
+  min-height:3.25rem; padding:1rem 1.5rem;
+  font-family:var(--mef-head); font-size:1.125rem; font-weight:800;
+  letter-spacing:.04em; text-transform:uppercase; line-height:1.2;
+  color:var(--mef-white); background-image:var(--mef-grad-btn);
+  border:0; border-radius:.625rem; cursor:pointer;
+  box-shadow:0 .35rem 1.1rem rgba(0,90,180,.30);
+  transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+.mef__btn:hover:not(:disabled){ transform:translateY(-2px); box-shadow:0 .55rem 1.4rem rgba(0,90,180,.40); }
+.mef__btn:active:not(:disabled){ transform:translateY(0); }
+.mef__btn:focus-visible{ outline:3px solid var(--mef-cyan); outline-offset:3px; }
+.mef__btn:disabled{ cursor:not-allowed; opacity:.78; transform:none; box-shadow:none; }
+
+.mef__btn-loading{ display:none; align-items:center; justify-content:center; gap:.6rem; }
+.mef__btn.is-loading .mef__btn-label{ display:none; }
+.mef__btn.is-loading .mef__btn-loading{ display:inline-flex; }
+
+.mef__spinner{
+  width:1.125rem; height:1.125rem; flex:0 0 auto; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.35);
+  border-top-color:var(--mef-white);
+  animation:mef-spin .7s linear infinite;
+}
+@keyframes mef-spin{ to{ transform:rotate(360deg); } }
+
+@media (prefers-reduced-motion:reduce){
+  /* this page's blanket `animation:none !important` above would freeze the
+     ring mid-arc, which reads as a hung form. Drop it; the button label
+     still says what is happening. */
+  .mef__spinner{ display:none; }
+}
+
+/* .mef--bare: the close bookend supplies the heading and the padding */
+.mef--bare{ padding-block:0; }
+.mef--bare .mef__wrap{ padding-inline:0; max-width:none; }
+.mef--bare .mef__form{ margin-top:0; }
+.mef--bare .mef__card{ margin-top:2rem; }
 </style>
 </head>
 <body>
@@ -793,16 +980,85 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     </div>
   </section>
 
-  <!-- ============ FINAL CTA — bookend, differentiated, evergreen ============ -->
+  <!-- ============ FINAL CTA — bookend, differentiated, evergreen ============
+       The action here is the signup form (components/signup-form.html),
+       not a link out: the close is the page's single capture point.
+       Card runs as .mef--bare — the section's own h2 and lead stand in
+       for the component's heading block, so the copy isn't said twice. -->
   <section class="close" aria-labelledby="close-h">
     <div class="wrap">
       <h2 id="close-h">Take back control of your time</h2>
       <p class="lead">Join the free community and start with the foundations.</p>
-      <div class="cta-row">
-        <a class="btn btn--lg lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
-          Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
-        </a>
+
+      <div class="mef mef--bare" id="signup">
+        <div class="mef__wrap">
+          <div class="mef__card">
+            <form class="mef__form" id="mef-form" novalidate autocomplete="on">
+
+              <div class="mef__row">
+                <div class="mef__field">
+                  <label class="mef__label" for="mef-first">First name</label>
+                  <input class="mef__input" id="mef-first" name="first_name" type="text"
+                         autocomplete="given-name" autocapitalize="words" spellcheck="false"
+                         placeholder="Jane" required
+                         aria-required="true" aria-describedby="mef-first-err">
+                  <p class="mef__err" id="mef-first-err" hidden>Please enter your first name.</p>
+                </div>
+
+                <div class="mef__field">
+                  <label class="mef__label" for="mef-last">Last name</label>
+                  <input class="mef__input" id="mef-last" name="last_name" type="text"
+                         autocomplete="family-name" autocapitalize="words" spellcheck="false"
+                         placeholder="Doe" required
+                         aria-required="true" aria-describedby="mef-last-err">
+                  <p class="mef__err" id="mef-last-err" hidden>Please enter your last name.</p>
+                </div>
+              </div>
+
+              <div class="mef__field">
+                <label class="mef__label" for="mef-email">Email address</label>
+                <input class="mef__input" id="mef-email" name="email" type="email"
+                       autocomplete="email" autocapitalize="off" spellcheck="false"
+                       inputmode="email" placeholder="jane@example.com" required
+                       aria-required="true" aria-describedby="mef-email-err">
+                <p class="mef__err" id="mef-email-err" hidden>Please enter a valid email address.</p>
+              </div>
+
+              <!-- honeypot: hidden from people, attractive to bots -->
+              <div class="mef__hp" aria-hidden="true">
+                <label for="mef-company">Company</label>
+                <input id="mef-company" name="company" type="text" tabindex="-1" autocomplete="off">
+              </div>
+
+              <div class="mef__field mef__field--consent">
+                <div class="mef__consent">
+                  <input class="mef__check" id="mef-consent" name="consent" type="checkbox"
+                         required aria-required="true" aria-describedby="mef-consent-err">
+                  <label class="mef__consent-txt" for="mef-consent">
+                    I agree to the
+                    <a class="mef__legal" href="https://marketeye.io/terms-of-service" target="_blank" rel="noopener">Terms of Service</a>
+                    and
+                    <a class="mef__legal" href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
+                  </label>
+                </div>
+                <p class="mef__err" id="mef-consent-err" hidden>Please accept the Terms of Service and Privacy Policy to continue.</p>
+              </div>
+
+              <button class="mef__btn" id="mef-submit" type="submit">
+                <span class="mef__btn-label">Create My Free Account</span>
+                <span class="mef__btn-loading">
+                  <span class="mef__spinner" aria-hidden="true"></span>Setting up your access&hellip;
+                </span>
+              </button>
+
+              <p class="mef__status" id="mef-status" role="status" aria-live="polite"></p>
+              <p class="mef__note">Your details are used to create your membership and send your access link.</p>
+
+            </form>
+          </div>
+        </div>
       </div>
+
       <ul class="chips">
         <li class="chip"><b>30+</b> Years trading</li>
         <li class="chip"><b>100s</b> Traders trained</li>
@@ -869,6 +1125,264 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       });
       a.href = dest.toString();
     } catch (e) { /* leave link as-is if unparseable */ }
+  });
+})();
+</script>
+
+<!-- ============ SIGNUP FORM behaviour — components/signup-form.html ============
+     Validate -> dataLayer push -> Make.com webhook -> redirect on HTTP 200.
+     The conversion event fires once per page even if the webhook is retried,
+     and carries an event_id shared with the webhook payload so the browser
+     and server-side copies of the event can be deduplicated. -->
+<script>
+(function () {
+  'use strict';
+
+  /* =========================================================
+     CONFIG
+     ========================================================= */
+  var MEF_CONFIG = {
+    webhookUrl:    'https://hook.us2.make.com/lu29bwvcsii6wgxbabkc15c3npj8z9py',
+
+    // TEMPORARY (2026-08-27): the thank-you page is still being decided,
+    // so successful signups land on the homepage. Swap for the Circle
+    // invitation / welcome URL once chosen.
+    redirectUrl:   'https://marketeye.io/',
+
+    // Stape custom loader can rename the dataLayer. If yours is renamed,
+    // put the custom name here so the push lands in the right array.
+    dataLayerName: 'dataLayer',
+
+    // Carry fbclid / utm_* through to the redirect destination, matching
+    // the lp-community-cta forwarding in the script above.
+    forwardQueryParams: true,
+
+    // true  -> text/plain body (a "simple" request: no CORS preflight)
+    // false -> application/json (sends an OPTIONS preflight first)
+    // Flip to true if the browser console reports a preflight/CORS failure.
+    simpleRequest: false,
+
+    timeoutMs: 15000
+  };
+
+  var form = document.getElementById('mef-form');
+  if (!form) return;
+
+  var btn        = document.getElementById('mef-submit');
+  var statusEl   = document.getElementById('mef-status');
+  var firstEl    = document.getElementById('mef-first');
+  var lastEl     = document.getElementById('mef-last');
+  var emailEl    = document.getElementById('mef-email');
+  var consentEl  = document.getElementById('mef-consent');
+  var consentBox = consentEl.closest('.mef__field--consent');
+  var hpEl       = document.getElementById('mef-company');
+
+  var EMAIL_RE  = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+  var submitting = false;
+  var conversionPushed = false;   // a retry must never fire a second conversion
+  var eventId = null;             // stable across retries for CAPI dedup
+
+  /* ---------- helpers ---------- */
+  function setError(input, errId, show, msg) {
+    var err = document.getElementById(errId);
+    if (msg && err) err.textContent = msg;
+    if (err) err.hidden = !show;
+    if (input.type === 'checkbox') {
+      if (consentBox) consentBox.setAttribute('data-invalid', show ? 'true' : 'false');
+    } else {
+      if (show) input.setAttribute('aria-invalid', 'true');
+      else input.removeAttribute('aria-invalid');
+    }
+  }
+
+  function setStatus(msg, state) {
+    statusEl.textContent = msg || '';
+    if (state) statusEl.setAttribute('data-state', state);
+    else statusEl.removeAttribute('data-state');
+  }
+
+  function setLoading(on) {
+    btn.disabled = on;
+    btn.classList.toggle('is-loading', on);
+    btn.setAttribute('aria-busy', on ? 'true' : 'false');
+    [firstEl, lastEl, emailEl, consentEl].forEach(function (el) { el.disabled = on; });
+  }
+
+  function getCookie(name) {
+    var m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return m ? decodeURIComponent(m.pop()) : '';
+  }
+
+  function makeEventId() {
+    if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+    return 'mef-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  }
+
+  function attribution() {
+    var q = new URLSearchParams(window.location.search);
+    var fbclid = q.get('fbclid') || '';
+    var fbc = getCookie('_fbc');
+    if (!fbc && fbclid) fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+    return {
+      page_url:     window.location.href,
+      page_path:    window.location.pathname,
+      referrer:     document.referrer || '',
+      fbclid:       fbclid,
+      fbp:          getCookie('_fbp'),
+      fbc:          fbc,
+      utm_source:   q.get('utm_source')   || '',
+      utm_medium:   q.get('utm_medium')   || '',
+      utm_campaign: q.get('utm_campaign') || '',
+      utm_content:  q.get('utm_content')  || '',
+      utm_term:     q.get('utm_term')     || '',
+      user_agent:   navigator.userAgent
+    };
+  }
+
+  function destinationUrl() {
+    var target = MEF_CONFIG.redirectUrl;
+    if (!MEF_CONFIG.forwardQueryParams) return target;
+    var incoming = window.location.search;
+    if (!incoming || incoming.length < 2) return target;
+    try {
+      var dest = new URL(target, window.location.origin);
+      new URLSearchParams(incoming).forEach(function (val, key) {
+        if (!dest.searchParams.has(key)) dest.searchParams.set(key, val);
+      });
+      return dest.toString();
+    } catch (e) {
+      return target;   // unparseable placeholder — leave it alone
+    }
+  }
+
+  /* ---------- validation ---------- */
+  function validate(values) {
+    var firstBad = null;
+
+    var badFirst = values.first_name.length < 1;
+    setError(firstEl, 'mef-first-err', badFirst);
+    if (badFirst && !firstBad) firstBad = firstEl;
+
+    var badLast = values.last_name.length < 1;
+    setError(lastEl, 'mef-last-err', badLast);
+    if (badLast && !firstBad) firstBad = lastEl;
+
+    var badEmail = !EMAIL_RE.test(values.email);
+    setError(emailEl, 'mef-email-err', badEmail,
+      values.email.length === 0 ? 'Please enter your email address.' : 'Please enter a valid email address.');
+    if (badEmail && !firstBad) firstBad = emailEl;
+
+    var badConsent = !consentEl.checked;
+    setError(consentEl, 'mef-consent-err', badConsent);
+    if (badConsent && !firstBad) firstBad = consentEl;
+
+    return firstBad;   // null when the form is clean
+  }
+
+  /* clear a field's error as soon as the person fixes it */
+  [[firstEl, 'mef-first-err'], [lastEl, 'mef-last-err'], [emailEl, 'mef-email-err']].forEach(function (pair) {
+    pair[0].addEventListener('input', function () {
+      if (pair[0].getAttribute('aria-invalid') === 'true') setError(pair[0], pair[1], false);
+    });
+  });
+  consentEl.addEventListener('change', function () {
+    if (consentEl.checked) setError(consentEl, 'mef-consent-err', false);
+  });
+
+  /* the legal links sit inside a <label>; a click on them must not toggle the box */
+  form.querySelectorAll('.mef__legal').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.stopPropagation(); });
+  });
+
+  /* ---------- submit ---------- */
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (submitting) return;
+
+    var values = {
+      first_name: firstEl.value.trim(),
+      last_name:  lastEl.value.trim(),
+      email:      emailEl.value.trim().toLowerCase()
+    };
+
+    var firstBad = validate(values);
+    if (firstBad) {
+      setStatus('Please check the highlighted fields.', 'error');
+      firstBad.focus();
+      return;
+    }
+
+    if (hpEl && hpEl.value) return;   // bot — fail silently, no event, no webhook
+
+    submitting = true;
+    setStatus('', null);
+    setLoading(true);
+
+    /* --- 1. dataLayer push — fires only after validation passes, only once --- */
+    if (!conversionPushed) {
+      eventId = makeEventId();
+      var dlName = MEF_CONFIG.dataLayerName || 'dataLayer';
+      window[dlName] = window[dlName] || [];
+      window[dlName].push({
+        'event': 'free_member_signup',
+        'user_email': values.email,
+        'user_first_name': values.first_name,
+        'user_last_name': values.last_name,
+        'event_id': eventId          // server-side / CAPI deduplication key
+      });
+      conversionPushed = true;
+    }
+
+    /* --- 2. webhook --- */
+    var payload = Object.assign({
+      event: 'free_member_signup',
+      event_id: eventId,
+      first_name: values.first_name,
+      last_name: values.last_name,
+      email: values.email,
+      consent: true,
+      consent_text: 'Accepted Terms of Service and Privacy Policy',
+      submitted_at: new Date().toISOString()
+    }, attribution());
+
+    var controller = ('AbortController' in window) ? new AbortController() : null;
+    var timer = controller ? setTimeout(function () { controller.abort(); }, MEF_CONFIG.timeoutMs) : null;
+
+    fetch(MEF_CONFIG.webhookUrl, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-store',
+      keepalive: true,
+      headers: MEF_CONFIG.simpleRequest
+        ? { 'Content-Type': 'text/plain;charset=UTF-8' }
+        : { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined
+    })
+    .then(function (res) {
+      if (timer) clearTimeout(timer);
+      if (res.status !== 200) throw new Error('Webhook responded ' + res.status);
+
+      setStatus('You’re in. Taking you to the community…', 'ok');
+
+      var dest = destinationUrl();
+      if (!dest || dest.indexOf('REPLACE_WITH') === 0) {
+        console.error('[MarketEye signup] MEF_CONFIG.redirectUrl is not set - redirect skipped.');
+        setStatus('You’re in. Check your inbox for your access link.', 'ok');
+        setLoading(false);          // no redirect coming — don't spin forever
+        btn.disabled = true;        // but the conversion already fired: no re-submit
+        return;
+      }
+      window.location.href = dest;
+    })
+    .catch(function (err) {
+      if (timer) clearTimeout(timer);
+      submitting = false;
+      setLoading(false);
+      console.error('[MarketEye signup]', err);
+      setStatus('Something went wrong on our end. Please tap the button again.', 'error');
+      btn.focus();
+    });
   });
 })();
 </script>
