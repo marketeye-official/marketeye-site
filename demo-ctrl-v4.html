@@ -449,6 +449,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 @media (min-width:40rem){ .close{ padding-block:4.75rem; } }
 @media (min-width:64rem){ .close{ padding-block:6.25rem; } }
 @media (min-width:80rem){ .close{ padding-block:7rem; } }
+/* every CTA is now an in-page jump to the close bookend. Offset the target
+   by the sticky bar's height so the section top doesn't land underneath it. */
+#signup{ scroll-margin-top:3.5rem; }
+html{ scroll-behavior:smooth; }
+/* the blanket reduced-motion reset below covers transitions and animations,
+   not scroll-behavior — it needs its own opt-out. */
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+
 .close h2{ font-size:clamp(2rem,5.2vw,3.25rem); }
 .close .lead{ max-width:36rem; margin:1rem auto 0; font-size:1.25rem; color:var(--white); }
 .close .cta-row{ margin-top:2rem; }
@@ -703,7 +711,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <img class="bar__logo"
          src="https://raw.githubusercontent.com/marketeye-official/marketeye-site/refs/heads/main/assets/images/MarketEye-Logo-1.03c-Gradient-horizontal%20(1).png"
          alt="MarketEye" width="180" height="34" decoding="async">
-    <a class="btn btn--bar lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+    <a class="btn btn--bar lp-community-cta" href="#signup">
       Join Free <span class="btn__arrow" aria-hidden="true">&rarr;</span>
     </a>
   </div>
@@ -722,7 +730,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
         <h1>Your business was supposed to give you freedom</h1>
         <p class="hero__sub">Somewhere along the way, the calendar started running you. Here&rsquo;s how to take back control &mdash; starting with the systems most owners never build.</p>
         <div class="hero__cta">
-          <a class="btn btn--lg lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+          <a class="btn btn--lg lp-community-cta" href="#signup">
             Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -777,7 +785,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
         <!-- CTA sits inside the copy column, aligned to its text: the reader now
              knows what this is and what it isn't, and it holds the cadence. -->
         <div class="cta-row">
-          <a class="btn lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+          <a class="btn lp-community-cta" href="#signup">
             Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -876,7 +884,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
            came to 1759px, past the ~1500px ceiling. This is also where the CTA
            is earned rather than merely due — the tenure claim just landed. -->
       <div class="cta-row">
-        <a class="btn lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+        <a class="btn lp-community-cta" href="#signup">
           Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
         </a>
       </div>
@@ -922,7 +930,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <p class="rail__end"><strong>Twenty lessons across four modules</strong> &mdash; plus a discussion space where members work through the same material, and somewhere to ask questions. Self-paced. Nothing to sit through.</p>
 
       <div class="cta-row">
-        <a class="btn lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+        <a class="btn lp-community-cta" href="#signup">
           Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
         </a>
       </div>
@@ -950,7 +958,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
         </li>
       </ul>
       <div class="cta-row">
-        <a class="btn lp-community-cta" href="https://www.skool.com/marketeye-8941/about">
+        <a class="btn lp-community-cta" href="#signup">
           Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
         </a>
       </div>
@@ -985,12 +993,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
        not a link out: the close is the page's single capture point.
        Card runs as .mef--bare — the section's own h2 and lead stand in
        for the component's heading block, so the copy isn't said twice. -->
-  <section class="close" aria-labelledby="close-h">
+  <section class="close" id="signup" aria-labelledby="close-h">
     <div class="wrap">
       <h2 id="close-h">Take back control of your time</h2>
       <p class="lead">Join the free community and start with the foundations.</p>
 
-      <div class="mef mef--bare" id="signup">
+      <div class="mef mef--bare">
         <div class="mef__wrap">
           <div class="mef__card">
             <form class="mef__form" id="mef-form" novalidate autocomplete="on">
@@ -1119,6 +1127,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   var incomingParams = new URLSearchParams(incoming);
   document.querySelectorAll('a.lp-community-cta').forEach(function (a) {
     try {
+      // In-page anchors are skipped. `new URL('#signup', origin)` resolves to
+      // the site ROOT plus the fragment, so forwarding here would rewrite every
+      // CTA into a link to the homepage instead of a jump to the form.
+      var raw = a.getAttribute('href') || '';
+      if (raw.charAt(0) === '#') return;
       var dest = new URL(a.href, window.location.origin);
       incomingParams.forEach(function (val, key) {
         if (!dest.searchParams.has(key)) dest.searchParams.set(key, val); // don't overwrite CTA-set params
@@ -1144,10 +1157,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   var MEF_CONFIG = {
     webhookUrl:    'https://hook.us2.make.com/lu29bwvcsii6wgxbabkc15c3npj8z9py',
 
-    // TEMPORARY (2026-08-27): the thank-you page is still being decided,
-    // so successful signups land on the homepage. Swap for the Circle
-    // invitation / welcome URL once chosen.
-    redirectUrl:   'https://marketeye.io/',
+    // Circle community welcome destination.
+    redirectUrl:   'https://learn.marketeye.io/c/community-guidelines',
 
     // Stape custom loader can rename the dataLayer. If yours is renamed,
     // put the custom name here so the push lands in the right array.
