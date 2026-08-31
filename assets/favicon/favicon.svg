@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MarketEye favicon — derived from MarketEye-Icon.svg (brand master, unmodified).
+  Two deliberate differences from the master:
+    1. Square viewBox with ~10% safe margin. The master is 508.19 × 449.82;
+       a non-square viewBox gets squeezed into the square box a favicon is
+       rendered into, which stretched the mark ~13% vertically.
+    2. prefers-color-scheme: dark lifts the indigo half of the ramp toward
+       periwinkle. The master's #332f82 computes at 1.07:1 against Chrome's
+       dark tab strip (#35363A) — effectively invisible. #8B79D6 gives 3.34:1.
+  Raster fallbacks (favicon.ico, apple-touch-icon.png) cannot be theme-aware,
+  so they carry a white chip instead. See docs/workflow-lp-technical.md.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-55.9 -85.09 620 620">
+  <defs>
+    <style>
+      .cls-1 { fill: url(#meGrad-3); }
+      .cls-2 { fill: url(#mePupil); }
+      .cls-3 { fill: url(#meGrad); }
+      .cls-4 { fill: url(#meGrad-2); }
+
+      .k0, .k12, .p0 { stop-color: #66cef6; }
+      .k1  { stop-color: #5eb5e3; }
+      .k2  { stop-color: #4e85c1; }
+      .k3  { stop-color: #425fa5; }
+      .k4  { stop-color: #3a4592; }
+      .k5, .k7 { stop-color: #343486; }
+      .k6, .p1 { stop-color: #332f82; }
+      .k8  { stop-color: #394491; }
+      .k9  { stop-color: #425ea4; }
+      .k10 { stop-color: #4e83bf; }
+      .k11 { stop-color: #5db2e1; }
+
+      @media (prefers-color-scheme: dark) {
+        .k1  { stop-color: #6bc7f0; }
+        .k2  { stop-color: #78b2e6; }
+        .k3  { stop-color: #8399dc; }
+        .k4  { stop-color: #8985d6; }
+        .k5, .k7 { stop-color: #8b7cd8; }
+        .k6, .p1 { stop-color: #8b79d6; }
+        .k8  { stop-color: #8783d5; }
+        .k9  { stop-color: #8398db; }
+        .k10 { stop-color: #79afe4; }
+        .k11 { stop-color: #6bc9f1; }
+      }
+    </style>
+
+    <linearGradient id="mePupil" x1="317.46" y1="135.61" x2="273.46" y2="231.72" gradientUnits="userSpaceOnUse">
+      <stop offset="0" class="p0"/>
+      <stop offset="1" class="p1"/>
+    </linearGradient>
+
+    <linearGradient id="meGrad" x1="111.38" y1="25.2" x2="372.03" y2="429.9" gradientUnits="userSpaceOnUse">
+      <stop offset="0"   class="k0"/>
+      <stop offset=".05" class="k1"/>
+      <stop offset=".16" class="k2"/>
+      <stop offset=".26" class="k3"/>
+      <stop offset=".36" class="k4"/>
+      <stop offset=".45" class="k5"/>
+      <stop offset=".51" class="k6"/>
+      <stop offset=".57" class="k7"/>
+      <stop offset=".66" class="k8"/>
+      <stop offset=".75" class="k9"/>
+      <stop offset=".84" class="k10"/>
+      <stop offset=".95" class="k11"/>
+      <stop offset="1"   class="k12"/>
+    </linearGradient>
+
+    <linearGradient id="meGrad-2" x1="134.65" y1="10.21" x2="395.3" y2="414.91" xlink:href="#meGrad"/>
+    <linearGradient id="meGrad-3" x1="123.88" y1="17.15" x2="384.53" y2="421.84" xlink:href="#meGrad"/>
+  </defs>
+
+  <ellipse class="cls-2" cx="293.35" cy="188.28" rx="54.78" ry="58.2"/>
+  <path class="cls-3" d="M109.77,376.56l1.9-.57c-38.79-19.25-67.9-50.64-79.19-90.85C7.82,197.42,76.95,101.25,186.96,70.24c91.67-25.84,185.5,20.83,220.97,92.37,10.85,21.88,12.97,50.71,12.23,75.12-.49,16.12-2.68,36.18-9.49,54.04l1.9-.57c30.54-45.62,42.11-100.52,27.12-153.54C410.3,33.26,289.48-24.02,169.89,9.65,50.31,43.31-22.91,155.31,6.49,259.63c14.98,53.11,53.39,93.89,103.27,116.93Z"/>
+  <path class="cls-4" d="M440.56,127.48c22.21,19.76,37.74,45.08,43.11,74.35,15.44,83.48-56.94,166.87-161.79,186.26-104.75,19.39-202.26-32.56-217.69-116.05-5.36-29.18,0-58.35,13.65-84.8l-3.29.66c-20.52,34.92-29.08,75.39-21.55,116.05,18.35,99.39,125.65,162.92,239.53,141.83,113.88-21.08,191.34-118.78,172.99-218.16-7.53-40.75-29.93-75.39-61.65-100.7l-3.29.56Z"/>
+  <path class="cls-1" d="M398.2,250.7c-4.14,10.81-10.43,20.68-18.8,29.14-39.67,39.67-112.05,31.49-161.77-18.24-49.73-49.73-57.9-122.11-18.24-161.77,8.37-8.37,18.33-14.66,29.14-18.8l-2.91-2.91c-17.77,4.98-34.12,14.1-47.66,27.64-47.19,47.19-48.97,137.76,5.08,191.81,54.05,54.05,143.44,51,190.63,3.81,13.54-13.54,22.65-29.89,27.64-47.66l-3.1-3.01Z"/>
+</svg>
