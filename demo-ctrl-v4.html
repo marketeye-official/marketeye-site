@@ -681,6 +681,10 @@ html{ scroll-behavior:smooth; }
    was dropping Last Name a full row below First Name */
 .mef__row .mef__field + .mef__field{ margin-top:0; }
 
+/* Required marker. aria-hidden because the inputs already carry `required`
+   and aria-required — a screen reader announces "required" from those, and an
+   exposed asterisk would only add "star" to every field name. */
+.mef__req{ color:var(--mef-danger); margin-left:.15rem; font-weight:700; }
 .mef__label{
   display:block; margin-bottom:.4rem;
   font-family:var(--mef-head); font-size:.8125rem; font-weight:700;
@@ -747,6 +751,44 @@ html{ scroll-behavior:smooth; }
 .mef__legal:hover{ color:var(--mef-white); }
 .mef__legal:focus-visible{ outline:2px solid var(--mef-cyan); outline-offset:2px; border-radius:2px; }
 .mef__field--consent[data-invalid="true"] .mef__check{ outline:2px solid var(--mef-danger); outline-offset:3px; }
+/* Domain typo suggestion. A tinted callout, not caption text: it is revealed
+   while the agreement modal is covering it, so it has to hold attention once
+   the modal closes. Cyan, never red — nothing is wrong, and an error colour
+   here would make a correct address look broken. */
+.mef__suggest{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .6rem;
+  margin:.65rem 0 0; padding:.7rem .8rem;
+  background:rgba(0,200,255,0.08);
+  border:1px solid rgba(0,200,255,0.32);
+  border-left:3px solid var(--mef-cyan);
+  border-radius:.5rem;
+  font-size:.9375rem; line-height:1.4; color:var(--mef-white);
+}
+.mef__suggest[hidden]{ display:none; }
+.mef__suggest-icon{ flex:0 0 auto; width:1.15rem; height:1.15rem; color:var(--mef-cyan); }
+.mef__suggest-txt{ flex:0 0 auto; }
+.mef__suggest-btn{
+  font:inherit; font-weight:700;
+  color:var(--mef-navy); background:var(--mef-cyan);
+  border:0; border-radius:.375rem;
+  padding:.55rem .75rem; min-height:2.75rem;   /* 44px tap target */
+  cursor:pointer; text-align:left; overflow-wrap:anywhere;
+  transition:filter .18s ease;
+}
+.mef__suggest-btn:hover{ filter:brightness(1.12); }
+.mef__suggest-btn:focus-visible{ outline:2px solid var(--mef-white); outline-offset:2px; }
+
+/* One pulse when the agreement modal closes and the callout becomes visible
+   for the first time. Fires there rather than on reveal, because on reveal it
+   is behind the dialog and nobody would see it. */
+@keyframes mef-suggest-pop{
+  0%   { box-shadow:0 0 0 0 rgba(0,200,255,0.55); }
+  70%  { box-shadow:0 0 0 8px rgba(0,200,255,0); }
+  100% { box-shadow:0 0 0 0 rgba(0,200,255,0); }
+}
+.mef__suggest.is-fresh{ animation:mef-suggest-pop .75s ease-out 2; }
+@media (prefers-reduced-motion:reduce){ .mef__suggest.is-fresh{ animation:none; } }
+
 .mef__consent-help{ margin:.5rem 0 0 2rem; font-size:.8125rem; line-height:1.45; color:var(--mef-ink-3); }
 
 .mef__err{ margin:.45rem 0 0; font-size:.875rem; line-height:1.45; color:var(--mef-danger); }
@@ -1395,7 +1437,7 @@ html{ scroll-behavior:smooth; }
 
               <div class="mef__row">
                 <div class="mef__field">
-                  <label class="mef__label" for="mef-first">First name</label>
+                  <label class="mef__label" for="mef-first">First name<span class="mef__req" aria-hidden="true">*</span></label>
                   <input class="mef__input" id="mef-first" name="first_name" type="text"
                          autocomplete="given-name" autocapitalize="words" spellcheck="false"
                          placeholder="Jane" required
@@ -1404,7 +1446,7 @@ html{ scroll-behavior:smooth; }
                 </div>
 
                 <div class="mef__field">
-                  <label class="mef__label" for="mef-last">Last name</label>
+                  <label class="mef__label" for="mef-last">Last name<span class="mef__req" aria-hidden="true">*</span></label>
                   <input class="mef__input" id="mef-last" name="last_name" type="text"
                          autocomplete="family-name" autocapitalize="words" spellcheck="false"
                          placeholder="Doe" required
@@ -1414,12 +1456,20 @@ html{ scroll-behavior:smooth; }
               </div>
 
               <div class="mef__field">
-                <label class="mef__label" for="mef-email">Email address</label>
+                <label class="mef__label" for="mef-email">Email address<span class="mef__req" aria-hidden="true">*</span></label>
                 <input class="mef__input" id="mef-email" name="email" type="email"
                        autocomplete="email" autocapitalize="off" spellcheck="false"
                        inputmode="email" placeholder="jane@example.com" required
                        aria-required="true" aria-describedby="mef-email-err">
-                <p class="mef__err" id="mef-email-err" hidden>Please enter a valid email address.</p>
+                <p class="mef__err" id="mef-email-err" hidden>Please double-check your email address.</p>
+                <!-- Advisory only. Never blocks submission, and only appears on blur —
+                     never mid-typing — so it cannot interrupt someone entering an
+                     address. aria-live so it is announced when it appears. -->
+                <div class="mef__suggest" id="mef-email-suggest" hidden aria-live="polite">
+                  <svg class="mef__suggest-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 5.6v5.4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="10" cy="14.2" r="1" fill="currentColor"/></svg>
+            <span class="mef__suggest-txt">Did you mean:</span>
+                  <button type="button" class="mef__suggest-btn" id="mef-email-suggest-btn"></button>
+                </div>
               </div>
 
               <!-- Honeypot. Off-screen rather than display:none or type=hidden —
@@ -2016,6 +2066,8 @@ html{ scroll-behavior:smooth; }
   var consentEl  = document.getElementById('mef-consent');
   var consentBox = consentEl.closest('.mef__field--consent');
   var hpEl       = document.getElementById('mef-hp');
+  var suggestBox = document.getElementById('mef-email-suggest');
+  var suggestBtn = document.getElementById('mef-email-suggest-btn');
   var openLink   = document.getElementById('mef-open-tos');
 
   /* ---------- agreement modal ---------- */
@@ -2103,6 +2155,114 @@ html{ scroll-behavior:smooth; }
 
   function dwell() {
     return openedAt ? Date.now() - openedAt : 0;
+  }
+
+  /* ---------- email domain typo suggestion ----------
+     Deliberately NOT exhaustive. A long list buys little extra coverage and
+     costs false positives, and a wrong suggestion is worse than a missed one:
+     it invites someone to break an address that was already correct. These
+     are the domains real typos actually land on, weighted for a US audience
+     in its 40s and 50s — the ISP addresses still carry that group. */
+  var MEF_DOMAINS = [
+    'gmail.com', 'googlemail.com', 'yahoo.com', 'ymail.com', 'hotmail.com',
+    'outlook.com', 'live.com', 'msn.com', 'aol.com', 'icloud.com', 'me.com',
+    'mac.com', 'comcast.net', 'verizon.net', 'att.net', 'sbcglobal.net',
+    'bellsouth.net', 'cox.net', 'charter.net', 'roadrunner.com', 'rr.com',
+    'earthlink.net', 'optonline.net', 'juno.com', 'protonmail.com',
+    'proton.me', 'mail.com', 'zoho.com', 'gmx.com', 'yandex.com'
+  ];
+
+  // Optimal string alignment: Levenshtein plus adjacent transposition, so
+  // "gmial" scores 1 against "gmail" rather than 2. Transposition is the most
+  // common typo there is, and plain Levenshtein would miss every one of them
+  // at a threshold of 1.
+  function editDistance(a, b) {
+    var m = a.length, n = b.length, i, j;
+    if (!m) return n;
+    if (!n) return m;
+    var prev2 = [], prev = [], cur = [];
+    for (j = 0; j <= n; j++) prev[j] = j;
+    for (i = 1; i <= m; i++) {
+      cur[0] = i;
+      for (j = 1; j <= n; j++) {
+        var cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+        cur[j] = Math.min(cur[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost);
+        if (i > 1 && j > 1 &&
+            a.charAt(i - 1) === b.charAt(j - 2) &&
+            a.charAt(i - 2) === b.charAt(j - 1)) {
+          cur[j] = Math.min(cur[j], prev2[j - 2] + 1);   // transposition
+        }
+      }
+      prev2 = prev.slice();
+      prev = cur.slice();
+    }
+    return prev[n];
+  }
+
+  // Returns a corrected address, or '' when there is nothing worth suggesting.
+  function suggestEmail(email) {
+    var at = email.lastIndexOf('@');
+    if (at < 1) return '';
+    var domain = email.slice(at + 1);
+    if (!domain) return '';
+    // Never second-guess a domain that is itself on the list, and never touch
+    // one that is nowhere near it — a company or bespoke domain must pass
+    // through untouched.
+    if (MEF_DOMAINS.indexOf(domain) > -1) return '';
+
+    // Right name, wrong TLD — "comcast.com" for "comcast.net". Edit distance
+    // cannot reach this (com->net is three substitutions) and raising the
+    // threshold to 3 would make everything else fire wrongly. Requiring an
+    // exact match on the name keeps it safe. Common among ISP addresses,
+    // which this audience still uses heavily.
+    // Two-part domains only. Matching on the FIRST dot would read
+    // "hotmail.co.uk" as the name "hotmail" and rewrite a perfectly good
+    // regional address to .com — the precise false positive this feature
+    // must never produce.
+    var dot = domain.indexOf('.');
+    if (dot > 0 && dot === domain.lastIndexOf('.')) {
+      var name = domain.slice(0, dot);
+      for (var k = 0; k < MEF_DOMAINS.length; k++) {
+        var cand = MEF_DOMAINS[k];
+        var cdot = cand.indexOf('.');
+        if (cdot > 0 && cand.slice(0, cdot) === name && cand !== domain) {
+          return email.slice(0, at + 1) + cand;
+        }
+      }
+    }
+
+    // Distance 2 from eight characters up. "gmlia" for "gmail" swaps two
+    // letters that are NOT adjacent, so the transposition rule cannot reach
+    // it and it scores 2 — a threshold of 1 misses one of the commonest typos
+    // there is. Short domains stay at 1: at six or seven characters, distance
+    // 2 is most of the string and starts matching unrelated addresses.
+    var limit = domain.length >= 8 ? 2 : 1;
+    var best = '', bestD = 99;
+    for (var i = 0; i < MEF_DOMAINS.length; i++) {
+      var d = editDistance(domain, MEF_DOMAINS[i]);
+      if (d < bestD) { bestD = d; best = MEF_DOMAINS[i]; }
+    }
+    if (bestD > limit) return '';
+    return email.slice(0, at + 1) + best;
+  }
+
+  function hideSuggestion() {
+    if (suggestBox) suggestBox.hidden = true;
+  }
+
+  // Blur only — never while typing. By the time this fires the person has
+  // moved on to the consent checkbox, so the line appears well before they
+  // reach for the submit button rather than shifting it under their thumb.
+  function offerSuggestion() {
+    if (!suggestBox || !suggestBtn) return;
+    var value = emailEl.value.trim().toLowerCase();
+    // Format errors take precedence; there is no point proposing a domain for
+    // something that is not yet an address.
+    if (!value || !EMAIL_RE.test(value)) { hideSuggestion(); return; }
+    var fixed = suggestEmail(value);
+    if (!fixed || fixed === value) { hideSuggestion(); return; }
+    suggestBtn.textContent = fixed;
+    suggestBox.hidden = false;
   }
 
   function setLoading(on) {
@@ -2376,6 +2536,13 @@ html{ scroll-behavior:smooth; }
       // Every close route lands here, including Esc. Anything that isn't an
       // acceptance is a dismissal.
       if (!acceptedNow) track('community_agreement_dismissed', { dwell_ms: dwell() });
+      // The email suggestion was revealed underneath this dialog, so draw the
+      // eye to it now that it is actually visible.
+      if (suggestBox && !suggestBox.hidden) {
+        suggestBox.classList.remove('is-fresh');
+        void suggestBox.offsetWidth;            // restart the animation
+        suggestBox.classList.add('is-fresh');
+      }
       acceptedNow = false;
       consentEl.focus();
     });
@@ -2509,7 +2676,7 @@ html{ scroll-behavior:smooth; }
 
     var badEmail = !EMAIL_RE.test(values.email);
     setError(emailEl, 'mef-email-err', badEmail,
-      values.email.length === 0 ? 'Please enter your email address.' : 'Please enter a valid email address.');
+      values.email.length === 0 ? 'Please enter your email address.' : 'Please double-check your email address.');
     if (badEmail) bad.push(emailEl);
 
     var badConsent = !consentEl.checked || !consent;
@@ -2517,6 +2684,47 @@ html{ scroll-behavior:smooth; }
     if (badConsent) bad.push(consentEl);
 
     return bad;
+  }
+
+  // Revealing the line the instant the field blurs reflows everything below it
+  // by ~50px BETWEEN mousedown and mouseup, so the control being clicked —
+  // almost always the consent checkbox, which sits directly underneath — slides
+  // out from under the pointer and never receives its click. The modal then
+  // fails to open until a second click. So: hold the reveal until the click
+  // that moved focus has finished dispatching. The document listener covers
+  // pointer input; the timer covers Tab, where no click ever arrives.
+  var suggestTimer = null;
+
+  function scheduleSuggestion() {
+    clearTimeout(suggestTimer);
+    suggestTimer = setTimeout(function () { suggestTimer = null; offerSuggestion(); }, 400);
+  }
+  function flushSuggestion() {
+    if (!suggestTimer) return;
+    clearTimeout(suggestTimer);
+    suggestTimer = null;
+    offerSuggestion();
+  }
+  function cancelSuggestion() {
+    clearTimeout(suggestTimer);
+    suggestTimer = null;
+    hideSuggestion();
+  }
+
+  emailEl.addEventListener('blur', scheduleSuggestion);
+  emailEl.addEventListener('input', cancelSuggestion);
+  // Bubble phase, so the clicked control's own handler has already run.
+  document.addEventListener('click', flushSuggestion);
+
+  if (suggestBtn) {
+    suggestBtn.addEventListener('click', function () {
+      emailEl.value = suggestBtn.textContent;
+      hideSuggestion();
+      setError(emailEl, 'mef-email-err', false);
+      // Focus back to the field, not onward: the person should see the
+      // corrected address sitting in the input they were just doubting.
+      emailEl.focus();
+    });
   }
 
   [[firstEl, 'mef-first-err'], [lastEl, 'mef-last-err'], [emailEl, 'mef-email-err']].forEach(function (pair) {
