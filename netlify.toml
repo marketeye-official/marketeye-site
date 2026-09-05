@@ -1,7 +1,23 @@
 [build]
   command = "rm -rf preview && npm run build"
   publish = "_site"
+# Current Community Agreement version. Bump `to` when a new version is
+# archived. The versioned paths themselves are permanent and are never edited
+# in place, because consent records point at them forever.
 [[redirects]]
   from = "/community-terms"
-  to = "/terms/2026-08-31.1/"
+  to = "/community-terms/2026-09-03.1/"
   status = 302
+
+# The site Terms of Service moved from /terms-of-service/ to /terms/ once the
+# permalink started applying (see eleventy.config.js). Six pages still link to
+# the old path, and one of them is inside a consent statement.
+[[redirects]]
+  from = "/terms-of-service"
+  to = "/terms/"
+  status = 301
+
+[[redirects]]
+  from = "/terms-of-service/*"
+  to = "/terms/"
+  status = 301

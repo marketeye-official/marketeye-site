@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Take Back Control of Your Time — MarketEye Free Community</title>
 <meta name="description" content="The business was supposed to give you freedom. MarketEye is a free community teaching how markets actually work, from the beginning — twenty lessons across four modules.">
+<!-- Favicon — site-wide set, identical on every LP. Assets are in the site repo
+     at assets/favicon/ and resolve at this path in Live Server, the GitHub Pages
+     preview, and Netlify production. See workflow-lp-technical.md, "Favicon". -->
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -120,7 +126,14 @@ h3{ font-size:1.25rem; font-weight:700; line-height:1.25; }
 }
 .skip:focus{ left:0; }
 
-/* ---------- sticky header (logo left, CTA right — no nav) ---------- */
+/* ---------- sticky header (logo left, anchor nav center, CTA right) ----------
+   Nav is the opt-in exception in workflow-lp-standards.md, "One page, one
+   goal": same-page anchors only, never outbound, so it cannot leak the click.
+   This page qualifies on length — six content sections between the bookends.
+   DESKTOP ONLY. Below 64rem it is display:none, and there is no hamburger:
+   on a phone a row of anchors competes with the one tap target that matters,
+   and the bar has no width for both — the CTA's own arrow already drops at
+   26rem to fit. The mobile answer is that the nav isn't there. */
 .bar{
   position:sticky; top:0; z-index:50;
   background:rgba(5,15,40,.94);
@@ -136,6 +149,24 @@ h3{ font-size:1.25rem; font-weight:700; line-height:1.25; }
    bar without overflowing — Brand Guide §8 sets 24px as the logo floor. */
 .bar__logo{ height:24px; width:auto; display:block; }
 @media (min-width:40rem){ .bar__logo{ height:34px; } }
+
+.bar__nav{ display:none; }
+@media (min-width:64rem){
+  .bar__nav{
+    display:flex; align-items:center; gap:.35rem;
+    margin-inline:auto;                /* centers between logo and CTA */
+  }
+  .bar__nav a{
+    display:inline-flex; align-items:center; min-height:44px;
+    padding:0 .8rem; border-radius:.5rem;
+    font-family:var(--head); font-size:1rem; font-weight:600;
+    color:var(--ink-2);                /* 12.43:1 on navy */
+    text-decoration:none; white-space:nowrap;
+    transition:color .18s ease, background-color .18s ease;
+  }
+  .bar__nav a:hover{ color:var(--white); background:rgba(255,255,255,.07); }
+}
+@media (prefers-reduced-motion:reduce){ .bar__nav a{ transition:none; } }
 
 /* ---------- buttons ----------
    Label is 1.1875rem / 800 so the gradient's 40% stop clears its
@@ -409,29 +440,90 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 }
 
 /* ============================================================
-   FAQ — single vertical accordion, at every viewport (§6).
-   58rem is centered and outside the reading band, so it is a
-   container, not a measure; the ANSWER prose carries the measure.
+   FAQ — the standard component, components/faq.html.
+   Pasted verbatim and merged into this stylesheet, same as the
+   signup form's .mef block below. DO NOT hand-edit the rules or
+   the copy here: change the component, then re-paste. The four
+   baselines are locked wording (workflow-lp-build.md).
+   Answers carry no measure on purpose — full reasoning and its
+   limit are in the component header and in
+   workflow-lp-technical.md, "FAQ accordion".
    ============================================================ */
-.faq{ max-width:58rem; margin:1.75rem auto 0; }
-.faq details{ border-bottom:1px solid var(--line); }
-.faq details:first-child{ border-top:1px solid var(--line); }
-.faq summary{
+.mfaq, .mfaq *, .mfaq *::before, .mfaq *::after{ box-sizing:border-box; }
+
+.mfaq{
+  --mfaq-white:  var(--white,  #FFFFFF);
+  --mfaq-ink-2:  var(--ink-2,  #C9D8F2);
+  --mfaq-cyan:   var(--cyan,   #00C8FF);
+  --mfaq-line:   var(--line,   rgba(255,255,255,0.12));
+  --mfaq-head:   var(--head, 'Exo 2', system-ui, -apple-system, sans-serif);
+  --mfaq-body:   var(--body, 'Barlow', system-ui, -apple-system, sans-serif);
+  --mfaq-bar-h:  4rem;
+
+  display:block;
+  padding-block:2.5rem;
+  font-family:var(--mfaq-body);
+  color:var(--mfaq-white);
+  -webkit-text-size-adjust:100%;
+}
+/* tiers kept in step with this page's own section rhythm (2.5 / 3.25 /
+   3.5 / 3.75) — the component ships the same four, and .mfaq outranks
+   `section{}`, so dropping the 80rem tier would sit the FAQ 4px shallower
+   than its neighbours above 1280px. */
+@media (min-width:40rem){ .mfaq{ padding-block:3.25rem; } }
+@media (min-width:64rem){ .mfaq{ padding-block:3.5rem;  } }
+@media (min-width:80rem){ .mfaq{ padding-block:3.75rem; } }
+
+.mfaq__wrap{ max-width:var(--wrap, 75rem); margin-inline:auto; padding-inline:1.25rem; width:100%; }
+
+.mfaq__title{
+  max-width:44rem; margin:0 auto; text-align:center;
+  font-family:var(--mfaq-head);
+  font-size:clamp(1.75rem, 4vw, 2.5rem);
+  font-weight:800; line-height:1.15;
+  color:var(--mfaq-white);
+  text-wrap:balance;
+  overflow-wrap:break-word;
+}
+
+.mfaq__list{ max-width:58rem; margin:1.75rem auto 0; }
+
+.mfaq__item{
+  border-bottom:1px solid var(--mfaq-line);
+  scroll-margin-top:var(--mfaq-bar-h);
+}
+.mfaq__item:first-child{ border-top:1px solid var(--mfaq-line); }
+
+.mfaq__q{
   display:flex; align-items:flex-start; gap:1rem;
   padding:1.25rem .25rem;
   cursor:pointer; list-style:none;
-  font-family:var(--head); font-size:1.1875rem; font-weight:700; line-height:1.35;
-  color:var(--white);
+  font-family:var(--mfaq-head);
+  font-size:1.1875rem; font-weight:700; line-height:1.35;
+  color:var(--mfaq-white);
   min-height:44px;
+  overflow-wrap:break-word;
+  text-wrap:pretty;
 }
-.faq summary::-webkit-details-marker{ display:none; }
-.faq summary::after{
+.mfaq__q::-webkit-details-marker{ display:none; }
+.mfaq__q::after{
   content:"+"; margin-left:auto; flex:0 0 auto;
-  font-size:1.6rem; line-height:1; color:var(--cyan);
+  font-size:1.6rem; line-height:1; color:var(--mfaq-cyan);
 }
-.faq details[open] summary::after{ content:"\2212"; }
-.faq__a{ padding:0 .25rem 1.35rem; }
-.faq__a p{ font-size:1.125rem; color:var(--ink-2); max-width:var(--measure); }
+.mfaq__item[open] .mfaq__q::after{ content:"\2212"; }
+
+.mfaq__q:focus-visible{
+  outline:3px solid var(--mfaq-cyan); outline-offset:3px; border-radius:.375rem;
+}
+
+.mfaq__a{ padding:0 .25rem 1.35rem; }
+.mfaq__a p{
+  margin:0;
+  font-size:1.125rem; line-height:1.6;
+  color:var(--mfaq-ink-2);
+  overflow-wrap:break-word;
+}
+.mfaq__a p + p{ margin-top:.75rem; }
 
 /* ============================================================
    FINAL CTA — bookend exemption, and it uses it: more vertical
@@ -449,9 +541,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 @media (min-width:40rem){ .close{ padding-block:4.75rem; } }
 @media (min-width:64rem){ .close{ padding-block:6.25rem; } }
 @media (min-width:80rem){ .close{ padding-block:7rem; } }
-/* every CTA is now an in-page jump to the close bookend. Offset the target
-   by the sticky bar's height so the section top doesn't land underneath it. */
-#signup{ scroll-margin-top:3.5rem; }
+/* Every CTA and every header-nav link is an in-page jump. Offset each target
+   by the sticky bar's height so the section top doesn't land underneath it.
+   Applied to all anchor targets, not just #signup, now that the nav exists.
+   Individual FAQ items carry their own clearance via --mfaq-bar-h in the
+   component block above — deliberately not restated here. */
+#signup,
+section[id]{ scroll-margin-top:4rem; }
 html{ scroll-behavior:smooth; }
 /* the blanket reduced-motion reset below covers transitions and animations,
    not scroll-behavior — it needs its own opt-out. */
@@ -485,6 +581,9 @@ html{ scroll-behavior:smooth; }
    padding lifts it to 44 without changing how it reads. Worth landing in
    components/footer.html so it stops recurring per build. */
 .mkt-footer__mid a{ color:var(--ink-3); text-decoration:none; display:inline-block; padding-block:.75rem; }
+/* legal links share one row; justify-content:center resolves to a no-op when
+   the mobile rule below shrinks this to content width and left-aligns it */
+.mkt-legal{ display:flex; flex-wrap:wrap; gap:0 1.25rem; justify-content:center; }
 .mkt-footer__mid a:hover{ color:var(--blue); text-decoration:underline; }
 .mkt-connect{ text-align:right; }
 .mkt-connect__label{ font-family:var(--head); font-weight:700; font-size:.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--ink-3); margin-bottom:.7rem; }
@@ -648,10 +747,11 @@ html{ scroll-behavior:smooth; }
 .mef__legal:hover{ color:var(--mef-white); }
 .mef__legal:focus-visible{ outline:2px solid var(--mef-cyan); outline-offset:2px; border-radius:2px; }
 .mef__field--consent[data-invalid="true"] .mef__check{ outline:2px solid var(--mef-danger); outline-offset:3px; }
+.mef__consent-help{ margin:.5rem 0 0 2rem; font-size:.8125rem; line-height:1.45; color:var(--mef-ink-3); }
 
 .mef__err{ margin:.45rem 0 0; font-size:.875rem; line-height:1.45; color:var(--mef-danger); }
 .mef__err[hidden]{ display:none; }
-.mef__status{ margin:.9rem 0 0; font-size:.9375rem; line-height:1.5; }
+.mef__status{ margin:.9rem 0 0; font-size:.9375rem; line-height:1.5; min-height:0; }
 .mef__status:empty{ display:none; }
 .mef__status[data-state="error"]{ color:var(--mef-danger); }
 .mef__status[data-state="ok"]{ color:var(--mef-ok); }
@@ -688,6 +788,15 @@ html{ scroll-behavior:smooth; }
 @keyframes mef-spin{ to{ transform:rotate(360deg); } }
 
 @media (prefers-reduced-motion:reduce){
+  /* Redundant on this page — the global block above already carries
+     `*{ transition:none !important }`, which is stronger. Kept so the paste
+     stays faithful to components/signup-form.html, which cannot assume a
+     host page has one. */
+  .mef *{ transition-duration:.01ms !important; }
+  /* NOT redundant: this page's global rule targets `.btn:hover`, and
+     .mef__btn is a different class, so the button's hover lift survived
+     reduced-motion until this rule was added. */
+  .mef__btn:hover:not(:disabled){ transform:none; }
   /* this page's blanket `animation:none !important` above would freeze the
      ring mid-arc, which reads as a hung form. Drop it; the button label
      still says what is happening. */
@@ -699,6 +808,253 @@ html{ scroll-behavior:smooth; }
 .mef--bare .mef__wrap{ padding-inline:0; max-width:none; }
 .mef--bare .mef__form{ margin-top:0; }
 .mef--bare .mef__card{ margin-top:2rem; }
+
+/* ============ COMMUNITY AGREEMENT MODAL — components/tos-modal.html ============ */
+/* ---------- scoped reset ---------- */
+.mtos, .mtos *, .mtos *::before, .mtos *::after{ box-sizing:border-box; }
+
+.mtos{
+  /* Same token pattern as signup-form.html: inherit the page's brand tokens
+     when present, fall back to the brand-guide values so the partial still
+     renders correctly dropped onto a page that defines none. A <dialog> is
+     promoted to the top layer and sits outside the form's subtree, so it
+     cannot inherit the form's --mef-* values and declares its own. */
+  --mtos-navy:     var(--navy,  #071D49);
+  --mtos-panel:    var(--panel, #0C2758);
+  --mtos-white:    var(--white, #FFFFFF);
+  --mtos-ink-2:    var(--ink-2, #C9D8F2);
+  --mtos-ink-3:    var(--ink-3, #8FA6CF);
+  --mtos-cyan:     var(--cyan,  #00C8FF);
+  --mtos-line:     var(--line,   rgba(255,255,255,0.12));
+  --mtos-line-2:   var(--line-2, rgba(255,255,255,0.20));
+  --mtos-head:     var(--head, 'Exo 2', system-ui, -apple-system, sans-serif);
+  --mtos-body:     var(--body, 'Barlow', system-ui, -apple-system, sans-serif);
+  --mtos-grad-btn: var(--grad-btn, linear-gradient(135deg, rgb(18,114,184) 0%, rgb(43,114,232) 40%, rgb(80,51,195) 100%));
+  --mtos-danger:   #FF9AA2;
+  /* transparent stop for the fade — the panel colour at zero alpha */
+  --mtos-panel-0:  rgba(12,39,88,0);
+
+  padding:0;
+  border:1px solid var(--mtos-line-2);
+  border-radius:.875rem;
+  background:var(--mtos-panel);
+  color:var(--mtos-white);
+  font-family:var(--mtos-body);
+  width:calc(100% - 2rem);
+  max-width:40rem;                 /* 640px desktop panel */
+  max-height:80vh;                 /* fallback for browsers without dvh */
+  max-height:80dvh;
+  overflow:hidden;                 /* the inner scroller owns scrolling */
+  box-shadow:0 1.5rem 3rem rgba(0,0,0,.45);
+}
+/* display:flex only while open — an unconditional display would override the
+   UA's display:none and leave the dialog on screen when closed. */
+.mtos[open]{ display:flex; flex-direction:column; }
+.mtos::backdrop{ background:rgba(3,10,28,.72); }
+
+/* ---------- mobile: full-screen sheet ----------
+   Was a 90dvh bottom sheet pinned with position:fixed, which on iOS Safari
+   let the page behind stay scrollable and show through below the footer,
+   drifted the sheet with the page, and clipped the title. A modal <dialog>
+   is already in the top layer against the viewport and needs no
+   position:fixed. Reasoning in components/tos-modal.html; background
+   scroll is locked in JS too — CSS alone can't do it on iOS. */
+@media (max-width:47.9375rem){
+  .mtos{
+    /* NO VIEWPORT UNITS. inset:0 stretches the box to its containing block —
+       the viewport for a modal dialog — and re-stretches when that changes.
+       100dvh resolved to the URL-bar-expanded height and didn't grow when the
+       bar collapsed, leaving ~124px of page below the footer on a 16 Pro Max.
+       height:auto is load-bearing: a fixed height reintroduces the bug. */
+    inset:0;
+    margin:0;                      /* dialog defaults to margin:auto */
+    width:auto;  max-width:none;
+    height:auto; max-height:none;
+    border:0; border-radius:0;
+  }
+}
+
+/* ---------- head ---------- */
+.mtos__head{ flex:0 0 auto; padding:1.15rem 1.25rem .85rem; border-bottom:1px solid var(--mtos-line); }
+.mtos__title{
+  margin:0; font-family:var(--mtos-head); font-weight:800; line-height:1.18;
+  letter-spacing:-.01em; font-size:1.25rem; color:var(--mtos-white);
+}
+.mtos__stamp{ margin:.35rem 0 0; font-size:.8125rem; color:var(--mtos-ink-3); }
+.mtos__stamp:empty{ display:none; }
+
+/* read-progress bar — primary scroll affordance on mobile, where overlay
+   scrollbars are invisible until a finger is already moving */
+.mtos__progress{ flex:0 0 auto; height:3px; background:rgba(255,255,255,0.10); }
+.mtos__progressbar{
+  height:100%; width:0;
+  background-image:var(--mtos-grad-btn);
+  transition:width .12s linear;
+}
+
+/* ---------- scroll area ---------- */
+/* min-height:0 is what lets this flex child actually shrink and scroll */
+.mtos__scrollwrap{ position:relative; flex:1 1 auto; min-height:0; display:flex; }
+.mtos__scroll{
+  flex:1 1 auto; min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;      /* don't chain scrolling to the page behind */
+  -webkit-overflow-scrolling:touch;
+  /* right padding clears the custom rail */
+  padding:1rem 1.9rem 1.5rem 1.25rem;
+  /* 12px — 15 -> 13 -> 12 across two requests on 2026-09-03. rem, not px, so
+     a raised browser default font size still takes effect. Well below the
+     1rem content floor; recorded as a named exemption in
+     workflow-lp-technical.md rule 1 rather than left as a silent violation. */
+  font-size:.75rem; line-height:1.5; color:var(--mtos-ink-2);
+  /* native scrollbars suppressed in favour of .mtos__rail — iOS overlay
+     scrollbars stay invisible until a finger is already moving */
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.mtos__scroll::-webkit-scrollbar{ display:none; }
+.mtos__scroll:focus-visible{ outline:2px solid var(--mtos-cyan); outline-offset:-2px; }
+
+/* Headings track the body so the ladder survives — 12 / 13 / 14. */
+.mtos__doc h1{
+  font-family:var(--mtos-head); font-size:.875rem; font-weight:800;
+  color:var(--mtos-white); margin:1.25rem 0 .45rem; line-height:1.25;
+}
+.mtos__doc h2{
+  font-family:var(--mtos-head); font-size:.8125rem; font-weight:700;
+  color:var(--mtos-white); margin:1.05rem 0 .35rem; line-height:1.3;
+}
+.mtos__doc > p:first-child{ margin-top:0; }
+.mtos__doc p{ margin:.55rem 0; }
+/* markers restated explicitly: this page's reset carries `ul,ol{list-style:none}`,
+   and the agreement cross-references its own numbered subsections */
+.mtos__doc ul,.mtos__doc ol{ margin:.55rem 0; padding-left:1.35rem; }
+.mtos__doc ul{ list-style:disc; }
+.mtos__doc ol{ list-style:decimal; }
+.mtos__doc li{ margin:.32rem 0; }
+.mtos__doc li ul{ margin:.28rem 0; }
+.mtos__doc strong{ color:var(--mtos-white); }
+.mtos__doc hr{ border:0; border-top:1px solid var(--mtos-line); margin:1.1rem 0; }
+.mtos__doc a{ color:var(--mtos-cyan); text-decoration:underline; text-underline-offset:2px; }
+.mtos__doc a:hover{ color:var(--mtos-white); }
+
+.mtos__sentinel{ height:0; margin:0; padding:0; }
+
+/* ---------- scroll rail ----------
+   Deliberately wide and high-contrast: a reader who doesn't scroll never
+   unlocks the gate and cannot complete signup, so conveying that the
+   document scrolls outweighs restraint. Above the fade so the thumb stays
+   visible at the bottom of the track. Drawn rather than native because iOS
+   overlay scrollbars are hidden until a finger moves. */
+.mtos__rail{
+  position:absolute; top:0; right:0; bottom:0; z-index:2;
+  width:14px;
+  background:rgba(255,255,255,.10);
+  border-left:1px solid var(--mtos-line);
+  touch-action:none;
+}
+.mtos__thumb{
+  position:absolute; left:2px; right:2px; top:0;
+  height:32px; min-height:32px;
+  border-radius:10px;
+  /* ink-2, not ink-3: 7.49:1 against the track versus 4.38:1 — the thumb is
+     the whole "this scrolls" signal, so it takes the brighter value */
+  background:var(--mtos-ink-2);
+  cursor:grab;
+}
+.mtos__thumb:hover,
+.mtos__thumb:active{ background:var(--mtos-white); }
+.mtos__thumb:active{ cursor:grabbing; }
+
+/* fade affordance — sits above the footer, clears once the end is reached.
+   Taller, and now carries an explicit chevron: a gradient alone reads as
+   styling rather than as an instruction, which is why the requirement to
+   scroll wasn't landing on mobile. */
+.mtos__fade{
+  position:absolute; left:0; right:0; bottom:0; height:4rem;
+  pointer-events:none;
+  background:linear-gradient(to bottom, var(--mtos-panel-0), var(--mtos-panel));
+  opacity:1; transition:opacity .2s ease;
+}
+.mtos__fade::after{
+  content:"";
+  position:absolute; left:50%; bottom:.85rem;
+  width:.62rem; height:.62rem;
+  border-right:2px solid var(--mtos-ink-2);
+  border-bottom:2px solid var(--mtos-ink-2);
+  transform:translateX(-50%) rotate(45deg);
+  animation:mtos-nudge 1.9s ease-in-out infinite;
+}
+@keyframes mtos-nudge{
+  0%,100%{ transform:translateX(-50%) rotate(45deg) translate(0,0); opacity:.55; }
+  50%    { transform:translateX(-50%) rotate(45deg) translate(2px,2px); opacity:1; }
+}
+.mtos.is-read .mtos__fade{ opacity:0; }
+
+/* ---------- sticky footer ---------- */
+/* a flex sibling of the scroll area, so it is always on screen and never
+   requires scrolling past the text to reach */
+.mtos__foot{
+  flex:0 0 auto;
+  padding:.85rem 1.25rem 1.1rem;
+  /* No safe-area inset: with inset:0 the sheet fills the visual viewport,
+     which already ends above the browser chrome and home indicator, so
+     env(safe-area-inset-bottom) allowed for the same space twice. */
+  border-top:1px solid var(--mtos-line);
+  background:var(--mtos-panel);
+}
+.mtos__hint{ margin:0 0 .7rem; font-size:.8125rem; line-height:1.45; color:var(--mtos-ink-3); }
+.mtos.is-read .mtos__hint{ color:var(--mtos-ink-2); }
+.mtos__hint[data-state="error"]{ color:var(--mtos-danger); }
+.mtos__actions{ display:flex; gap:.6rem; justify-content:flex-end; }
+
+.mtos__btn{
+  min-height:2.75rem; padding:.7rem 1.35rem;
+  font-family:var(--mtos-head); font-size:1rem; font-weight:800;
+  letter-spacing:.03em; text-transform:uppercase; line-height:1.2;
+  color:var(--mtos-white); background-image:var(--mtos-grad-btn);
+  border:0; border-radius:.5rem; cursor:pointer;
+  transition:opacity .18s ease, transform .18s ease;
+}
+.mtos__btn:hover{ transform:translateY(-1px); }
+.mtos__btn:focus-visible{ outline:3px solid var(--mtos-cyan); outline-offset:2px; }
+/* aria-disabled, not the disabled attribute: the button stays focusable and
+   clickable so it can explain what is still required.
+   Flat desaturated fill rather than an opacity fade (revised 2026-09-03) —
+   the fade dimmed the label too, leaving the locked button reading as the
+   primary action and under the readability floor. Reasoning in
+   components/tos-modal.html; change it there and re-paste. */
+.mtos__btn[aria-disabled="true"]{
+  background-image:none;
+  background-color:rgba(255,255,255,0.10);
+  color:var(--mtos-ink-2);
+  opacity:1;
+  cursor:not-allowed;
+  transform:none;
+}
+.mtos__btn--ghost{
+  background-image:none; background-color:transparent;
+  border:1px solid var(--mtos-line-2); color:var(--mtos-ink-2);
+}
+.mtos__btn--ghost:hover{ color:var(--mtos-white); border-color:var(--mtos-line-2); }
+
+/* Buttons stack only on genuinely narrow phones (<=352px). Was 26rem/416px,
+   which stacked them on a 402px iPhone and spent ~55px of a full-height sheet
+   on a second button row instead of on the agreement — that stacked footer is
+   the "blank space below I Agree". */
+@media (max-width:22rem){
+  .mtos__actions{ flex-direction:column-reverse; }
+  .mtos__btn{ width:100%; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mtos__btn:hover{ transform:none; }
+  .mtos__fade{ transition:none; }
+  /* the chevron stays — it is the affordance; only its motion goes */
+  .mtos__fade::after{ animation:none; opacity:1; }
+  .mtos__progressbar{ transition:none; }
+}
+
 </style>
 </head>
 <body>
@@ -711,6 +1067,17 @@ html{ scroll-behavior:smooth; }
     <img class="bar__logo"
          src="https://raw.githubusercontent.com/marketeye-official/marketeye-site/refs/heads/main/assets/images/MarketEye-Logo-1.03c-Gradient-horizontal%20(1).png"
          alt="MarketEye" width="180" height="34" decoding="async">
+    <!-- Anchor nav: same-page hrefs only, four maximum. Labels come from the
+         canonical set in workflow-lp-standards.md and are NOT invented per
+         build; a link appears only where its section actually exists on this
+         page. All four exist here. Hidden below 64rem in CSS, so it costs a
+         phone reader nothing but the markup. -->
+    <nav class="bar__nav" aria-label="Page sections">
+      <a href="#mechanism">The Approach</a>
+      <a href="#proof">Experience</a>
+      <a href="#inside">What&rsquo;s Inside</a>
+      <a href="#faq">FAQ</a>
+    </nav>
     <a class="btn btn--bar lp-community-cta" href="#signup">
       Join Free <span class="btn__arrow" aria-hidden="true">&rarr;</span>
     </a>
@@ -765,7 +1132,7 @@ html{ scroll-behavior:smooth; }
   </section>
 
   <!-- ============ MECHANISM — split, visual LEFT (the alternation's middle beat) ============ -->
-  <section class="sec--deep" aria-labelledby="mech-h">
+  <section class="sec--deep" id="mechanism" aria-labelledby="mech-h">
     <div class="wrap split split--vleft">
       <div class="split__copy">
         <p class="eyebrow">From control to a skill</p>
@@ -857,7 +1224,7 @@ html{ scroll-behavior:smooth; }
   </section>
 
   <!-- ============ PROOF — split, visual RIGHT (alternation resolves) ============ -->
-  <section class="sec--deep" aria-labelledby="proof-h">
+  <section class="sec--deep" id="proof" aria-labelledby="proof-h">
     <div class="wrap">
       <div class="split">
         <div class="split__copy">
@@ -892,7 +1259,7 @@ html{ scroll-behavior:smooth; }
   </section>
 
   <!-- ============ OFFER BREAKDOWN — LAY-05 rail donor, curriculum-sourced ============ -->
-  <section class="sec--deep" aria-labelledby="curr-h">
+  <section class="sec--deep" id="inside" aria-labelledby="curr-h">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Inside the free community</p>
@@ -966,24 +1333,47 @@ html{ scroll-behavior:smooth; }
   </section>
 
   <!-- ============ FAQ — vertical accordion, both baseline items in order ============ -->
-  <section aria-labelledby="faq-h">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 id="faq-h">Before joining</h2>
-      </div>
-      <div class="faq">
-        <details>
-          <summary>I&rsquo;ve never traded before. Is this really for beginners?</summary>
-          <div class="faq__a">
-            <p>Yes. The community is built for people starting from zero, with lessons and support that assume no prior experience.</p>
+  <!-- ============ FAQ — components/faq.html, pasted verbatim ============
+       Standard component. Copy is the locked baseline set and the markup
+       is the component's: to change either, edit components/faq.html and
+       re-paste, never hand-edit here. No angle-specific additions on this
+       page — the four cover experience, money, time and content, and
+       nothing in the control angle raises an objection they miss. -->
+  <section class="mfaq" id="faq" aria-labelledby="mfaq-title">
+    <div class="mfaq__wrap">
+
+      <h2 class="mfaq__title" id="mfaq-title">Still deciding?</h2>
+
+      <div class="mfaq__list">
+
+        <details class="mfaq__item">
+          <summary class="mfaq__q">I&rsquo;ve never traded before. Is this really for beginners?</summary>
+          <div class="mfaq__a">
+            <p>Yes. The first lessons start with what a market is, who moves price, and why it moves &mdash; before a single chart appears. Nothing prior is assumed.</p>
           </div>
         </details>
-        <details>
-          <summary>Do I need trading experience or a lot of capital to start?</summary>
-          <div class="faq__a">
-            <p>No. Joining the community is free, and the early lessons are built around learning the framework first &mdash; not putting capital on the line.</p>
+
+        <details class="mfaq__item">
+          <summary class="mfaq__q">Do I need money to start?</summary>
+          <div class="mfaq__a">
+            <p>No. Joining is free &mdash; name and email, no payment details, nothing to cancel. The early lessons are built around paper trading, and recommend fifty simulated trades before any real money goes in.</p>
           </div>
         </details>
+
+        <details class="mfaq__item">
+          <summary class="mfaq__q">How much time does this take?</summary>
+          <div class="mfaq__a">
+            <p>No set commitment. The lessons are short and worked through in order, at whatever pace fits around work.</p>
+          </div>
+        </details>
+
+        <details class="mfaq__item">
+          <summary class="mfaq__q">What will I actually learn?</summary>
+          <div class="mfaq__a">
+            <p>You start learning how markets actually work. The lessons build in order rather than jumping between tips, so each one rests on the last &mdash; and the whole path ends somewhere specific rather than trailing off.</p>
+          </div>
+        </details>
+
       </div>
     </div>
   </section>
@@ -1032,26 +1422,47 @@ html{ scroll-behavior:smooth; }
                 <p class="mef__err" id="mef-email-err" hidden>Please enter a valid email address.</p>
               </div>
 
-              <!-- honeypot: hidden from people, attractive to bots -->
+              <!-- Honeypot. Off-screen rather than display:none or type=hidden —
+                   bots skip both. A filled value still shows a success state but
+                   rides along as hp:true so the consent row is discarded upstream. -->
               <div class="mef__hp" aria-hidden="true">
-                <label for="mef-company">Company</label>
-                <input id="mef-company" name="company" type="text" tabindex="-1" autocomplete="off">
+                <label for="mef-hp">Company</label>
+                <input id="mef-hp" name="hp" type="text" tabindex="-1" autocomplete="off">
               </div>
 
+              <!-- Consent. The checkbox stays a real, focusable, `required`
+                   checkbox: with JS off it behaves normally and all three links
+                   are ordinary anchors. With JS on, checking it opens the
+                   agreement modal instead of toggling — consent is recorded only
+                   by reaching the end of the text and pressing "I Agree". -->
               <div class="mef__field mef__field--consent">
                 <div class="mef__consent">
                   <input class="mef__check" id="mef-consent" name="consent" type="checkbox"
-                         required aria-required="true" aria-describedby="mef-consent-err">
+                         required aria-required="true"
+                         aria-describedby="mef-consent-help mef-consent-err">
+                  <!-- Newsletter consent is bundled into this single required
+                       checkbox by decision, so subscribing is a condition of
+                       registering and newsletter_opt_in is true on every row.
+                       It records the wording shown rather than an independent
+                       signal — don't segment on it. -->
+                  <!-- Site ToS deliberately not linked here — it lives in the
+                       footer. The Community Agreement incorporates it by
+                       reference and links it inline eight times. -->
                   <label class="mef__consent-txt" for="mef-consent">
-                    I agree to the
-                    <a class="mef__legal" href="https://marketeye.io/terms-of-service" target="_blank" rel="noopener">Terms of Service</a>
-                    and
-                    <a class="mef__legal" href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
+                    I&rsquo;m 18 or older and a US resident. I agree to the
+                    <a class="mef__legal" id="mef-open-tos" href="https://marketeye.io/community-terms" target="_blank" rel="noopener">Community Agreement</a>,
+                    acknowledge the
+                    <a class="mef__legal" href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>,
+                    and agree to receive the member newsletter.
                   </label>
                 </div>
-                <p class="mef__err" id="mef-consent-err" hidden>Please accept the Terms of Service and Privacy Policy to continue.</p>
+                <p class="mef__consent-help" id="mef-consent-help">Opens the Community Agreement &mdash; read to the end to continue.</p>
+                <p class="mef__err" id="mef-consent-err" hidden>Please read and accept the Community Agreement to continue.</p>
               </div>
 
+              <!-- Never blocked-looking. Fully enabled at all times; clicking it
+                   with anything outstanding validates and shows the error beside
+                   the offending field. -->
               <button class="mef__btn" id="mef-submit" type="submit">
                 <span class="mef__btn-label">Create My Free Account</span>
                 <span class="mef__btn-loading">
@@ -1076,6 +1487,416 @@ html{ scroll-behavior:smooth; }
 
 </main>
 
+<!-- ============================================================
+     MarketEye — Community Agreement modal (scroll-to-agree gate)
+     Reusable partial. Ships alongside components/signup-form.html,
+     which supplies all behaviour; this file is markup + styles only.
+
+     ------------------------------------------------------------
+     VERSIONING — READ BEFORE EDITING THE TEXT BELOW
+     ------------------------------------------------------------
+     The consent record stores the version read off #mtos-doc at the
+     moment the user clicks "I Agree". The record is only meaningful
+     if the text in this file is the text they actually read.
+
+     Whenever the agreement text changes, ALL of the following:
+
+       1. Bump data-tos-version on #mtos-doc (and data-tos-effective).
+       2. Archive the new version at its own path in the site repo,
+          /community-terms/[version]/, and deploy it BEFORE this
+          partial ships. Point data-tos-url at it.
+       3. Update the /community-terms 302 in netlify.toml to the new
+          version so the un-versioned link tracks the current one.
+
+     Published versions are NEVER edited in place. Consent records
+     point at their versioned URL forever; changing the text behind
+     one rewrites what a person is recorded as having agreed to.
+
+     The body text below is copied verbatim from the archived page at
+     data-tos-url — page furniture (title, version stamp, "this page
+     records a specific version" note) removed, agreement text
+     untouched. If the two ever diverge, the consent record cites
+     text the user did not see.
+     ============================================================ -->
+<dialog class="mtos" id="mtos-dialog" aria-labelledby="mtos-title">
+
+  <header class="mtos__head">
+    <h2 class="mtos__title" id="mtos-title">MarketEye Society Community Agreement</h2>
+    <!-- filled from the data attributes below, so the version is stated
+         in exactly one place -->
+    <p class="mtos__stamp" id="mtos-stamp"></p>
+  </header>
+
+  <!-- Read-progress bar. Filled on scroll by the form script if present and
+       skipped if absent — deliberately NOT in its gateAvailable check, so an
+       older paste of the partial degrades rather than disabling the gate. -->
+  <div class="mtos__progress" aria-hidden="true">
+    <div class="mtos__progressbar" id="mtos-progress"></div>
+  </div>
+
+  <div class="mtos__scrollwrap">
+    <div class="mtos__scroll" id="mtos-scroll" tabindex="0" role="region" aria-labelledby="mtos-title">
+      <div class="mtos__doc"
+           id="mtos-doc"
+           data-tos-version="2026-09-03.1"
+           data-tos-effective="2026-09-03"
+           data-tos-url="https://marketeye.io/community-terms/2026-09-03.1/">
+
+  <p>This Agreement consists of two parts: the <strong>Community Agreement</strong>
+  and the <strong>Waiver of Liability &amp; Disclaimer</strong>. Both apply to all
+  Members. Your use of the MarketEye website, your account, and all commercial matters
+  &mdash; pricing, billing, cancellation, and refunds &mdash; are governed by our
+  <a href="https://marketeye.io/terms">Terms of Service</a>.</p>
+
+  <hr>
+
+  <h1>Part I — Community Agreement</h1>
+
+  <p>This Agreement governs all participants (&ldquo;Members&rdquo;) of the MarketEye
+  Society (the &ldquo;Community&rdquo;), operated by MarketEye LLC (&ldquo;Community
+  Operator&rdquo;), including both Mentees and Mentors (paid and unpaid).</p>
+
+  <h2>1. Purpose</h2>
+
+  <p>The Community is an educational platform that facilitates the exchange of
+  knowledge, strategies, and discussions related to futures, forex, stocks, options,
+  and crypto trading. No investment, financial, or tax advice is provided.</p>
+
+  <h2>2. Eligibility &amp; Membership Rights</h2>
+
+  <ul>
+    <li>The Community is a private membership organization.</li>
+
+    <li>Admission is at the sole discretion of the Community Operator.</li>
+
+    <li><strong>Eligibility.</strong> Membership is offered only to individuals who
+    are at least eighteen (18) years of age and who reside in the United States. The
+    Community is not offered or directed to, and may not be joined by, residents of
+    the European Economic Area, the United Kingdom, or Switzerland. By joining, you
+    represent that you meet these requirements. The Community Operator may terminate
+    the membership of any Member who does not.</li>
+
+    <li>The Community reserves the right to deny, suspend, or revoke membership for
+    any reason, including but not limited to conduct, communication, or affiliations
+    inconsistent with the Community&rsquo;s mission and values.</li>
+
+    <li>No applicant or member shall acquire any vested right to membership.</li>
+
+    <li><strong>Membership Tiers.</strong> The Community offers a <strong>Free
+    Membership</strong>, which provides access to designated free educational content
+    at no cost and requires no payment method. Paid Memberships are also offered;
+    their terms and prices are described at the point of purchase. All Sections of
+    this Agreement apply to all Members regardless of tier.</li>
+  </ul>
+
+  <h2>3. Code of Conduct &amp; Community Values</h2>
+
+  <p>To maintain a constructive and respectful environment, all Members agree to
+  uphold the following values:</p>
+
+  <ol>
+    <li><strong>Respect for Equal Rights.</strong> Members must support and respect
+    the principles of equality embodied in the Civil Rights Act of 1964, including
+    nondiscrimination based on race, color, religion, sex, or national origin.</li>
+    <li><strong>Human Dignity.</strong> Members must recognize that all persons,
+    regardless of immigration status, are entitled to basic human rights and to be
+    treated with respect.</li>
+    <li><strong>Constructive Discourse.</strong> Members must avoid advocacy,
+    promotion, or defense of ideologies, public officials, or policies fundamentally
+    inconsistent with these values.</li>
+    <li><strong>Professional Integrity.</strong> Members shall engage with others in
+    good faith, free of harassment, discrimination, or inflammatory political
+    promotion.</li>
+  </ol>
+
+  <p>Violation of these values, or conduct deemed by the Community Operator to
+  undermine them, shall be grounds for denial or revocation of membership.</p>
+
+  <h2>4. No Investment Advice</h2>
+
+  <ul>
+    <li>All content, strategies, and discussions within the Community are for
+    educational purposes only.</li>
+    <li>Mentors and Community operators are not licensed investment advisers,
+    broker-dealers, or commodity trading advisers.</li>
+    <li>Members remain solely responsible for their trading and investment
+    decisions.</li>
+  </ul>
+
+  <h2>5. Assumption of Risk</h2>
+
+  <p>Trading futures, forex, stocks, options, and cryptocurrencies involves
+  substantial risk of loss and may not be suitable for all participants. By joining,
+  Members acknowledge that:</p>
+
+  <ul>
+    <li>They may lose some or all of their capital.</li>
+    <li>They assume full responsibility for their trading and investment
+    decisions.</li>
+  </ul>
+
+  <h2>6. Indemnification</h2>
+
+  <p>Members agree to indemnify, defend, and hold harmless the Community, its
+  operators, and all Mentors (paid or unpaid) from any and all claims, liabilities,
+  damages, or expenses (including attorneys&rsquo; fees) arising from:</p>
+
+  <ol>
+    <li>The Member&rsquo;s trading or investment activities;</li>
+    <li>Reliance on any educational material, strategy, or discussion shared in the
+    Community;</li>
+    <li>Any violation of applicable laws by the Member.</li>
+  </ol>
+
+  <h2>7. Limitation of Liability</h2>
+
+  <p>Neither the Community, its operators, nor its Mentors shall be liable for:</p>
+
+  <ul>
+    <li>Direct, indirect, incidental, consequential, or punitive damages;</li>
+    <li>Losses relating to trading, investments, or profits;</li>
+    <li>Any actions taken in reliance on Community discussions or materials.</li>
+  </ul>
+
+  <p>This Section is subject to the limitations and exclusions set out in the
+  <a href="https://marketeye.io/terms">Terms of Service</a>, including the exceptions
+  for fraud, gross negligence, and willful misconduct.</p>
+
+  <h2>8. Intellectual Property</h2>
+
+  <ul>
+    <li>All Community content (videos, guides, templates, strategies, indicators, and
+    discussions) remains the intellectual property of MarketEye or the respective
+    Mentor.</li>
+    <li>Members may not share, resell, or reproduce Community content outside the
+    platform without prior written consent.</li>
+    <li>The license granted to Members to access and use Community content, and the
+    license Members grant in content they post, are set out in the
+    <a href="https://marketeye.io/terms">Terms of Service</a>.</li>
+  </ul>
+
+  <h2>9. Payments, Subscriptions &amp; Platform Access</h2>
+
+  <p>Membership pricing, billing, automatic renewal, cancellation, and refunds are
+  governed exclusively by Section 4 of the
+  <a href="https://marketeye.io/terms">Terms of Service</a>. Nothing in this Agreement
+  modifies those terms. <strong>If you are a Free Member, no pricing applies to you
+  and you will not be charged.</strong></p>
+
+  <p><strong>Free Members are not charged and are not required to provide a payment
+  method.</strong> Accepting this Agreement does not authorize any charge.</p>
+
+  <p><strong>Platform Access.</strong> The Community is delivered through a third-party
+  platform. MarketEye LLC reserves the right to change the platform provider at any
+  time. Membership will continue uninterrupted regardless of the platform used.</p>
+
+  <h2>10. Governing Law &amp; Dispute Resolution</h2>
+
+  <p>This Agreement is governed by, and disputes arising out of or relating to it are
+  resolved under, Sections 13 (Disputes) and 14 (Governing Law) of the
+  <a href="https://marketeye.io/terms">Terms of Service</a>. Those Sections include an
+  arbitration provision, a class action waiver, and your right to opt out of both
+  within 30 days.</p>
+
+  <h2>11. Non-Compete &amp; Non-Solicitation</h2>
+
+  <ol>
+    <li><strong>Non-Compete (Mentors and Paid Members only).</strong> This subsection
+    applies only to Mentors and to Members holding a Paid Membership. It does not
+    apply to Free Members. During participation in the Community and for a period of
+    twelve (12) months following termination &mdash; or such shorter period as may be
+    deemed reasonable and enforceable under applicable law &mdash; no Mentor or Paid
+    Member shall directly or indirectly establish, operate, or participate in any
+    business, program, or community offering trading education services that are
+    <strong>materially derived from</strong> Community content, curriculum,
+    strategies, indicators, or proprietary materials to which they gained access
+    through the Community. This subsection restricts the use of Community-derived
+    materials and methods; it does not restrict a Member from working in the trading
+    education field generally.</li>
+
+    <li><strong>Non-Solicitation (All Members).</strong> No Member may solicit,
+    divert, or attempt to divert any other Community Member, Mentor, or prospect for
+    purposes of:
+      <ul>
+        <li>Promoting competing trading education programs;</li>
+        <li>Selling products or services outside of those expressly approved by the
+        Community Operator; or</li>
+        <li>Recruiting Members away from the Community.</li>
+      </ul>
+    </li>
+
+    <li><strong>Exceptions.</strong> General business activity not specifically
+    targeted at Community Members (e.g., publishing books, posting on social media, or
+    teaching in unrelated industries) shall not be deemed a violation.</li>
+
+    <li><strong>Jurisdictional Limitation.</strong> Subsection 11.1 does not apply to
+    any Member residing in a jurisdiction in which such restrictions are void,
+    unenforceable, or unlawful to include in an agreement. In such jurisdictions,
+    subsections 11.2 and 11.3 continue to apply in full.</li>
+
+    <li><strong>Enforcement.</strong> Any breach of this Section shall entitle the
+    Community Operator to seek injunctive relief, damages, and termination of
+    membership, in addition to any other remedies available under law.</li>
+  </ol>
+
+  <h2>12. Acknowledgment</h2>
+
+  <p>By checking the acceptance box and creating an account, Members acknowledge they
+  have read, understood, and agreed to this Agreement and to the Waiver of Liability
+  &amp; Disclaimer set out in Part II below.</p>
+
+  <h2>13. Changes to This Agreement</h2>
+
+  <ul>
+    <li>The Community Operator may update this Agreement from time to time. Each
+    version is identified by a version number and effective date.</li>
+    <li>The current version is published at
+    <a href="https://marketeye.io/community-terms">marketeye.io/community-terms</a>.
+    Prior versions remain available at their versioned addresses.</li>
+    <li>Where changes are material, the Community Operator will notify Members by
+    email or through the platform before the changes take effect.</li>
+    <li>Continued participation in the Community after a revised version takes effect
+    constitutes acceptance of that version.</li>
+  </ul>
+
+  <h2>14. Privacy</h2>
+
+  <p>Collection and use of Member information is governed by the MarketEye Privacy
+  Policy, available at
+  <a href="https://marketeye.io/privacy">marketeye.io/privacy</a>, which is
+  incorporated into this Agreement by reference.</p>
+
+  <h2>15. General Provisions</h2>
+
+  <ol>
+    <li><strong>Precedence.</strong> The Community Agreement (Part I) and the Waiver
+    of Liability &amp; Disclaimer (Part II) are intended to be read together. In the
+    event of a conflict between them, the Community Agreement governs. In the event of
+    a conflict between this Agreement and the
+    <a href="https://marketeye.io/terms">Terms of Service</a> on any commercial matter
+    &mdash; pricing, billing, refunds, or dispute resolution &mdash; the Terms of
+    Service govern.</li>
+    <li><strong>Severability.</strong> If any provision of this Agreement is held
+    invalid or unenforceable, that provision shall be modified to the minimum extent
+    necessary to make it enforceable, or if it cannot be so modified, severed. All
+    remaining provisions shall continue in full force and effect.</li>
+    <li><strong>Entire Agreement.</strong> This Agreement, together with the Terms of
+    Service and the Privacy Policy, constitutes the entire agreement between the Member
+    and the Community Operator regarding the Community, and supersedes any prior
+    understandings on the subject.</li>
+    <li><strong>No Waiver.</strong> Failure by the Community Operator to enforce any
+    provision of this Agreement shall not constitute a waiver of that provision or of
+    any other provision.</li>
+    <li><strong>Assignment.</strong> Members may not assign or transfer their
+    membership or any rights under this Agreement. The Community Operator may assign
+    this Agreement in connection with a merger, acquisition, or sale of assets.</li>
+  </ol>
+
+  <hr>
+
+  <h1>Part II — Waiver of Liability &amp; Disclaimer</h1>
+
+  <p>This Waiver applies between MarketEye LLC, operator of MarketEye Society, and
+  each Member.</p>
+
+  <h2>1. Educational Purposes Only</h2>
+
+  <p>All information is for educational purposes only. All content, discussions, and
+  materials within the Community are provided for educational and informational
+  purposes only. Nothing contained herein constitutes financial, investment, legal, or
+  tax advice.</p>
+
+  <h2>2. No Guarantees</h2>
+
+  <p>No representations or guarantees of profitability. The Community and its Mentors
+  make no representations, warranties, or guarantees regarding trading performance,
+  profits, or results of any kind. Past performance is not indicative of future
+  results.</p>
+
+  <h2>3. Assumption of Risk</h2>
+
+  <p>Trading involves substantial risk of loss. By joining the Community, Members
+  acknowledge the high risk of financial loss associated with trading futures, forex,
+  stocks, options, and cryptocurrencies, and assume full responsibility for their own
+  trading and investment decisions.</p>
+
+  <h2>4. Waiver &amp; Release of Liability</h2>
+
+  <p>Member waives and releases MarketEye LLC and Mentors. To the fullest extent
+  permitted by law, Members expressly waive and release the Community, its operators,
+  and its Mentors (paid or unpaid) from any and all claims, demands, damages, or
+  liabilities, whether direct or indirect, arising from or related to:</p>
+
+  <ul>
+    <li>Trading or investment losses;</li>
+    <li>Reliance on educational content, strategies, or discussions within the
+    Community;</li>
+    <li>The actions or omissions of other Members or Mentors.</li>
+  </ul>
+
+  <p>Nothing in this Waiver excludes or limits liability for fraud, fraudulent
+  misrepresentation, gross negligence, or willful misconduct, or for any other
+  liability that cannot lawfully be excluded or limited under applicable law.</p>
+
+  <h2>5. No Fiduciary Relationship</h2>
+
+  <p>Participation in the Community does not create any fiduciary duty between
+  Members, Mentors, or the Community Operator.</p>
+
+  <h2>6. CFTC/NFA Risk Disclosure</h2>
+
+  <p>Futures, forex, stocks, options, and cryptocurrency trading involves substantial
+  risk and is not suitable for every investor. An investor could potentially lose all
+  or more than the initial investment. Risk capital is money that can be lost without
+  jeopardizing one&rsquo;s financial security or lifestyle. Only risk capital should be
+  used for trading and only those with sufficient risk capital should consider
+  trading.</p>
+
+  <p>Hypothetical performance results have many inherent limitations. No
+  representation is being made that any account will or is likely to achieve profits
+  or losses similar to those shown; in fact, there are frequently sharp differences
+  between hypothetical performance results and the actual results subsequently
+  achieved. Past performance is not necessarily indicative of future results.</p>
+
+  <h2>7. Governing Law</h2>
+
+  <p>This Waiver is governed by, and disputes arising out of or relating to it are
+  resolved under, Sections 13 (Disputes) and 14 (Governing Law) of the
+  <a href="https://marketeye.io/terms">Terms of Service</a>.</p>
+
+  <h2>8. Acknowledgment</h2>
+
+  <p>By checking the acceptance box and creating an account, the Member affirms they
+  have read, understood, and voluntarily agree to the Community Agreement and this
+  Waiver of Liability &amp; Disclaimer.</p>
+        <!-- Zero-height sentinel. MUST stay the last child of #mtos-doc:
+             the gate unlocks when this intersects the scroll container.
+             If the agreement is short enough not to scroll, it is visible
+             on open and the gate unlocks immediately, which is correct. -->
+        <div class="mtos__sentinel" id="mtos-sentinel" aria-hidden="true"></div>
+      </div>
+    </div>
+    <!-- Always-visible scroll rail. Drawn, not native: iOS overlay scrollbars
+         stay hidden until a finger moves. Draggable as well as indicative, so
+         hiding the native bar doesn't remove a desktop control. aria-hidden
+         because it duplicates the already keyboard-operable scroll region. -->
+    <div class="mtos__rail" id="mtos-rail" aria-hidden="true">
+      <div class="mtos__thumb" id="mtos-thumb"></div>
+    </div>
+    <div class="mtos__fade" id="mtos-fade" aria-hidden="true"></div>
+  </div>
+
+  <footer class="mtos__foot">
+    <p class="mtos__hint" id="mtos-hint">Scroll to the end of the agreement to continue.</p>
+    <div class="mtos__actions">
+      <button type="button" class="mtos__btn mtos__btn--ghost" id="mtos-close">Close</button>
+      <button type="button" class="mtos__btn" id="mtos-agree" aria-disabled="true" aria-describedby="mtos-hint">I Agree</button>
+    </div>
+  </footer>
+
+</dialog>
+
+
 <!-- ============ FOOTER COMPONENT — carries the base risk disclaimer ============ -->
 <footer class="mkt-footer">
   <div class="mkt-footer__inner">
@@ -1089,7 +1910,15 @@ html{ scroll-behavior:smooth; }
       </div>
       <div class="mkt-footer__mid">
         <span>&copy; 2026 MarketEye, LLC. All Rights Reserved.</span>
-        <a href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+        <!-- Load-bearing: the signup form gates the Community Agreement only,
+             so this is the sole route to the site ToS outside the modal.
+             Wrapped in a row — the parent is a flex column, so as bare
+             siblings the two links stack with 0.75rem of tap-target padding
+             each and the footer grows a ladder. -->
+        <div class="mkt-legal">
+          <a href="https://marketeye.io/terms" target="_blank" rel="noopener">Terms of Service</a>
+          <a href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+        </div>
       </div>
       <div class="mkt-connect">
         <div class="mkt-connect__label">Connect</div>
@@ -1143,36 +1972,36 @@ html{ scroll-behavior:smooth; }
 </script>
 
 <!-- ============ SIGNUP FORM behaviour — components/signup-form.html ============
-     Validate -> dataLayer push -> Make.com webhook -> redirect on HTTP 200.
-     The conversion event fires once per page even if the webhook is retried,
-     and carries an event_id shared with the webhook payload so the browser
-     and server-side copies of the event can be deduplicated. -->
+     Validate -> consent write -> registration -> conversion event -> redirect.
+     The consent write blocks: a failure there stops registration entirely. -->
 <script>
 (function () {
   'use strict';
 
   /* =========================================================
      CONFIG
+     ---------------------------------------------------------
+     TESTING NOTE: the consent endpoint is a Netlify Function. It does NOT
+     run under Live Server or GitHub Pages, and CONSENT_TOKEN is deliberately
+     not set for Local development, so `netlify dev` returns
+     {"ok":false,"error":"server misconfigured"} as well. Exercise the submit
+     path on a Netlify DEPLOY PREVIEW. Everything else — the scroll gate,
+     validation, focus handling, blocked states — is testable locally.
      ========================================================= */
   var MEF_CONFIG = {
+    // Same-origin path. The function holds the upstream endpoint and the
+    // shared token in environment variables and injects the token
+    // server-side. NEVER put an endpoint URL or token in this file.
+    // Change this only to relocate the function; there is deliberately no
+    // fallback and no bypass if it is unreachable.
+    consentEndpoint:  '/.netlify/functions/consent',
+    consentTimeoutMs: 10000,
+
     webhookUrl:    'https://hook.us2.make.com/lu29bwvcsii6wgxbabkc15c3npj8z9py',
-
-    // Circle community welcome destination.
     redirectUrl:   'https://learn.marketeye.io/c/community-guidelines',
-
-    // Stape custom loader can rename the dataLayer. If yours is renamed,
-    // put the custom name here so the push lands in the right array.
     dataLayerName: 'dataLayer',
-
-    // Carry fbclid / utm_* through to the redirect destination, matching
-    // the lp-community-cta forwarding in the script above.
     forwardQueryParams: true,
-
-    // true  -> text/plain body (a "simple" request: no CORS preflight)
-    // false -> application/json (sends an OPTIONS preflight first)
-    // Flip to true if the browser console reports a preflight/CORS failure.
     simpleRequest: false,
-
     timeoutMs: 15000
   };
 
@@ -1186,12 +2015,43 @@ html{ scroll-behavior:smooth; }
   var emailEl    = document.getElementById('mef-email');
   var consentEl  = document.getElementById('mef-consent');
   var consentBox = consentEl.closest('.mef__field--consent');
-  var hpEl       = document.getElementById('mef-company');
+  var hpEl       = document.getElementById('mef-hp');
+  var openLink   = document.getElementById('mef-open-tos');
 
-  var EMAIL_RE  = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+  /* ---------- agreement modal ---------- */
+  var dlg        = document.getElementById('mtos-dialog');
+  var docEl      = document.getElementById('mtos-doc');
+  var scrollEl   = document.getElementById('mtos-scroll');
+  var sentinelEl = document.getElementById('mtos-sentinel');
+  var agreeBtn   = document.getElementById('mtos-agree');
+  var closeBtn   = document.getElementById('mtos-close');
+  var hintEl     = document.getElementById('mtos-hint');
+  var stampEl    = document.getElementById('mtos-stamp');
+
+  // The version metadata is the only thing that makes a consent record
+  // meaningful, so its absence is fatal. The modal itself is an enhancement:
+  // if <dialog> is unsupported we fall back to a plain checkbox rather than
+  // locking anyone out, and record the different method honestly.
+  var metaAvailable = !!docEl;
+  var gateAvailable = !!(dlg && docEl && scrollEl && sentinelEl && agreeBtn &&
+                         typeof dlg.showModal === 'function' &&
+                         'IntersectionObserver' in window);
+
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
   var submitting = false;
-  var conversionPushed = false;   // a retry must never fire a second conversion
-  var eventId = null;             // stable across retries for CAPI dedup
+  var conversionPushed = false;
+  var navigated = false;
+  var hasRead = false;
+  var fatal = false;
+  var io = null;
+  var eventId = null;
+  var consent = null;   // {version, effective, url, acceptedAt, method}
+
+  /* gate analytics state */
+  var openCount = 0;      // per page view; separates first opens from re-opens
+  var openedAt = 0;       // ms stamp of the current open, for dwell_ms
+  var acceptedNow = false; // set just before close() on accept, so the single
+                           // 'close' listener can tell acceptance from dismissal
 
   /* ---------- helpers ---------- */
   function setError(input, errId, show, msg) {
@@ -1212,11 +2072,82 @@ html{ scroll-behavior:smooth; }
     else statusEl.removeAttribute('data-state');
   }
 
+  // Agreement-gate engagement events. GA4 only — never map these to a Meta
+  // conversion tag, or scrolling behaviour becomes ad optimisation signal.
+  // No name, no email, no identifiers: the person is identified at submit by
+  // free_member_signup, not here. Parameters are limited to the three that are
+  // registered as GA4 custom definitions; anything else is silently discarded
+  // by GA4, so adding a fourth means registering it there first.
+  function track(name, extra) {
+    try {
+      var dlName = MEF_CONFIG.dataLayerName || 'dataLayer';
+      window[dlName] = window[dlName] || [];
+      var payload = { event: name, open_count: openCount };
+      // Read the version off the same element the reader scrolled, so a
+      // version bump flows into the analytics without a second edit.
+      if (docEl) {
+        var v = docEl.getAttribute('data-tos-version');
+        if (v && v.trim()) payload.tos_version = v.trim();
+      }
+      if (extra) {
+        for (var k in extra) {
+          if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k];
+        }
+      }
+      window[dlName].push(payload);
+    } catch (e) {
+      // Analytics must never be able to break the gate.
+      console.warn('[MarketEye signup] track failed', e);
+    }
+  }
+
+  function dwell() {
+    return openedAt ? Date.now() - openedAt : 0;
+  }
+
   function setLoading(on) {
     btn.disabled = on;
     btn.classList.toggle('is-loading', on);
     btn.setAttribute('aria-busy', on ? 'true' : 'false');
     [firstEl, lastEl, emailEl, consentEl].forEach(function (el) { el.disabled = on; });
+  }
+
+
+  function setFatal(why) {
+    fatal = true;
+    consent = null;
+    console.error('[MarketEye consent] ' + why);
+    setStatus('We could not load the Community Agreement. Please refresh the page and try again.', 'error');
+  }
+
+  // Read version metadata off the element that holds the text the user
+  // actually scrolled. No defaults, no "unknown" — a consent record without a
+  // resolvable version is worse than no record at all.
+  function readTosMeta() {
+    if (!docEl) {
+      setFatal('#mtos-doc is not on the page. components/tos-modal.html must be embedded alongside the form.');
+      return null;
+    }
+    var names = ['data-tos-version', 'data-tos-effective', 'data-tos-url'];
+    var out = {};
+    for (var i = 0; i < names.length; i++) {
+      var v = docEl.getAttribute(names[i]);
+      if (!v || !v.trim()) {
+        setFatal(names[i] + ' is missing or empty on #mtos-doc — set it in components/tos-modal.html.');
+        return null;
+      }
+      out[names[i]] = v.trim();
+    }
+    return out;
+  }
+
+  // Read the consent wording off the rendered label rather than restating it
+  // here. Newsletter consent is bundled into that one sentence, so the exact
+  // text is the record — a hard-coded copy would drift the moment the label
+  // is edited, and nothing would flag it.
+  function consentText() {
+    var el = form.querySelector('.mef__consent-txt');
+    return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
   }
 
   function getCookie(name) {
@@ -1262,104 +2193,417 @@ html{ scroll-behavior:smooth; }
       });
       return dest.toString();
     } catch (e) {
-      return target;   // unparseable placeholder — leave it alone
+      return target;
     }
   }
 
+  /* =========================================================
+     THE SCROLL GATE
+     ========================================================= */
+
+  // Populate the version stamp from the data attributes so the version is
+  // written in exactly one place, and surface a missing attribute at load
+  // rather than at the moment someone tries to agree.
+  if (metaAvailable) {
+    var boot = readTosMeta();
+    if (boot && stampEl) {
+      stampEl.textContent = 'Version ' + boot['data-tos-version'] +
+                            ' · Effective ' + boot['data-tos-effective'];
+    }
+  } else {
+    setFatal('#mtos-doc is not on the page. components/tos-modal.html must be embedded alongside the form.');
+  }
+
+  // Links inside the agreement open in a new tab so reading one never
+  // discards a half-filled form. Done here rather than in the partial so the
+  // agreement markup stays byte-identical to the archived version.
+  if (docEl) {
+    Array.prototype.forEach.call(docEl.querySelectorAll('a[href]'), function (a) {
+      a.target = '_blank';
+      a.rel = 'noopener';
+    });
+  }
+
+  function markRead() {
+    if (hasRead) return;
+    hasRead = true;
+    dlg.classList.add('is-read');
+    agreeBtn.setAttribute('aria-disabled', 'false');
+    hintEl.removeAttribute('data-state');
+    hintEl.textContent = 'You have reached the end. You can now agree.';
+    if (io) { io.disconnect(); io = null; }
+    // Splits the two failure modes: opened->completed is a length problem,
+    // completed->accepted is a content problem.
+    track('community_agreement_completed', { dwell_ms: dwell() });
+  }
+
+  // IntersectionObserver against a zero-height sentinel, with the scroll
+  // container as root. Deliberately not scrollTop/clientHeight arithmetic,
+  // which misreports on iOS rubber-banding and fractional-pixel displays.
+  // If the content is too short to scroll, the sentinel is already visible
+  // and the first callback unlocks the gate immediately.
+  function watchSentinel() {
+    if (hasRead || io) return;
+    io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) { markRead(); return; }
+      }
+    }, { root: scrollEl, threshold: 0 });
+    io.observe(sentinelEl);
+  }
+
+  // Read-progress affordance. Optional by design — an older paste of
+  // tos-modal.html has no #mtos-progress, and that must degrade silently
+  // rather than disable the gate, so this is NOT in gateAvailable.
+  var progressEl = document.getElementById('mtos-progress');
+  function updateProgress() {
+    if (!progressEl) return;
+    var max = scrollEl.scrollHeight - scrollEl.clientHeight;
+    var pct = max <= 0 ? 100 : (scrollEl.scrollTop / max) * 100;
+    progressEl.style.width = Math.max(0, Math.min(100, pct)) + '%';
+  }
+  // Scroll rail. Optional on the same terms as the progress bar — absent in an
+  // older paste of the partial, and must degrade rather than break the gate.
+  var railEl  = document.getElementById('mtos-rail');
+  var thumbEl = document.getElementById('mtos-thumb');
+  var THUMB_MIN = 32;
+
+  function railMetrics() {
+    var sh = scrollEl.scrollHeight, ch = scrollEl.clientHeight;
+    var trackH = railEl.clientHeight;
+    var h = Math.max(THUMB_MIN, (ch / sh) * trackH);
+    return { sh: sh, ch: ch, trackH: trackH, h: h, maxTop: trackH - h };
+  }
+
+  function updateRail() {
+    if (!railEl || !thumbEl) return;
+    // Nothing to scroll: hide the rail rather than show a full-height thumb,
+    // which would read as "already at the end" on a short agreement.
+    if (scrollEl.scrollHeight <= scrollEl.clientHeight + 1) {
+      railEl.style.display = 'none';
+      return;
+    }
+    railEl.style.display = '';
+    var m = railMetrics();
+    var t = m.sh - m.ch <= 0 ? 0 : (scrollEl.scrollTop / (m.sh - m.ch)) * m.maxTop;
+    thumbEl.style.height = m.h + 'px';
+    thumbEl.style.transform = 'translateY(' + t + 'px)';
+  }
+
+  if (progressEl || thumbEl) {
+    scrollEl.addEventListener('scroll', function () {
+      updateProgress();
+      updateRail();
+    }, { passive: true });
+  }
+  if (thumbEl) {
+    // Drag the thumb. Pointer events cover mouse, touch and pen in one path;
+    // setPointerCapture keeps the drag alive when the pointer leaves the rail.
+    var dragging = false, dragY = 0, dragFrom = 0;
+    thumbEl.addEventListener('pointerdown', function (e) {
+      dragging = true;
+      dragY = e.clientY;
+      dragFrom = scrollEl.scrollTop;
+      if (thumbEl.setPointerCapture) thumbEl.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    thumbEl.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var m = railMetrics();
+      if (m.maxTop <= 0) return;
+      scrollEl.scrollTop = dragFrom + ((e.clientY - dragY) / m.maxTop) * (m.sh - m.ch);
+    });
+    var endDrag = function () { dragging = false; };
+    thumbEl.addEventListener('pointerup', endDrag);
+    thumbEl.addEventListener('pointercancel', endDrag);
+    // The sheet is 100dvh on mobile, so an orientation change or the iOS URL
+    // bar collapsing changes the track height and strands the thumb.
+    window.addEventListener('resize', updateRail);
+  }
+
+  // Background scroll lock. showModal() blocks interaction but does NOT stop
+  // the page behind from scrolling on iOS Safari, and overflow:hidden on body
+  // is ignored there for touch — so the body is pinned with position:fixed and
+  // the scroll offset preserved, then restored on close. Without the restore,
+  // dismissing the agreement would dump the reader at the top of the page
+  // instead of back at the form they were filling in.
+  var lockedScrollY = 0;
+  function lockPageScroll() {
+    if (document.body.hasAttribute('data-mtos-locked')) return;
+    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+    var s = document.body.style;
+    s.position = 'fixed';
+    s.top = (-lockedScrollY) + 'px';
+    s.left = '0';
+    s.right = '0';
+    s.width = '100%';
+    document.body.setAttribute('data-mtos-locked', 'true');
+  }
+  function unlockPageScroll() {
+    if (!document.body.hasAttribute('data-mtos-locked')) return;
+    var s = document.body.style;
+    s.position = ''; s.top = ''; s.left = ''; s.right = ''; s.width = '';
+    document.body.removeAttribute('data-mtos-locked');
+    window.scrollTo(0, lockedScrollY);
+  }
+
+  function openDialog() {
+    if (!gateAvailable || fatal) return;
+    // Drop any mobile keyboard before the sheet animates up, or it sits over it.
+    if (document.activeElement && document.activeElement.blur) {
+      document.activeElement.blur();
+    }
+    openCount += 1;
+    openedAt = Date.now();
+    lockPageScroll();
+    dlg.showModal();
+    // Observe only after showModal: while the dialog is display:none nothing
+    // intersects anything and the observer would report a false negative.
+    watchSentinel();
+    // After showModal, not before: while the dialog is display:none the scroll
+    // container reports zero height and the rail would size itself to nothing.
+    updateProgress();
+    updateRail();
+    track('community_agreement_opened');
+  }
+
+  if (gateAvailable) {
+    // One 'close' listener covers every dismissal route — Close, Agree, and
+    // the Esc key, which fires 'close' without passing through either handler.
+    // Unlocking anywhere else would miss Esc and leave the page frozen.
+    dlg.addEventListener('close', function () {
+      unlockPageScroll();
+      // Every close route lands here, including Esc. Anything that isn't an
+      // acceptance is a dismissal.
+      if (!acceptedNow) track('community_agreement_dismissed', { dwell_ms: dwell() });
+      acceptedNow = false;
+      consentEl.focus();
+    });
+
+    closeBtn.addEventListener('click', function () { dlg.close(); });
+
+    // Click-outside-to-dismiss. Gated on a real pointing device rather than a
+    // viewport width: this is a mouse convention, and a desktop window dragged
+    // narrow still has a mouse while a wide touchscreen does not. Drop the
+    // guard to enable tap-outside on touch as well.
+    var hasMouse = !window.matchMedia || window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (hasMouse) {
+      // The dialog IS the panel, so a click landing on the backdrop reports
+      // coordinates outside its box. Compare against the rect rather than
+      // testing e.target, which a padding gap would let through.
+      var outside = function (e) {
+        var r = dlg.getBoundingClientRect();
+        return e.clientX < r.left || e.clientX > r.right ||
+               e.clientY < r.top  || e.clientY > r.bottom;
+      };
+      // Require the press AND the release to be outside. Without this, dragging
+      // a text selection from inside the agreement and releasing over the
+      // backdrop would close the dialog mid-copy — and people do copy clauses
+      // out of a legal document.
+      var pressedOutside = false;
+      dlg.addEventListener('mousedown', function (e) { pressedOutside = outside(e); });
+      dlg.addEventListener('click', function (e) {
+        // detail === 0 is a keyboard-synthesised click (Enter/Space on a
+        // button), which reports 0,0 and would read as outside every time.
+        if (e.detail === 0) { pressedOutside = false; return; }
+        if (pressedOutside && outside(e)) dlg.close();
+        pressedOutside = false;
+      });
+    }
+
+    agreeBtn.addEventListener('click', function () {
+      if (!hasRead) {
+        hintEl.textContent = 'Please scroll to the end of the agreement first.';
+        hintEl.setAttribute('data-state', 'error');
+        scrollEl.focus();
+        return;
+      }
+      var meta = readTosMeta();
+      if (!meta) { dlg.close(); return; }   // setFatal already fired
+      consent = {
+        version:    meta['data-tos-version'],
+        effective:  meta['data-tos-effective'],
+        url:        meta['data-tos-url'],
+        method:     'scroll_modal',
+        acceptedAt: new Date().toISOString()   // the moment of agreement, not of submit
+      };
+      // Before close(): the 'close' listener reads this flag to decide whether
+      // the dialog was accepted or dismissed.
+      acceptedNow = true;
+      track('community_agreement_accepted', { dwell_ms: dwell() });
+      dlg.close();
+      consentEl.checked = true;
+      setError(consentEl, 'mef-consent-err', false);
+      consentEl.focus();
+    });
+
+    // Checking the box opens the agreement instead of toggling. Unchecking
+    // is allowed and clears the recorded consent.
+    consentEl.addEventListener('click', function (e) {
+      if (fatal) { e.preventDefault(); return; }
+      if (consentEl.checked) {
+        e.preventDefault();          // reverts the toggle; consent comes from the modal
+        openDialog();
+      } else {
+        consent = null;
+      }
+    });
+
+    // Space already produces a click, which the handler above intercepts.
+    // Enter would otherwise submit the form from inside the checkbox.
+    consentEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!consentEl.checked) openDialog();
+      }
+    });
+
+    if (openLink) {
+      openLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openDialog();
+      });
+    }
+  } else if (metaAvailable) {
+    // <dialog> or IntersectionObserver unavailable. Rather than lock anyone
+    // out, the checkbox behaves normally and the agreement is read at its own
+    // URL via the link. The record says how it was captured.
+    console.warn('[MarketEye consent] modal gate unavailable; falling back to a plain checkbox.');
+    consentEl.addEventListener('change', function () {
+      if (consentEl.checked) {
+        var meta = readTosMeta();
+        if (!meta) { consentEl.checked = false; return; }
+        consent = {
+          version:    meta['data-tos-version'],
+          effective:  meta['data-tos-effective'],
+          url:        meta['data-tos-url'],
+          method:     'checkbox_fallback',
+          acceptedAt: new Date().toISOString()
+        };
+      } else {
+        consent = null;
+      }
+    });
+  }
+
+  /* the other legal links must not toggle the checkbox they sit inside */
+  Array.prototype.forEach.call(form.querySelectorAll('.mef__legal'), function (a) {
+    if (a === openLink) return;
+    a.addEventListener('click', function (e) { e.stopPropagation(); });
+  });
+
   /* ---------- validation ---------- */
+  // Returns every invalid field in document order, so the caller can tell a
+  // single problem from several. Empty array means clean.
   function validate(values) {
-    var firstBad = null;
+    var bad = [];
 
     var badFirst = values.first_name.length < 1;
     setError(firstEl, 'mef-first-err', badFirst);
-    if (badFirst && !firstBad) firstBad = firstEl;
+    if (badFirst) bad.push(firstEl);
 
     var badLast = values.last_name.length < 1;
     setError(lastEl, 'mef-last-err', badLast);
-    if (badLast && !firstBad) firstBad = lastEl;
+    if (badLast) bad.push(lastEl);
 
     var badEmail = !EMAIL_RE.test(values.email);
     setError(emailEl, 'mef-email-err', badEmail,
       values.email.length === 0 ? 'Please enter your email address.' : 'Please enter a valid email address.');
-    if (badEmail && !firstBad) firstBad = emailEl;
+    if (badEmail) bad.push(emailEl);
 
-    var badConsent = !consentEl.checked;
+    var badConsent = !consentEl.checked || !consent;
     setError(consentEl, 'mef-consent-err', badConsent);
-    if (badConsent && !firstBad) firstBad = consentEl;
+    if (badConsent) bad.push(consentEl);
 
-    return firstBad;   // null when the form is clean
+    return bad;
   }
 
-  /* clear a field's error as soon as the person fixes it */
   [[firstEl, 'mef-first-err'], [lastEl, 'mef-last-err'], [emailEl, 'mef-email-err']].forEach(function (pair) {
     pair[0].addEventListener('input', function () {
       if (pair[0].getAttribute('aria-invalid') === 'true') setError(pair[0], pair[1], false);
     });
   });
-  consentEl.addEventListener('change', function () {
-    if (consentEl.checked) setError(consentEl, 'mef-consent-err', false);
-  });
 
-  /* the legal links sit inside a <label>; a click on them must not toggle the box */
-  form.querySelectorAll('.mef__legal').forEach(function (a) {
-    a.addEventListener('click', function (e) { e.stopPropagation(); });
-  });
+  /* ---------- network ---------- */
 
-  /* ---------- submit ---------- */
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    if (submitting) return;
-
-    var values = {
-      first_name: firstEl.value.trim(),
-      last_name:  lastEl.value.trim(),
-      email:      emailEl.value.trim().toLowerCase()
+  // Consent first, and blocking. Registering someone whose consent record
+  // failed to save is the exact outcome this exists to prevent, so there is
+  // no fallback path that skips or defers this write.
+  function postConsent(values, hpFilled) {
+    var payload = {
+      hp:              hpFilled,
+      first_name:      values.first_name,
+      last_name:       values.last_name,
+      email:           values.email,
+      tos_version:     consent.version,
+      tos_effective:   consent.effective,
+      tos_accepted_at: consent.acceptedAt,
+      tos_method:      consent.method,
+      terms_url:       consent.url,
+      page_url:        window.location.href
+      // user_agent and ip are read from request headers by the function,
+      // which is more trustworthy than anything the client reports.
     };
 
-    var firstBad = validate(values);
-    if (firstBad) {
-      setStatus('Please check the highlighted fields.', 'error');
-      firstBad.focus();
-      return;
-    }
+    var controller = ('AbortController' in window) ? new AbortController() : null;
+    var timer = controller
+      ? setTimeout(function () { controller.abort(); }, MEF_CONFIG.consentTimeoutMs)
+      : null;
 
-    if (hpEl && hpEl.value) return;   // bot — fail silently, no event, no webhook
-
-    submitting = true;
-    setStatus('', null);
-    setLoading(true);
-
-    /* --- 1. dataLayer push — fires only after validation passes, only once --- */
-    if (!conversionPushed) {
-      eventId = makeEventId();
-      var dlName = MEF_CONFIG.dataLayerName || 'dataLayer';
-      window[dlName] = window[dlName] || [];
-      window[dlName].push({
-        'event': 'free_member_signup',
-        'user_email': values.email,
-        'user_first_name': values.first_name,
-        'user_last_name': values.last_name,
-        'event_id': eventId          // server-side / CAPI deduplication key
+    return fetch(MEF_CONFIG.consentEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },   // same-origin: no preflight
+      cache: 'no-store',
+      body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined
+    }).then(function (res) {
+      if (timer) clearTimeout(timer);
+      return res.json().then(function (out) {
+        return { status: res.status, out: out };
+      }, function () {
+        throw new Error('consent: unparseable response, HTTP ' + res.status);
       });
-      conversionPushed = true;
-    }
+    }).then(function (r) {
+      // {ok:false} with a 200 is still a failure — status alone is not enough.
+      if (!r.out || r.out.ok !== true) {
+        throw new Error('consent: rejected, HTTP ' + r.status + ', error=' + (r.out && r.out.error));
+      }
+      return true;
+    });
+  }
 
-    /* --- 2. webhook --- */
+  function postRegistration(values) {
     var payload = Object.assign({
-      event: 'free_member_signup',
+      event:    'free_member_signup',
       event_id: eventId,
       first_name: values.first_name,
-      last_name: values.last_name,
-      email: values.email,
-      consent: true,
-      consent_text: 'Accepted Terms of Service and Privacy Policy',
+      last_name:  values.last_name,
+      email:      values.email,
+      consent:      true,
+      consent_text: consentText(),          // verbatim from the rendered label
+      // Bundled into the single required consent, so this is true on every
+      // registration and carries no segmentation value. Kept as a discrete
+      // field so bundled-era rows stay distinguishable if the opt-in is later
+      // split into its own optional checkbox.
+      newsletter_opt_in:        consentEl.checked,
+      newsletter_opt_in_source: 'bundled_with_terms',
+      // the consent fields ride along so the registration row and the consent
+      // log carry the same values and can be reconciled
+      tos_version:     consent.version,
+      tos_effective:   consent.effective,
+      tos_accepted_at: consent.acceptedAt,
+      tos_method:      consent.method,
+      terms_url:       consent.url,
       submitted_at: new Date().toISOString()
     }, attribution());
 
     var controller = ('AbortController' in window) ? new AbortController() : null;
-    var timer = controller ? setTimeout(function () { controller.abort(); }, MEF_CONFIG.timeoutMs) : null;
+    var timer = controller
+      ? setTimeout(function () { controller.abort(); }, MEF_CONFIG.timeoutMs)
+      : null;
 
-    fetch(MEF_CONFIG.webhookUrl, {
+    return fetch(MEF_CONFIG.webhookUrl, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-store',
@@ -1369,31 +2613,99 @@ html{ scroll-behavior:smooth; }
         : { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
       signal: controller ? controller.signal : undefined
-    })
-    .then(function (res) {
+    }).then(function (res) {
       if (timer) clearTimeout(timer);
-      if (res.status !== 200) throw new Error('Webhook responded ' + res.status);
-
-      setStatus('You’re in. Taking you to the community…', 'ok');
-
-      var dest = destinationUrl();
-      if (!dest || dest.indexOf('REPLACE_WITH') === 0) {
-        console.error('[MarketEye signup] MEF_CONFIG.redirectUrl is not set - redirect skipped.');
-        setStatus('You’re in. Check your inbox for your access link.', 'ok');
-        setLoading(false);          // no redirect coming — don't spin forever
-        btn.disabled = true;        // but the conversion already fired: no re-submit
-        return;
-      }
-      window.location.href = dest;
-    })
-    .catch(function (err) {
-      if (timer) clearTimeout(timer);
-      submitting = false;
-      setLoading(false);
-      console.error('[MarketEye signup]', err);
-      setStatus('Something went wrong on our end. Please tap the button again.', 'error');
-      btn.focus();
+      if (res.status !== 200) throw new Error('registration: webhook responded ' + res.status);
+      return true;
     });
+  }
+
+  function go() {
+    if (navigated) return;
+    navigated = true;
+    window.location.href = destinationUrl();
+  }
+
+  // Fires only once both writes have succeeded. Reporting a conversion for
+  // someone who never registered corrupts attribution and feeds bad signal to
+  // ad optimisation; it also breaks reconciliation against the consent log,
+  // which is the check that catches this class of bug.
+  function pushConversionThenGo(values) {
+    if (conversionPushed) { go(); return; }
+    conversionPushed = true;
+    var dlName = MEF_CONFIG.dataLayerName || 'dataLayer';
+    window[dlName] = window[dlName] || [];
+    window[dlName].push({
+      'event': 'free_member_signup',
+      'user_email': values.email,
+      'user_first_name': values.first_name,
+      'user_last_name': values.last_name,
+      'event_id': eventId,
+      // navigate once the tag has actually fired, so the redirect doesn't
+      // cut the request off mid-flight
+      'eventCallback': go,
+      'eventTimeout': 2000
+    });
+    // GTM absent (local testing) or the callback never fires
+    setTimeout(go, 2200);
+  }
+
+  /* ---------- submit ---------- */
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (submitting) return;
+
+    if (fatal) {
+      setStatus('We could not load the Community Agreement. Please refresh the page and try again.', 'error');
+      return;
+    }
+
+    var values = {
+      first_name: firstEl.value.trim(),
+      last_name:  lastEl.value.trim(),
+      email:      emailEl.value.trim().toLowerCase()
+    };
+
+    var bad = validate(values);
+    if (bad.length) {
+      // The summary line earns its place only when more than one field is
+      // wrong. With a single bad field the message beside that field already
+      // says it, focus lands there, and a status line repeating it just makes
+      // a screen reader announce the same sentence twice.
+      if (bad.length === 1) setStatus('', null);
+      else setStatus('Please check the highlighted fields.', 'error');
+      bad[0].focus();
+      return;
+    }
+
+    var hpFilled = !!(hpEl && hpEl.value);
+
+    submitting = true;
+    setStatus('', null);
+    setLoading(true);
+    eventId = eventId || makeEventId();
+
+    postConsent(values, hpFilled)
+      .then(function () {
+        // A bot sees the same success state, but never reaches the CRM and
+        // never reports a conversion. The consent row carries hp:true and is
+        // discarded upstream.
+        if (hpFilled) { setStatus('You’re in. Taking you to the community…', 'ok'); go(); return; }
+
+        return postRegistration(values).then(function () {
+          setStatus('You’re in. Taking you to the community…', 'ok');
+          pushConversionThenGo(values);
+        });
+      })
+      .catch(function (err) {
+        submitting = false;
+        setLoading(false);
+        // Debuggable detail to the console; nothing about the endpoint or the
+        // upstream error reaches the person using the form.
+        console.error('[MarketEye signup]', err);
+        setStatus('We could not complete your registration. Please try again.', 'error');
+        btn.focus();
+      });
   });
 })();
 </script>

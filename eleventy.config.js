@@ -4,7 +4,11 @@ module.exports = function (eleventyConfig) {
   const staticPages = [
     "index.html",
     "privacy.html",
-    "terms-of-service.html",
+    // terms-of-service.html is deliberately NOT passed through. It carries
+    // `permalink: /terms/index.html`, and addPassthroughCopy bypasses template
+    // processing entirely — front matter is never parsed, so the permalink was
+    // silently ignored and the file published at /terms-of-service/ instead.
+    // Letting Eleventy process it is what makes /terms resolve.
     "refund-policy.html",
     "membership-billing-terms.html",
     "cancellation-instructions.html",
