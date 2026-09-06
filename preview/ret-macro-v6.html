@@ -69,10 +69,24 @@
 *{max-width:100%;}
 
 html{scroll-behavior:smooth;}
-/* Safety net: if any element ever exceeds viewport width (e.g. an unbounded
-   result number from a stray input), clip it instead of letting mobile browsers
-   zoom out the whole page to fit. */
-html,body{overflow-x:hidden;}
+/* v6: html,body{overflow-x:hidden} REMOVED (was here through v2-v5).
+   It was a safety net against an element exceeding the viewport — the original
+   comment named an unbounded result number from a stray calculator input — but
+   overflow on html/body makes body the sticky scroll container, which silently
+   defeated position:sticky on .site-head. The header did not stick at any
+   width, on any device, for five versions.
+   workflow-lp-technical.md rule 5 forbids it for exactly this reason: scoped
+   containers only, "never applied blindly to <body> to mask an underlying
+   layout break; that hides the symptom without fixing the cause."
+   No scoped replacement was added, because the stress test says none is
+   needed: driven to its input limits at 320px — age 18 to 99, $999,999,999
+   portfolio, $5,000/mo at 12% — the calculator renders a $5,418,561,421,977
+   nest egg and a 13-digit monthly figure with zero horizontal overflow. The
+   global *{max-width:100%} above, plus the calculator's own layout, is what
+   was actually holding those in bounds; the body clip never had anything to
+   catch. Rule 5 allows a scoped clip only where truly needed, so adding one
+   here would restate the same mistake at a smaller scale. If a future widget
+   does overflow, clip THAT container and leave html/body alone. */
 
 body{
   margin:0;
