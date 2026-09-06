@@ -1,0 +1,3962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MarketEye — Stop Guessing. Start Planning.</title>
+<meta name="description" content="Retirement math has changed. Run the numbers, then learn to read the market through a clear framework — free, beginner-first, twenty lessons.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   MarketEye — RET-MACRO v6
+   Structure: Default (Problem -> Solution -> Urgency)
+   Type: rem throughout. html font-size deliberately NOT set, so browser/OS
+   font-size preferences are inherited (workflow-lp-standards.md, rule 1).
+   CSS: mobile-first. Base styles = smallest viewport; min-width queries layer up.
+   ========================================================================= */
+
+:root{
+  --navy:#071D49;
+  --navy-deep:#04102e;
+  --navy-card:#0c2657;
+  --navy-raise:#123067;
+  --white:#FFFFFF;
+  --blue:#65CEF6;
+  --indigo:#7C6FF0;
+  --ink-soft:#c9dbf5;      /* secondary text on navy — 10.4:1, AAA */
+  --ink-mute:#a8c0e0;      /* tertiary text on navy — 7.6:1, AAA */
+  --line:rgba(255,255,255,0.10);
+  --line-strong:rgba(255,255,255,0.20);
+  --pos:#4ade80;
+  --neg:#fb7185;
+  --warn:#fbbf24;
+  --grad:linear-gradient(95deg, var(--blue) 0%, var(--indigo) 100%);
+  --head:'Exo 2', system-ui, -apple-system, sans-serif;
+  --body:'Barlow', system-ui, -apple-system, sans-serif;
+  --wrap:75rem;
+  --gut:1.25rem;
+  --r-sm:.625rem;
+  --r-md:1rem;
+  --r-lg:1.25rem;
+
+  /* --- v6: tokens read by components/signup-form.html ----------------------
+     The component resolves every colour through var(--token, brand-fallback),
+     so these five are what make the form inherit THIS page's palette rather
+     than the standalone brand defaults. --grad-btn is deliberately NOT mapped:
+     v5's --grad is a light cyan-to-indigo ramp carrying dark #06132f label
+     text, while .mef__btn hard-codes white. Mapping it would put white on
+     #65CEF6 and fail contrast on the one button that submits the form. */
+  --panel:var(--navy-card);
+  --cyan:var(--blue);
+  --ink-2:var(--ink-soft);
+  --ink-3:var(--ink-mute);
+  --line-2:var(--line-strong);
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+*{max-width:100%;}
+
+html{scroll-behavior:smooth;}
+/* Safety net: if any element ever exceeds viewport width (e.g. an unbounded
+   result number from a stray input), clip it instead of letting mobile browsers
+   zoom out the whole page to fit. */
+html,body{overflow-x:hidden;}
+
+body{
+  margin:0;
+  background:var(--navy);
+  color:var(--white);
+  font-family:var(--body);
+  font-size:1.125rem;      /* 18px baseline */
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+h1,h2,h3,h4{
+  font-family:var(--head);
+  margin:0;
+  line-height:1.15;
+  letter-spacing:-0.015em;
+  overflow-wrap:break-word;
+  word-break:break-word;
+}
+p,li,dd,dt,figcaption{
+  overflow-wrap:break-word;
+  word-break:break-word;
+}
+p{margin:0 0 1em;}
+a{color:inherit;text-decoration:none;}
+img,svg,video{display:block;height:auto;}
+ul{margin:0;padding:0;list-style:none;}
+button,input{font:inherit;color:inherit;}
+
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut);}
+.measure{max-width:65ch;}
+.measure-center{max-width:65ch;margin-inline:auto;}
+.center{text-align:center;}
+
+.grad-text{
+  background:var(--grad);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+/* ---------- Ticker bar (restored from v3) ---------- */
+.ticker-bar{background:var(--navy-deep);border-bottom:1px solid var(--line);overflow:hidden;}
+
+/* ---------- Sticky header ---------- */
+.site-head{
+  position:sticky;top:0;z-index:60;
+  background:rgba(4,16,46,.92);
+  backdrop-filter:saturate(150%) blur(.5rem);
+  -webkit-backdrop-filter:saturate(150%) blur(.5rem);
+  border-bottom:1px solid var(--line);
+}
+.site-head .wrap{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;min-height:3.5rem;
+}
+.site-head img{height:1.75rem;width:auto;}
+.site-head .brand{display:flex;align-items:center;gap:.625rem;}
+.nav-links{display:none;}
+.nav-links a{
+  font-size:1rem;font-weight:600;color:var(--ink-soft);
+  padding:.5rem .25rem;min-height:2.75rem;display:inline-flex;align-items:center;
+  transition:color .15s ease;
+}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--blue);}
+
+/* ---------- CTAs ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  min-height:2.75rem;                 /* 44px tap target */
+  padding:.7rem 1.25rem;
+  border-radius:999px;
+  font-family:var(--head);
+  font-weight:800;
+  font-size:1rem;
+  letter-spacing:.01em;
+  color:#06132f;
+  background:var(--grad);
+  border:0;
+  cursor:pointer;
+  text-align:center;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn:hover,.btn:focus-visible{transform:translateY(-1px);box-shadow:0 .75rem 1.75rem rgba(101,206,246,.3);}
+.btn-lg{
+  min-height:3.5rem;
+  padding:1rem 2rem;
+  font-size:1.125rem;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.cta-row{display:flex;justify-content:center;margin-block:2.5rem 0;}
+
+:focus-visible{outline:.1875rem solid var(--blue);outline-offset:.1875rem;}
+
+/* ---------- Section rhythm ---------- */
+section{padding-block:3.5rem;}
+/* v6: landing offset for the #signup jump. Every CTA on the page now lands
+   here, so where the jump stops is worth setting deliberately rather than
+   leaving the card flush against the viewport edge.
+   Note on the header: .site-head is declared position:sticky, top:0, but it
+   does NOT currently stick — html,body{overflow-x:hidden} above makes body
+   the sticky scroll container, so the header scrolls away with the content.
+   Verified in-browser on this build; inherited from v5 and deliberately left
+   alone here, since un-hiding the overflow would change the header behaviour
+   of a page that is currently the best performer. If that is ever fixed, this
+   offset already covers the 3.5rem header. */
+#signup{scroll-margin-top:4.5rem;}
+
+/* ---------- v6 close bookend ----------
+   The form is this page's final CTA and its only capture point.
+   workflow-lp-design.md §4 ("Differentiate the closing act") makes the close
+   one of two sections permitted to break the page's composition and asks it to
+   USE that permission — more vertical weight, or a distinct background
+   treatment. Both are applied here.
+
+   WEIGHT. workflow-lp-rhythm.md §7 exempts the last-content-section -> final-CTA
+   boundary so it can be generous, "framing rather than accident." The component
+   alone tops out at 4.25rem while this page's sections run 4.5rem, which left
+   the close tighter than the band above it. These sit deliberately above the
+   content band at every tier, and ascend: 64 -> 80 -> 88px.
+   ID beats .mef on specificity, so order against the component's CSS is
+   irrelevant. */
+#signup{padding-block:4rem;}
+@media (min-width:36rem){ #signup{padding-block:5rem;} }
+@media (min-width:80rem){ #signup{padding-block:5.5rem;} }
+
+/* GROUND. A navy shade swap is explicitly NOT the tool — §4 removed it as a
+   rhythm device because the brand's two dark navies do not register as a change
+   at page scale. So instead of a flat band: a vignette that settles the wide
+   empty margins toward --navy-deep, plus a faint pool of the brand ramp behind
+   the card. The card stops floating in flat navy directly under a 1160px photo,
+   and the space either side of a deliberately narrow 34rem form reads as
+   framing rather than as a section that failed to fill.
+   The card's own surface stays lighter than the ground it sits on — the pool is
+   weak enough not to invert that.
+   Deliberately symmetrical and non-directional: no rising line, arrow or
+   green-up motif, any of which would read as an implied result at any size
+   (§5 / Compliance Rule 13).
+   Values are --blue (101,206,246), --indigo (124,111,240) and --navy-deep
+   (4,16,46) as literals, matching how the hero scrim is written on this page.
+   Same isolate + negative-z pattern as .hero::after. */
+#signup{position:relative;isolation:isolate;}
+#signup::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    /* Top layer: eases the vignette in from the section's upper edge. Without
+       it the corners jump to ~40% at y=0 and the boundary reads as a rendering
+       seam across the full width rather than as a gradient. */
+    linear-gradient(180deg, rgba(7,29,73,1) 0%, rgba(7,29,73,0) 15%),
+    radial-gradient(60rem 28rem at 50% 44%, rgba(101,206,246,.09), rgba(101,206,246,0) 64%),
+    radial-gradient(48rem 26rem at 50% 82%, rgba(124,111,240,.07), rgba(124,111,240,0) 68%),
+    radial-gradient(74rem 42rem at 50% 50%, rgba(4,16,46,0) 38%, rgba(4,16,46,.62) 100%);
+}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent);}
+
+.eyebrow{
+  display:inline-block;
+  font-family:var(--head);
+  font-weight:700;
+  font-size:1rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--blue);
+  margin-bottom:.75rem;
+}
+.h2{font-size:1.875rem;font-weight:800;margin-bottom:1rem;}
+.lead{color:var(--ink-soft);font-size:1.125rem;}
+
+/* ---------- Hero ----------
+   The image sits behind the copy under a navy scrim. Contrast computed against
+   the brightest point the image reaches beneath the text block: white 8.21:1,
+   blue headline accent 4.58:1 — both clear AA (the blue appears only at headline
+   size, where the bar is 3:1).   NOT mirrored — flipping reversed the compass lettering and degree ring. */
+.hero{position:relative;padding-block:2.25rem 2.5rem;overflow:clip;isolation:isolate;}
+.hero-bg{
+  position:absolute;inset:0;z-index:-2;
+  width:100%;height:100%;object-fit:cover;object-position:58% 42%;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  /* Narrow screens: darker at top for the headline text-shadow, opens up
+     through the middle so the compass reads, then darker again at the bottom
+     so the button and sub-copy hold their contrast (2026-08-08). */
+  background:linear-gradient(180deg,rgba(7,29,73,.82) 0%,rgba(7,29,73,.68) 42%,rgba(7,29,73,.60) 62%,rgba(7,29,73,.92) 100%);
+}
+.hero > .wrap{position:relative;}
+.hero h1{
+  font-size:2.625rem;font-weight:900;letter-spacing:-0.025em;margin-bottom:1rem;
+  text-shadow:0 .125rem 1.5rem rgba(4,16,46,.85);
+}
+.hero h1 .l2{display:block;color:var(--blue);}
+.hero .sub{
+  color:#dbe8fb;font-size:1.125rem;margin-bottom:1.5rem;
+  text-shadow:0 .0625rem 1rem rgba(4,16,46,.9);
+}
+
+/* ---------- Trust bar ---------- */
+.trust{padding-block:1.5rem;}
+.trust ul{
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:.75rem 1.5rem;
+  padding-block:1.125rem;
+  border-block:1px solid var(--line);
+}
+.trust li{
+  display:flex;align-items:center;gap:.5rem;
+  font-family:var(--head);font-weight:700;font-size:1rem;
+  color:#e6eefb;
+}
+.trust li::before{
+  content:"";width:.4375rem;height:.4375rem;border-radius:50%;
+  background:var(--grad);flex:none;
+}
+
+/* =========================================================================
+   Calculator — restored from RET-MACRO v3 verbatim in structure and logic.
+   Two conversions applied, both required by workflow-lp-standards.md and
+   neither altering behaviour:
+     (a) px -> rem throughout (readability rule 1)
+     (b) max-width media queries inverted to mobile-first min-width
+         (responsive hard rule 1) — base styles are now the narrow-phone
+         case, and the wider cases layer up. The v3 ordering intent is
+         preserved exactly: the runway panel sits AFTER the inputs while
+         stacked, so the result follows the thing that produces it, and
+         returns to its natural position at the two-column breakpoint.
+     Slider hit area raised 34px -> 2.75rem to meet the 44px tap-target rule.
+   ========================================================================= */
+
+.calc{position:relative;padding-block:1.25rem 4rem;}
+.calc-card{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:1.5rem;
+  padding:.5rem;
+  box-shadow:0 1.875rem 4.375rem -1.875rem rgba(0,0,0,.6);
+  display:flex;flex-direction:column;
+}
+.calc-card-head{padding:1.125rem 1rem .75rem;text-align:center;order:1;}
+.calc-card-head h2{font-size:1.3125rem;font-weight:800;}
+.calc-card-head p{color:var(--ink-soft);font-size:1rem;margin-top:.5rem;}
+
+/* ---- Runway panel (order:3 while stacked — after the inputs) ---- */
+.runway-panel{
+  margin:1.125rem .875rem;                 /* between the inputs and the results */
+  border:1px solid var(--line);
+  border-radius:1.125rem;
+  padding:1.25rem .875rem;
+  text-align:center;
+  background:rgba(255,255,255,.03);
+}
+.runway-panel-label{
+  font-size:1rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-mute);margin-bottom:1.125rem;
+}
+.runway-track-wrap{position:relative;padding-top:.875rem;margin-bottom:1rem;}
+.runway-track{
+  position:relative;height:.625rem;border-radius:999px;
+  background:rgba(255,255,255,.08);overflow:hidden;
+}
+/* Fill shows a red -> amber -> green scale that stays fixed to the track, so a
+   short runway reads red and a long one reads green. Container-query units keep
+   the gradient anchored to the track rather than compressing into the fill. */
+.runway-track{container-type:inline-size;}
+.runway-fill{
+  position:absolute;inset-block:0;inset-inline-start:0;width:0%;
+  border-radius:999px;transition:width .2s ease;overflow:hidden;
+}
+.runway-fill::before{
+  content:"";position:absolute;inset-block:0;inset-inline-start:0;
+  width:100cqw;min-width:20rem;
+  background:linear-gradient(90deg,#FF6666 0%,#FF9147 25%,#FFC93C 50%,#A8E05F 75%,#2EE6A6 100%);
+}
+@supports not (width:100cqw){
+  .runway-fill{background:linear-gradient(90deg,#FF6666,#FFC93C,#2EE6A6);}
+  .runway-fill::before{display:none;}
+}
+.runway-chip{
+  position:absolute;inset-inline-start:0;top:-.25rem;
+  transform:translateX(-50%);transition:left .2s ease;
+  white-space:nowrap;background:var(--blue);color:var(--navy);
+  font-family:var(--head);font-weight:800;font-size:1rem;
+  padding:.25rem .75rem;border-radius:999px;
+}
+.runway-ticks{
+  display:flex;justify-content:space-between;margin-top:.625rem;
+  font-size:1rem;color:var(--ink-mute);font-variant-numeric:tabular-nums;
+}
+/* Age figure takes its colour from the same red->green scale, driven by
+   --runway-t (0..1) which a small presentational script sets from the fill width. */
+.runway-panel{--runway-t:0;--runway-col:#FF6666;}
+.runway-age{
+  font-family:var(--head);font-size:2.5rem;font-weight:900;
+  margin:.625rem 0 .75rem;line-height:1;letter-spacing:-.02em;
+  color:var(--runway-col);
+  text-shadow:0 0 1.625rem color-mix(in srgb,var(--runway-col) 55%,transparent),
+              0 0 4rem color-mix(in srgb,var(--runway-col) 22%,transparent);
+  transition:color .25s ease,text-shadow .25s ease;
+}
+.runway-age.ok{--runway-col:var(--pos);}
+.runway-msg{font-size:1rem;color:var(--ink-soft);line-height:1.6;max-width:30rem;margin-inline:auto;}
+.runway-callout{
+  display:none;margin-top:1.125rem;text-align:start;gap:.625rem;
+  padding:1rem 1.125rem;border:1px solid var(--line);
+  border-inline-start:.1875rem solid var(--blue);
+  background:rgba(101,206,246,.12);border-radius:.875rem;
+  font-size:1rem;color:#e8eefc;line-height:1.6;
+}
+.runway-callout.show{display:flex;}
+.runway-callout .warn-icon{flex:0 0 auto;color:var(--blue);font-weight:800;font-size:1rem;}
+.runway-callout b{color:var(--warn);}
+
+/* ---- Inputs + results ---- */
+.calc-body{display:contents;}
+.calc-inputs{order:2;margin:.625rem .875rem 0;}
+.runway-panel{order:3;}
+.calc-results{order:4;margin:0 .875rem 1.25rem;}
+.calc-inputs{
+  background:#03102b;border:1px solid var(--line);
+  border-radius:1.125rem;padding:1.25rem 1rem;min-width:0;
+}
+.field{margin-bottom:1.375rem;min-width:0;}
+/* The return line is the only input here that is neither a fact nor a personal
+   decision — it's the market's, and it's the one the bridge copy below names.
+   Accented in place so it carries no extra height on mobile. */
+.field-accent{
+  padding:.875rem 1rem 1rem;
+  margin-block:.25rem 0;
+  background:rgba(101,206,246,.07);
+  border-radius:.75rem;
+  box-shadow:0 0 0 1px rgba(101,206,246,.32), 0 0 1.5rem rgba(101,206,246,.10);
+}
+/* Qualifier sits on its own line — nothing on the label row can reflow it. */
+.field-note{
+  font-size:1rem;line-height:1.45;color:var(--ink-mute);
+  margin:.5rem 0 0;
+}
+.field-note a{color:var(--ink-soft);text-decoration:underline;}
+.field-tag{
+  font-size:1rem;
+  line-height:1.45;
+  color:var(--blue);
+  margin:-.125rem 0 .625rem;
+}
+.field:last-child{margin-bottom:0;}
+.field-label{
+  display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;
+  font-size:1rem;font-weight:600;color:#e8eefc;margin-bottom:.625rem;
+}
+.field-val{
+  font-family:var(--head);font-weight:800;color:var(--blue);font-size:1.0625rem;
+  flex:0 0 auto;min-width:4.5ch;text-align:end;
+  font-variant-numeric:tabular-nums;
+}
+.field-label > span:first-child{min-width:0;}
+.field-note{font-size:1rem;color:var(--ink-mute);margin-top:.5rem;line-height:1.55;}
+.field-number .field-label{margin-bottom:.5rem;}
+.num-wrap{position:relative;}
+.num-prefix{
+  position:absolute;inset-inline-start:.875rem;top:50%;transform:translateY(-50%);
+  color:var(--ink-mute);font-family:var(--head);font-weight:700;font-size:1.0625rem;
+  pointer-events:none;
+}
+.num-wrap input.numfield{padding-inline-start:1.625rem;}
+input.numfield{
+  width:100%;min-height:2.75rem;
+  background:#03102b;border:1px solid var(--line);color:var(--white);
+  font-family:var(--head);font-weight:700;font-size:1.0625rem;
+  padding:.75rem .875rem;border-radius:.625rem;outline:none;
+  font-variant-numeric:tabular-nums;
+}
+input.numfield:focus{border-color:var(--blue);}
+
+/* Visible track stays .375rem; the input is 2.75rem tall for a 44px hit area. */
+input.slider{
+  -webkit-appearance:none;appearance:none;display:block;
+  width:100%;height:2.75rem;margin:0;padding:0;
+  background:transparent;outline:none;cursor:pointer;
+}
+input.slider::-webkit-slider-runnable-track{height:.375rem;border-radius:999px;background:var(--grad);}
+input.slider::-moz-range-track{height:.375rem;border-radius:999px;background:var(--grad);}
+input.slider::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:1.25rem;height:1.25rem;border-radius:50%;
+  background:var(--white);border:.1875rem solid var(--blue);cursor:pointer;
+  box-shadow:0 .125rem .5rem rgba(0,0,0,.4);
+  margin-top:-.4375rem;
+}
+input.slider::-moz-range-thumb{
+  width:1.25rem;height:1.25rem;border-radius:50%;
+  background:var(--white);border:.1875rem solid var(--blue);cursor:pointer;
+  box-shadow:0 .125rem .5rem rgba(0,0,0,.4);
+}
+
+.calc-results{display:flex;flex-direction:column;gap:1rem;min-width:0;}
+.calc-results > *{min-width:0;}
+.results-heading{
+  font-size:1rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-mute);
+}
+.stat-grid-2x2{display:grid;grid-template-columns:1fr;gap:.875rem;}
+.stat-grid-2x2 > *{min-width:0;}
+.stat-tile{
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:1rem;padding:1.25rem 1rem;text-align:center;
+}
+.stat-tile-num{
+  font-family:var(--head);font-size:clamp(1.125rem,5.4vw,1.5rem);
+  font-weight:800;margin-bottom:.375rem;overflow-wrap:anywhere;
+}
+.stat-tile-label{font-size:1rem;color:var(--ink-soft);}
+.income-flow-tile{
+  grid-column:1 / -1;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:1rem;padding:1.25rem .875rem 1rem;
+  transition:background .2s ease,border-color .2s ease;
+}
+.income-flow-tile:hover{border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.05);}
+
+/* Mobile: one column, document order — figure, its label, chevron, figure, its label.
+   Fixes labels drifting under the wrong number when the row stacked (2026-08-07). */
+.if-grid{display:grid;grid-template-columns:1fr;gap:.25rem;text-align:center;}
+.if-grid > *{min-width:0;}
+.if-num{
+  font-family:var(--head);font-size:clamp(1.125rem,5.4vw,1.5rem);
+  font-weight:800;overflow-wrap:anywhere;color:var(--indigo);
+}
+.if-num.if-b{color:var(--warn);}
+.if-num.if-b.warn{color:var(--neg);}
+.if-lab{font-size:1rem;color:var(--ink-soft);margin-bottom:.25rem;}
+.if-lab-b{margin-bottom:0;}
+.if-chev{
+  width:2rem;height:2rem;display:block;cursor:pointer;
+  rotate:90deg;margin:-.125rem auto 0;
+  transition:filter .2s ease;transform-origin:center;
+}
+.if-chev:hover,.if-chev:focus{filter:brightness(1.3);outline:none;}
+@keyframes chevron-alert-pulse{
+  0%{transform:translateX(0) scale(1);opacity:1;}
+  50%{transform:translateX(.625rem) scale(1.14);opacity:.7;}
+  100%{transform:translateX(0) scale(1);opacity:1;}
+}
+.tile-amber{border-color:rgba(251,191,36,.3);}
+.tile-amber .stat-tile-num{color:var(--warn);}
+.tile-amber.warn{border-color:rgba(251,113,133,.4);background:rgba(251,113,133,.08);}
+.tile-amber.warn .stat-tile-num{color:var(--neg);}
+.tile-green .stat-tile-num{color:var(--pos);}
+.tile-red .stat-tile-num{color:var(--blue);font-size:clamp(1rem,4.8vw,1.375rem);}
+.stat-tile-warn{font-size:1rem;color:var(--neg);margin-top:.5rem;line-height:1.5;}
+.income-flow-tile .stat-tile-warn{text-align:center;color:var(--ink-mute);margin-top:.5rem;}
+
+/* Gap meter — promoted to the visual anchor of the results panel (2026-08-08).
+   Replaces the pair of stat tiles that previously showed the same two figures
+   separately; now the projected nest egg and the required capital sit above a
+   larger track, with the shortfall (or overage) called out below in the same
+   red/green language the runway uses. */
+.gap-meter{
+  grid-column:1 / -1;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:1rem;padding:1.25rem 1rem 1.375rem;
+}
+.gap-meter-label{
+  font-size:1rem;color:var(--ink-mute);text-align:center;
+  margin-bottom:1rem;line-height:1.45;
+}
+.gap-figures{
+  display:grid;grid-template-columns:1fr;gap:.75rem;
+  align-items:end;margin-bottom:.875rem;
+}
+.gap-figure{text-align:center;min-width:0;}
+.gap-figure-num{
+  font-family:var(--head);font-size:clamp(1.125rem,5.4vw,1.5rem);
+  font-weight:800;overflow-wrap:anywhere;line-height:1.15;margin-bottom:.25rem;
+}
+.gap-figure-have .gap-figure-num{color:var(--pos);}
+.gap-figure-need .gap-figure-num{color:var(--blue);}
+.gap-meter.met .gap-figure-need .gap-figure-num{color:var(--pos);}
+.gap-figure-lab{font-size:.9375rem;color:var(--ink-soft);line-height:1.35;}
+.gap-track{
+  position:relative;height:1.875rem;border-radius:.625rem;overflow:hidden;
+  background:repeating-linear-gradient(135deg,rgba(255,102,102,.22) 0 .5rem,rgba(255,102,102,.10) .5rem 1rem);
+  border:1px solid rgba(255,102,102,.35);
+}
+.gap-fill{
+  position:absolute;inset-block:0;inset-inline-start:0;width:0%;
+  background:linear-gradient(90deg,#2EE6A6,#A8E05F);
+  border-radius:.5rem 0 0 .5rem;
+  transition:width .3s ease, background .3s ease;
+}
+.gap-meter.met .gap-fill{border-radius:.5rem;}
+.gap-verdict{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;
+  gap:.4375rem;margin-top:.875rem;text-align:center;line-height:1.35;
+}
+.gap-verdict-num{
+  font-family:var(--head);font-weight:800;
+  font-size:clamp(1.25rem,5.6vw,1.625rem);color:#FF6666;
+}
+.gap-verdict-lab{font-size:1rem;color:var(--ink-soft);}
+.gap-meter.met .gap-verdict-num{color:#2EE6A6;}
+
+.moves{
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:.875rem;padding:1.125rem 1.25rem;
+}
+.moves-label{font-size:1rem;font-weight:700;color:var(--blue);margin-bottom:.625rem;}
+.move-line{font-size:1rem;color:#e8eefc;line-height:1.6;margin-bottom:.25rem;}
+.move-line:last-child{margin-bottom:0;}
+
+.calc-disclaimer{
+  order:5;margin:0 .875rem 1.125rem;
+  font-size:1rem;line-height:1.5;color:var(--ink-mute);text-align:center;
+}
+.calc-disclaimer a{color:var(--ink-soft);text-decoration:underline;}
+
+/* ---- min-width:35rem (~560px): tiles side by side, chevron horizontal ---- */
+@media (min-width:35rem){
+  .calc-card-head{padding:1.375rem 1.625rem .875rem;}
+  .calc-card-head h2{font-size:1.625rem;}
+  .runway-panel{margin:0 1.625rem 1.375rem;padding:1.625rem 1.5rem;}
+  .runway-age{font-size:3.375rem;}
+  .calc-body{padding:.625rem 1.625rem 1.5rem;gap:1.75rem;}
+  .calc-inputs{padding:1.625rem 1.5rem;}
+  .calc-disclaimer{margin:.25rem 1.625rem 1.375rem;padding:.875rem 1.125rem;}
+  .stat-grid-2x2{grid-template-columns:1fr 1fr;}
+  .if-grid{
+    grid-template-columns:1fr 5rem 1fr;
+    grid-template-areas:"a chev b" "alab chev blab";
+    align-items:center;column-gap:0;row-gap:.375rem;
+  }
+  .if-a{grid-area:a;} .if-lab-a{grid-area:alab;margin-bottom:0;}
+  .if-b{grid-area:b;} .if-lab-b{grid-area:blab;}
+  .if-chev{
+    grid-area:chev;width:100%;height:2.25rem;rotate:none;margin:0;
+    align-self:center;
+    animation:chevron-alert-pulse 1s ease-in-out infinite;
+  }
+  .stat-tile-num{font-size:1.625rem;}
+  .tile-red .stat-tile-num{font-size:1.375rem;}
+  .gap-meter{padding:1.5rem 1.5rem 1.625rem;}
+  .gap-figures{grid-template-columns:1fr 1fr;gap:1rem;}
+  .gap-figure-num{font-size:1.625rem;}
+  .gap-track{height:2.125rem;}
+  .gap-verdict-num{font-size:1.75rem;}
+}
+
+/* ---- min-width:53.75rem (~860px): two columns, runway returns to the top ---- */
+@media (min-width:53.75rem){
+  .calc-body{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;padding:.625rem 1.625rem 1.5rem;order:2;}
+  .calc-inputs{margin:0;}
+  .calc-results{margin:0;}
+  .runway-panel{order:3;margin:0 1.625rem 1.375rem;}
+  /* .calc-card stays flex-column so the runway panel remains AFTER the inputs at
+     every width (changed 2026-08-07) — the result should never precede the inputs
+     that produce it. */
+}
+
+@media (prefers-reduced-motion:reduce){
+  .if-chev{animation:none;}
+}
+
+/* ---------- Generic cards ---------- */
+
+.cards{display:grid;gap:1rem;margin-top:2rem;}
+.cards-2{grid-template-columns:1fr;max-width:52rem;margin-inline:auto;}   /* boxes centred; the text above stays left */
+.card{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  padding:1.25rem;
+}
+.card h3{font-size:1.1875rem;font-weight:700;margin-bottom:.5rem;color:#eaf1fd;}
+.card p{margin:0;color:var(--ink-soft);font-size:1rem;}
+.card.accent{border-left:.1875rem solid var(--blue);}
+
+/* Icon-driven "why old math broke" cards: an SVG sits on top of a short
+   heading + one-line takeaway. Cuts the read-weight of this section right
+   after the hero on mobile (2026-08-08). */
+.card-viz{display:flex;flex-direction:column;gap:.75rem;padding:1.25rem;}
+.card-viz .card-viz-art{
+  background:rgba(7,29,73,.5);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:var(--r-md);
+  padding:.75rem;
+}
+.card-viz .card-viz-art svg{display:block;width:100%;height:auto;}
+.card-viz h3{margin:0;}
+.card-viz p{font-size:1rem;}
+
+/* ---------- Two-path contrast ---------- */
+/* Wide-view: image + overlays. Narrow-view: image + list. */
+.paths-fig{margin:1rem 0 0;}
+.paths-viewport{position:relative;}
+.paths-img{display:block;width:100%;height:auto;border-radius:var(--r-lg);border:1px solid var(--line);}
+
+/* Callouts layout across breakpoints (2026-08-08):
+   <48rem  mobile   — stacked single column, full width beneath the image
+   48–64rem tablet  — two columns beneath the image
+   >=64rem desktop  — absolute overlays anchored to the image bounds; the
+                      left card sits bottom-left over the red tangle, the
+                      right card sits top-center over the ascending curve. */
+.paths-cols{
+  display:grid;grid-template-columns:1fr;gap:.875rem;
+  padding:1rem 1rem 0;   /* breathes off the image edge on mobile */
+}
+@media (min-width:48rem){
+  .paths-cols{grid-template-columns:1fr 1fr;gap:1rem;padding:1rem 1rem 0;}
+}
+@media (min-width:64rem){
+  .paths-cols{
+    position:absolute;top:0;left:0;right:0;bottom:0;
+    padding:1.75rem;gap:0;pointer-events:none;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto 1fr auto;
+    grid-template-areas:
+      ".         top-right"
+      ".         ."
+      "bot-left  .";
+  }
+  .col{
+    max-width:20.5rem;pointer-events:auto;
+    background:rgba(4,16,46,.48);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.10);
+    padding:1.125rem 1.25rem 1.25rem 1.5rem;
+    opacity:.7;
+  }
+  /* Right (payoff) box lifts: less see-through so text sharpens against
+     the ascending arrow, plus a subtle cyan glow to signal "this one"
+     without shouting (2026-08-08). */
+  .col-right{
+    opacity:.92;
+    box-shadow:0 0 1.75rem rgba(43,253,254,.18), 0 .375rem 1.25rem rgba(4,16,46,.35);
+    border-color:rgba(43,253,254,.22);
+  }
+  .col-left {grid-area:bot-left;justify-self:start;align-self:end;}
+  .col-right{grid-area:top-right;justify-self:end;align-self:start;margin-inline-end:8.75rem;}
+  .col h3{font-size:1.1875rem;margin-bottom:.75rem;color:#fff;font-weight:700;}
+  .col li{font-size:1.0625rem;color:#fff;font-weight:500;}
+  .col-right h3{font-weight:800;}
+  .col-right li{font-weight:600;}
+}
+.col{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  padding:1rem 1rem 1.125rem 1.375rem;
+  position:relative;
+}
+/* Gradient side-bar (was a flat 4px border) — needs to be a pseudo-element
+   to carry a top-to-bottom gradient (2026-08-08). */
+.col::before{
+  content:"";
+  position:absolute;
+  inset-inline-start:0;top:0;bottom:0;
+  width:.3125rem;
+  border-radius:.3125rem 0 0 .3125rem;
+}
+.col-left::before {background:linear-gradient(180deg,#7a0104 0%,#fc0503 100%);}
+.col-right::before{background:linear-gradient(180deg,#2bfdfe 0%,#0165df 100%);}
+.col h3{
+  font-family:var(--head);font-size:1.0625rem;
+  margin:0 0 .625rem;color:#e8eefc;
+  display:flex;align-items:center;gap:.4375rem;line-height:1.25;
+}
+.col h3 .dot{width:.5rem;height:.5rem;border-radius:50%;flex:none;}
+.col ul{list-style:none;margin:0;padding:0;display:grid;gap:.4375rem;}
+.col li{
+  font-size:1rem;color:var(--ink-soft);line-height:1.5;
+  display:flex;gap:.5rem;align-items:flex-start;
+}
+.col li::before{
+  content:"";flex:none;margin-top:.5625rem;
+  width:.3125rem;height:.3125rem;border-radius:50%;
+  background:var(--ink-mute);
+}
+.col-left  li::before{background:#FF6666;}
+.col-right li::before{background:#2EE6A6;}
+
+.paths-fig figcaption{
+  font-family:var(--head);color:var(--ink-soft);
+  font-size:1rem;text-align:center;margin-top:1rem;
+}
+
+.path{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  padding:1.25rem;
+}
+.path.a{border-top:.1875rem solid var(--neg);}
+.path.b{border-top:.1875rem solid var(--pos);}
+.path h3{font-size:1.1875rem;font-weight:800;margin-bottom:.875rem;}
+.path li{
+  position:relative;padding:.5rem 0 .5rem 1.75rem;
+  color:var(--ink-soft);font-size:1rem;line-height:1.55;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.path li:last-child{border-bottom:0;}
+.path li::before{
+  position:absolute;inset-inline-start:0;inset-block-start:.5rem;
+  font-weight:700;font-size:1rem;
+}
+.path.a li::before{content:"\2715";color:var(--neg);}
+.path.b li::before{content:"\2713";color:var(--pos);}
+
+/* ---------- Curriculum ---------- */
+.mods{display:grid;gap:1rem;margin-top:2rem;}
+.mod{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  padding:1.25rem;
+}
+.mod-art{
+  position:relative;
+  background:linear-gradient(160deg,rgba(101,206,246,.10),rgba(124,111,240,.06));
+  border:1px solid var(--line);
+  border-radius:.75rem;
+  padding:.875rem 1rem;
+  margin-bottom:.875rem;
+}
+.mod-art svg{width:100%;height:auto;display:block;}
+.mod-art .n{
+  position:absolute;inset-block-start:.5rem;inset-inline-start:.5rem;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:1.75rem;height:1.75rem;border-radius:.5rem;
+  background:var(--grad);color:#06132f;
+  font-family:var(--head);font-weight:900;font-size:1rem;
+}
+.mod h3{font-size:1.1875rem;font-weight:800;margin-bottom:.5rem;}
+.mod p{margin:0 0 .75rem;color:var(--ink-soft);font-size:1rem;}
+.mod .count{
+  font-size:1rem;color:var(--blue);font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+
+/* ---------- Proof ---------- */
+.proof{display:grid;gap:1rem;margin-top:2rem;}
+.stat{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  padding:1.5rem 1.25rem;
+  text-align:center;
+}
+.stat .big{
+  font-family:var(--head);font-weight:900;font-size:2.25rem;
+  line-height:1.1;margin-bottom:.25rem;
+}
+.stat .cap{color:var(--ink-soft);font-size:1rem;}
+
+/* ---------- FAQ ---------- */
+.faq{display:grid;gap:.75rem;margin-top:2rem;}
+.qa{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  overflow:hidden;
+}
+.qa button{
+  width:100%;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  min-height:3.5rem;
+  padding:1rem 1.125rem;
+  background:transparent;border:0;cursor:pointer;
+  font-family:var(--head);font-weight:700;font-size:1.0625rem;
+  text-align:start;color:var(--white);
+}
+.qa .chev{color:var(--blue);font-size:1.5rem;line-height:1;flex:none;transition:transform .2s ease;}
+.qa[open] .chev,.qa.open .chev{transform:rotate(45deg);}
+.qa .a{
+  max-height:0;overflow:hidden;
+  padding-inline:1.125rem;
+  transition:max-height .3s ease,padding .25s ease;
+}
+.qa.open .a{padding-block:0 1.125rem;}
+.qa .a p{margin:0;color:var(--ink-soft);font-size:1rem;}
+
+/* ---------- Urgency ---------- */
+.urgency .box{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:1.75rem 1.25rem;
+  margin-top:1.5rem;
+}
+.urgency h2{font-size:1.625rem;font-weight:800;margin-bottom:.75rem;}
+.urgency p{color:var(--ink-soft);font-size:1.0625rem;margin-bottom:0;}
+.urgency p + p{margin-top:.875rem;}
+
+.sec-img{
+  width:100%;height:auto;display:block;
+  border-radius:var(--r-lg);border:1px solid var(--line);
+  margin-top:2rem;
+}
+.community-band{padding-block:1rem 0;}
+.community-band .sec-img{margin-top:0;}
+.band-cap{
+  margin:.875rem 0 0;text-align:center;
+  font-size:1rem;color:var(--ink-mute);
+}
+
+/* ---------- Final CTA ---------- */
+.final{padding-block:3.5rem 4rem;text-align:center;}
+.final h2{font-size:1.875rem;font-weight:800;margin-bottom:.875rem;}
+.final .lead{margin-bottom:2rem;}
+
+/* ---------- Footer (standard component; chrome type exempt from 1rem floor) ---------- */
+.mkt-footer{background:var(--navy-deep);border-top:1px solid var(--line);}
+.mkt-footer__inner{width:100%;max-width:var(--wrap);margin-inline:auto;padding:2.25rem var(--gut) 1.5rem;}
+.mkt-footer__top{
+  display:flex;flex-direction:column;gap:1.5rem;
+  padding-bottom:1.5rem;border-bottom:1px solid var(--line);
+}
+.mkt-brand__logo{height:2.25rem;width:auto;}
+.mkt-brand__tag{margin-top:.5rem;color:#8FA6CF;font-size:.9rem;line-height:1.5;}
+.mkt-footer__mid{display:flex;flex-direction:column;gap:.35rem;color:#8FA6CF;font-size:.85rem;}
+.mkt-footer__mid a:hover{color:var(--blue);text-decoration:underline;}
+.mkt-connect__label{
+  font-family:var(--head);font-weight:700;font-size:.75rem;
+  letter-spacing:.14em;text-transform:uppercase;color:#8FA6CF;margin-bottom:.6rem;
+}
+.mkt-social{display:flex;gap:.6rem;}
+.mkt-social a{
+  width:2.75rem;height:2.75rem;border-radius:.625rem;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);
+  transition:background .18s ease,border-color .18s ease;
+}
+.mkt-social a:hover{background:rgba(101,206,246,.16);border-color:var(--blue);}
+.mkt-social svg{width:1.1875rem;height:1.1875rem;fill:currentColor;}
+.mkt-disc{padding-top:1.25rem;}
+.mkt-disc p{color:#8FA6CF;font-size:.85rem;line-height:1.7;margin:0;}
+.mkt-disc strong{color:#c3d2ef;}
+
+/* =========================================================================
+   Breakpoints — mobile-first, min-width only
+   ========================================================================= */
+@media (min-width:36rem){            /* ~576px */
+  section{padding-block:4.5rem;}
+  .hero{padding-block:5rem 5.5rem;}
+  .hero-bg{object-position:55% 50%;}
+  .hero::after{background:linear-gradient(90deg,rgba(7,29,73,.94) 0%,rgba(7,29,73,.88) 34%,rgba(7,29,73,.55) 58%,rgba(7,29,73,.18) 82%,rgba(7,29,73,.05) 100%);}
+  .hero h1{font-size:3.25rem;}
+  .hero .sub{font-size:1.25rem;}
+  .h2{font-size:2.25rem;}
+  .cards,.paths,.cards-2{grid-template-columns:1fr 1fr;}
+  .proof{grid-template-columns:repeat(3,1fr);}
+  .stat .big{font-size:2.75rem;}
+  .urgency .box{padding:2.25rem 2rem;}
+  .final h2{font-size:2.25rem;}
+  .mkt-footer__top{flex-direction:row;justify-content:space-between;align-items:flex-start;}
+  .mkt-footer__mid{text-align:center;}
+}
+@media (min-width:48rem){            /* ~768px */
+  .hero h1{font-size:3.75rem;}
+  .h2{font-size:2.5rem;}
+  .mods{grid-template-columns:1fr 1fr;}
+  .site-head img{height:2rem;}
+  .nav-links{display:flex;align-items:center;gap:1.5rem;}
+}
+@media (min-width:64rem){            /* ~1024px */
+  /* Taller hero on desktop so the background image has room to read. Content is
+     vertically centred rather than top-anchored, so the extra height looks
+     deliberate instead of like padding. 43.75rem = 700px at the default root
+     size; kept in rem so it scales with the reader's font-size preference. */
+  .hero{min-height:43.75rem;display:flex;align-items:center;}
+  .hero > .wrap{width:100%;}
+  .hero h1{font-size:4rem;max-width:32rem;}          /* top of the hero band */
+  .hero .sub{max-width:30rem;}
+  .hero .cta-row{max-width:32rem;}
+  .mods{grid-template-columns:repeat(4,1fr);}
+  .cards-2{grid-template-columns:1fr 1fr;}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- Live market data ticker powered by TradingView (restored from v3) -->
+<div class="ticker-bar">
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols": [
+        { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500" },
+        { "proName": "FOREXCOM:NSXUSD", "title": "Nasdaq 100" },
+        { "proName": "OANDA:XAUUSD", "title": "Gold" },
+        { "proName": "TVC:USOIL", "title": "Crude Oil" },
+        { "proName": "FX:EURUSD", "title": "EUR/USD" },
+        { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+        { "proName": "NASDAQ:AMZN", "title": "Amazon" }
+      ],
+      "showSymbolLogo": false,
+      "colorTheme": "dark",
+      "isTransparent": true,
+      "displayMode": "regular",
+      "locale": "en"
+    }
+    </script>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="MarketEye">
+      <img src="https://raw.githubusercontent.com/marketeye-official/marketeye-site/refs/heads/main/MarketEye-Logo-1.03c-Gradient-horizontal.png" alt="MarketEye">
+    </a>
+    <nav class="nav-links" aria-label="Page sections">
+      <a href="#calculator">Calculator</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#proof">Proof</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn lp-form-cta" href="#signup">Join Free</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============================ PROBLEM ============================ -->
+
+<section class="hero">
+  <img class="hero-bg" src="/assets/images/ret-macro-v6/hero.jpg" alt="" aria-hidden="true" width="1600" height="900" fetchpriority="high" decoding="async">
+  <div class="wrap">
+    <h1>Guessing is not <span class="l2">a strategy.</span></h1>
+    <p class="sub measure">Prices moved. The advice didn't. The numbers are below.</p>
+    <a class="btn btn-lg lp-form-cta" href="#signup">Join Free Community</a>
+  </div>
+</section>
+
+<section class="trust" aria-label="Credentials">
+  <div class="wrap">
+    <ul>
+      <li>30+ Years Trading</li>
+      <li>100s of Traders Trained</li>
+      <li>$0 to Join</li>
+      <li>Built for Beginners</li>
+    </ul>
+  </div>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Why the old math broke</span>
+    <h2 class="h2 measure">The old advice assumed prices would stay steady. They haven't.</h2>
+    <p class="lead measure">Two things changed at once. Run the numbers below and watch what they do.</p>
+
+    <div class="cards cards-2 old-math">
+      <div class="card accent card-viz">
+        <div class="card-viz-art" aria-hidden="true">
+          <svg viewBox="0 0 200 120" role="img" aria-label="Three cost bars — housing, healthcare, insurance — each stepping higher than the last, with a dashed line showing the older, flatter assumption.">
+            <line x1="10" y1="98" x2="190" y2="98" stroke="#8FA6CF" stroke-width="1.5" opacity=".6"/>
+            <line x1="10" y1="70" x2="190" y2="70" stroke="#65CEF6" stroke-width="1.5" stroke-dasharray="4 5" opacity=".7"/>
+            <g>
+              <rect x="30"  y="60" width="30" height="38" rx="2" fill="#FF6666" opacity=".85"/>
+              <rect x="82"  y="42" width="30" height="56" rx="2" fill="#FF6666" opacity=".9"/>
+              <rect x="134" y="26" width="30" height="72" rx="2" fill="#FF6666"/>
+            </g>
+            <g fill="#c9dbf5" font-family="Manrope, sans-serif" font-size="10" font-weight="600" text-anchor="middle">
+              <text x="45" y="112">Housing</text>
+              <text x="97" y="112">Healthcare</text>
+              <text x="149" y="112">Insurance</text>
+            </g>
+          </svg>
+        </div>
+        <h3>Costs rose faster than expected</h3>
+        <p>Housing, healthcare, insurance — all outpaced the old plans.</p>
+      </div>
+      <div class="card accent card-viz">
+        <div class="card-viz-art" aria-hidden="true">
+          <svg viewBox="0 0 200 120" role="img" aria-label="Two paths from an early-career crash: the working-years path recovers and climbs; the near-retirement crash falls and stays down.">
+            <line x1="10" y1="98" x2="190" y2="98" stroke="#8FA6CF" stroke-width="1.5" opacity=".6"/>
+            <line x1="100" y1="14" x2="100" y2="98" stroke="#ffffff" stroke-width="1" stroke-dasharray="3 4" opacity=".35"/>
+            <path d="M14,58 L34,52 L54,66 L74,88 L94,70 L114,50 L134,38 L154,26 L184,16" fill="none" stroke="#2EE6A6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14,44 L44,40 L74,36 L100,34 L118,62 L138,80 L158,90 L184,94" fill="none" stroke="#FF6666" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="94" cy="70" r="4" fill="#2EE6A6"/>
+            <circle cx="118" cy="62" r="4" fill="#FF6666"/>
+            <g fill="#c9dbf5" font-family="Manrope, sans-serif" font-size="10" font-weight="600" text-anchor="middle">
+              <text x="52" y="114">early career</text>
+              <text x="152" y="114">at retirement</text>
+            </g>
+          </svg>
+        </div>
+        <h3>When it happens matters</h3>
+        <p>A crash decades out has time to recover. One at retirement doesn't.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section class="calc" id="calculator">
+  <div class="wrap">
+    <div class="calc-card">
+      <div class="calc-card-head">
+        <div class="section-eyebrow">Retirement &amp; the macro picture</div>
+        <h2>How rising prices can shrink retirement savings over time</h2>
+        <p>Rising prices quietly shrink what savings are worth. Change the numbers and watch what moves.</p>
+      </div>
+
+      <div class="runway-panel">
+        <div class="runway-panel-label">Retirement calculator · how long savings could last</div>
+
+        <div class="runway-track-wrap">
+          <div class="runway-track">
+            <div class="runway-fill" id="runwayFill"></div>
+          </div>
+          <div class="runway-chip" id="runwayChip">65</div>
+          <div class="runway-ticks" id="runwayTicks"></div>
+        </div>
+
+        <div class="runway-age" id="outRunwayAge">AGE —</div>
+        <div class="runway-msg" id="runwayMsg">Adjust the numbers to see how long savings could last.</div>
+
+        <div class="runway-callout" id="runwayCallout">
+          <span class="warn-icon">ℹ</span>
+          <span id="runwayCalloutText"></span>
+        </div>
+      </div>
+
+      <div class="calc-body">
+        <div class="calc-inputs">
+
+          <div class="field field-number">
+            <label class="field-label" for="inAge"><span>Current age</span></label>
+            <input type="text" value="45" id="inAge" class="numfield" inputmode="numeric" autocomplete="off" maxlength="2">
+          </div>
+
+          <div class="field field-number">
+            <label class="field-label" for="inRetireAge"><span>Target retirement age</span></label>
+            <input type="text" value="65" id="inRetireAge" class="numfield" inputmode="numeric" autocomplete="off" maxlength="2">
+          </div>
+
+          <div class="field field-number">
+            <label class="field-label" for="inPortfolio"><span>Current portfolio</span></label>
+            <div class="num-wrap">
+              <span class="num-prefix">$</span>
+              <input type="text" value="100,000" id="inPortfolio" class="numfield" inputmode="numeric" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label"><span>Monthly contribution</span><span class="field-val" id="valContribution">$500</span></div>
+            <input type="range" min="0" max="5000" step="50" value="500" id="inContribution" class="slider">
+          </div>
+
+          <div class="field">
+            <div class="field-label"><span>Inflation rate</span><span class="field-val" id="valInflation">3%</span></div>
+            <input type="range" min="0" max="8" step="0.5" value="3" id="inInflation" class="slider">
+            <p class="field-note">Historical US annual inflation rate is 3.28%.</p>
+          </div>
+
+          <div class="field">
+            <div class="field-label"><span>Annual withdrawal rate</span><span class="field-val" id="valWithdraw">4%</span></div>
+            <input type="range" min="2" max="8" step="0.5" value="4" id="inWithdraw" class="slider">
+          </div>
+
+          <div class="field field-accent">
+            <div class="field-label"><span>Annual return</span><span class="field-val" id="valRate">7%</span></div>
+            <div class="field-tag">Everyone types 7%. Almost nobody knows why.</div>
+            <input type="range" min="2" max="12" step="0.5" value="7" id="inRate" class="slider">
+          </div>
+        </div>
+
+        <div class="calc-results">
+          <div class="results-heading">Results at retirement</div>
+
+          <div class="stat-grid-2x2">
+            <div class="income-flow-tile">
+              <div class="if-grid">
+                <div class="if-num if-a" id="outIncomeNominal">$0</div>
+                <div class="if-lab if-lab-a">Monthly income at retirement</div>
+                <svg class="if-chev income-chevron-svg" tabindex="0" viewBox="0 0 100 60" title="Inflation erodes what a fixed monthly income buys — this is how much is lost by the retirement year.">
+                  <polygon points="10,10 35,30 10,50 20,50 45,30 20,10" fill="#ff6b6b" opacity="0.5"/>
+                  <polygon points="35,10 60,30 35,50 45,50 70,30 45,10" fill="#ff3b3b"/>
+                </svg>
+                <div class="if-num if-b tile-amber" id="tileSpendingPower"><span id="outIncomeReal">$0</span></div>
+                <div class="if-lab if-lab-b">What it buys in today's dollars</div>
+              </div>
+              <div class="stat-tile-warn" id="spendingPowerWarn"></div>
+            </div>
+            <div class="gap-meter" id="gapMeter">
+              <div class="gap-meter-label" id="gapMeterLabel">Target coverage — nest egg vs. what's needed to age 79</div>
+              <div class="gap-figures">
+                <div class="gap-figure gap-figure-have">
+                  <div class="gap-figure-num" id="gapHave">$0</div>
+                  <div class="gap-figure-lab">Nest egg at retirement</div>
+                </div>
+                <div class="gap-figure gap-figure-need">
+                  <div class="gap-figure-num" id="gapNeed">$0</div>
+                  <div class="gap-figure-lab" id="gapNeedLabel">Needed to age 79</div>
+                </div>
+              </div>
+              <div class="gap-track">
+                <div class="gap-fill" id="gapFill"></div>
+              </div>
+              <div class="gap-verdict" id="gapVerdictWrap">
+                <span class="gap-verdict-num" id="gapShort">$0</span>
+                <span class="gap-verdict-lab" id="gapShortLabel">short of target</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="moves" id="movesBox">
+            <div class="moves-label">What this calculator shows</div>
+            <div class="move-line" id="moveContribution"></div>
+            <div class="move-line" id="moveTimeline"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-disclaimer">Illustration only — not advice or a projection. <a href="#disclaimer">Full disclaimer</a>.</div>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn btn-lg lp-form-cta" href="#signup">Join Free Community</a>
+    </div>
+  </div>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">What you can actually do</span>
+    <h2 class="h2 measure">You can't control the market. You can learn to decode it.</h2>
+    <p class="lead measure">The year the money runs out isn't fixed. It's what one set of assumptions produces.</p>
+
+    <div class="cards cards-2">
+      <div class="card accent">
+        <h3>The part nobody sets for themselves</h3>
+        <p>Interest rates, inflation and government policy are set by other people. A plan that leans on them leans on their decisions.</p>
+      </div>
+      <div class="card accent">
+        <h3>One part you can learn</h3>
+        <p>How markets move is something you can learn, and nobody's permission is required. That's a skill, not a shortcut.</p>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn btn-lg lp-form-cta" href="#signup">Join Free Community</a>
+    </div>
+  </div>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Two paths</span>
+    <h2 class="h2 measure">Self-taught, or taught in order.</h2>
+    <p class="lead measure">Most people start in the middle — a chart, an indicator, a setup someone posted. The order is the difference, not the talent.</p>
+
+    <figure class="paths-fig">
+      <div class="paths-viewport">
+        <img class="paths-img" src="/assets/images/ret-macro-v6/paths.jpg" alt="A knotted red line loops back on itself as it descends from the left, then turns at the midpoint and climbs steadily to the upper right as a single clean blue-to-green arrow." width="1440" height="810" />
+        <div class="paths-cols">
+          <div class="col col-left">
+            <h3><span class="dot dot-red"></span>Piecing it together alone</h3>
+            <ul>
+              <li>Start at charts</li>
+              <li>Collect setups</li>
+              <li>Noise as signal</li>
+              <li>Risk as an afterthought</li>
+            </ul>
+          </div>
+          <div class="col col-right">
+            <h3><span class="dot dot-green"></span>Learning it in order</h3>
+            <ul>
+              <li>How price forms</li>
+              <li>Know the instrument</li>
+              <li>Read structure</li>
+              <li>Risk before entry</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <figcaption>Same markets. Different order.</figcaption>
+    </figure>
+    <div class="cta-row">
+      <a class="btn btn-lg lp-form-cta" href="#signup">Join Free Community</a>
+    </div>
+  </div>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section id="how-it-works">
+  <div class="wrap">
+    <span class="eyebrow">What's inside, free</span>
+    <h2 class="h2 measure">Four modules. Twenty lessons. Over 100 topics.</h2>
+    <p class="lead measure">Most courses start at charts, then wonder why people feel lost. This one starts with what a market is. Markets follow rules — the lessons show you the rules.</p>
+    <div class="mods">
+      <div class="mod">
+        <div class="mod-art"><span class="n">1</span>
+          <svg viewBox="0 0 160 90" role="img" aria-label="Order-book depth: buy interest stepping up on the left, sell interest stepping up on the right, with a gap between them where price sits.">
+            <g fill="#65CEF6" opacity=".85"><rect x="8" y="62" width="12" height="20" rx="2"/><rect x="24" y="52" width="12" height="30" rx="2"/><rect x="40" y="42" width="12" height="40" rx="2"/><rect x="56" y="30" width="12" height="52" rx="2"/></g>
+            <g fill="#7C6FF0" opacity=".85"><rect x="92" y="30" width="12" height="52" rx="2"/><rect x="108" y="42" width="12" height="40" rx="2"/><rect x="124" y="52" width="12" height="30" rx="2"/><rect x="140" y="62" width="12" height="20" rx="2"/></g>
+            <line x1="80" y1="20" x2="80" y2="84" stroke="#ffffff" stroke-width="2" stroke-dasharray="3 4" opacity=".5"/>
+          </svg>
+        </div>
+        <h3>How Markets Actually Work</h3>
+        <div class="count">28 topics</div>
+      </div>
+      <div class="mod">
+        <div class="mod-art"><span class="n">2</span>
+          <svg viewBox="0 0 160 90" role="img" aria-label="A futures contract sheet with a highlighted specification line and a tick scale beneath it.">
+            <rect x="30" y="10" width="100" height="60" rx="6" fill="none" stroke="#65CEF6" stroke-width="2.5"/>
+            <rect x="30" y="10" width="100" height="14" rx="6" fill="#65CEF6" opacity=".35"/>
+            <g stroke="#c9dbf5" stroke-width="2.5" stroke-linecap="round" opacity=".7">
+              <line x1="40" y1="36" x2="104" y2="36"/><line x1="40" y1="46" x2="88" y2="46"/>
+            </g>
+            <line x1="40" y1="56" x2="120" y2="56" stroke="#2EE6A6" stroke-width="3" stroke-linecap="round"/>
+            <g stroke="#8FA6CF" stroke-width="2" stroke-linecap="round" opacity=".8">
+              <line x1="34" y1="80" x2="126" y2="80"/>
+              <line x1="46" y1="76" x2="46" y2="84"/><line x1="70" y1="74" x2="70" y2="86"/>
+              <line x1="94" y1="76" x2="94" y2="84"/><line x1="118" y1="74" x2="118" y2="86"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Futures 101</h3>
+        <div class="count">21 topics</div>
+      </div>
+      <div class="mod">
+        <div class="mod-art"><span class="n">3</span>
+          <svg viewBox="0 0 160 90" role="img" aria-label="Seven candlesticks, some rising and some falling, with a dashed horizontal line marking a swing level.">
+            <line x1="6" y1="30" x2="154" y2="30" stroke="#8FA6CF" stroke-width="1.5" stroke-dasharray="4 5" opacity=".7"/>
+            <g stroke-width="2.5" stroke-linecap="round">
+              <g stroke="#2EE6A6" fill="#2EE6A6"><line x1="18" y1="46" x2="18" y2="72"/><rect x="13" y="52" width="10" height="14" rx="1.5"/></g>
+              <g stroke="#FF6666" fill="#FF6666"><line x1="40" y1="38" x2="40" y2="66"/><rect x="35" y="44" width="10" height="16" rx="1.5"/></g>
+              <g stroke="#2EE6A6" fill="#2EE6A6"><line x1="62" y1="26" x2="62" y2="58"/><rect x="57" y="32" width="10" height="20" rx="1.5"/></g>
+              <g stroke="#2EE6A6" fill="#2EE6A6"><line x1="84" y1="20" x2="84" y2="48"/><rect x="79" y="26" width="10" height="16" rx="1.5"/></g>
+              <g stroke="#FF6666" fill="#FF6666"><line x1="106" y1="28" x2="106" y2="60"/><rect x="101" y="34" width="10" height="18" rx="1.5"/></g>
+              <g stroke="#2EE6A6" fill="#2EE6A6"><line x1="128" y1="34" x2="128" y2="64"/><rect x="123" y="40" width="10" height="16" rx="1.5"/></g>
+            </g>
+          </svg>
+        </div>
+        <h3>Reading the Charts</h3>
+        <div class="count">34 topics</div>
+      </div>
+      <div class="mod">
+        <div class="mod-art"><span class="n">4</span>
+          <svg viewBox="0 0 160 90" role="img" aria-label="A pullback setup: price rallies to a prior swing high, retraces into a marked zone, then breaks decisively above that level and continues.">
+            <line x1="26" y1="38" x2="154" y2="38" stroke="#8FA6CF" stroke-width="2" stroke-dasharray="6 4" opacity=".8"/>
+            <rect x="62" y="48" width="34" height="22" rx="3" fill="#65CEF6" opacity=".18" stroke="#65CEF6" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <path d="M8,80 L54,38 L79,59" fill="none" stroke="#8FA6CF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+            <path d="M79,59 L106,38 L152,12" fill="none" stroke="#2EE6A6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="106" cy="38" r="3.5" fill="#2EE6A6" opacity=".9"/>
+            <circle cx="79" cy="59" r="6" fill="#0c2657" stroke="#fff" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <h3>Trade Setups</h3>
+        <div class="count">31 topics</div>
+      </div>
+    </div>
+
+    <p class="lead measure-center center" style="margin-top:2rem;">Free video lessons, worked in order, at whatever pace suits — starting from zero.</p>
+  </div>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section id="proof">
+  <div class="wrap">
+    <span class="eyebrow">Who's teaching it</span>
+    <h2 class="h2 measure">Experience, not promises.</h2>
+
+    <img class="sec-img" src="/assets/images/ret-macro-v6/teaching.jpg"
+         alt="A man in his late fifties at a desk under a warm lamp, studying a printed chart and annotating it by hand."
+         width="1200" height="672" loading="lazy" decoding="async">
+
+    <div class="proof">
+      <div class="stat">
+        <div class="big grad-text">30+</div>
+        <div class="cap">Years trading the markets these lessons cover</div>
+      </div>
+      <div class="stat">
+        <div class="big grad-text">100s</div>
+        <div class="cap">Traders trained, most of them starting from zero</div>
+      </div>
+      <div class="stat">
+        <div class="big grad-text">$0</div>
+        <div class="cap">Cost to join the community and start Module 1</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 class="h2 measure">Before joining</h2>
+
+    <div class="faq">
+      <div class="qa">
+        <button type="button" aria-expanded="false">
+          <span>I've never traded before. Is this really for beginners?</span>
+          <span class="chev" aria-hidden="true">+</span>
+        </button>
+        <div class="a"><p>Yes. The community is built for people starting from zero, with lessons and support that assume no prior experience.</p></div>
+      </div>
+      <div class="qa">
+        <button type="button" aria-expanded="false">
+          <span>Do I need trading experience or a lot of capital to start?</span>
+          <span class="chev" aria-hidden="true">+</span>
+        </button>
+        <div class="a"><p>No. Joining the community is free, and the early lessons are built around learning the framework first — not putting capital on the line.</p></div>
+      </div>
+      <div class="qa">
+        <button type="button" aria-expanded="false">
+          <span>Isn't it a bit late to be learning this?</span>
+          <span class="chev" aria-hidden="true">+</span>
+        </button>
+        <div class="a"><p>Reading a market is not a young person's game. It rewards patience, doubt, and the willingness to walk away from a bad trade — and those come with time. Module 4 spends a whole lesson on when <em>not</em> to trade; that instinct is the hard part to teach.</p></div>
+      </div>
+      <div class="qa">
+        <button type="button" aria-expanded="false">
+          <span>How is this different from other trading education?</span>
+          <span class="chev" aria-hidden="true">+</span>
+        </button>
+        <div class="a"><p>Most courses start at charts. This starts with what a market is and builds in order — four modules, twenty lessons, ending with one complete setup taught start to finish.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section class="urgency">
+  <div class="wrap">
+    <div class="box measure-center">
+      <h2>The next decade counts more than the last two.</h2>
+      <p>That isn't a sales line, it's how compound growth works. Money saved today has more years to grow than the same money saved later — and the same is true of the learning, which takes a while to become instinct. Both clocks start now.</p>
+    </div>
+  </div>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section class="community-band" aria-label="The community">
+  <div class="wrap">
+    <img class="sec-img" src="/assets/images/ret-macro-v6/community.jpg"
+         alt="Four adults around a table with notebooks and a laptop, one gesturing at an open book while the others take notes."
+         width="1200" height="672" loading="lazy" decoding="async">
+    <p class="band-cap">Real beginners, working through it together.</p>
+  </div>
+</section>
+
+<!-- ======================== CLOSE / SIGNUP (v6) ========================
+     Skool -> Circle migration. v5 closed with a .final section whose CTA
+     linked out to join.marketeye.io/community; that section is replaced by
+     the signup form component, which is now the page's single capture point
+     and the target of every #signup CTA above.
+
+     Headline and sub-headline are supplied to the component's per-page slots
+     from approved copy PC (handoffs/ret-macro-v6.txt), so the sentence at the
+     form is the sentence that earned the click. Both slots are required and
+     fail loudly when unset.
+
+     Both partials are required and boot is order-independent
+     (docs/marketeye-form-spec.md section 2). The dialog sits after </main>
+     because an agreement modal is not page content.
+     ==================================================================== -->
+<!-- ============================================================
+     MarketEye — Free Member Signup Component (modular, self-contained)
+     Drop anywhere inside <body>. No build step, no dependencies.
+
+     • Inherits the LP's design tokens (--navy, --panel, --cyan, --grad-btn,
+       --head, --body) when present; falls back to hard-coded brand values
+       when embedded on a page that has none.
+     • All CSS is namespaced .mef- and scoped to .mef so it cannot collide
+       with .btn / .wrap / .card or be broken by a host page's reset.
+     • Set MEF_CONFIG.redirectUrl before shipping.
+     ============================================================ -->
+<!-- PER-PAGE SLOTS — headline and sub-headline are angle-specific and are NOT
+     hardcoded here. Supply both on this element wherever the component is
+     pasted, the same way tos-modal.html carries data-tos-version:
+
+       <section class="mef" id="signup" aria-labelledby="mef-title"
+                data-mef-headline="The next 10 years count more than the last 20."
+                data-mef-sub="Join the free community and learn how markets actually work — a clear framework, not guesswork.">
+
+     Both are REQUIRED and ship empty. There is deliberately no default: an
+     unset slot fails loudly, logs which attribute is missing, and blocks the
+     form — because a generic placeholder headline reaching production is the
+     failure this is guarding against.
+
+     EXCEPTION: a card running .mef--bare takes its heading from the host
+     section (as demo-ctrl-v4 does inside its close bookend), so the slots are
+     not required and not checked in that mode. -->
+<section class="mef" id="signup" aria-labelledby="mef-title"
+         data-mef-headline="The next 10 years count more than the last 20."
+         data-mef-sub="Join the free community and learn how markets actually work — a clear framework, not guesswork.">
+  <div class="mef__wrap">
+    <div class="mef__card">
+
+      <p class="mef__eyebrow">Free Membership</p>
+      <h2 class="mef__title" id="mef-title"></h2>
+      <p class="mef__lead"></p>
+
+      <form class="mef__form" id="mef-form" novalidate autocomplete="on">
+
+        <div class="mef__row">
+          <div class="mef__field">
+            <label class="mef__label" for="mef-first">First name<span class="mef__req" aria-hidden="true">*</span></label>
+            <input class="mef__input" id="mef-first" name="first_name" type="text"
+                   autocomplete="given-name" autocapitalize="words" spellcheck="false"
+                   placeholder="Jane" required
+                   aria-required="true" aria-describedby="mef-first-err">
+            <p class="mef__err" id="mef-first-err" hidden>Please enter your first name.</p>
+          </div>
+
+          <div class="mef__field">
+            <label class="mef__label" for="mef-last">Last name<span class="mef__req" aria-hidden="true">*</span></label>
+            <input class="mef__input" id="mef-last" name="last_name" type="text"
+                   autocomplete="family-name" autocapitalize="words" spellcheck="false"
+                   placeholder="Doe" required
+                   aria-required="true" aria-describedby="mef-last-err">
+            <p class="mef__err" id="mef-last-err" hidden>Please enter your last name.</p>
+          </div>
+        </div>
+
+        <div class="mef__field">
+          <label class="mef__label" for="mef-email">Email address<span class="mef__req" aria-hidden="true">*</span></label>
+          <input class="mef__input" id="mef-email" name="email" type="email"
+                 autocomplete="email" autocapitalize="off" spellcheck="false"
+                 inputmode="email" placeholder="jane@example.com" required
+                 aria-required="true" aria-describedby="mef-email-err">
+          <p class="mef__err" id="mef-email-err" hidden>Please double-check your email address.</p>
+          <!-- Advisory only. Never blocks submission, and only appears on blur —
+               never mid-typing — so it cannot interrupt someone entering an
+               address. aria-live so it is announced when it appears. -->
+          <div class="mef__suggest" id="mef-email-suggest" hidden aria-live="polite">
+            <svg class="mef__suggest-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 5.6v5.4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="10" cy="14.2" r="1" fill="currentColor"/></svg>
+            <span class="mef__suggest-txt">Did you mean:</span>
+            <button type="button" class="mef__suggest-btn" id="mef-email-suggest-btn"></button>
+          </div>
+        </div>
+
+        <!-- Honeypot. Off-screen rather than display:none or type=hidden —
+             bots skip both of those. A filled value still shows the person a
+             success state, but rides along as hp:true so the consent row is
+             discarded server-side. -->
+        <div class="mef__hp" aria-hidden="true">
+          <label for="mef-hp">Company</label>
+          <input id="mef-hp" name="hp" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <!-- Consent. The checkbox stays a real, focusable, `required` checkbox:
+             with JS off it behaves normally and all three links are ordinary
+             anchors to their hosted pages. With JS on, checking it opens the
+             agreement modal instead of toggling — consent is only recorded by
+             reaching the end of the text and pressing "I Agree". -->
+        <div class="mef__field mef__field--consent">
+          <div class="mef__consent">
+            <input class="mef__check" id="mef-consent" name="consent" type="checkbox"
+                   required aria-required="true"
+                   aria-describedby="mef-consent-help mef-consent-err">
+            <!-- Newsletter consent is bundled into this single required
+                 checkbox by decision, so subscribing is a condition of
+                 registering and newsletter_opt_in is true on every row.
+                 It is therefore a record of the wording shown, not an
+                 independent signal — don't segment on it. Splitting it into
+                 its own optional checkbox is the change to make if that
+                 signal is ever wanted. -->
+            <!-- The site Terms of Service is deliberately NOT linked here: this
+                 form gates the Community Agreement only, and the site ToS lives
+                 in the footer. The Community Agreement incorporates it by
+                 reference (billing, refunds, arbitration, class-action waiver)
+                 and links to it inline eight times, so notice survives — but
+                 the footer link is what keeps it reachable without opening the
+                 modal. Don't remove it from components/footer.html. -->
+            <label class="mef__consent-txt" for="mef-consent">
+              I&rsquo;m 18 or older and a US resident. I agree to the
+              <a class="mef__legal" id="mef-open-tos" href="https://marketeye.io/community-terms" target="_blank" rel="noopener">Community Agreement</a>,
+              acknowledge the
+              <a class="mef__legal" href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>,
+              and agree to receive the member newsletter.
+            </label>
+          </div>
+          <p class="mef__consent-help" id="mef-consent-help">Opens the Community Agreement &mdash; read to the end to continue.</p>
+          <p class="mef__err" id="mef-consent-err" hidden>Please read and accept the Community Agreement to continue.</p>
+        </div>
+
+        <!-- Never blocked-looking. The button stays fully enabled at all
+             times; clicking it with anything outstanding validates and shows
+             the error beside the offending field. A greyed-out submit hides
+             WHY it is unavailable, which is the thing people need to know. -->
+        <button class="mef__btn" id="mef-submit" type="submit">
+          <span class="mef__btn-label">Get My Free Invite</span>
+          <span class="mef__btn-loading">
+            <span class="mef__spinner" aria-hidden="true"></span>Setting up your access&hellip;
+          </span>
+        </button>
+
+        <p class="mef__status" id="mef-status" role="status" aria-live="polite"></p>
+        <!-- Wayfinding, not fine print. Says what happens next; carries no risk
+             language or qualifier, so it sits outside Compliance Rule 6, which
+             bars disclaimers and fine print under the CTA button. Deliberately
+             does NOT say "membership" or "access": submitting creates an
+             Invited record in Circle. No account exists until the person
+             accepts the emailed invitation and sets a password. -->
+        <p class="mef__note">Check your inbox &mdash; your invitation arrives in about a minute.</p>
+
+      </form>
+    </div>
+
+    <!-- Trust bar ships WITH the component so it is identical on every page.
+         Do not re-declare it in host page markup. -->
+    <ul class="mef__trust">
+      <li class="mef__trust-item">30+ Years Trading</li>
+      <li class="mef__trust-item">100s of Traders Trained</li>
+      <li class="mef__trust-item">$0 to Join</li>
+      <li class="mef__trust-item">Built for Beginners</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+/* ---------- scoped reset ---------- */
+.mef, .mef *, .mef *::before, .mef *::after { box-sizing: border-box; }
+
+/* ---------- local tokens: inherit the LP's, fall back to brand values ---------- */
+.mef{
+  --mef-navy:      var(--navy,  #071D49);
+  --mef-panel:     var(--panel, #0C2758);
+  --mef-white:     var(--white, #FFFFFF);
+  --mef-ink-2:     var(--ink-2, #C9D8F2);
+  --mef-ink-3:     var(--ink-3, #8FA6CF);
+  --mef-cyan:      var(--cyan,  #00C8FF);
+  --mef-line:      var(--line,   rgba(255,255,255,0.12));
+  --mef-line-2:    var(--line-2, rgba(255,255,255,0.20));
+  --mef-head:      var(--head, 'Exo 2', system-ui, -apple-system, sans-serif);
+  --mef-body:      var(--body, 'Barlow', system-ui, -apple-system, sans-serif);
+  --mef-grad-btn:  var(--grad-btn, linear-gradient(135deg, rgb(18,114,184) 0%, rgb(43,114,232) 40%, rgb(80,51,195) 100%));
+  --mef-danger:    #FF9AA2;              /* 7.9:1 on navy */
+  --mef-danger-bg: rgba(255,120,130,0.10);
+  --mef-input-bg:  #0A2050;              /* opaque — needed to defeat autofill */
+  --mef-ok:        #7BE7B4;
+
+  display: block;
+  padding-block: 2.5rem;
+  font-family: var(--mef-body);
+  color: var(--mef-white);
+  -webkit-text-size-adjust: 100%;
+}
+@media (min-width: 40rem){ .mef{ padding-block: 3.25rem; } }
+/* Kept in sync with components/signup-form.html. This page overrides both on
+   #signup below, but the pasted copy must still match the component or the
+   next person to diff them finds a difference that means nothing. */
+@media (min-width: 64rem){ .mef{ padding-block: 4rem; } }
+@media (min-width: 80rem){ .mef{ padding-block: 4.25rem; } }
+
+.mef__wrap{ max-width: var(--wrap, 75rem); margin-inline: auto; padding-inline: 1.25rem; width: 100%; }
+
+/* ---------- card ---------- */
+.mef__card{
+  max-width: 34rem;
+  margin-inline: auto;
+  text-align: left;                /* host CTA bookends are often centred */
+  background: var(--mef-panel);
+  border: 1px solid var(--mef-line);
+  border-radius: 1rem;
+  padding: 1.75rem 1.375rem;
+  box-shadow: 0 1.5rem 3rem rgba(0,0,0,0.28);
+}
+@media (min-width: 40rem){ .mef__card{ padding: 2.25rem 2rem; border-radius: 1.25rem; } }
+
+.mef__eyebrow{
+  margin: 0 0 .55rem; font-family: var(--mef-head); font-size: .875rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--mef-ink-3);
+}
+.mef__title{
+  margin: 0; font-family: var(--mef-head); font-weight: 800; line-height: 1.14;
+  letter-spacing: -.02em; font-size: clamp(1.6rem, 4.4vw, 2.1rem); color: var(--mef-white);
+  text-wrap: balance;
+}
+.mef__lead{
+  margin: .7rem 0 0; font-size: 1.0625rem; line-height: 1.55; color: var(--mef-ink-2);
+  text-wrap: pretty;
+}
+
+/* ---------- layout ---------- */
+.mef__form{ margin-top: 1.6rem; }
+.mef__row{ display: grid; gap: 1rem; }
+@media (min-width: 30rem){ .mef__row{ grid-template-columns: 1fr 1fr; gap: .875rem; } }
+.mef__field + .mef__field, .mef__row + .mef__field{ margin-top: 1rem; }
+/* inside the two-up row the grid owns the gap — the sibling rule above
+   was dropping Last Name a full row below First Name */
+.mef__row .mef__field + .mef__field{ margin-top: 0; }
+
+/* Required marker. aria-hidden because the inputs already carry `required`
+   and aria-required — a screen reader announces "required" from those, and an
+   exposed asterisk would only add "star" to every field name. */
+.mef__req{ color:var(--mef-danger); margin-left:.15rem; font-weight:700; }
+.mef__label{
+  display: block; margin-bottom: .4rem;
+  font-family: var(--mef-head); font-size: .8125rem; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase; color: var(--mef-ink-3);
+}
+
+/* ---------- inputs ---------- */
+.mef__input{
+  display: block; width: 100%;
+  min-height: 3rem; padding: .8rem .95rem;
+  font-family: var(--mef-body); font-size: 1.0625rem; line-height: 1.4;
+  color: var(--mef-white); background: var(--mef-input-bg);
+  border: 1px solid var(--mef-line-2); border-radius: .625rem;
+  appearance: none; -webkit-appearance: none;
+  transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.mef__input::placeholder{ color: var(--mef-ink-3); opacity: .7; }
+.mef__input:hover{ border-color: rgba(255,255,255,0.32); }
+.mef__input:focus{
+  outline: none;
+  border-color: var(--mef-cyan);
+  background: #0B2456;
+  box-shadow: 0 0 0 3px rgba(0,200,255,0.22);
+}
+.mef__input[aria-invalid="true"]{
+  border-color: var(--mef-danger);
+  background: var(--mef-danger-bg);
+}
+.mef__input[aria-invalid="true"]:focus{ box-shadow: 0 0 0 3px rgba(255,154,162,0.24); }
+.mef__input:disabled{ opacity: .55; cursor: not-allowed; }
+
+/* keep Chrome/Safari autofill from painting a white box on the navy card */
+.mef__input:-webkit-autofill,
+.mef__input:-webkit-autofill:hover,
+.mef__input:-webkit-autofill:focus{
+  -webkit-text-fill-color: var(--mef-white);
+  -webkit-box-shadow: inset 0 0 0 100px var(--mef-input-bg);
+  caret-color: var(--mef-white);
+  transition: background-color 9999s ease-out 0s;
+}
+
+/* ---------- honeypot ---------- */
+.mef__hp{ position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* ---------- consent ---------- */
+.mef__field--consent{ margin-top: 1.15rem; }
+.mef__consent{ display: flex; align-items: flex-start; gap: .7rem; }
+/* custom control — the native dark-mode checkbox renders as a bare white
+   square on this card. appearance:none + a clip-path tick instead. */
+.mef__check{
+  flex: 0 0 auto; width: 1.3rem; height: 1.3rem; margin: .1rem 0 0;
+  appearance: none; -webkit-appearance: none;
+  display: grid; place-content: center;
+  background: var(--mef-input-bg);
+  border: 1.5px solid var(--mef-line-2); border-radius: .3rem;
+  cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.mef__check::before{
+  content: ""; width: .72rem; height: .72rem; transform: scale(0);
+  transition: transform .15s ease-in-out;
+  background: var(--mef-navy);
+  clip-path: polygon(14% 44%, 0 65%, 40% 100%, 100% 16%, 82% 0%, 37% 66%);
+}
+.mef__check:checked{ background: var(--mef-cyan); border-color: var(--mef-cyan); }
+.mef__check:checked::before{ transform: scale(1); }
+.mef__check:hover:not(:disabled){ border-color: rgba(255,255,255,0.35); }
+.mef__check:focus-visible{ outline: 2px solid var(--mef-cyan); outline-offset: 3px; }
+.mef__check:disabled{ opacity: .55; cursor: not-allowed; }
+.mef__consent-txt{
+  font-size: .9375rem; line-height: 1.5; color: var(--mef-ink-2); cursor: pointer;
+}
+.mef__legal{ color: var(--mef-cyan); text-decoration: underline; text-underline-offset: 2px; }
+.mef__legal:hover{ color: var(--mef-white); }
+.mef__legal:focus-visible{ outline: 2px solid var(--mef-cyan); outline-offset: 2px; border-radius: 2px; }
+.mef__field--consent[data-invalid="true"] .mef__check{ outline: 2px solid var(--mef-danger); outline-offset: 3px; }
+/* Trust bar — a cyan dot before each item, no pill. flex-wrap rather than a
+   grid: a wrapped row centres on its own width instead of aligning to the
+   columns above it, which is what gives the two-up phone layout its shape,
+   and all four fall onto one line as soon as there is room. */
+.mef__trust{
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: .55rem 1.1rem; margin: 1.15rem 0 0; padding: 0; list-style: none;
+}
+.mef__trust-item{
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .9375rem; font-weight: 600; line-height: 1.3;
+  color: var(--mef-white);
+}
+.mef__trust-item::before{
+  content: ""; flex: 0 0 auto;
+  width: .375rem; height: .375rem; border-radius: 50%;
+  background: var(--mef-cyan);
+}
+@media (min-width: 40rem){
+  .mef__trust{ gap: .6rem 1.6rem; }
+  .mef__trust-item{ font-size: 1rem; }
+}
+
+/* Domain typo suggestion. A tinted callout, not caption text: it is revealed
+   while the agreement modal is covering it, so it has to hold attention once
+   the modal closes. Cyan, never red — nothing is wrong, and an error colour
+   here would make a correct address look broken. */
+.mef__suggest{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .6rem;
+  margin:.65rem 0 0; padding:.7rem .8rem;
+  background:rgba(0,200,255,0.08);
+  border:1px solid rgba(0,200,255,0.32);
+  border-left:3px solid var(--mef-cyan);
+  border-radius:.5rem;
+  font-size:.9375rem; line-height:1.4; color:var(--mef-white);
+}
+.mef__suggest[hidden]{ display:none; }
+.mef__suggest-icon{ flex:0 0 auto; width:1.15rem; height:1.15rem; color:var(--mef-cyan); }
+.mef__suggest-txt{ flex:0 0 auto; }
+.mef__suggest-btn{
+  font:inherit; font-weight:700;
+  color:var(--mef-navy); background:var(--mef-cyan);
+  border:0; border-radius:.375rem;
+  padding:.55rem .75rem; min-height:2.75rem;   /* 44px tap target */
+  cursor:pointer; text-align:left; overflow-wrap:anywhere;
+  transition:filter .18s ease;
+}
+.mef__suggest-btn:hover{ filter:brightness(1.12); }
+.mef__suggest-btn:focus-visible{ outline:2px solid var(--mef-white); outline-offset:2px; }
+
+/* One pulse when the agreement modal closes and the callout becomes visible
+   for the first time. Fires there rather than on reveal, because on reveal it
+   is behind the dialog and nobody would see it. */
+@keyframes mef-suggest-pop{
+  0%   { box-shadow:0 0 0 0 rgba(0,200,255,0.55); }
+  70%  { box-shadow:0 0 0 8px rgba(0,200,255,0); }
+  100% { box-shadow:0 0 0 0 rgba(0,200,255,0); }
+}
+.mef__suggest.is-fresh{ animation:mef-suggest-pop .75s ease-out 2; }
+@media (prefers-reduced-motion:reduce){ .mef__suggest.is-fresh{ animation:none; } }
+
+.mef__consent-help{
+  margin: .5rem 0 0 2rem; font-size: .8125rem; line-height: 1.45; color: var(--mef-ink-3);
+}
+
+/* ---------- errors + status ---------- */
+.mef__err{
+  margin: .45rem 0 0; font-size: .875rem; line-height: 1.45; color: var(--mef-danger);
+}
+.mef__err[hidden]{ display: none; }
+.mef__status{ margin: .9rem 0 0; font-size: .9375rem; line-height: 1.5; min-height: 0; }
+.mef__status:empty{ display: none; }
+.mef__status[data-state="error"]{ color: var(--mef-danger); }
+.mef__status[data-state="ok"]{ color: var(--mef-ok); }
+.mef__note{
+  margin: 1rem 0 0; font-size: .8125rem; line-height: 1.5; color: var(--mef-ink-3);
+  text-align: center;
+}
+
+/* ---------- submit ---------- */
+.mef__btn{
+  position: relative; display: block; width: 100%; margin-top: 1.4rem;
+  min-height: 3.25rem; padding: 1rem 1.5rem;
+  font-family: var(--mef-head); font-size: 1.1875rem; font-weight: 800;  /* Brand Guide §4 floor */
+  letter-spacing: .04em; text-transform: uppercase; line-height: 1.2;
+  color: var(--mef-white); background-image: var(--mef-grad-btn);
+  border: 0; border-radius: .625rem; cursor: pointer;
+  box-shadow: 0 .35rem 1.1rem rgba(0,90,180,.30);
+  transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+.mef__btn:hover:not(:disabled){ transform: translateY(-2px); box-shadow: 0 .55rem 1.4rem rgba(0,90,180,.40); }
+.mef__btn:active:not(:disabled){ transform: translateY(0); }
+.mef__btn:focus-visible{ outline: 3px solid var(--mef-cyan); outline-offset: 3px; }
+.mef__btn:disabled{ cursor: not-allowed; opacity: .78; transform: none; box-shadow: none; }
+
+.mef__btn-loading{ display: none; align-items: center; justify-content: center; gap: .6rem; }
+.mef__btn.is-loading .mef__btn-label{ display: none; }
+.mef__btn.is-loading .mef__btn-loading{ display: inline-flex; }
+
+.mef__spinner{
+  width: 1.125rem; height: 1.125rem; flex: 0 0 auto; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: var(--mef-white);
+  animation: mef-spin .7s linear infinite;
+}
+@keyframes mef-spin{ to{ transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce){
+  .mef *{ transition-duration: .01ms !important; }
+  .mef__btn:hover:not(:disabled){ transform: none; }
+  /* Drop the ring rather than slow it. Host pages commonly carry a blanket
+     `*{ animation:none !important }` under this query, which would freeze
+     the spinner mid-arc — a stopped ring reads as a hung form. The button
+     label still says what is happening. */
+  .mef__spinner{ display: none; }
+}
+
+/* ---------- .mef--bare: host section supplies the heading and the padding ----------
+   For dropping the card into an existing CTA bookend that already has its
+   own h2 and lead. Standalone embeds don't need this modifier. */
+.mef--bare{ padding-block: 0; }
+.mef--bare .mef__wrap{ padding-inline: 0; max-width: none; }
+.mef--bare .mef__form{ margin-top: 0; }
+.mef--bare .mef__card{ margin-top: 2rem; }
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  // Order-independent boot. The form reads #mtos-doc from tos-modal.html, so
+  // running at parse time means the pair only works if the modal is pasted
+  // ABOVE the form — paste them the other way round and the version metadata
+  // is missing, the form declares itself fatal, and nobody can register.
+  // Waiting for DOMContentLoaded lets the two partials go anywhere on the page
+  // in any order. Function declarations hoist, so boot() resolves fine here.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+  function boot() {
+
+  /* =========================================================
+     CONFIG
+     ---------------------------------------------------------
+     TESTING NOTE: the consent endpoint is a Netlify Function. It does NOT
+     run under Live Server or GitHub Pages, and CONSENT_TOKEN is deliberately
+     not set for Local development, so `netlify dev` returns
+     {"ok":false,"error":"server misconfigured"} as well. Exercise the submit
+     path on a Netlify DEPLOY PREVIEW. Everything else — the scroll gate,
+     validation, focus handling, blocked states — is testable locally.
+     ========================================================= */
+  var MEF_CONFIG = {
+    // Same-origin path. The function holds the upstream endpoint and the
+    // shared token in environment variables and injects the token
+    // server-side. NEVER put an endpoint URL or token in this file.
+    // Change this only to relocate the function; there is deliberately no
+    // fallback and no bypass if it is unreachable.
+    consentEndpoint:  '/.netlify/functions/consent',
+    consentTimeoutMs: 10000,
+
+    webhookUrl:    'https://hook.us2.make.com/lu29bwvcsii6wgxbabkc15c3npj8z9py',
+    redirectUrl:   'https://learn.marketeye.io/c/community-guidelines',
+    dataLayerName: 'dataLayer',
+    forwardQueryParams: true,
+    simpleRequest: false,
+    timeoutMs: 15000
+  };
+
+  var form = document.getElementById('mef-form');
+  if (!form) return;
+
+  var btn        = document.getElementById('mef-submit');
+  var statusEl   = document.getElementById('mef-status');
+  var firstEl    = document.getElementById('mef-first');
+  var lastEl     = document.getElementById('mef-last');
+  var emailEl    = document.getElementById('mef-email');
+  var consentEl  = document.getElementById('mef-consent');
+  var consentBox = consentEl.closest('.mef__field--consent');
+  var hpEl       = document.getElementById('mef-hp');
+  var suggestBox = document.getElementById('mef-email-suggest');
+  var suggestBtn = document.getElementById('mef-email-suggest-btn');
+  var openLink   = document.getElementById('mef-open-tos');
+
+  /* ---------- agreement modal ---------- */
+  var dlg        = document.getElementById('mtos-dialog');
+  var docEl      = document.getElementById('mtos-doc');
+  var scrollEl   = document.getElementById('mtos-scroll');
+  var sentinelEl = document.getElementById('mtos-sentinel');
+  var agreeBtn   = document.getElementById('mtos-agree');
+  var closeBtn   = document.getElementById('mtos-close');
+  var hintEl     = document.getElementById('mtos-hint');
+  var stampEl    = document.getElementById('mtos-stamp');
+
+  // The version metadata is the only thing that makes a consent record
+  // meaningful, so its absence is fatal. The modal itself is an enhancement:
+  // if <dialog> is unsupported we fall back to a plain checkbox rather than
+  // locking anyone out, and record the different method honestly.
+  var metaAvailable = !!docEl;
+  var gateAvailable = !!(dlg && docEl && scrollEl && sentinelEl && agreeBtn &&
+                         typeof dlg.showModal === 'function' &&
+                         'IntersectionObserver' in window);
+
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+  var submitting = false;
+  var conversionPushed = false;
+  var navigated = false;
+  var hasRead = false;
+  var fatal = false;
+  // Why the form is fatal, so the submit handler reports the actual cause
+  // rather than assuming the agreement failed to load.
+  var fatalMsg = 'We could not load the Community Agreement. Please refresh the page and try again.';
+  var io = null;
+  var eventId = null;
+  var consent = null;   // {version, effective, url, acceptedAt, method}
+
+  /* gate analytics state */
+  var openCount = 0;      // per page view; separates first opens from re-opens
+  var openedAt = 0;       // ms stamp of the current open, for dwell_ms
+  var acceptedNow = false; // set just before close() on accept, so the single
+                           // 'close' listener can tell acceptance from dismissal
+
+  /* ---------- helpers ---------- */
+  function setError(input, errId, show, msg) {
+    var err = document.getElementById(errId);
+    if (msg && err) err.textContent = msg;
+    if (err) err.hidden = !show;
+    if (input.type === 'checkbox') {
+      if (consentBox) consentBox.setAttribute('data-invalid', show ? 'true' : 'false');
+    } else {
+      if (show) input.setAttribute('aria-invalid', 'true');
+      else input.removeAttribute('aria-invalid');
+    }
+  }
+
+  function setStatus(msg, state) {
+    statusEl.textContent = msg || '';
+    if (state) statusEl.setAttribute('data-state', state);
+    else statusEl.removeAttribute('data-state');
+  }
+
+  // Agreement-gate engagement events. GA4 only — never map these to a Meta
+  // conversion tag, or scrolling behaviour becomes ad optimisation signal.
+  // No name, no email, no identifiers: the person is identified at submit by
+  // free_member_signup, not here. Parameters are limited to the three that are
+  // registered as GA4 custom definitions; anything else is silently discarded
+  // by GA4, so adding a fourth means registering it there first.
+  function track(name, extra) {
+    try {
+      var dlName = MEF_CONFIG.dataLayerName || 'dataLayer';
+      window[dlName] = window[dlName] || [];
+      var payload = { event: name, open_count: openCount };
+      // Read the version off the same element the reader scrolled, so a
+      // version bump flows into the analytics without a second edit.
+      if (docEl) {
+        var v = docEl.getAttribute('data-tos-version');
+        if (v && v.trim()) payload.tos_version = v.trim();
+      }
+      if (extra) {
+        for (var k in extra) {
+          if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k];
+        }
+      }
+      window[dlName].push(payload);
+    } catch (e) {
+      // Analytics must never be able to break the gate.
+      console.warn('[MarketEye signup] track failed', e);
+    }
+  }
+
+  function dwell() {
+    return openedAt ? Date.now() - openedAt : 0;
+  }
+
+  /* ---------- per-page copy slots ----------
+     Same contract as data-tos-version on #mtos-doc: read at boot, no default,
+     fatal when absent. A generic headline reaching production is the failure
+     this guards against, so an unset slot blocks the form rather than shipping
+     filler that nobody notices until it is live.
+     A .mef--bare card takes its heading from the host section, so the slots do
+     not apply there and are not checked. */
+  function fillSlots() {
+    var root = form.closest('.mef');
+    if (!root) return true;
+    if (root.classList.contains('mef--bare')) return true;
+
+    var slots = [
+      ['data-mef-headline', root.querySelector('.mef__title')],
+      ['data-mef-sub',      root.querySelector('.mef__lead')]
+    ];
+    var missing = [];
+    for (var i = 0; i < slots.length; i++) {
+      var v = root.getAttribute(slots[i][0]);
+      if (!v || !v.trim()) { missing.push(slots[i][0]); continue; }
+      if (slots[i][1]) slots[i][1].textContent = v.trim();
+    }
+    if (missing.length) {
+      fatal = true;
+      console.error('[MarketEye signup] Missing required slot attribute(s): ' +
+        missing.join(', ') + '. Set them on the <section class="mef"> element ' +
+        'where components/signup-form.html is pasted. The form is blocked ' +
+        'deliberately — shipping a placeholder headline is the failure this ' +
+        'check exists to prevent.');
+      fatalMsg = 'This form isn’t available right now. Please try again later.';
+      setStatus(fatalMsg, 'error');
+      return false;
+    }
+    return true;
+  }
+
+  /* ---------- email domain typo suggestion ----------
+     Deliberately NOT exhaustive. A long list buys little extra coverage and
+     costs false positives, and a wrong suggestion is worse than a missed one:
+     it invites someone to break an address that was already correct. These
+     are the domains real typos actually land on, weighted for a US audience
+     in its 40s and 50s — the ISP addresses still carry that group. */
+  var MEF_DOMAINS = [
+    'gmail.com', 'googlemail.com', 'yahoo.com', 'ymail.com', 'hotmail.com',
+    'outlook.com', 'live.com', 'msn.com', 'aol.com', 'icloud.com', 'me.com',
+    'mac.com', 'comcast.net', 'verizon.net', 'att.net', 'sbcglobal.net',
+    'bellsouth.net', 'cox.net', 'charter.net', 'roadrunner.com', 'rr.com',
+    'earthlink.net', 'optonline.net', 'juno.com', 'protonmail.com',
+    'proton.me', 'mail.com', 'zoho.com', 'gmx.com', 'yandex.com'
+  ];
+
+  // Optimal string alignment: Levenshtein plus adjacent transposition, so
+  // "gmial" scores 1 against "gmail" rather than 2. Transposition is the most
+  // common typo there is, and plain Levenshtein would miss every one of them
+  // at a threshold of 1.
+  function editDistance(a, b) {
+    var m = a.length, n = b.length, i, j;
+    if (!m) return n;
+    if (!n) return m;
+    var prev2 = [], prev = [], cur = [];
+    for (j = 0; j <= n; j++) prev[j] = j;
+    for (i = 1; i <= m; i++) {
+      cur[0] = i;
+      for (j = 1; j <= n; j++) {
+        var cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+        cur[j] = Math.min(cur[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost);
+        if (i > 1 && j > 1 &&
+            a.charAt(i - 1) === b.charAt(j - 2) &&
+            a.charAt(i - 2) === b.charAt(j - 1)) {
+          cur[j] = Math.min(cur[j], prev2[j - 2] + 1);   // transposition
+        }
+      }
+      prev2 = prev.slice();
+      prev = cur.slice();
+    }
+    return prev[n];
+  }
+
+  // Returns a corrected address, or '' when there is nothing worth suggesting.
+  function suggestEmail(email) {
+    var at = email.lastIndexOf('@');
+    if (at < 1) return '';
+    var domain = email.slice(at + 1);
+    if (!domain) return '';
+    // Never second-guess a domain that is itself on the list, and never touch
+    // one that is nowhere near it — a company or bespoke domain must pass
+    // through untouched.
+    if (MEF_DOMAINS.indexOf(domain) > -1) return '';
+
+    // Right name, wrong TLD — "comcast.com" for "comcast.net". Edit distance
+    // cannot reach this (com->net is three substitutions) and raising the
+    // threshold to 3 would make everything else fire wrongly. Requiring an
+    // exact match on the name keeps it safe. Common among ISP addresses,
+    // which this audience still uses heavily.
+    // Two-part domains only. Matching on the FIRST dot would read
+    // "hotmail.co.uk" as the name "hotmail" and rewrite a perfectly good
+    // regional address to .com — the precise false positive this feature
+    // must never produce.
+    var dot = domain.indexOf('.');
+    if (dot > 0 && dot === domain.lastIndexOf('.')) {
+      var name = domain.slice(0, dot);
+      for (var k = 0; k < MEF_DOMAINS.length; k++) {
+        var cand = MEF_DOMAINS[k];
+        var cdot = cand.indexOf('.');
+        if (cdot > 0 && cand.slice(0, cdot) === name && cand !== domain) {
+          return email.slice(0, at + 1) + cand;
+        }
+      }
+    }
+
+    // Distance 2 from eight characters up. "gmlia" for "gmail" swaps two
+    // letters that are NOT adjacent, so the transposition rule cannot reach
+    // it and it scores 2 — a threshold of 1 misses one of the commonest typos
+    // there is. Short domains stay at 1: at six or seven characters, distance
+    // 2 is most of the string and starts matching unrelated addresses.
+    var limit = domain.length >= 8 ? 2 : 1;
+    var best = '', bestD = 99;
+    for (var i = 0; i < MEF_DOMAINS.length; i++) {
+      var d = editDistance(domain, MEF_DOMAINS[i]);
+      if (d < bestD) { bestD = d; best = MEF_DOMAINS[i]; }
+    }
+    if (bestD > limit) return '';
+    return email.slice(0, at + 1) + best;
+  }
+
+  function hideSuggestion() {
+    if (suggestBox) suggestBox.hidden = true;
+  }
+
+  // Blur only — never while typing. By the time this fires the person has
+  // moved on to the consent checkbox, so the line appears well before they
+  // reach for the submit button rather than shifting it under their thumb.
+  function offerSuggestion() {
+    if (!suggestBox || !suggestBtn) return;
+    var value = emailEl.value.trim().toLowerCase();
+    // Format errors take precedence; there is no point proposing a domain for
+    // something that is not yet an address.
+    if (!value || !EMAIL_RE.test(value)) { hideSuggestion(); return; }
+    var fixed = suggestEmail(value);
+    if (!fixed || fixed === value) { hideSuggestion(); return; }
+    suggestBtn.textContent = fixed;
+    suggestBox.hidden = false;
+  }
+
+  function setLoading(on) {
+    btn.disabled = on;
+    btn.classList.toggle('is-loading', on);
+    btn.setAttribute('aria-busy', on ? 'true' : 'false');
+    [firstEl, lastEl, emailEl, consentEl].forEach(function (el) { el.disabled = on; });
+  }
+
+
+  function setFatal(why) {
+    fatal = true;
+    consent = null;
+    console.error('[MarketEye consent] ' + why);
+    fatalMsg = 'We could not load the Community Agreement. Please refresh the page and try again.';
+    setStatus(fatalMsg, 'error');
+  }
+
+  // Read version metadata off the element that holds the text the user
+  // actually scrolled. No defaults, no "unknown" — a consent record without a
+  // resolvable version is worse than no record at all.
+  function readTosMeta() {
+    if (!docEl) {
+      setFatal('#mtos-doc is not on the page. components/tos-modal.html must be embedded alongside the form.');
+      return null;
+    }
+    var names = ['data-tos-version', 'data-tos-effective', 'data-tos-url'];
+    var out = {};
+    for (var i = 0; i < names.length; i++) {
+      var v = docEl.getAttribute(names[i]);
+      if (!v || !v.trim()) {
+        setFatal(names[i] + ' is missing or empty on #mtos-doc — set it in components/tos-modal.html.');
+        return null;
+      }
+      out[names[i]] = v.trim();
+    }
+    return out;
+  }
+
+  // Read the consent wording off the rendered label rather than restating it
+  // here. Newsletter consent is bundled into that one sentence, so the exact
+  // text is the record — a hard-coded copy would drift the moment the label
+  // is edited, and nothing would flag it.
+  function consentText() {
+    var el = form.querySelector('.mef__consent-txt');
+    return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+  }
+
+  function getCookie(name) {
+    var m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return m ? decodeURIComponent(m.pop()) : '';
+  }
+
+  function makeEventId() {
+    if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+    return 'mef-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  }
+
+  function attribution() {
+    var q = new URLSearchParams(window.location.search);
+    var fbclid = q.get('fbclid') || '';
+    var fbc = getCookie('_fbc');
+    if (!fbc && fbclid) fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+    return {
+      page_url:     window.location.href,
+      page_path:    window.location.pathname,
+      referrer:     document.referrer || '',
+      fbclid:       fbclid,
+      fbp:          getCookie('_fbp'),
+      fbc:          fbc,
+      utm_source:   q.get('utm_source')   || '',
+      utm_medium:   q.get('utm_medium')   || '',
+      utm_campaign: q.get('utm_campaign') || '',
+      utm_content:  q.get('utm_content')  || '',
+      utm_term:     q.get('utm_term')     || '',
+      user_agent:   navigator.userAgent
+    };
+  }
+
+  function destinationUrl() {
+    var target = MEF_CONFIG.redirectUrl;
+    if (!MEF_CONFIG.forwardQueryParams) return target;
+    var incoming = window.location.search;
+    if (!incoming || incoming.length < 2) return target;
+    try {
+      var dest = new URL(target, window.location.origin);
+      new URLSearchParams(incoming).forEach(function (val, key) {
+        if (!dest.searchParams.has(key)) dest.searchParams.set(key, val);
+      });
+      return dest.toString();
+    } catch (e) {
+      return target;
+    }
+  }
+
+  /* =========================================================
+     THE SCROLL GATE
+     ========================================================= */
+
+  // Populate the version stamp from the data attributes so the version is
+  // written in exactly one place, and surface a missing attribute at load
+  // rather than at the moment someone tries to agree.
+  // Per-page copy slots, before anything else renders.
+  fillSlots();
+
+  if (metaAvailable) {
+    var boot = readTosMeta();
+    if (boot && stampEl) {
+      stampEl.textContent = 'Version ' + boot['data-tos-version'] +
+                            ' · Effective ' + boot['data-tos-effective'];
+    }
+  } else {
+    setFatal('#mtos-doc is not on the page. components/tos-modal.html must be embedded alongside the form.');
+  }
+
+  // Links inside the agreement open in a new tab so reading one never
+  // discards a half-filled form. Done here rather than in the partial so the
+  // agreement markup stays byte-identical to the archived version.
+  if (docEl) {
+    Array.prototype.forEach.call(docEl.querySelectorAll('a[href]'), function (a) {
+      a.target = '_blank';
+      a.rel = 'noopener';
+    });
+  }
+
+  function markRead() {
+    if (hasRead) return;
+    hasRead = true;
+    dlg.classList.add('is-read');
+    agreeBtn.setAttribute('aria-disabled', 'false');
+    hintEl.removeAttribute('data-state');
+    hintEl.textContent = 'You have reached the end. You can now agree.';
+    if (io) { io.disconnect(); io = null; }
+    // Splits the two failure modes: opened->completed is a length problem,
+    // completed->accepted is a content problem.
+    track('community_agreement_completed', { dwell_ms: dwell() });
+  }
+
+  // IntersectionObserver against a zero-height sentinel, with the scroll
+  // container as root. Deliberately not scrollTop/clientHeight arithmetic,
+  // which misreports on iOS rubber-banding and fractional-pixel displays.
+  // If the content is too short to scroll, the sentinel is already visible
+  // and the first callback unlocks the gate immediately.
+  function watchSentinel() {
+    if (hasRead || io) return;
+    io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) { markRead(); return; }
+      }
+    }, { root: scrollEl, threshold: 0 });
+    io.observe(sentinelEl);
+  }
+
+  // Read-progress affordance. Optional by design — an LP carrying an older
+  // paste of tos-modal.html has no #mtos-progress, and that must degrade
+  // silently rather than disable the gate, so this is NOT in gateAvailable.
+  var progressEl = document.getElementById('mtos-progress');
+  function updateProgress() {
+    if (!progressEl) return;
+    var max = scrollEl.scrollHeight - scrollEl.clientHeight;
+    var pct = max <= 0 ? 100 : (scrollEl.scrollTop / max) * 100;
+    progressEl.style.width = Math.max(0, Math.min(100, pct)) + '%';
+  }
+  // Scroll rail. Optional on the same terms as the progress bar — absent in an
+  // older paste of the partial, and must degrade rather than break the gate.
+  var railEl  = document.getElementById('mtos-rail');
+  var thumbEl = document.getElementById('mtos-thumb');
+  var THUMB_MIN = 32;
+
+  function railMetrics() {
+    var sh = scrollEl.scrollHeight, ch = scrollEl.clientHeight;
+    var trackH = railEl.clientHeight;
+    var h = Math.max(THUMB_MIN, (ch / sh) * trackH);
+    return { sh: sh, ch: ch, trackH: trackH, h: h, maxTop: trackH - h };
+  }
+
+  function updateRail() {
+    if (!railEl || !thumbEl) return;
+    // Nothing to scroll: hide the rail rather than show a full-height thumb,
+    // which would read as "already at the end" on a short agreement.
+    if (scrollEl.scrollHeight <= scrollEl.clientHeight + 1) {
+      railEl.style.display = 'none';
+      return;
+    }
+    railEl.style.display = '';
+    var m = railMetrics();
+    var t = m.sh - m.ch <= 0 ? 0 : (scrollEl.scrollTop / (m.sh - m.ch)) * m.maxTop;
+    thumbEl.style.height = m.h + 'px';
+    thumbEl.style.transform = 'translateY(' + t + 'px)';
+  }
+
+  if (progressEl || thumbEl) {
+    scrollEl.addEventListener('scroll', function () {
+      updateProgress();
+      updateRail();
+    }, { passive: true });
+  }
+  if (thumbEl) {
+    // Drag the thumb. Pointer events cover mouse, touch and pen in one path;
+    // setPointerCapture keeps the drag alive when the pointer leaves the rail.
+    var dragging = false, dragY = 0, dragFrom = 0;
+    thumbEl.addEventListener('pointerdown', function (e) {
+      dragging = true;
+      dragY = e.clientY;
+      dragFrom = scrollEl.scrollTop;
+      if (thumbEl.setPointerCapture) thumbEl.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    thumbEl.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var m = railMetrics();
+      if (m.maxTop <= 0) return;
+      scrollEl.scrollTop = dragFrom + ((e.clientY - dragY) / m.maxTop) * (m.sh - m.ch);
+    });
+    var endDrag = function () { dragging = false; };
+    thumbEl.addEventListener('pointerup', endDrag);
+    thumbEl.addEventListener('pointercancel', endDrag);
+    // The sheet is 100dvh on mobile, so an orientation change or the iOS URL
+    // bar collapsing changes the track height and strands the thumb.
+    window.addEventListener('resize', updateRail);
+  }
+
+  // Background scroll lock. showModal() blocks interaction but does NOT stop
+  // the page behind from scrolling on iOS Safari, and overflow:hidden on body
+  // is ignored there for touch — so the body is pinned with position:fixed and
+  // the scroll offset is preserved, then restored on close. Without the
+  // restore, dismissing the agreement would dump the reader at the top of the
+  // page instead of back at the form they were filling in.
+  var lockedScrollY = 0;
+  function lockPageScroll() {
+    if (document.body.hasAttribute('data-mtos-locked')) return;
+    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+    var s = document.body.style;
+    s.position = 'fixed';
+    s.top = (-lockedScrollY) + 'px';
+    s.left = '0';
+    s.right = '0';
+    s.width = '100%';
+    document.body.setAttribute('data-mtos-locked', 'true');
+  }
+  function unlockPageScroll() {
+    if (!document.body.hasAttribute('data-mtos-locked')) return;
+    var s = document.body.style;
+    s.position = ''; s.top = ''; s.left = ''; s.right = ''; s.width = '';
+    document.body.removeAttribute('data-mtos-locked');
+    window.scrollTo(0, lockedScrollY);
+  }
+
+  function openDialog() {
+    if (!gateAvailable || fatal) return;
+    // Drop any mobile keyboard before the sheet animates up, or it sits over it.
+    if (document.activeElement && document.activeElement.blur) {
+      document.activeElement.blur();
+    }
+    openCount += 1;
+    openedAt = Date.now();
+    lockPageScroll();
+    dlg.showModal();
+    // Observe only after showModal: while the dialog is display:none nothing
+    // intersects anything and the observer would report a false negative.
+    watchSentinel();
+    // After showModal, not before: while the dialog is display:none the scroll
+    // container reports zero height and the rail would size itself to nothing.
+    updateProgress();
+    updateRail();
+    track('community_agreement_opened');
+  }
+
+  if (gateAvailable) {
+    // One 'close' listener covers every dismissal route — the Close button,
+    // the Agree button, and the Esc key, which fires 'close' without passing
+    // through either handler. Unlocking anywhere else would miss Esc.
+    dlg.addEventListener('close', function () {
+      unlockPageScroll();
+      // Every close route lands here, including Esc. Anything that isn't an
+      // acceptance is a dismissal.
+      if (!acceptedNow) track('community_agreement_dismissed', { dwell_ms: dwell() });
+      // The email suggestion was revealed underneath this dialog, so draw the
+      // eye to it now that it is actually visible.
+      if (suggestBox && !suggestBox.hidden) {
+        suggestBox.classList.remove('is-fresh');
+        void suggestBox.offsetWidth;            // restart the animation
+        suggestBox.classList.add('is-fresh');
+      }
+      acceptedNow = false;
+      consentEl.focus();
+    });
+
+    closeBtn.addEventListener('click', function () { dlg.close(); });
+
+    // Click-outside-to-dismiss. Gated on a real pointing device rather than a
+    // viewport width: this is a mouse convention, and a desktop window dragged
+    // narrow still has a mouse while a wide touchscreen does not. Drop the
+    // guard to enable tap-outside on touch as well.
+    var hasMouse = !window.matchMedia || window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (hasMouse) {
+      // The dialog IS the panel, so a click landing on the backdrop reports
+      // coordinates outside its box. Compare against the rect rather than
+      // testing e.target, which a padding gap would let through.
+      var outside = function (e) {
+        var r = dlg.getBoundingClientRect();
+        return e.clientX < r.left || e.clientX > r.right ||
+               e.clientY < r.top  || e.clientY > r.bottom;
+      };
+      // Require the press AND the release to be outside. Without this, dragging
+      // a text selection from inside the agreement and releasing over the
+      // backdrop would close the dialog mid-copy — and people do copy clauses
+      // out of a legal document.
+      var pressedOutside = false;
+      dlg.addEventListener('mousedown', function (e) { pressedOutside = outside(e); });
+      dlg.addEventListener('click', function (e) {
+        // detail === 0 is a keyboard-synthesised click (Enter/Space on a
+        // button), which reports 0,0 and would read as outside every time.
+        if (e.detail === 0) { pressedOutside = false; return; }
+        if (pressedOutside && outside(e)) dlg.close();
+        pressedOutside = false;
+      });
+    }
+
+    agreeBtn.addEventListener('click', function () {
+      if (!hasRead) {
+        hintEl.textContent = 'Please scroll to the end of the agreement first.';
+        hintEl.setAttribute('data-state', 'error');
+        scrollEl.focus();
+        return;
+      }
+      var meta = readTosMeta();
+      if (!meta) { dlg.close(); return; }   // setFatal already fired
+      consent = {
+        version:    meta['data-tos-version'],
+        effective:  meta['data-tos-effective'],
+        url:        meta['data-tos-url'],
+        method:     'scroll_modal',
+        acceptedAt: new Date().toISOString()   // the moment of agreement, not of submit
+      };
+      // Before close(): the 'close' listener reads this flag to decide whether
+      // the dialog was accepted or dismissed.
+      acceptedNow = true;
+      track('community_agreement_accepted', { dwell_ms: dwell() });
+      dlg.close();
+      consentEl.checked = true;
+      setError(consentEl, 'mef-consent-err', false);
+      consentEl.focus();
+    });
+
+    // Checking the box opens the agreement instead of toggling. Unchecking
+    // is allowed and clears the recorded consent.
+    consentEl.addEventListener('click', function (e) {
+      if (fatal) { e.preventDefault(); return; }
+      if (consentEl.checked) {
+        e.preventDefault();          // reverts the toggle; consent comes from the modal
+        openDialog();
+      } else {
+        consent = null;
+      }
+    });
+
+    // Space already produces a click, which the handler above intercepts.
+    // Enter would otherwise submit the form from inside the checkbox.
+    consentEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!consentEl.checked) openDialog();
+      }
+    });
+
+    if (openLink) {
+      openLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openDialog();
+      });
+    }
+  } else if (metaAvailable) {
+    // <dialog> or IntersectionObserver unavailable. Rather than lock anyone
+    // out, the checkbox behaves normally and the agreement is read at its own
+    // URL via the link. The record says how it was captured.
+    console.warn('[MarketEye consent] modal gate unavailable; falling back to a plain checkbox.');
+    consentEl.addEventListener('change', function () {
+      if (consentEl.checked) {
+        var meta = readTosMeta();
+        if (!meta) { consentEl.checked = false; return; }
+        consent = {
+          version:    meta['data-tos-version'],
+          effective:  meta['data-tos-effective'],
+          url:        meta['data-tos-url'],
+          method:     'checkbox_fallback',
+          acceptedAt: new Date().toISOString()
+        };
+      } else {
+        consent = null;
+      }
+    });
+  }
+
+  /* the other legal links must not toggle the checkbox they sit inside */
+  Array.prototype.forEach.call(form.querySelectorAll('.mef__legal'), function (a) {
+    if (a === openLink) return;
+    a.addEventListener('click', function (e) { e.stopPropagation(); });
+  });
+
+  /* ---------- validation ---------- */
+  // Returns every invalid field in document order, so the caller can tell a
+  // single problem from several. Empty array means clean.
+  function validate(values) {
+    var bad = [];
+
+    var badFirst = values.first_name.length < 1;
+    setError(firstEl, 'mef-first-err', badFirst);
+    if (badFirst) bad.push(firstEl);
+
+    var badLast = values.last_name.length < 1;
+    setError(lastEl, 'mef-last-err', badLast);
+    if (badLast) bad.push(lastEl);
+
+    var badEmail = !EMAIL_RE.test(values.email);
+    setError(emailEl, 'mef-email-err', badEmail,
+      values.email.length === 0 ? 'Please enter your email address.' : 'Please double-check your email address.');
+    if (badEmail) bad.push(emailEl);
+
+    var badConsent = !consentEl.checked || !consent;
+    setError(consentEl, 'mef-consent-err', badConsent);
+    if (badConsent) bad.push(consentEl);
+
+    return bad;
+  }
+
+  // Revealing the line the instant the field blurs reflows everything below it
+  // by ~50px BETWEEN mousedown and mouseup, so the control being clicked —
+  // almost always the consent checkbox, which sits directly underneath — slides
+  // out from under the pointer and never receives its click. The modal then
+  // fails to open until a second click. So: hold the reveal until the click
+  // that moved focus has finished dispatching. The document listener covers
+  // pointer input; the timer covers Tab, where no click ever arrives.
+  var suggestTimer = null;
+
+  function scheduleSuggestion() {
+    clearTimeout(suggestTimer);
+    suggestTimer = setTimeout(function () { suggestTimer = null; offerSuggestion(); }, 400);
+  }
+  function flushSuggestion() {
+    if (!suggestTimer) return;
+    clearTimeout(suggestTimer);
+    suggestTimer = null;
+    offerSuggestion();
+  }
+  function cancelSuggestion() {
+    clearTimeout(suggestTimer);
+    suggestTimer = null;
+    hideSuggestion();
+  }
+
+  emailEl.addEventListener('blur', scheduleSuggestion);
+  emailEl.addEventListener('input', cancelSuggestion);
+  // Bubble phase, so the clicked control's own handler has already run.
+  document.addEventListener('click', flushSuggestion);
+
+  if (suggestBtn) {
+    suggestBtn.addEventListener('click', function () {
+      emailEl.value = suggestBtn.textContent;
+      hideSuggestion();
+      setError(emailEl, 'mef-email-err', false);
+      // Focus back to the field, not onward: the person should see the
+      // corrected address sitting in the input they were just doubting.
+      emailEl.focus();
+    });
+  }
+
+  [[firstEl, 'mef-first-err'], [lastEl, 'mef-last-err'], [emailEl, 'mef-email-err']].forEach(function (pair) {
+    pair[0].addEventListener('input', function () {
+      if (pair[0].getAttribute('aria-invalid') === 'true') setError(pair[0], pair[1], false);
+    });
+  });
+
+  /* ---------- network ---------- */
+
+  // Consent first, and blocking. Registering someone whose consent record
+  // failed to save is the exact outcome this exists to prevent, so there is
+  // no fallback path that skips or defers this write.
+  function postConsent(values, hpFilled) {
+    var payload = {
+      hp:              hpFilled,
+      first_name:      values.first_name,
+      last_name:       values.last_name,
+      email:           values.email,
+      tos_version:     consent.version,
+      tos_effective:   consent.effective,
+      tos_accepted_at: consent.acceptedAt,
+      tos_method:      consent.method,
+      terms_url:       consent.url,
+      page_url:        window.location.href
+      // user_agent and ip are read from request headers by the function,
+      // which is more trustworthy than anything the client reports.
+    };
+
+    var controller = ('AbortController' in window) ? new AbortController() : null;
+    var timer = controller
+      ? setTimeout(function () { controller.abort(); }, MEF_CONFIG.consentTimeoutMs)
+      : null;
+
+    return fetch(MEF_CONFIG.consentEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },   // same-origin: no preflight
+      cache: 'no-store',
+      body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined
+    }).then(function (res) {
+      if (timer) clearTimeout(timer);
+      return res.json().then(function (out) {
+        return { status: res.status, out: out };
+      }, function () {
+        throw new Error('consent: unparseable response, HTTP ' + res.status);
+      });
+    }).then(function (r) {
+      // {ok:false} with a 200 is still a failure — status alone is not enough.
+      if (!r.out || r.out.ok !== true) {
+        throw new Error('consent: rejected, HTTP ' + r.status + ', error=' + (r.out && r.out.error));
+      }
+      return true;
+    });
+  }
+
+  function postRegistration(values) {
+    var payload = Object.assign({
+      event:    'free_member_signup',
+      event_id: eventId,
+      first_name: values.first_name,
+      last_name:  values.last_name,
+      email:      values.email,
+      consent:      true,
+      consent_text: consentText(),          // verbatim from the rendered label
+      // Bundled into the single required consent, so this is true on every
+      // registration and carries no segmentation value. Kept as a discrete
+      // field so bundled-era rows stay distinguishable if the opt-in is later
+      // split into its own optional checkbox.
+      newsletter_opt_in:        consentEl.checked,
+      newsletter_opt_in_source: 'bundled_with_terms',
+      // the consent fields ride along so the registration row and the consent
+      // log carry the same values and can be reconciled
+      tos_version:     consent.version,
+      tos_effective:   consent.effective,
+      tos_accepted_at: consent.acceptedAt,
+      tos_method:      consent.method,
+      terms_url:       consent.url,
+      submitted_at: new Date().toISOString()
+    }, attribution());
+
+    var controller = ('AbortController' in window) ? new AbortController() : null;
+    var timer = controller
+      ? setTimeout(function () { controller.abort(); }, MEF_CONFIG.timeoutMs)
+      : null;
+
+    return fetch(MEF_CONFIG.webhookUrl, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-store',
+      keepalive: true,
+      headers: MEF_CONFIG.simpleRequest
+        ? { 'Content-Type': 'text/plain;charset=UTF-8' }
+        : { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined
+    }).then(function (res) {
+      if (timer) clearTimeout(timer);
+      if (res.status !== 200) throw new Error('registration: webhook responded ' + res.status);
+      return true;
+    });
+  }
+
+  function go() {
+    if (navigated) return;
+    navigated = true;
+    window.location.href = destinationUrl();
+  }
+
+  // Fires only once both writes have succeeded. Reporting a conversion for
+  // someone who never registered corrupts attribution and feeds bad signal to
+  // ad optimisation; it also breaks reconciliation against the consent log,
+  // which is the check that catches this class of bug.
+  function pushConversionThenGo(values) {
+    if (conversionPushed) { go(); return; }
+    conversionPushed = true;
+    var dlName = MEF_CONFIG.dataLayerName || 'dataLayer';
+    window[dlName] = window[dlName] || [];
+    window[dlName].push({
+      'event': 'free_member_signup',
+      'user_email': values.email,
+      'user_first_name': values.first_name,
+      'user_last_name': values.last_name,
+      'event_id': eventId,
+      // navigate once the tag has actually fired, so the redirect doesn't
+      // cut the request off mid-flight
+      'eventCallback': go,
+      'eventTimeout': 2000
+    });
+    // GTM absent (local testing) or the callback never fires
+    setTimeout(go, 2200);
+  }
+
+  /* ---------- submit ---------- */
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (submitting) return;
+
+    if (fatal) {
+      setStatus(fatalMsg, 'error');
+      return;
+    }
+
+    var values = {
+      first_name: firstEl.value.trim(),
+      last_name:  lastEl.value.trim(),
+      email:      emailEl.value.trim().toLowerCase()
+    };
+
+    var bad = validate(values);
+    if (bad.length) {
+      // The summary line earns its place only when more than one field is
+      // wrong. With a single bad field the message beside that field already
+      // says it, focus lands there, and a status line repeating it just makes
+      // a screen reader announce the same sentence twice.
+      if (bad.length === 1) setStatus('', null);
+      else setStatus('Please check the highlighted fields.', 'error');
+      bad[0].focus();
+      return;
+    }
+
+    var hpFilled = !!(hpEl && hpEl.value);
+
+    submitting = true;
+    setStatus('', null);
+    setLoading(true);
+    eventId = eventId || makeEventId();
+
+    postConsent(values, hpFilled)
+      .then(function () {
+        // A bot sees the same success state, but never reaches the CRM and
+        // never reports a conversion. The consent row carries hp:true and is
+        // discarded upstream.
+        if (hpFilled) { setStatus('You’re in. Taking you to the community…', 'ok'); go(); return; }
+
+        return postRegistration(values).then(function () {
+          setStatus('You’re in. Taking you to the community…', 'ok');
+          pushConversionThenGo(values);
+        });
+      })
+      .catch(function (err) {
+        submitting = false;
+        setLoading(false);
+        // Debuggable detail to the console; nothing about the endpoint or the
+        // upstream error reaches the person using the form.
+        console.error('[MarketEye signup]', err);
+        setStatus('We could not complete your registration. Please try again.', 'error');
+        btn.focus();
+      });
+  });
+  }
+})();
+</script>
+
+</main>
+
+<!-- ============================================================
+     MarketEye — Community Agreement modal (scroll-to-agree gate)
+     Reusable partial. Ships alongside components/signup-form.html,
+     which supplies all behaviour; this file is markup + styles only.
+
+     ------------------------------------------------------------
+     VERSIONING — READ BEFORE EDITING THE TEXT BELOW
+     ------------------------------------------------------------
+     The consent record stores the version read off #mtos-doc at the
+     moment the user clicks "I Agree". The record is only meaningful
+     if the text in this file is the text they actually read.
+
+     Whenever the agreement text changes, ALL of the following:
+
+       1. Bump data-tos-version on #mtos-doc (and data-tos-effective).
+       2. Archive the new version at its own path in the site repo,
+          /community-terms/[version]/, and deploy it BEFORE this
+          partial ships. Point data-tos-url at it.
+       3. Update the /community-terms 302 in netlify.toml to the new
+          version so the un-versioned link tracks the current one.
+
+     Published versions are NEVER edited in place. Consent records
+     point at their versioned URL forever; changing the text behind
+     one rewrites what a person is recorded as having agreed to.
+
+     The body text below is copied verbatim from the archived page at
+     data-tos-url — page furniture (title, version stamp, "this page
+     records a specific version" note) removed, agreement text
+     untouched. If the two ever diverge, the consent record cites
+     text the user did not see.
+     ============================================================ -->
+<dialog class="mtos" id="mtos-dialog" aria-labelledby="mtos-title">
+
+  <header class="mtos__head">
+    <h2 class="mtos__title" id="mtos-title">MarketEye Society Community Agreement</h2>
+    <!-- filled from the data attributes below, so the version is stated
+         in exactly one place -->
+    <p class="mtos__stamp" id="mtos-stamp"></p>
+  </header>
+
+  <!-- Read-progress bar. Purely an affordance: signup-form.html fills it on
+       scroll if present and skips it if absent, so it is deliberately NOT in
+       that file's gateAvailable check — an LP still carrying an older paste of
+       this partial must keep working, not silently drop to a plain checkbox. -->
+  <div class="mtos__progress" aria-hidden="true">
+    <div class="mtos__progressbar" id="mtos-progress"></div>
+  </div>
+
+  <div class="mtos__scrollwrap">
+    <div class="mtos__scroll" id="mtos-scroll" tabindex="0" role="region" aria-labelledby="mtos-title">
+      <div class="mtos__doc"
+           id="mtos-doc"
+           data-tos-version="2026-09-03.1"
+           data-tos-effective="2026-09-03"
+           data-tos-url="https://marketeye.io/community-terms/2026-09-03.1/">
+
+  <p>This Agreement consists of two parts: the <strong>Community Agreement</strong>
+  and the <strong>Waiver of Liability &amp; Disclaimer</strong>. Both apply to all
+  Members. Your use of the MarketEye website, your account, and all commercial matters
+  &mdash; pricing, billing, cancellation, and refunds &mdash; are governed by our
+  <a href="https://marketeye.io/terms">Terms of Service</a>.</p>
+
+  <hr>
+
+  <h1>Part I — Community Agreement</h1>
+
+  <p>This Agreement governs all participants (&ldquo;Members&rdquo;) of the MarketEye
+  Society (the &ldquo;Community&rdquo;), operated by MarketEye LLC (&ldquo;Community
+  Operator&rdquo;), including both Mentees and Mentors (paid and unpaid).</p>
+
+  <h2>1. Purpose</h2>
+
+  <p>The Community is an educational platform that facilitates the exchange of
+  knowledge, strategies, and discussions related to futures, forex, stocks, options,
+  and crypto trading. No investment, financial, or tax advice is provided.</p>
+
+  <h2>2. Eligibility &amp; Membership Rights</h2>
+
+  <ul>
+    <li>The Community is a private membership organization.</li>
+
+    <li>Admission is at the sole discretion of the Community Operator.</li>
+
+    <li><strong>Eligibility.</strong> Membership is offered only to individuals who
+    are at least eighteen (18) years of age and who reside in the United States. The
+    Community is not offered or directed to, and may not be joined by, residents of
+    the European Economic Area, the United Kingdom, or Switzerland. By joining, you
+    represent that you meet these requirements. The Community Operator may terminate
+    the membership of any Member who does not.</li>
+
+    <li>The Community reserves the right to deny, suspend, or revoke membership for
+    any reason, including but not limited to conduct, communication, or affiliations
+    inconsistent with the Community&rsquo;s mission and values.</li>
+
+    <li>No applicant or member shall acquire any vested right to membership.</li>
+
+    <li><strong>Membership Tiers.</strong> The Community offers a <strong>Free
+    Membership</strong>, which provides access to designated free educational content
+    at no cost and requires no payment method. Paid Memberships are also offered;
+    their terms and prices are described at the point of purchase. All Sections of
+    this Agreement apply to all Members regardless of tier.</li>
+  </ul>
+
+  <h2>3. Code of Conduct &amp; Community Values</h2>
+
+  <p>To maintain a constructive and respectful environment, all Members agree to
+  uphold the following values:</p>
+
+  <ol>
+    <li><strong>Respect for Equal Rights.</strong> Members must support and respect
+    the principles of equality embodied in the Civil Rights Act of 1964, including
+    nondiscrimination based on race, color, religion, sex, or national origin.</li>
+    <li><strong>Human Dignity.</strong> Members must recognize that all persons,
+    regardless of immigration status, are entitled to basic human rights and to be
+    treated with respect.</li>
+    <li><strong>Constructive Discourse.</strong> Members must avoid advocacy,
+    promotion, or defense of ideologies, public officials, or policies fundamentally
+    inconsistent with these values.</li>
+    <li><strong>Professional Integrity.</strong> Members shall engage with others in
+    good faith, free of harassment, discrimination, or inflammatory political
+    promotion.</li>
+  </ol>
+
+  <p>Violation of these values, or conduct deemed by the Community Operator to
+  undermine them, shall be grounds for denial or revocation of membership.</p>
+
+  <h2>4. No Investment Advice</h2>
+
+  <ul>
+    <li>All content, strategies, and discussions within the Community are for
+    educational purposes only.</li>
+    <li>Mentors and Community operators are not licensed investment advisers,
+    broker-dealers, or commodity trading advisers.</li>
+    <li>Members remain solely responsible for their trading and investment
+    decisions.</li>
+  </ul>
+
+  <h2>5. Assumption of Risk</h2>
+
+  <p>Trading futures, forex, stocks, options, and cryptocurrencies involves
+  substantial risk of loss and may not be suitable for all participants. By joining,
+  Members acknowledge that:</p>
+
+  <ul>
+    <li>They may lose some or all of their capital.</li>
+    <li>They assume full responsibility for their trading and investment
+    decisions.</li>
+  </ul>
+
+  <h2>6. Indemnification</h2>
+
+  <p>Members agree to indemnify, defend, and hold harmless the Community, its
+  operators, and all Mentors (paid or unpaid) from any and all claims, liabilities,
+  damages, or expenses (including attorneys&rsquo; fees) arising from:</p>
+
+  <ol>
+    <li>The Member&rsquo;s trading or investment activities;</li>
+    <li>Reliance on any educational material, strategy, or discussion shared in the
+    Community;</li>
+    <li>Any violation of applicable laws by the Member.</li>
+  </ol>
+
+  <h2>7. Limitation of Liability</h2>
+
+  <p>Neither the Community, its operators, nor its Mentors shall be liable for:</p>
+
+  <ul>
+    <li>Direct, indirect, incidental, consequential, or punitive damages;</li>
+    <li>Losses relating to trading, investments, or profits;</li>
+    <li>Any actions taken in reliance on Community discussions or materials.</li>
+  </ul>
+
+  <p>This Section is subject to the limitations and exclusions set out in the
+  <a href="https://marketeye.io/terms">Terms of Service</a>, including the exceptions
+  for fraud, gross negligence, and willful misconduct.</p>
+
+  <h2>8. Intellectual Property</h2>
+
+  <ul>
+    <li>All Community content (videos, guides, templates, strategies, indicators, and
+    discussions) remains the intellectual property of MarketEye or the respective
+    Mentor.</li>
+    <li>Members may not share, resell, or reproduce Community content outside the
+    platform without prior written consent.</li>
+    <li>The license granted to Members to access and use Community content, and the
+    license Members grant in content they post, are set out in the
+    <a href="https://marketeye.io/terms">Terms of Service</a>.</li>
+  </ul>
+
+  <h2>9. Payments, Subscriptions &amp; Platform Access</h2>
+
+  <p>Membership pricing, billing, automatic renewal, cancellation, and refunds are
+  governed exclusively by Section 4 of the
+  <a href="https://marketeye.io/terms">Terms of Service</a>. Nothing in this Agreement
+  modifies those terms. <strong>If you are a Free Member, no pricing applies to you
+  and you will not be charged.</strong></p>
+
+  <p><strong>Free Members are not charged and are not required to provide a payment
+  method.</strong> Accepting this Agreement does not authorize any charge.</p>
+
+  <p><strong>Platform Access.</strong> The Community is delivered through a third-party
+  platform. MarketEye LLC reserves the right to change the platform provider at any
+  time. Membership will continue uninterrupted regardless of the platform used.</p>
+
+  <h2>10. Governing Law &amp; Dispute Resolution</h2>
+
+  <p>This Agreement is governed by, and disputes arising out of or relating to it are
+  resolved under, Sections 13 (Disputes) and 14 (Governing Law) of the
+  <a href="https://marketeye.io/terms">Terms of Service</a>. Those Sections include an
+  arbitration provision, a class action waiver, and your right to opt out of both
+  within 30 days.</p>
+
+  <h2>11. Non-Compete &amp; Non-Solicitation</h2>
+
+  <ol>
+    <li><strong>Non-Compete (Mentors and Paid Members only).</strong> This subsection
+    applies only to Mentors and to Members holding a Paid Membership. It does not
+    apply to Free Members. During participation in the Community and for a period of
+    twelve (12) months following termination &mdash; or such shorter period as may be
+    deemed reasonable and enforceable under applicable law &mdash; no Mentor or Paid
+    Member shall directly or indirectly establish, operate, or participate in any
+    business, program, or community offering trading education services that are
+    <strong>materially derived from</strong> Community content, curriculum,
+    strategies, indicators, or proprietary materials to which they gained access
+    through the Community. This subsection restricts the use of Community-derived
+    materials and methods; it does not restrict a Member from working in the trading
+    education field generally.</li>
+
+    <li><strong>Non-Solicitation (All Members).</strong> No Member may solicit,
+    divert, or attempt to divert any other Community Member, Mentor, or prospect for
+    purposes of:
+      <ul>
+        <li>Promoting competing trading education programs;</li>
+        <li>Selling products or services outside of those expressly approved by the
+        Community Operator; or</li>
+        <li>Recruiting Members away from the Community.</li>
+      </ul>
+    </li>
+
+    <li><strong>Exceptions.</strong> General business activity not specifically
+    targeted at Community Members (e.g., publishing books, posting on social media, or
+    teaching in unrelated industries) shall not be deemed a violation.</li>
+
+    <li><strong>Jurisdictional Limitation.</strong> Subsection 11.1 does not apply to
+    any Member residing in a jurisdiction in which such restrictions are void,
+    unenforceable, or unlawful to include in an agreement. In such jurisdictions,
+    subsections 11.2 and 11.3 continue to apply in full.</li>
+
+    <li><strong>Enforcement.</strong> Any breach of this Section shall entitle the
+    Community Operator to seek injunctive relief, damages, and termination of
+    membership, in addition to any other remedies available under law.</li>
+  </ol>
+
+  <h2>12. Acknowledgment</h2>
+
+  <p>By checking the acceptance box and creating an account, Members acknowledge they
+  have read, understood, and agreed to this Agreement and to the Waiver of Liability
+  &amp; Disclaimer set out in Part II below.</p>
+
+  <h2>13. Changes to This Agreement</h2>
+
+  <ul>
+    <li>The Community Operator may update this Agreement from time to time. Each
+    version is identified by a version number and effective date.</li>
+    <li>The current version is published at
+    <a href="https://marketeye.io/community-terms">marketeye.io/community-terms</a>.
+    Prior versions remain available at their versioned addresses.</li>
+    <li>Where changes are material, the Community Operator will notify Members by
+    email or through the platform before the changes take effect.</li>
+    <li>Continued participation in the Community after a revised version takes effect
+    constitutes acceptance of that version.</li>
+  </ul>
+
+  <h2>14. Privacy</h2>
+
+  <p>Collection and use of Member information is governed by the MarketEye Privacy
+  Policy, available at
+  <a href="https://marketeye.io/privacy">marketeye.io/privacy</a>, which is
+  incorporated into this Agreement by reference.</p>
+
+  <h2>15. General Provisions</h2>
+
+  <ol>
+    <li><strong>Precedence.</strong> The Community Agreement (Part I) and the Waiver
+    of Liability &amp; Disclaimer (Part II) are intended to be read together. In the
+    event of a conflict between them, the Community Agreement governs. In the event of
+    a conflict between this Agreement and the
+    <a href="https://marketeye.io/terms">Terms of Service</a> on any commercial matter
+    &mdash; pricing, billing, refunds, or dispute resolution &mdash; the Terms of
+    Service govern.</li>
+    <li><strong>Severability.</strong> If any provision of this Agreement is held
+    invalid or unenforceable, that provision shall be modified to the minimum extent
+    necessary to make it enforceable, or if it cannot be so modified, severed. All
+    remaining provisions shall continue in full force and effect.</li>
+    <li><strong>Entire Agreement.</strong> This Agreement, together with the Terms of
+    Service and the Privacy Policy, constitutes the entire agreement between the Member
+    and the Community Operator regarding the Community, and supersedes any prior
+    understandings on the subject.</li>
+    <li><strong>No Waiver.</strong> Failure by the Community Operator to enforce any
+    provision of this Agreement shall not constitute a waiver of that provision or of
+    any other provision.</li>
+    <li><strong>Assignment.</strong> Members may not assign or transfer their
+    membership or any rights under this Agreement. The Community Operator may assign
+    this Agreement in connection with a merger, acquisition, or sale of assets.</li>
+  </ol>
+
+  <hr>
+
+  <h1>Part II — Waiver of Liability &amp; Disclaimer</h1>
+
+  <p>This Waiver applies between MarketEye LLC, operator of MarketEye Society, and
+  each Member.</p>
+
+  <h2>1. Educational Purposes Only</h2>
+
+  <p>All information is for educational purposes only. All content, discussions, and
+  materials within the Community are provided for educational and informational
+  purposes only. Nothing contained herein constitutes financial, investment, legal, or
+  tax advice.</p>
+
+  <h2>2. No Guarantees</h2>
+
+  <p>No representations or guarantees of profitability. The Community and its Mentors
+  make no representations, warranties, or guarantees regarding trading performance,
+  profits, or results of any kind. Past performance is not indicative of future
+  results.</p>
+
+  <h2>3. Assumption of Risk</h2>
+
+  <p>Trading involves substantial risk of loss. By joining the Community, Members
+  acknowledge the high risk of financial loss associated with trading futures, forex,
+  stocks, options, and cryptocurrencies, and assume full responsibility for their own
+  trading and investment decisions.</p>
+
+  <h2>4. Waiver &amp; Release of Liability</h2>
+
+  <p>Member waives and releases MarketEye LLC and Mentors. To the fullest extent
+  permitted by law, Members expressly waive and release the Community, its operators,
+  and its Mentors (paid or unpaid) from any and all claims, demands, damages, or
+  liabilities, whether direct or indirect, arising from or related to:</p>
+
+  <ul>
+    <li>Trading or investment losses;</li>
+    <li>Reliance on educational content, strategies, or discussions within the
+    Community;</li>
+    <li>The actions or omissions of other Members or Mentors.</li>
+  </ul>
+
+  <p>Nothing in this Waiver excludes or limits liability for fraud, fraudulent
+  misrepresentation, gross negligence, or willful misconduct, or for any other
+  liability that cannot lawfully be excluded or limited under applicable law.</p>
+
+  <h2>5. No Fiduciary Relationship</h2>
+
+  <p>Participation in the Community does not create any fiduciary duty between
+  Members, Mentors, or the Community Operator.</p>
+
+  <h2>6. CFTC/NFA Risk Disclosure</h2>
+
+  <p>Futures, forex, stocks, options, and cryptocurrency trading involves substantial
+  risk and is not suitable for every investor. An investor could potentially lose all
+  or more than the initial investment. Risk capital is money that can be lost without
+  jeopardizing one&rsquo;s financial security or lifestyle. Only risk capital should be
+  used for trading and only those with sufficient risk capital should consider
+  trading.</p>
+
+  <p>Hypothetical performance results have many inherent limitations. No
+  representation is being made that any account will or is likely to achieve profits
+  or losses similar to those shown; in fact, there are frequently sharp differences
+  between hypothetical performance results and the actual results subsequently
+  achieved. Past performance is not necessarily indicative of future results.</p>
+
+  <h2>7. Governing Law</h2>
+
+  <p>This Waiver is governed by, and disputes arising out of or relating to it are
+  resolved under, Sections 13 (Disputes) and 14 (Governing Law) of the
+  <a href="https://marketeye.io/terms">Terms of Service</a>.</p>
+
+  <h2>8. Acknowledgment</h2>
+
+  <p>By checking the acceptance box and creating an account, the Member affirms they
+  have read, understood, and voluntarily agree to the Community Agreement and this
+  Waiver of Liability &amp; Disclaimer.</p>
+        <!-- Zero-height sentinel. MUST stay the last child of #mtos-doc:
+             the gate unlocks when this intersects the scroll container.
+             If the agreement is short enough not to scroll, it is visible
+             on open and the gate unlocks immediately, which is correct. -->
+        <div class="mtos__sentinel" id="mtos-sentinel" aria-hidden="true"></div>
+      </div>
+    </div>
+    <!-- Always-visible scroll rail. Drawn, not native: iOS overlay scrollbars
+         stay hidden until a finger moves, so the one platform that most needed
+         the "this scrolls" signal was the one that never showed one. Draggable
+         as well as indicative — hiding the native bar on desktop would
+         otherwise have removed a control people use. aria-hidden because it
+         duplicates the scroll region, which is already keyboard-operable. -->
+    <div class="mtos__rail" id="mtos-rail" aria-hidden="true">
+      <div class="mtos__thumb" id="mtos-thumb"></div>
+    </div>
+    <div class="mtos__fade" id="mtos-fade" aria-hidden="true"></div>
+  </div>
+
+  <footer class="mtos__foot">
+    <p class="mtos__hint" id="mtos-hint">Scroll to the end of the agreement to continue.</p>
+    <div class="mtos__actions">
+      <button type="button" class="mtos__btn mtos__btn--ghost" id="mtos-close">Close</button>
+      <button type="button" class="mtos__btn" id="mtos-agree" aria-disabled="true" aria-describedby="mtos-hint">I Agree</button>
+    </div>
+  </footer>
+
+</dialog>
+
+<style>
+/* ---------- scoped reset ---------- */
+.mtos, .mtos *, .mtos *::before, .mtos *::after{ box-sizing:border-box; }
+
+.mtos{
+  /* Same token pattern as signup-form.html: inherit the page's brand tokens
+     when present, fall back to the brand-guide values so the partial still
+     renders correctly dropped onto a page that defines none. A <dialog> is
+     promoted to the top layer and sits outside the form's subtree, so it
+     cannot inherit the form's --mef-* values and declares its own. */
+  --mtos-navy:     var(--navy,  #071D49);
+  --mtos-panel:    var(--panel, #0C2758);
+  --mtos-white:    var(--white, #FFFFFF);
+  --mtos-ink-2:    var(--ink-2, #C9D8F2);
+  --mtos-ink-3:    var(--ink-3, #8FA6CF);
+  --mtos-cyan:     var(--cyan,  #00C8FF);
+  --mtos-line:     var(--line,   rgba(255,255,255,0.12));
+  --mtos-line-2:   var(--line-2, rgba(255,255,255,0.20));
+  --mtos-head:     var(--head, 'Exo 2', system-ui, -apple-system, sans-serif);
+  --mtos-body:     var(--body, 'Barlow', system-ui, -apple-system, sans-serif);
+  --mtos-grad-btn: var(--grad-btn, linear-gradient(135deg, rgb(18,114,184) 0%, rgb(43,114,232) 40%, rgb(80,51,195) 100%));
+  --mtos-danger:   #FF9AA2;
+  /* transparent stop for the fade — the panel colour at zero alpha */
+  --mtos-panel-0:  rgba(12,39,88,0);
+
+  padding:0;
+  border:1px solid var(--mtos-line-2);
+  border-radius:.875rem;
+  background:var(--mtos-panel);
+  color:var(--mtos-white);
+  font-family:var(--mtos-body);
+  width:calc(100% - 2rem);
+  max-width:40rem;                 /* 640px desktop panel */
+  max-height:80vh;                 /* fallback for browsers without dvh */
+  max-height:80dvh;
+  overflow:hidden;                 /* the inner scroller owns scrolling */
+  box-shadow:0 1.5rem 3rem rgba(0,0,0,.45);
+}
+/* display:flex only while open — an unconditional display would override the
+   UA's display:none and leave the dialog on screen when closed. */
+.mtos[open]{ display:flex; flex-direction:column; }
+.mtos::backdrop{ background:rgba(3,10,28,.72); }
+
+/* ---------- mobile: full-screen sheet ----------
+   Was a 90dvh bottom sheet pinned with position:fixed. On iOS Safari that
+   produced three linked defects, all visible in one screenshot: the page
+   behind stayed scrollable and showed through below the footer, the sheet
+   drifted with the page instead of holding the viewport, and the title
+   clipped under the status bar.
+
+   A modal <dialog> is already in the top layer and its containing block is
+   the viewport, so it needs no position:fixed — inset:0 plus an explicit
+   dvh height is both simpler and stable against the dynamic URL bar.
+   Full-screen rather than a 90dvh sheet on purpose: the 10dvh strip of
+   page above the sheet was itself the "bottom page shows through" report,
+   and a document this long has no business sharing the viewport.
+   Background scroll is locked in JS as well — CSS alone cannot do it on
+   iOS (see lockPageScroll in signup-form.html). */
+@media (max-width:47.9375rem){
+  .mtos{
+    /* NO VIEWPORT UNITS (revised 2026-09-03). inset:0 stretches the box to its
+       containing block, which for a modal dialog is the viewport, and it
+       re-stretches whenever that viewport changes. The previous 100dvh
+       resolved to the URL-bar-expanded height and then didn't grow when the
+       bar collapsed to a pill, leaving ~124px of page visible below the
+       footer on a 16 Pro Max — read as dead space inside the sheet, since
+       both are navy. height:auto is load-bearing here: a fixed height is
+       what reintroduces the bug. */
+    inset:0;
+    margin:0;                      /* dialog defaults to margin:auto */
+    width:auto;  max-width:none;
+    height:auto; max-height:none;
+    border:0; border-radius:0;
+  }
+}
+
+/* ---------- head ---------- */
+.mtos__head{ flex:0 0 auto; padding:1.15rem 1.25rem .85rem; border-bottom:1px solid var(--mtos-line); }
+.mtos__title{
+  margin:0; font-family:var(--mtos-head); font-weight:800; line-height:1.18;
+  letter-spacing:-.01em; font-size:1.25rem; color:var(--mtos-white);
+}
+.mtos__stamp{ margin:.35rem 0 0; font-size:.8125rem; color:var(--mtos-ink-3); }
+.mtos__stamp:empty{ display:none; }
+
+/* ---------- read-progress bar ----------
+   The agreement runs many screens and nothing previously told a reader how
+   far in they were or how much was left — the fade said "more below" but
+   not "how much more". This is the primary scroll affordance on mobile,
+   where overlay scrollbars are invisible until a finger is already moving. */
+.mtos__progress{ flex:0 0 auto; height:3px; background:rgba(255,255,255,0.10); }
+.mtos__progressbar{
+  height:100%; width:0;
+  background-image:var(--mtos-grad-btn);
+  transition:width .12s linear;
+}
+
+/* ---------- scroll area ---------- */
+/* min-height:0 is what lets this flex child actually shrink and scroll */
+.mtos__scrollwrap{ position:relative; flex:1 1 auto; min-height:0; display:flex; }
+.mtos__scroll{
+  flex:1 1 auto; min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;      /* don't chain scrolling to the page behind */
+  -webkit-overflow-scrolling:touch;
+  /* right padding clears the custom rail below */
+  padding:1rem 1.9rem 1.5rem 1.25rem;
+  /* 12px (.75rem) — 15px -> 13px -> 12px across two requests on 2026-09-03.
+     rem, not px, so a reader who has raised their browser's default font size
+     still gets the benefit of it; that is the whole reason this standard
+     insists on relative units. Well below the 1rem content floor in
+     workflow-lp-technical.md rule 1, recorded there as a named exemption
+     rather than left as a silent violation. Line-height stays 1.5. */
+  font-size:.75rem; line-height:1.5; color:var(--mtos-ink-2);
+  /* Native scrollbars are suppressed in favour of .mtos__rail. iOS uses
+     overlay scrollbars that stay invisible until a finger is already moving,
+     which is exactly the signal that was missing — so the rail is drawn
+     rather than borrowed, and is identical on every platform. */
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.mtos__scroll::-webkit-scrollbar{ display:none; }
+.mtos__scroll:focus-visible{ outline:2px solid var(--mtos-cyan); outline-offset:-2px; }
+
+/* Margins tightened 2026-09-03 alongside line-height, for scroll length.
+   Type sizes are unchanged and are not a lever here. */
+/* Headings track the body so the ladder survives — 12 / 13 / 14. Reducing
+   body alone would flatten h2 into it and the document loses its structure. */
+.mtos__doc h1{
+  font-family:var(--mtos-head); font-size:.875rem; font-weight:800;
+  color:var(--mtos-white); margin:1.25rem 0 .45rem; line-height:1.25;
+}
+.mtos__doc h2{
+  font-family:var(--mtos-head); font-size:.8125rem; font-weight:700;
+  color:var(--mtos-white); margin:1.05rem 0 .35rem; line-height:1.3;
+}
+.mtos__doc > p:first-child{ margin-top:0; }
+.mtos__doc p{ margin:.55rem 0; }
+/* markers restated explicitly: LP resets commonly carry `ul,ol{list-style:none}`,
+   and the agreement cross-references its own numbered subsections */
+.mtos__doc ul,.mtos__doc ol{ margin:.55rem 0; padding-left:1.35rem; }
+.mtos__doc ul{ list-style:disc; }
+.mtos__doc ol{ list-style:decimal; }
+.mtos__doc li{ margin:.32rem 0; }
+.mtos__doc li ul{ margin:.28rem 0; }
+.mtos__doc strong{ color:var(--mtos-white); }
+.mtos__doc hr{ border:0; border-top:1px solid var(--mtos-line); margin:1.1rem 0; }
+.mtos__doc a{ color:var(--mtos-cyan); text-decoration:underline; text-underline-offset:2px; }
+.mtos__doc a:hover{ color:var(--mtos-white); }
+
+.mtos__sentinel{ height:0; margin:0; padding:0; }
+
+/* ---------- scroll rail ----------
+   Deliberately wide and high-contrast. Conveying that the document scrolls
+   matters more here than restraint: a reader who doesn't scroll never
+   unlocks the gate and cannot complete signup. Sits above the fade so the
+   thumb stays visible at the bottom of the track. */
+.mtos__rail{
+  position:absolute; top:0; right:0; bottom:0; z-index:2;
+  width:14px;
+  background:rgba(255,255,255,.10);
+  border-left:1px solid var(--mtos-line);
+  touch-action:none;
+}
+.mtos__thumb{
+  position:absolute; left:2px; right:2px; top:0;
+  height:32px; min-height:32px;
+  border-radius:10px;
+  /* ink-2, not ink-3: 7.49:1 against the track versus 4.38:1. The brief was
+     "immediately visible", and the thumb is the whole signal. */
+  background:var(--mtos-ink-2);
+  cursor:grab;
+}
+.mtos__thumb:hover,
+.mtos__thumb:active{ background:var(--mtos-white); }
+.mtos__thumb:active{ cursor:grabbing; }
+
+/* fade affordance — sits above the footer, clears once the end is reached.
+   Taller than before, and now carries an explicit chevron: a gradient alone
+   reads as styling, not as an instruction, which is why the requirement to
+   scroll wasn't landing on mobile. */
+.mtos__fade{
+  position:absolute; left:0; right:0; bottom:0; height:4rem;
+  pointer-events:none;
+  background:linear-gradient(to bottom, var(--mtos-panel-0), var(--mtos-panel));
+  opacity:1; transition:opacity .2s ease;
+}
+.mtos__fade::after{
+  content:"";
+  position:absolute; left:50%; bottom:.85rem;
+  width:.62rem; height:.62rem;
+  border-right:2px solid var(--mtos-ink-2);
+  border-bottom:2px solid var(--mtos-ink-2);
+  transform:translateX(-50%) rotate(45deg);
+  animation:mtos-nudge 1.9s ease-in-out infinite;
+}
+@keyframes mtos-nudge{
+  0%,100%{ transform:translateX(-50%) rotate(45deg) translate(0,0); opacity:.55; }
+  50%    { transform:translateX(-50%) rotate(45deg) translate(2px,2px); opacity:1; }
+}
+.mtos.is-read .mtos__fade{ opacity:0; }
+
+/* ---------- sticky footer ---------- */
+/* a flex sibling of the scroll area, so it is always on screen and never
+   requires scrolling past the text to reach */
+.mtos__foot{
+  flex:0 0 auto;
+  padding:.85rem 1.25rem 1.1rem;
+  /* No safe-area inset (removed 2026-09-03). With inset:0 the sheet fills the
+     visual viewport, which already ends above the browser chrome and the home
+     indicator — so env(safe-area-inset-bottom) was allowing for the same
+     space a second time. Revisit only if this ever ships standalone/PWA,
+     where the page really does reach the physical screen edge. */
+  border-top:1px solid var(--mtos-line);
+  background:var(--mtos-panel);
+}
+.mtos__hint{ margin:0 0 .7rem; font-size:.8125rem; line-height:1.45; color:var(--mtos-ink-3); }
+.mtos.is-read .mtos__hint{ color:var(--mtos-ink-2); }
+.mtos__hint[data-state="error"]{ color:var(--mtos-danger); }
+.mtos__actions{ display:flex; gap:.6rem; justify-content:flex-end; }
+
+.mtos__btn{
+  min-height:2.75rem; padding:.7rem 1.35rem;
+  font-family:var(--mtos-head); font-size:1rem; font-weight:800;
+  letter-spacing:.03em; text-transform:uppercase; line-height:1.2;
+  color:var(--mtos-white); background-image:var(--mtos-grad-btn);
+  border:0; border-radius:.5rem; cursor:pointer;
+  transition:opacity .18s ease, transform .18s ease;
+}
+.mtos__btn:hover{ transform:translateY(-1px); }
+.mtos__btn:focus-visible{ outline:3px solid var(--mtos-cyan); outline-offset:2px; }
+/* aria-disabled, not the disabled attribute: the button stays focusable and
+   clickable so it can explain what is still required.
+
+   Flat desaturated fill rather than opacity (revised 2026-09-03). An
+   opacity fade dimmed the LABEL along with the gradient, so the locked
+   state read as the blue primary action, only softer — and its own text
+   sat well under the readability floor. Dropping the gradient is what
+   actually signals "not yet"; keeping the label at --ink-2 (7.49:1 on
+   the blended fill) keeps it legible for the 40s–50s audience. Filled,
+   not outlined, so it stays distinct from the ghost Close beside it. */
+.mtos__btn[aria-disabled="true"]{
+  background-image:none;
+  background-color:rgba(255,255,255,0.10);
+  color:var(--mtos-ink-2);
+  opacity:1;
+  cursor:not-allowed;
+  transform:none;
+}
+.mtos__btn--ghost{
+  background-image:none; background-color:transparent;
+  border:1px solid var(--mtos-line-2); color:var(--mtos-ink-2);
+}
+.mtos__btn--ghost:hover{ color:var(--mtos-white); border-color:var(--mtos-line-2); }
+
+/* Buttons stack only on genuinely narrow phones (<=352px). The breakpoint was
+   26rem/416px, which stacked them on a 402px iPhone and spent ~55px of a
+   full-height sheet on a second button row instead of on the agreement —
+   that stacked footer is the "blank space below I Agree". Side by side, the
+   footer is one row and the scroll area gets the difference. */
+@media (max-width:22rem){
+  .mtos__actions{ flex-direction:column-reverse; }
+  .mtos__btn{ width:100%; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mtos__btn:hover{ transform:none; }
+  .mtos__fade{ transition:none; }
+  /* the chevron stays — it is the affordance; only its motion goes */
+  .mtos__fade::after{ animation:none; opacity:1; }
+  .mtos__progressbar{ transition:none; }
+}
+</style>
+
+
+<footer class="mkt-footer">
+  <div class="mkt-footer__inner">
+    <div class="mkt-footer__top">
+      <div>
+        <img class="mkt-brand__logo" src="https://raw.githubusercontent.com/marketeye-official/marketeye-site/refs/heads/main/MarketEye-Logo-1.03c-Gradient-horizontal.png" alt="MarketEye">
+        <div class="mkt-brand__tag">Real People. Real Beginners. Real Trading.</div>
+      </div>
+      <div class="mkt-footer__mid">
+        <span>&copy; 2026 MarketEye, LLC. All Rights Reserved.</span>
+        <a href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+      </div>
+      <div>
+        <div class="mkt-connect__label">Connect</div>
+        <div class="mkt-social">
+          <a href="https://www.facebook.com/marketeye.society" aria-label="MarketEye on Facebook" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/marketeye.society" aria-label="MarketEye on Instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c-2.72 0-3.06.01-4.12.06-1.07.05-1.79.22-2.43.47-.66.26-1.22.6-1.77 1.15-.55.55-.89 1.11-1.15 1.77-.25.64-.42 1.36-.47 2.43C2.01 8.94 2 9.28 2 12s.01 3.06.06 4.12c.05 1.07.22 1.79.47 2.43.26.66.6 1.22 1.15 1.77.55.55 1.11.89 1.77 1.15.64.25 1.36.42 2.43.47 1.06.05 1.4.06 4.12.06s3.06-.01 4.12-.06c1.07-.05 1.79-.22 2.43-.47.66-.26 1.22-.6 1.77-1.15.55-.55.89-1.11 1.15-1.77.25-.64.42-1.36.47-2.43.05-1.06.06-1.4.06-4.12s-.01-3.06-.06-4.12c-.05-1.07-.22-1.79-.47-2.43a4.9 4.9 0 0 0-1.15-1.77 4.9 4.9 0 0 0-1.77-1.15c-.64-.25-1.36-.42-2.43-.47C15.06 2.01 14.72 2 12 2zm0 1.8c2.67 0 2.99.01 4.04.06.98.04 1.5.21 1.86.35.47.18.8.4 1.15.75.35.35.57.68.75 1.15.14.36.31.88.35 1.86.05 1.05.06 1.37.06 4.04s-.01 2.99-.06 4.04c-.04.98-.21 1.5-.35 1.86-.18.47-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.36.14-.88.31-1.86.35-1.05.05-1.37.06-4.04.06s-2.99-.01-4.04-.06c-.98-.04-1.5-.21-1.86-.35a3.1 3.1 0 0 1-1.15-.75 3.1 3.1 0 0 1-.75-1.15c-.14-.36-.31-.88-.35-1.86-.05-1.05-.06-1.37-.06-4.04s.01-2.99.06-4.04c.04-.98.21-1.5.35-1.86.18-.47.4-.8.75-1.15.35-.35.68-.57 1.15-.75.36-.14.88-.31 1.86-.35C9.01 3.81 9.33 3.8 12 3.8zm0 3.06A5.14 5.14 0 1 0 12 17.14 5.14 5.14 0 0 0 12 6.86zm0 8.47A3.33 3.33 0 1 1 12 8.67a3.33 3.33 0 0 1 0 6.66zm5.34-9.87a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@MarketEyeSociety" aria-label="MarketEye on YouTube" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.11-2.12C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.39.53A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.11 2.12c1.89.53 9.39.53 9.39.53s7.5 0 9.39-.53a3 3 0 0 0 2.11-2.12A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mkt-disc">
+      <p><strong>Disclaimer.</strong> MarketEye is an educational community and does not provide personalized financial, investment, or trading advice. Trading futures, stocks, forex, and cryptocurrencies involves substantial risk of loss and is not suitable for all investors. Past performance does not guarantee future results, and passing an evaluation does not guarantee profitability. Results vary based on individual discipline, market conditions, and execution.</p>
+      <p id="disclaimer" style="margin-top:.75rem"><strong>About the calculator.</strong> It is a general illustration, not a personalized calculation or an assessment of any individual's financial situation. The figures are hypothetical, based only on the assumptions selected; they are not a projection, prediction, or guarantee of any financial outcome, do not reflect actual trading or market performance, and are not financial advice. Inflation and returns are variable and unpredictable. The $4,281/mo reference figure is the 80%-of-income replacement target for a median U.S. full-time earner retiring at 65, per 24/7 Wall St., July 2026. It is a national estimate that varies by location and circumstance, and roughly half of it is expected to be covered by Social Security rather than personal savings. The age-79 horizon is average U.S. life expectancy at birth (CDC/NCHS) and is not a prediction about any individual. The 3.28% historical US annual inflation rate shown beside the inflation slider is sourced from YCharts, US Inflation Rate.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* FAQ accordion */
+(function(){
+  document.querySelectorAll('.qa').forEach(function(item){
+    var btn=item.querySelector('button'), ans=item.querySelector('.a');
+    btn.addEventListener('click',function(){
+      var open=item.classList.toggle('open');
+      btn.setAttribute('aria-expanded',open?'true':'false');
+      ans.style.maxHeight=open?(ans.scrollHeight+32)+'px':'';
+    });
+  });
+})();
+
+/* Retirement runway illustration — RESTORED VERBATIM from RET-MACRO v3.
+   Reverted 2026-08-07: an earlier draft replaced the benchmark spending figure
+   with a slider and dropped the withdrawal-rate input, the nominal-vs-real
+   income comparison, and the max() floor in the runway simulation. That was an
+   unrequested change to a model with deliberate logic behind it. This is the
+   original, unmodified. */
+  (function(){
+    var inAge = document.getElementById('inAge');
+    var inRetireAge = document.getElementById('inRetireAge');
+    var inPortfolio = document.getElementById('inPortfolio');
+    var inContribution = document.getElementById('inContribution');
+    var inRate = document.getElementById('inRate');
+    var inInflation = document.getElementById('inInflation');
+    var inWithdraw = document.getElementById('inWithdraw');
+
+    var valContribution = document.getElementById('valContribution');
+    var valRate = document.getElementById('valRate');
+    var valInflation = document.getElementById('valInflation');
+    var valWithdraw = document.getElementById('valWithdraw');
+
+    var runwayFill = document.getElementById('runwayFill');
+    var runwayChip = document.getElementById('runwayChip');
+    var runwayTicks = document.getElementById('runwayTicks');
+    var outRunwayAge = document.getElementById('outRunwayAge');
+    var runwayMsg = document.getElementById('runwayMsg');
+    var runwayCallout = document.getElementById('runwayCallout');
+    var runwayCalloutText = document.getElementById('runwayCalloutText');
+
+    var outIncomeNominal = document.getElementById('outIncomeNominal');
+    var outIncomeReal = document.getElementById('outIncomeReal');
+    var tileSpendingPower = document.getElementById('tileSpendingPower');
+    var spendingPowerWarn = document.getElementById('spendingPowerWarn');
+    var gapNeed = document.getElementById('gapNeed');
+    var gapNeedLabel = document.getElementById('gapNeedLabel');
+    var gapMeterLabel = document.getElementById('gapMeterLabel');
+    var gapMeter = document.getElementById('gapMeter');
+    var gapFill = document.getElementById('gapFill');
+    var gapHave = document.getElementById('gapHave');
+    var gapShort = document.getElementById('gapShort');
+    var gapShortLabel = document.getElementById('gapShortLabel');
+
+    var moveContribution = document.getElementById('moveContribution');
+    var moveTimeline = document.getElementById('moveTimeline');
+
+    // Average retiree monthly spending, in today's dollars. Used ONLY as a general
+    // illustrative spending level for the runway simulation — never as an assertion
+    // about any individual viewer's finances.
+    var BENCHMARK_MONTHLY_TODAY = 4281;
+    // Average U.S. life expectancy at birth, CDC/NCHS. Used as the horizon for
+    // the "needed to retire and live to" figure (added 2026-08-07).
+    var LIFE_EXPECTANCY = 79;
+
+    // Neutral explanatory note (no shortfall verdict, no warning styling).
+    if (runwayCallout) { runwayCallout.classList.remove('show'); }
+
+    function fmt(n){
+      n = Math.round(n);
+      return '$' + n.toLocaleString('en-US');
+    }
+
+    function recalc(){
+      /* Clamp for computation only. Do NOT write back to the fields here — that
+         was hijacking keystrokes on mobile (typing "36" produced "3636" because
+         each interim digit was ≤ current age and got snapped to age+1, then the
+         next keystroke appended). Field values are normalized on blur below. */
+      var rawAge = parseInt(String(inAge.value).replace(/[^0-9]/g,''), 10);
+      var age = Math.min(85, Math.max(18, isNaN(rawAge) ? 18 : rawAge));
+      var rawRetire = parseInt(String(inRetireAge.value).replace(/[^0-9]/g,''), 10);
+      var retireAge = isNaN(rawRetire) ? (age + 1) : rawRetire;
+      retireAge = Math.min(90, Math.max(age + 1, retireAge));
+      var portfolio = Math.max(0, parseFloat(String(inPortfolio.value).replace(/[^0-9.]/g, '')) || 0);
+      var contribution = +inContribution.value;
+      var ratePct = +inRate.value;
+      var inflationPct = +inInflation.value;
+      var withdrawPct = +inWithdraw.value;
+
+      valContribution.textContent = fmt(contribution);
+      valRate.textContent = ratePct + '%';
+      valInflation.textContent = inflationPct + '%';
+      valWithdraw.textContent = withdrawPct + '%';
+
+      var years = retireAge - age;
+      var months = years * 12;
+      var r = ratePct / 100 / 12;
+      var inflationAnnual = inflationPct / 100;
+      var withdrawAnnual = withdrawPct / 100;
+      var inflationFactor = Math.pow(1 + inflationAnnual, years);
+
+      // Hypothetical nest egg at the target date (nominal dollars)
+      var nestEgg;
+      if (r === 0) {
+        nestEgg = portfolio + contribution * months;
+      } else {
+        nestEgg = portfolio * Math.pow(1 + r, months) + contribution * ((Math.pow(1 + r, months) - 1) / r);
+      }
+
+      var monthlyIncomeNominal = nestEgg * withdrawAnnual / 12;
+      var monthlyIncomeReal = monthlyIncomeNominal / inflationFactor;
+
+      // How long the nest egg could last at the CHOSEN withdrawal (inflation-adjusted).
+      // No external "benchmark need" comparison — purely the assumptions entered.
+      // Benchmark spending, converted to nominal dollars at the retirement year.
+      var benchmarkMonthlyNominal = BENCHMARK_MONTHLY_TODAY * inflationFactor;
+      // Whether the benchmark spending level is the one driving the simulation.
+      var benchmarkDrives = benchmarkMonthlyNominal > monthlyIncomeNominal;
+
+      // Money runway: simulate monthly depletion at whichever monthly spend is the
+      // higher of the two — the withdrawal the assumptions produce, or the benchmark
+      // spending level. This floor is what makes the runway respond to the inputs.
+      var withdrawal = Math.max(monthlyIncomeNominal, benchmarkMonthlyNominal);
+      var balance = nestEgg;
+      var monthlyInflationRate = Math.pow(1 + inflationAnnual, 1/12) - 1;
+      var monthCount = 0;
+      // The axis runs from the retirement age across `timelineSpan` years, and the
+      // simulation stops at the same point — so "bar full" always means "past the
+      // end of the chart", and the printed age can never exceed the last tick.
+      var tickStep = 10;
+      var timelineSpan = tickStep * 4;
+      var capAge = retireAge + timelineSpan;
+      var capMonths = timelineSpan * 12;
+      if (withdrawal <= 0) {
+        monthCount = capMonths;
+      } else {
+        while (balance > 0 && monthCount < capMonths) {
+          balance = balance * (1 + r) - withdrawal;
+          withdrawal *= (1 + monthlyInflationRate);
+          monthCount++;
+        }
+      }
+      var runwayYears = monthCount / 12;
+      var depletionAge = retireAge + runwayYears;
+
+      // ---- Runway timeline (neutral illustration) ----
+      // Ticks start AT the retirement age (0% of the bar) so the labels line up with
+      // the fill; previously they started one step in, shifting the whole scale.
+      runwayTicks.innerHTML = '';
+      for (var i = 0; i <= 4; i++) {
+        var tickVal = retireAge + tickStep * i;
+        var span = document.createElement('span');
+        span.textContent = (i === 4 ? (tickVal + '+') : tickVal);
+        runwayTicks.appendChild(span);
+      }
+      var fillPct = Math.min(100, Math.max(0, (Math.min(runwayYears, timelineSpan) / timelineSpan) * 100));
+
+      // The spending level driving the runway is explained once, in the assumption
+      // note below, rather than repeated here (changed 2026-08-07).
+
+      if (monthCount >= capMonths) {
+        runwayFill.style.width = '100%';
+        runwayChip.textContent = capAge + '+';
+        outRunwayAge.textContent = capAge + '+';
+        outRunwayAge.classList.add('ok');
+        runwayMsg.textContent = 'These savings could keep paying past age ' + capAge + ' — beyond the range this illustration covers.';
+      } else {
+        runwayFill.style.width = fillPct + '%';
+        var roundedDepletionAge = Math.max(retireAge, Math.floor(depletionAge));
+        runwayChip.textContent = roundedDepletionAge;
+        outRunwayAge.classList.remove('ok');
+        outRunwayAge.textContent = 'AGE ' + roundedDepletionAge;
+        runwayMsg.textContent = 'Current projection only lasts about ' + Math.max(0, Math.floor(runwayYears)) + ' years into retirement.';
+      }
+
+      // Position the marker AFTER its label is set, clamping by its own half-width so
+      // it stays flush inside the bar at both extremes instead of overhanging.
+      var trackEl = runwayFill.parentNode;
+      var trackW = (trackEl && trackEl.offsetWidth) || 0;
+      var chipW = runwayChip.offsetWidth || 0;
+      if (trackW > 0 && chipW > 0) {
+        var halfPct = (chipW / 2) / trackW * 100;
+        runwayChip.style.left = Math.min(100 - halfPct, Math.max(halfPct, fillPct)) + '%';
+      } else {
+        runwayChip.style.left = fillPct + '%';
+      }
+
+      // Explains WHY the runway uses the benchmark figure — an assumption note, not a
+      // verdict about the viewer. Neutral styling, no warning language.
+      if (runwayCallout && runwayCalloutText) {
+        if (benchmarkDrives) {
+          runwayCalloutText.innerHTML = '<b>Why it empties sooner than the withdrawal rate suggests:</b> the runway is based on ' + fmt(BENCHMARK_MONTHLY_TODAY) + '/mo in today\u2019s dollars \u2014 the average retirement income needed in the US \u2014 not the ' + fmt(monthlyIncomeNominal) + '/mo the inputs produce.';
+          runwayCallout.classList.add('show');
+        } else {
+          runwayCallout.classList.remove('show');
+        }
+      }
+
+      // ---- 2x2 results grid (neutral) ----
+      outIncomeNominal.textContent = fmt(monthlyIncomeNominal) + '/mo';
+      outIncomeReal.textContent = fmt(monthlyIncomeReal) + '/mo';
+      /* Capital required at retirement to fund the target spend from retireAge
+         through LIFE_EXPECTANCY: present value of a growing annuity, withdrawals
+         rising with inflation while the balance still earns `rate`. */
+      var yearsToLE = Math.max(0, LIFE_EXPECTANCY - retireAge);
+      var nLE = Math.round(yearsToLE * 12);
+      var rM = r, gM = monthlyInflationRate;   // both already computed above
+      var requiredAtRetirement;
+      if (nLE === 0) {
+        requiredAtRetirement = 0;
+      } else if (Math.abs(rM - gM) < 1e-9) {
+        requiredAtRetirement = benchmarkMonthlyNominal * nLE;
+      } else {
+        requiredAtRetirement = benchmarkMonthlyNominal *
+          (1 - Math.pow((1 + gM) / (1 + rM), nLE)) / (rM - gM);
+      }
+      var shortfall = requiredAtRetirement - nestEgg;
+
+      /* Gap meter: filled portion is the projected nest egg as a share of what's
+         required, the hatched remainder is the shortfall. Now the primary result
+         panel — replaces the pair of stat tiles that carried these two figures
+         separately (2026-08-08). */
+      if (gapMeter) {
+        var covered = requiredAtRetirement > 0
+          ? Math.max(0, Math.min(100, (nestEgg / requiredAtRetirement) * 100))
+          : 100;
+        gapFill.style.width = covered + '%';
+        gapHave.textContent = fmt(Math.max(0, nestEgg));
+        gapNeed.textContent = fmt(Math.max(0, requiredAtRetirement));
+        gapNeedLabel.textContent = 'Needed to age ' + LIFE_EXPECTANCY;
+        gapMeterLabel.textContent = 'Target coverage — nest egg vs. what\u2019s needed from age ' + retireAge + ' to ' + LIFE_EXPECTANCY;
+        gapMeter.classList.toggle('met', shortfall <= 0);
+        gapShort.textContent = fmt(Math.abs(shortfall));
+        gapShortLabel.textContent = shortfall > 0 ? 'short of target' : 'ahead of target';
+      }
+
+      // Neutral reference figure — NOT a shortfall verdict about the viewer.
+      if (tileSpendingPower) tileSpendingPower.classList.remove('warn');
+      if (spendingPowerWarn) {
+        spendingPowerWarn.textContent = 'With ' + inflationPct + '% inflation factored in';
+      }
+
+      // ---- Illustrative contribution / timeline maths, stated impersonally ----
+      var targetNominalAtRetirement = (BENCHMARK_MONTHLY_TODAY * 12 / withdrawAnnual) * inflationFactor;
+      var requiredC;
+      if (r === 0) {
+        requiredC = months > 0 ? (targetNominalAtRetirement - portfolio) / months : Infinity;
+      } else {
+        var denom = Math.pow(1 + r, months) - 1;
+        requiredC = denom > 0 ? (targetNominalAtRetirement - portfolio * Math.pow(1 + r, months)) * r / denom : Infinity;
+      }
+      if (moveContribution) {
+        if (!isFinite(requiredC) || requiredC <= contribution) {
+          moveContribution.textContent = 'This contribution already builds enough to retire at ' + retireAge + ' and cover the target through age ' + LIFE_EXPECTANCY + '.';
+        } else {
+          moveContribution.textContent = 'A monthly contribution of about ' + fmt(Math.ceil(requiredC / 10) * 10) + ' would cover the target from age ' + retireAge + ' through ' + LIFE_EXPECTANCY + ' \u2014 the average U.S. life expectancy.';
+        }
+      }
+      if (moveTimeline) {
+        /* Three-branch logic (2026-08-08): the previous single comparison of
+           today's-dollars income vs benchmark could report a "shortage" even
+           when the runway simulation carried the money past the illustration
+           horizon — because return > withdrawal rate lets a small monthly gap
+           be absorbed by growth for a long time. The verdict now defers to the
+           capital-required comparison first, so the two lines tell one story. */
+        var gapToday = BENCHMARK_MONTHLY_TODAY - monthlyIncomeReal;
+        if (shortfall <= 0) {
+          moveTimeline.textContent = gapToday >= 0
+            ? 'Comfortably ahead \u2014 the nest egg meets the target through age ' + LIFE_EXPECTANCY + '.'
+            : 'Comfortably ahead \u2014 about ' + fmt(Math.abs(gapToday)) + '/mo above the target in today\u2019s dollars.';
+        } else if (monthCount >= capMonths) {
+          moveTimeline.textContent = 'A small gap of about ' + fmt(gapToday) + '/mo in today\u2019s dollars \u2014 but the projected returns carry it across the illustration horizon.';
+        } else {
+          moveTimeline.textContent = 'A shortage of about ' + fmt(gapToday) + '/mo in today\u2019s dollars against the target.';
+        }
+      }
+    }
+
+    /* Age fields: strip non-digits while typing; only normalize (clamp to valid
+       range, snap retire ≥ age+1) when the user commits by leaving the field.
+       Snapping during typing was making it impossible to enter a two-digit
+       target retirement age on mobile — see recalc() comment above. */
+    function stripDigits(el){
+      var cleaned = String(el.value).replace(/[^0-9]/g,'');
+      if (el.value !== cleaned) el.value = cleaned;
+    }
+    /* Select-all on focus so a tap in either age field lets the user type the
+       new value immediately without deleting the old one. Works on desktop
+       (click / tab / touch) and mobile. requestAnimationFrame defers the
+       selection until after iOS Safari places its caret, otherwise the caret
+       overrides the selection on touch focus. */
+    function selectOnFocus(el){
+      el.addEventListener('focus', function(){
+        var self = this;
+        requestAnimationFrame(function(){ try { self.select(); } catch(e){} });
+      });
+      /* iOS fires 'focus' before the touch is fully processed; a second pass
+         on mouseup/touchend re-applies the selection and prevents the browser
+         from collapsing it to a caret. */
+      el.addEventListener('mouseup', function(e){ e.preventDefault(); });
+    }
+    selectOnFocus(inAge);
+    selectOnFocus(inRetireAge);
+
+    inAge.addEventListener('input', function(){ stripDigits(this); });
+    inRetireAge.addEventListener('input', function(){ stripDigits(this); });
+    inAge.addEventListener('blur', function(){
+      var v = parseInt(this.value, 10);
+      if (isNaN(v)) v = 18;
+      this.value = Math.min(85, Math.max(18, v));
+      /* If current age now pushes retire age below the age+1 floor, bump it. */
+      var r = parseInt(inRetireAge.value, 10);
+      if (!isNaN(r) && r <= +this.value) {
+        inRetireAge.value = Math.min(90, +this.value + 1);
+      }
+      recalc();
+    });
+    inRetireAge.addEventListener('blur', function(){
+      var v = parseInt(this.value, 10);
+      var a = parseInt(inAge.value, 10);
+      if (isNaN(a)) a = 18;
+      if (isNaN(v)) v = a + 1;
+      this.value = Math.min(90, Math.max(a + 1, v));
+      recalc();
+    });
+
+    inPortfolio.addEventListener('input', function(){
+      var digits = this.value.replace(/[^0-9]/g, '');
+      var formatted = digits ? (+digits).toLocaleString('en-US') : '';
+      if (this.value !== formatted) {
+        var fromEnd = this.value.length - (this.selectionStart || 0);
+        this.value = formatted;
+        var pos = Math.max(0, formatted.length - fromEnd);
+        this.setSelectionRange(pos, pos);
+      }
+    });
+
+    [inAge, inRetireAge, inPortfolio, inContribution, inRate, inInflation, inWithdraw].forEach(function(el){
+      el.addEventListener('input', recalc);
+    });
+
+    recalc();
+  })();
+
+/* Presentational only (added 2026-08-07): reads the runway fill width the model
+   already set and maps it onto the same red -> green scale for the age figure.
+   Attached after the calculator IIFE so it runs second; reads the rendered width
+   and changes no model value. */
+(function(){
+  var panel=document.querySelector('.runway-panel'), fill=document.getElementById('runwayFill');
+  if(!panel||!fill) return;
+  var stops=[[255,102,102],[255,145,71],[255,201,60],[168,224,95],[46,230,166]];
+  function paint(){
+    var t=Math.max(0,Math.min(1,(parseFloat(fill.style.width)||0)/100));
+    var i=Math.min(stops.length-2,Math.floor(t*(stops.length-1)));
+    var f=t*(stops.length-1)-i, a=stops[i], b=stops[i+1];
+    var c=a.map(function(v,k){return Math.round(v+(b[k]-v)*f);});
+    panel.style.setProperty('--runway-t',t);
+    panel.style.setProperty('--runway-col','rgb('+c.join(',')+')');
+  }
+  ['inAge','inRetireAge','inPortfolio','inContribution','inRate','inInflation','inWithdraw']
+    .forEach(function(id){var el=document.getElementById(id); if(el) el.addEventListener('input',paint);});
+  paint();
+})();
+
+/* Calculator engagement — fires once per page view on the first input change.
+   A dataLayer push only; the GTM container itself is injected by hosting. */
+(function(){
+  var fired=false;
+  ['inAge','inRetireAge','inPortfolio','inContribution','inRate','inInflation','inWithdraw']
+    .forEach(function(id){
+      var el=document.getElementById(id);
+      if(!el) return;
+      el.addEventListener('input',function(){
+        if(fired) return;
+        fired=true;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({event:'calc_interact', calc_field:id});
+      });
+    });
+})();
+
+/* form_cta_click -- v6, and deliberately NOT lp_cta_click.
+   Every CTA above now scrolls to the form instead of exiting to Skool. Leaving
+   lp-community-cta on them would keep firing lp_cta_click for a different
+   action under the same name, which silently corrupts col AB of the Weekly
+   Results master and makes cost_per_cta meaningless from this version on.
+   So: new class, new event name, no reuse.
+   GTM needs one Custom Event trigger on the name plus a GA4 tag -- the same
+   shape as the community_agreement_* events, not a Just Links click trigger.
+   Registered in docs/marketeye-tracking-implementation.md section 1. */
+(function(){
+  document.querySelectorAll('a.lp-form-cta').forEach(function(a){
+    a.addEventListener('click',function(){
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event:'form_cta_click'});
+    });
+  });
+})();
+
+/* No CTA parameter-forwarding rewriter on this version. v5 carried one that
+   appended the incoming query string onto every a.lp-community-cta href. With
+   every CTA now an in-page #signup anchor there is nothing off-page left to
+   forward to, and the form component does its own forwarding at the redirect
+   (destinationUrl(), gated on MEF_CONFIG.forwardQueryParams). Keeping the old
+   script would leave code that reads as live attribution while selecting
+   nothing. Capture itself is unaffected: attribution() reads the URL at
+   submit, not at page load. */
+</script>
+
+</body>
+</html>
