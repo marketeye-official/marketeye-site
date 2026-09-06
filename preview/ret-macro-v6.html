@@ -15,6 +15,10 @@
    Type: rem throughout. html font-size deliberately NOT set, so browser/OS
    font-size preferences are inherited (workflow-lp-standards.md, rule 1).
    CSS: mobile-first. Base styles = smallest viewport; min-width queries layer up.
+   Images: v2-v5 inlined all four page images as base64, which is why they are
+   ~600KB files. v6 extracts them to /assets/images/ret-macro-v6/ (byte-identical
+   images), which is why this one is ~186KB. Root-relative paths, so the same
+   href resolves on Live Server, GitHub Pages preview and Netlify production.
    ========================================================================= */
 
 :root{
