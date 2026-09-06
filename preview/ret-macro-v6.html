@@ -171,17 +171,22 @@ button,input{font:inherit;color:inherit;}
 
 /* ---------- Section rhythm ---------- */
 section{padding-block:3.5rem;}
-/* v6: landing offset for the #signup jump. Every CTA on the page now lands
-   here, so where the jump stops is worth setting deliberately rather than
-   leaving the card flush against the viewport edge.
-   Note on the header: .site-head is declared position:sticky, top:0, but it
-   does NOT currently stick — html,body{overflow-x:hidden} above makes body
-   the sticky scroll container, so the header scrolls away with the content.
-   Verified in-browser on this build; inherited from v5 and deliberately left
-   alone here, since un-hiding the overflow would change the header behaviour
-   of a page that is currently the best performer. If that is ever fixed, this
-   offset already covers the 3.5rem header. */
-#signup{scroll-margin-top:4.5rem;}
+/* v6: landing offset for every in-page jump.
+   .site-head is position:sticky and, since the body overflow was removed
+   above, it now genuinely sticks. Without an offset every anchor target parks
+   its opening line underneath it — the four nav links and the disclaimer link
+   as much as the CTAs. #signup carries it for a second reason: every CTA on
+   the page lands there, so where the jump stops is worth setting deliberately
+   rather than leaving the card flush against the header.
+   Two-tier, because the header is not one height. Below ~360px the "Join Free"
+   button wraps under the logo and .site-head measures 76px; from 360px up it
+   is a single row at 57px. Both measured, not assumed. 22.5rem is deliberately
+   NOT one of the page's layout tiers — it exists only to track where the
+   header stops wrapping, and should move if the header's contents change. */
+#calculator,#how-it-works,#proof,#faq,#signup,#disclaimer{scroll-margin-top:5.5rem;}
+@media (min-width:22.5rem){
+  #calculator,#how-it-works,#proof,#faq,#signup,#disclaimer{scroll-margin-top:4.5rem;}
+}
 
 /* ---------- v6 close bookend ----------
    The form is this page's final CTA and its only capture point.
