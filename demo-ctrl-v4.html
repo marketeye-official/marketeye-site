@@ -251,16 +251,26 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 }
 .hero__cta{ margin-top:1.25rem; }
 
-/* trust chips live INSIDE the hero band, under the CTA (composition §7) */
-.chips{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.15rem; }
+/* Trust bar — a cyan dot before each item, no pill. flex-wrap rather than a
+   grid: a wrapped row then centres on its own width instead of aligning to the
+   columns above it, which is what gives the two-up phone layout its shape, and
+   all four fall onto one line as soon as there is room. Alignment is inherited
+   per section — left in the hero, centred at the close. */
+.chips{ display:flex; flex-wrap:wrap; gap:.55rem 1.1rem; margin-top:1.15rem; }
 .chip{
-  display:inline-flex; align-items:center;
-  font-size:1rem; font-weight:600; line-height:1.2;
-  padding:.45rem .85rem; border-radius:999px;
-  color:var(--white); background:rgba(7,29,73,.6);
-  border:1px solid var(--line-2);
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-size:.9375rem; font-weight:600; line-height:1.3;
+  color:var(--white);
 }
-.chip b{ font-family:var(--head); font-weight:800; color:var(--cyan); margin-right:.35rem; }
+.chip::before{
+  content:""; flex:0 0 auto;
+  width:.375rem; height:.375rem; border-radius:50%;
+  background:var(--cyan);
+}
+@media (min-width:40rem){
+  .chips{ gap:.6rem 1.6rem; }
+  .chip{ font-size:1rem; }
+}
 
 @media (min-width:40rem){
   .hero{ min-height:38rem; padding-block:3.5rem 3.75rem; }
@@ -751,6 +761,29 @@ html{ scroll-behavior:smooth; }
 .mef__legal:hover{ color:var(--mef-white); }
 .mef__legal:focus-visible{ outline:2px solid var(--mef-cyan); outline-offset:2px; border-radius:2px; }
 .mef__field--consent[data-invalid="true"] .mef__check{ outline:2px solid var(--mef-danger); outline-offset:3px; }
+/* Trust bar — a cyan dot before each item, no pill. flex-wrap rather than a
+   grid:a wrapped row centres on its own width instead of aligning to the
+   columns above it, which is what gives the two-up phone layout its shape,
+   and all four fall onto one line as soon as there is room. */
+.mef__trust{
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:.55rem 1.1rem; margin:1.15rem 0 0; padding:0; list-style:none;
+}
+.mef__trust-item{
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-size:.9375rem; font-weight:600; line-height:1.3;
+  color:var(--mef-white);
+}
+.mef__trust-item::before{
+  content:""; flex:0 0 auto;
+  width:.375rem; height:.375rem; border-radius:50%;
+  background:var(--mef-cyan);
+}
+@media (min-width:40rem){
+  .mef__trust{ gap:.6rem 1.6rem; }
+  .mef__trust-item{ font-size:1rem; }
+}
+
 /* Domain typo suggestion. A tinted callout, not caption text: it is revealed
    while the agreement modal is covering it, so it has to hold attention once
    the modal closes. Cyan, never red — nothing is wrong, and an error colour
@@ -805,7 +838,7 @@ html{ scroll-behavior:smooth; }
 .mef__btn{
   position:relative; display:block; width:100%; margin-top:1.4rem;
   min-height:3.25rem; padding:1rem 1.5rem;
-  font-family:var(--mef-head); font-size:1.125rem; font-weight:800;
+  font-family:var(--mef-head); font-size:1.1875rem; font-weight:800;  /* Brand Guide §4 floor */
   letter-spacing:.04em; text-transform:uppercase; line-height:1.2;
   color:var(--mef-white); background-image:var(--mef-grad-btn);
   border:0; border-radius:.625rem; cursor:pointer;
@@ -1143,13 +1176,17 @@ html{ scroll-behavior:smooth; }
             Join the Free Community <span class="btn__arrow" aria-hidden="true">&rarr;</span>
           </a>
         </div>
-        <!-- LAY-07's under-CTA micro-stat slot, translated to Messaging Pillar 4 -->
-        <ul class="chips">
-          <li class="chip"><b>30+</b> Years trading</li>
-          <li class="chip"><b>100s</b> Traders trained</li>
-          <li class="chip">Real beginners welcome</li>
-        </ul>
       </div>
+      <!-- LAY-07's under-CTA micro-stat slot, translated to Messaging Pillar 4.
+           Deliberately OUTSIDE .hero__copy: --measure is the prose reading
+           measure (composition §2), and a four-item trust bar is not prose.
+           Inside it the fourth item wrapped to a second line on desktop. -->
+      <ul class="chips">
+        <li class="chip">30+ Years Trading</li>
+        <li class="chip">100s of Traders Trained</li>
+        <li class="chip">$0 to Join</li>
+        <li class="chip">Built for Beginners</li>
+      </ul>
     </div>
   </section>
 
@@ -1514,24 +1551,34 @@ html{ scroll-behavior:smooth; }
                    with anything outstanding validates and shows the error beside
                    the offending field. -->
               <button class="mef__btn" id="mef-submit" type="submit">
-                <span class="mef__btn-label">Create My Free Account</span>
+                <span class="mef__btn-label">Get My Free Invite</span>
                 <span class="mef__btn-loading">
                   <span class="mef__spinner" aria-hidden="true"></span>Setting up your access&hellip;
                 </span>
               </button>
 
               <p class="mef__status" id="mef-status" role="status" aria-live="polite"></p>
-              <p class="mef__note">Your details are used to create your membership and send your access link.</p>
+              <!-- Wayfinding, not fine print. Says what happens next; carries no
+                   risk language or qualifier, so it sits outside Compliance
+                   Rule 6. Deliberately does NOT say "membership" or "access":
+                   submitting creates an Invited record in Circle, and no
+                   account exists until the invitation is accepted. -->
+              <p class="mef__note">Check your inbox &mdash; your invitation arrives in about a minute.</p>
 
             </form>
           </div>
+
+          <!-- Trust bar now ships WITH the component (components/signup-form.html)
+               so it is identical on every page. The close section's own
+               ul.chips was removed when this arrived — two would have rendered. -->
+          <ul class="mef__trust">
+            <li class="mef__trust-item">30+ Years Trading</li>
+            <li class="mef__trust-item">100s of Traders Trained</li>
+            <li class="mef__trust-item">$0 to Join</li>
+            <li class="mef__trust-item">Built for Beginners</li>
+          </ul>
         </div>
       </div>
-
-      <ul class="chips">
-        <li class="chip"><b>30+</b> Years trading</li>
-        <li class="chip"><b>100s</b> Traders trained</li>
-      </ul>
     </div>
   </section>
 
@@ -2028,6 +2075,20 @@ html{ scroll-behavior:smooth; }
 (function () {
   'use strict';
 
+  // Order-independent boot. The form reads #mtos-doc from tos-modal.html, so
+  // running at parse time means the pair only works if the modal is pasted
+  // ABOVE the form — paste them the other way round and the version metadata
+  // is missing, the form declares itself fatal, and nobody can register.
+  // Waiting for DOMContentLoaded lets the two partials go anywhere on the page
+  // in any order. Function declarations hoist, so boot() resolves fine here.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+  function boot() {
+
   /* =========================================================
      CONFIG
      ---------------------------------------------------------
@@ -2095,6 +2156,9 @@ html{ scroll-behavior:smooth; }
   var navigated = false;
   var hasRead = false;
   var fatal = false;
+  // Why the form is fatal, so the submit handler reports the actual cause
+  // rather than assuming the agreement failed to load.
+  var fatalMsg = 'We could not load the Community Agreement. Please refresh the page and try again.';
   var io = null;
   var eventId = null;
   var consent = null;   // {version, effective, url, acceptedAt, method}
@@ -2155,6 +2219,42 @@ html{ scroll-behavior:smooth; }
 
   function dwell() {
     return openedAt ? Date.now() - openedAt : 0;
+  }
+
+  /* ---------- per-page copy slots ----------
+     Same contract as data-tos-version on #mtos-doc: read at boot, no default,
+     fatal when absent. A generic headline reaching production is the failure
+     this guards against, so an unset slot blocks the form rather than shipping
+     filler that nobody notices until it is live.
+     A .mef--bare card takes its heading from the host section, so the slots do
+     not apply there and are not checked. */
+  function fillSlots() {
+    var root = form.closest('.mef');
+    if (!root) return true;
+    if (root.classList.contains('mef--bare')) return true;
+
+    var slots = [
+      ['data-mef-headline', root.querySelector('.mef__title')],
+      ['data-mef-sub',      root.querySelector('.mef__lead')]
+    ];
+    var missing = [];
+    for (var i = 0; i < slots.length; i++) {
+      var v = root.getAttribute(slots[i][0]);
+      if (!v || !v.trim()) { missing.push(slots[i][0]); continue; }
+      if (slots[i][1]) slots[i][1].textContent = v.trim();
+    }
+    if (missing.length) {
+      fatal = true;
+      console.error('[MarketEye signup] Missing required slot attribute(s): ' +
+        missing.join(', ') + '. Set them on the <section class="mef"> element ' +
+        'where components/signup-form.html is pasted. The form is blocked ' +
+        'deliberately — shipping a placeholder headline is the failure this ' +
+        'check exists to prevent.');
+      fatalMsg = 'This form isn’t available right now. Please try again later.';
+      setStatus(fatalMsg, 'error');
+      return false;
+    }
+    return true;
   }
 
   /* ---------- email domain typo suggestion ----------
@@ -2277,7 +2377,8 @@ html{ scroll-behavior:smooth; }
     fatal = true;
     consent = null;
     console.error('[MarketEye consent] ' + why);
-    setStatus('We could not load the Community Agreement. Please refresh the page and try again.', 'error');
+    fatalMsg = 'We could not load the Community Agreement. Please refresh the page and try again.';
+    setStatus(fatalMsg, 'error');
   }
 
   // Read version metadata off the element that holds the text the user
@@ -2364,6 +2465,9 @@ html{ scroll-behavior:smooth; }
   // Populate the version stamp from the data attributes so the version is
   // written in exactly one place, and surface a missing attribute at load
   // rather than at the moment someone tries to agree.
+  // Per-page copy slots, before anything else renders.
+  fillSlots();
+
   if (metaAvailable) {
     var boot = readTosMeta();
     if (boot && stampEl) {
@@ -2864,7 +2968,7 @@ html{ scroll-behavior:smooth; }
     if (submitting) return;
 
     if (fatal) {
-      setStatus('We could not load the Community Agreement. Please refresh the page and try again.', 'error');
+      setStatus(fatalMsg, 'error');
       return;
     }
 
@@ -2915,6 +3019,7 @@ html{ scroll-behavior:smooth; }
         btn.focus();
       });
   });
+  }
 })();
 </script>
 
