@@ -1,6 +1,30 @@
 [build]
   command = "rm -rf preview && npm run build"
   publish = "_site"
+
+  # Skip the build when a push changed nothing outside preview/.
+  #
+  # `command` above removes preview/ from the build workspace, so preview LPs can
+  # never reach production — but that happens INSIDE a build that has already
+  # started. Deciding whether a build starts at all is what `ignore` does, and
+  # without it Netlify builds every push to main. A preview-only publish was
+  # therefore running a full Eleventy build and republishing byte-identical
+  # output. Confirmed 2026-09-06 on the ret-macro-v6 preview push: 12s build,
+  # deploy summary "All files already uploaded by a previous deploy."
+  #
+  # Semantics are inverted and easy to misread: exit 0 CANCELS the build, a
+  # non-zero exit lets it proceed. `git diff --quiet` exits 0 when there is no
+  # difference — so "nothing changed outside preview/" cancels, and any change to
+  # assets/, a root LP, _includes/, this file or anything else builds as normal.
+  #
+  # It diffs against CACHED_COMMIT_REF — the last commit actually BUILT, not the
+  # parent commit. A skipped build does not advance it, so a production change
+  # following several skipped preview pushes still builds and still includes
+  # everything in between. Nothing can be stranded.
+  #
+  # Fails safe: if the ref is missing or git errors, the exit is non-zero and the
+  # build proceeds. To disable, comment this line out.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)preview'"
 # Current Community Agreement version. Bump `to` when a new version is
 # archived. The versioned paths themselves are permanent and are never edited
 # in place, because consent records point at them forever.
