@@ -202,51 +202,12 @@ section{padding-block:3.5rem;}
   #calculator,#how-it-works,#proof,#faq,#signup,#disclaimer{scroll-margin-top:4.5rem;}
 }
 
-/* ---------- v6 close bookend ----------
-   The form is this page's final CTA and its only capture point.
-   workflow-lp-design.md §4 ("Differentiate the closing act") makes the close
-   one of two sections permitted to break the page's composition and asks it to
-   USE that permission — more vertical weight, or a distinct background
-   treatment. Both are applied here.
-
-   WEIGHT. workflow-lp-rhythm.md §7 exempts the last-content-section -> final-CTA
-   boundary so it can be generous, "framing rather than accident." The component
-   alone tops out at 4.25rem while this page's sections run 4.5rem, which left
-   the close tighter than the band above it. These sit deliberately above the
-   content band at every tier, and ascend: 64 -> 80 -> 88px.
-   ID beats .mef on specificity, so order against the component's CSS is
-   irrelevant. */
-#signup{padding-block:4rem;}
-@media (min-width:36rem){ #signup{padding-block:5rem;} }
-@media (min-width:80rem){ #signup{padding-block:5.5rem;} }
-
-/* GROUND. A navy shade swap is explicitly NOT the tool — §4 removed it as a
-   rhythm device because the brand's two dark navies do not register as a change
-   at page scale. So instead of a flat band: a vignette that settles the wide
-   empty margins toward --navy-deep, plus a faint pool of the brand ramp behind
-   the card. The card stops floating in flat navy directly under a 1160px photo,
-   and the space either side of a deliberately narrow 34rem form reads as
-   framing rather than as a section that failed to fill.
-   The card's own surface stays lighter than the ground it sits on — the pool is
-   weak enough not to invert that.
-   Deliberately symmetrical and non-directional: no rising line, arrow or
-   green-up motif, any of which would read as an implied result at any size
-   (§5 / Compliance Rule 13).
-   Values are --blue (101,206,246), --indigo (124,111,240) and --navy-deep
-   (4,16,46) as literals, matching how the hero scrim is written on this page.
-   Same isolate + negative-z pattern as .hero::after. */
-#signup{position:relative;isolation:isolate;}
-#signup::before{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:
-    /* Top layer: eases the vignette in from the section's upper edge. Without
-       it the corners jump to ~40% at y=0 and the boundary reads as a rendering
-       seam across the full width rather than as a gradient. */
-    linear-gradient(180deg, rgba(7,29,73,1) 0%, rgba(7,29,73,0) 15%),
-    radial-gradient(60rem 28rem at 50% 44%, rgba(101,206,246,.09), rgba(101,206,246,0) 64%),
-    radial-gradient(48rem 26rem at 50% 82%, rgba(124,111,240,.07), rgba(124,111,240,0) 68%),
-    radial-gradient(74rem 42rem at 50% 50%, rgba(4,16,46,0) 38%, rgba(4,16,46,.62) 100%);
-}
+/* The v6 close-bookend treatment (weight + ground) now lives on .final, in the
+   Final CTA block below. It moved there with the modal conversion: the
+   component strips id="signup" at boot (docs/marketeye-form-spec.md 3.2), so
+   an #signup rule would apply only in the no-JS fallback — the wrong owner
+   for the page's visible close. #signup keeps its scroll-margin above, which
+   is exactly the case that still needs it. */
 .rule{height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent);}
 
 .eyebrow{
@@ -898,10 +859,45 @@ input.slider::-moz-range-thumb{
   font-size:1rem;color:var(--ink-mute);
 }
 
-/* ---------- Final CTA ---------- */
-.final{padding-block:3.5rem 4rem;text-align:center;}
+/* ---------- Final CTA / close bookend ----------
+   v6 modal conversion: the form is no longer in page flow, so THIS is the
+   page's close. The treatment that was on #signup moved here unchanged —
+   same reasoning, new owner.
+   WEIGHT. workflow-lp-design.md 4 ("Differentiate the closing act") permits the
+   close to break the page's composition and asks it to use that permission;
+   workflow-lp-rhythm.md 7 exempts this boundary so it can be generous. Padding
+   ascends 64 -> 80 -> 88px, above the content band's 56/72px at every tier. */
+.final{
+  position:relative;isolation:isolate;
+  text-align:center;
+  padding-block:4rem;
+}
+@media (min-width:36rem){ .final{padding-block:5rem;} }
+@media (min-width:80rem){ .final{padding-block:5.5rem;} }
 .final h2{font-size:1.875rem;font-weight:800;margin-bottom:.875rem;}
 .final .lead{margin-bottom:2rem;}
+
+/* GROUND. A navy shade swap is explicitly NOT the tool — design.md 4 removed it
+   as a rhythm device because the brand's two dark navies do not register as a
+   change at page scale. So instead of a flat band: a vignette settling the wide
+   outer margins toward --navy-deep, plus a faint pool of the brand ramp behind
+   the CTA, so the page does not end on flat navy directly under a 1160px photo.
+   Deliberately symmetrical and non-directional: no rising line, arrow or
+   green-up motif, any of which would read as an implied result at any size
+   (design.md 5 / Compliance Rule 13).
+   Values are --blue (101,206,246), --indigo (124,111,240) and --navy-deep
+   (4,16,46) as literals, matching how the hero scrim is written on this page.
+   Same isolate + negative-z pattern as .hero::after. */
+.final::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    /* Top layer: eases the vignette in from the section's upper edge, or the
+       corners jump straight to ~40% and the boundary reads as a seam. */
+    linear-gradient(180deg, rgba(7,29,73,1) 0%, rgba(7,29,73,0) 18%),
+    radial-gradient(46rem 15rem at 50% 46%, rgba(101,206,246,.10), rgba(101,206,246,0) 66%),
+    radial-gradient(34rem 12rem at 50% 82%, rgba(124,111,240,.07), rgba(124,111,240,0) 70%),
+    radial-gradient(70rem 20rem at 50% 50%, rgba(4,16,46,0) 34%, rgba(4,16,46,.60) 100%);
+}
 
 /* ---------- Footer (standard component; chrome type exempt from 1rem floor) ---------- */
 .mkt-footer{background:var(--navy-deep);border-top:1px solid var(--line);}
@@ -913,6 +909,8 @@ input.slider::-moz-range-thumb{
 .mkt-brand__logo{height:2.25rem;width:auto;}
 .mkt-brand__tag{margin-top:.5rem;color:#8FA6CF;font-size:.9rem;line-height:1.5;}
 .mkt-footer__mid{display:flex;flex-direction:column;gap:.35rem;color:#8FA6CF;font-size:.85rem;}
+/* Legal links share one row. Matches components/footer.html. */
+.mkt-legal{display:flex;flex-wrap:wrap;gap:0 1.25rem;}
 .mkt-footer__mid a:hover{color:var(--blue);text-decoration:underline;}
 .mkt-connect__label{
   font-family:var(--head);font-weight:700;font-size:.75rem;
@@ -1454,21 +1452,48 @@ input.slider::-moz-range-thumb{
   </div>
 </section>
 
-<!-- ======================== CLOSE / SIGNUP (v6) ========================
-     Skool -> Circle migration. v5 closed with a .final section whose CTA
-     linked out to join.marketeye.io/community; that section is replaced by
-     the signup form component, which is now the page's single capture point
-     and the target of every #signup CTA above.
+<!-- ============================== CLOSE ==============================
+     v6 modal conversion. The form left page flow, so this band is now the
+     page's visible close and carries the last of the six CTAs.
+     Copy is v5's shipped .final copy, unchanged. It is needed again because
+     the headline and sub-headline the form used to show on the page now sit
+     in the modal's per-page slots, where nobody sees them until they click
+     — so the close needs an argument of its own, and this is the approved
+     one for this angle rather than something drafted here.
+     form-spec section 3.1: "a page in modal mode has no close section unless
+     its own markup supplies one." This is that section.
+     The CTA is deliberately identical in class and label to the other five.
+     =================================================================== -->
+<section class="final">
+  <div class="wrap">
+    <h2>Stop guessing. Start with the logic.</h2>
+    <p class="lead measure-center">Free community, four modules, twenty lessons, built for people starting from zero.</p>
+    <a class="btn btn-lg lp-form-cta" href="#signup">Join Free Community</a>
+  </div>
+</section>
 
-     Headline and sub-headline are supplied to the component's per-page slots
-     from approved copy PC (handoffs/ret-macro-v6.txt), so the sentence at the
-     form is the sentence that earned the click. Both slots are required and
-     fail loudly when unset.
+<!-- ======================== SIGNUP — MODAL MODE ========================
+     One attribute opts in: data-mef-mode="modal" on the section that carries
+     the slots (docs/marketeye-form-spec.md section 3.1). Nothing else here is
+     modal-specific — this is the component pasted verbatim.
 
-     Both partials are required and boot is order-independent
-     (docs/marketeye-form-spec.md section 2). The dialog sits after </main>
-     because an agreement modal is not page content.
-     ==================================================================== -->
+     WHY THE SECTION STAYS IN THE DOCUMENT. The mode is applied in JS. With
+     scripting off, or without <dialog> support, modalMode resolves false and
+     this renders as a normal inline card right here, below the close band, and
+     every #signup CTA still lands on a working form. That is the fallback, so
+     the section must stay in the markup and must stay AFTER the close band.
+
+     WHAT BOOT DOES TO IT (section 3.2), so nothing below surprises anyone:
+     the sheet is reparented to <body>; this section moves inside it and gains
+     .mef--modal; #mtos-dialog stops being a <dialog> and becomes a second view
+     of the same sheet; and id="signup" is REMOVED from this element. That last
+     one is why the close treatment moved to .final — an #signup rule now
+     applies only in the no-JS fallback.
+
+     TRACKING IS UNTOUCHED. The component binds openers delegated on document
+     in the BUBBLE phase, so this page's own form_cta_click listener has already
+     run by the time the sheet opens. No event was added, renamed or moved.
+     ===================================================================== -->
 <!-- ============================================================
      MarketEye — Free Member Signup Component (modular, self-contained)
      Drop anywhere inside <body>. No build step, no dependencies.
@@ -1476,9 +1501,33 @@ input.slider::-moz-range-thumb{
      • Inherits the LP's design tokens (--navy, --panel, --cyan, --grad-btn,
        --head, --body) when present; falls back to hard-coded brand values
        when embedded on a page that has none.
-     • All CSS is namespaced .mef- and scoped to .mef so it cannot collide
+     • All CSS is namespaced .mef- / .mefm- and scoped so it cannot collide
        with .btn / .wrap / .card or be broken by a host page's reset.
      • Set MEF_CONFIG.redirectUrl before shipping.
+
+     ------------------------------------------------------------
+     TWO MODES, ONE COMPONENT
+     ------------------------------------------------------------
+     INLINE (default, no attribute) — the card renders where it is pasted.
+     This is what demo-ctrl-v4 and ret-macro-v6 run and nothing about it
+     changes.
+
+     MODAL (opt in with data-mef-mode="modal" on the <section class="mef">) —
+     the card is lifted into the sheet below at boot and every in-page
+     #signup CTA opens it instead of scrolling to it.
+
+     It is a MODE, not a fork: one file, one set of handlers, one submit
+     path, one set of dataLayer pushes. Everything below the presentation
+     layer is shared, so a fix lands on both modes at once.
+
+     The mode is applied in JS, deliberately. With scripting off, or on a
+     browser without <dialog>, the section stays exactly where the host
+     pasted it and every #signup anchor still lands on a working form.
+
+     Modal mode requires slot mode (data-mef-headline / data-mef-sub).
+     .mef--bare takes its heading from a host section, and inside a sheet
+     there is no host section to take it from — see §2 of
+     docs/marketeye-form-spec.md.
      ============================================================ -->
 <!-- PER-PAGE SLOTS — headline and sub-headline are angle-specific and are NOT
      hardcoded here. Supply both on this element wherever the component is
@@ -1495,8 +1544,20 @@ input.slider::-moz-range-thumb{
 
      EXCEPTION: a card running .mef--bare takes its heading from the host
      section (as demo-ctrl-v4 does inside its close bookend), so the slots are
-     not required and not checked in that mode. -->
+     not required and not checked in that mode.
+
+     MODAL MODE is opted into on this same element, alongside the slots:
+
+       <section class="mef" id="signup" aria-labelledby="mef-title"
+                data-mef-mode="modal"
+                data-mef-headline="..." data-mef-sub="...">
+
+     Nothing else on the host page changes: its existing #signup CTAs open
+     the sheet, and its form_cta_click binding is untouched. Leave the
+     attribute off for the inline card, which is the default. -->
+
 <section class="mef" id="signup" aria-labelledby="mef-title"
+         data-mef-mode="modal"
          data-mef-headline="The next 10 years count more than the last 20."
          data-mef-sub="Join the free community and learn how markets actually work — a clear framework, not guesswork.">
   <div class="mef__wrap">
@@ -1624,6 +1685,60 @@ input.slider::-moz-range-thumb{
   </div>
 </section>
 
+<!-- ============================================================
+     MODAL MODE — the sheet.
+     Inert in inline mode: a <dialog> with no open attribute is display:none,
+     and in inline mode nothing is ever moved into it.
+
+     ONE DIALOG, TWO VIEWS. The agreement does NOT stack a second modal on
+     top of this one. At boot, modal mode relocates tos-modal.html's
+     #mtos-dialog into .mefm__view--tos, where it swaps in as a view of this
+     sheet. Two reasons:
+
+       1. Two ::backdrop layers at .72 composite to ~.92 — the page behind
+          goes effectively black, and the sheet stops reading as a sheet.
+       2. One modal means one page-scroll pin and one Esc target. A second
+          modal gives Esc two layers to unwind and gives the scroll lock two
+          owners, which is how a release-too-early bug gets in.
+
+     It also stops being a <dialog> on the way in — see the shim in
+     setupModalMode(). An open <dialog> DESCENDANT swallows this sheet's
+     close request whole: Esc and the Android back gesture reach nothing and
+     neither layer closes. Measured in Chromium, with show() and with the
+     open attribute alike, so it is the element and not the opening method.
+
+     The × here and the agreement's Close sit at opposite ends on purpose —
+     × top, Close bottom — so it is always unambiguous which one is being
+     pressed. Do not move either.
+     ============================================================ -->
+<dialog class="mefm" id="mef-dialog" aria-labelledby="mef-title">
+
+  <!-- Pinned as a flex sibling of the scrolling body rather than with
+       position:sticky. Same requirement — the × must never scroll away —
+       but a flex header cannot be defeated by a host overflow rule, and it
+       is also the row the agreement view needs anyway. The form is ~700px
+       tall at 390px before the email-suggestion callout or any error text
+       appears, inside a sheet capped at 90dvh, so the body does scroll and
+       a header that scrolled with it would leave exactly when someone
+       reached for it. -->
+  <header class="mefm__head">
+    <!-- 44x44 hit area around a ~16px glyph. aria-label because a bare ×
+         announces as "times", or as nothing at all. Drawn rather than typed
+         so it is the same weight in every font stack. -->
+    <button type="button" class="mefm__close" id="mef-close" aria-label="Close">
+      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+    </button>
+  </header>
+
+  <div class="mefm__views">
+    <!-- the .mef section is moved in here at boot -->
+    <div class="mefm__view mefm__view--form"></div>
+    <!-- #mtos-dialog is moved in here at boot -->
+    <div class="mefm__view mefm__view--tos" hidden></div>
+  </div>
+
+</dialog>
+
 <style>
 /* ---------- scoped reset ---------- */
 .mef, .mef *, .mef *::before, .mef *::after { box-sizing: border-box; }
@@ -1653,9 +1768,13 @@ input.slider::-moz-range-thumb{
   -webkit-text-size-adjust: 100%;
 }
 @media (min-width: 40rem){ .mef{ padding-block: 3.25rem; } }
-/* Kept in sync with components/signup-form.html. This page overrides both on
-   #signup below, but the pasted copy must still match the component or the
-   next person to diff them finds a difference that means nothing. */
+/* The tiers must ascend and must reach the wide breakpoint — workflow-lp-rhythm.md
+   §5 calls 80rem the tier where rhythm opens, and §7 requires an ascending scale.
+   These previously stopped at 64rem and topped out at 3.5rem, under the generic
+   section scale, so a page whose own sections ran wider rendered its close
+   bookend TIGHTER than the content band above it — the opposite of §7, which
+   exempts that boundary precisely so it can be generous. A host page wanting
+   more weight than this still overrides on its own selector. */
 @media (min-width: 64rem){ .mef{ padding-block: 4rem; } }
 @media (min-width: 80rem){ .mef{ padding-block: 4.25rem; } }
 
@@ -1683,6 +1802,21 @@ input.slider::-moz-range-thumb{
   letter-spacing: -.02em; font-size: clamp(1.6rem, 4.4vw, 2.1rem); color: var(--mef-white);
   text-wrap: balance;
 }
+/* No focus ring on the headline when the sheet parks focus there.
+   In modal mode on a coarse pointer the h2 is given tabindex="-1" and focused
+   at open, so the person sees the argument instead of a raised keyboard. That
+   focus is programmatic and the element is NOT in the tab order, so a ring
+   indicates nothing a reader can act on — it just reads as if the headline had
+   been selected, which is how it was first reported on an iPhone.
+   Suppressed rather than left to :focus-visible heuristics because they differ
+   by engine: Chromium drew nothing here, WebKit drew the host page's global
+   :focus-visible outline. Both branches are covered explicitly.
+   Gated on [tabindex="-1"], which only modal mode sets, so if the heading is
+   ever made genuinely focusable the ring comes back with it. This is the
+   documented exception to a visible focus indicator, not a blanket removal:
+   WCAG 2.4.7 governs keyboard-reachable focus, and tabindex="-1" is not. */
+.mef__title[tabindex="-1"]:focus,
+.mef__title[tabindex="-1"]:focus-visible{ outline: none; }
 .mef__lead{
   margin: .7rem 0 0; font-size: 1.0625rem; line-height: 1.55; color: var(--mef-ink-2);
   text-wrap: pretty;
@@ -1901,6 +2035,144 @@ input.slider::-moz-range-thumb{
 .mef--bare .mef__wrap{ padding-inline: 0; max-width: none; }
 .mef--bare .mef__form{ margin-top: 0; }
 .mef--bare .mef__card{ margin-top: 2rem; }
+
+/* ==========================================================================
+   MODAL MODE
+   Everything below applies only once JS has switched the mode on. It must
+   sit AFTER the .mef--bare block: .mef--modal .mef__card and
+   .mef--bare .mef__card are both (0,2,0), so source order decides.
+   ========================================================================== */
+
+/* ---------- the card, inside the sheet ----------
+   The sheet is the card now, so the card drops its own chrome: a panel on a
+   panel with two borders reads as a bug, and the doubled radius clips
+   visibly at the corners. */
+.mef--modal{ padding-block: 0; }
+.mef--modal .mef__wrap{ max-width: none; padding-inline: 0; width: 100%; }
+.mef--modal .mef__card{
+  max-width: none; margin: 0;
+  background: transparent; border: 0; border-radius: 0; box-shadow: none;
+  padding: 1.25rem 1.25rem 0;
+}
+.mef--modal .mef__trust{ margin: 1.25rem 0 0; padding: 0 1.25rem 1.5rem; }
+@media (min-width: 40rem){
+  .mef--modal .mef__card{ padding: 1.5rem 1.5rem 0; }
+  .mef--modal .mef__trust{ padding: 0 1.5rem 1.75rem; }
+}
+
+/* ---------- the sheet ---------- */
+.mefm, .mefm *, .mefm *::before, .mefm *::after{ box-sizing: border-box; }
+
+.mefm{
+  /* Same token pattern as .mef and .mtos: inherit the page's names when they
+     exist, fall back to brand values when they don't. A <dialog> is promoted
+     to the top layer but still inherits custom properties down the DOM tree,
+     so these resolve exactly as they do inline. */
+  --mefm-panel:  var(--panel, #0C2758);
+  --mefm-white:  var(--white, #FFFFFF);
+  --mefm-ink-3:  var(--ink-3, #8FA6CF);
+  --mefm-cyan:   var(--cyan,  #00C8FF);
+  --mefm-line:   var(--line,   rgba(255,255,255,0.12));
+  --mefm-line-2: var(--line-2, rgba(255,255,255,0.20));
+  --mefm-body:   var(--body, 'Barlow', system-ui, -apple-system, sans-serif);
+
+  padding: 0;
+  border: 1px solid var(--mefm-line-2);
+  border-radius: .875rem;
+  background: var(--mefm-panel);
+  color: var(--mefm-white);
+  font-family: var(--mefm-body);
+  width: calc(100% - 2rem);
+  max-width: 34rem;                /* the card's own max-width; no reflow on lift */
+  max-height: 90vh;                /* fallback for browsers without dvh */
+  max-height: 90dvh;
+  overflow: hidden;                /* the body view owns scrolling */
+  box-shadow: 0 1.5rem 3rem rgba(0,0,0,.45);
+  -webkit-text-size-adjust: 100%;
+}
+/* display:flex only while open — an unconditional display would override the
+   UA's display:none and leave the sheet on screen when closed. */
+.mefm[open]{ display: flex; flex-direction: column; }
+.mefm::backdrop{ background: rgba(3,10,28,.72); }
+
+/* The agreement needs a height to fill, not a content height to grow from:
+   its scroller carries min-height:0 all the way up, so an auto-height sheet
+   would collapse around it. Mobile replaces this with inset:0 below. */
+.mefm[data-view="tos"]{ height: 90vh; height: 90dvh; }
+
+.mefm__head{
+  flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: .3125rem .375rem;
+  border-bottom: 1px solid var(--mefm-line);
+  background: var(--mefm-panel);
+}
+.mefm__close{
+  flex: 0 0 auto;
+  width: 2.75rem; height: 2.75rem;      /* 44x44 around a 1rem glyph */
+  display: grid; place-content: center;
+  padding: 0; border: 0; border-radius: .5rem;
+  background: transparent; color: var(--mefm-ink-3);
+  cursor: pointer;
+  transition: color .18s ease, background-color .18s ease;
+}
+.mefm__close:hover{ color: var(--mefm-white); background: rgba(255,255,255,.08); }
+.mefm__close:focus-visible{ outline: 2px solid var(--mefm-cyan); outline-offset: 2px; }
+.mefm__close svg{ display: block; width: 1rem; height: 1rem; }
+
+/* min-height:0 is what lets these flex children shrink and scroll */
+.mefm__views{ flex: 1 1 auto; min-height: 0; display: flex; }
+.mefm__view{ flex: 1 1 auto; min-width: 0; min-height: 0; width: 100%; }
+.mefm__view--form{ overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.mefm__view--tos{ display: flex; }
+/* (0,2,0) — must beat .mefm__view--tos{display:flex} at (0,1,0) */
+.mefm__view[hidden]{ display: none; }
+
+/* ---------- the agreement, embedded as a view ----------
+   #mtos-dialog is relocated in here and, in modal mode only, is no longer a
+   <dialog> — so it also no longer inherits the UA's position:absolute or its
+   display:none-when-closed. Both are restated here. (0,3,0) clears both
+   .mtos[open] and the .mtos rules inside tos-modal.html's own media query —
+   a media query does not change specificity, so those stay at (0,1,0). */
+.mefm .mtos:not([open]){ display: none; }
+.mefm .mtos[open]{
+  position: static; inset: auto;
+  flex: 1 1 auto; min-height: 0;
+  width: 100%; max-width: none;
+  height: auto; max-height: none;
+  margin: 0;
+  border: 0; border-radius: 0;
+  box-shadow: none;
+}
+
+/* ---------- mobile: bottom sheet ---------- */
+@media (max-width: 47.9375rem){
+  .mefm{
+    width: 100%; max-width: none;
+    margin: auto 0 0;                    /* inset:0 + auto top margin = pinned bottom */
+    border-left: 0; border-right: 0; border-bottom: 0;
+    border-radius: 1rem 1rem 0 0;
+    max-height: 90vh;
+    max-height: 90dvh;
+  }
+  /* The agreement takes the whole viewport rather than 90% of it — same
+     decision, and the same mechanics, as the standalone sheet in
+     tos-modal.html. inset:0 stretches the box to its containing block, which
+     for a modal dialog is the viewport, and re-stretches when the iOS URL bar
+     collapses. height:auto is load-bearing: a fixed height is what
+     reintroduces the strip of dead space below the footer. No safe-area
+     inset for the same reason it was removed there — the visual viewport
+     already ends above the home indicator. */
+  .mefm[data-view="tos"]{
+    inset: 0; margin: 0;
+    height: auto; max-height: none;
+    border: 0; border-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .mefm *{ transition-duration: .01ms !important; }
+}
 </style>
 
 <script>
@@ -1972,6 +2244,28 @@ input.slider::-moz-range-thumb{
   var closeBtn   = document.getElementById('mtos-close');
   var hintEl     = document.getElementById('mtos-hint');
   var stampEl    = document.getElementById('mtos-stamp');
+
+  /* ---------- modal mode ----------
+     Opt in with data-mef-mode="modal" on the <section class="mef">, and only
+     honoured when the platform can actually deliver it. Detected here rather
+     than declared in markup so the fallback is the inline card the host
+     already pasted: with scripting off, or without <dialog>, nothing moves,
+     nothing hides, and every #signup anchor still lands on a working form. */
+  var mefRoot   = form.closest('.mef');
+  var modal     = document.getElementById('mef-dialog');
+  var closeX    = document.getElementById('mef-close');
+  var viewForm  = modal ? modal.querySelector('.mefm__view--form') : null;
+  var viewTos   = modal ? modal.querySelector('.mefm__view--tos')  : null;
+
+  var modalMode = !!(mefRoot && modal && closeX && viewForm && viewTos &&
+                     mefRoot.getAttribute('data-mef-mode') === 'modal' &&
+                     typeof modal.showModal === 'function');
+
+  // What opened the sheet, so focus can go back to it on close.
+  var lastOpener = null;
+  // Which element names the sheet in the form view. Null in bare mode, where
+  // .mef__title ships empty and an aria-label stands in.
+  var modalLabelId = 'mef-title';
 
   // The version metadata is the only thing that makes a consent record
   // meaningful, so its absence is fatal. The modal itself is an enhancement:
@@ -2300,6 +2594,10 @@ input.slider::-moz-range-thumb{
   // Per-page copy slots, before anything else renders.
   fillSlots();
 
+  // Modal mode, after the slots so the sheet knows whether it has a headline
+  // to be named by. A no-op unless the host opted in.
+  setupModalMode();
+
   if (metaAvailable) {
     var boot = readTosMeta();
     if (boot && stampEl) {
@@ -2423,9 +2721,25 @@ input.slider::-moz-range-thumb{
   // the scroll offset is preserved, then restored on close. Without the
   // restore, dismissing the agreement would dump the reader at the top of the
   // page instead of back at the form they were filling in.
+  //
+  // COUNTED, not a boolean. In modal mode two layers claim the lock — the
+  // sheet on open, and the agreement's own open path, which still calls this
+  // pair unchanged. An unguarded unlock releases on the INNER close and
+  // returns the body to position:static with the sheet still open; the page
+  // behind then scrolls under it and the stored offset is spent. The depth
+  // counter makes that unreachable rather than merely unlikely, and it costs
+  // nothing in inline mode, where the depth only ever reaches 1.
+  var lockDepth = 0;
   var lockedScrollY = 0;
   function lockPageScroll() {
-    if (document.body.hasAttribute('data-mtos-locked')) return;
+    // Defensive. A caller running before ar lockDepth = 0 executes would
+    // compute NaN here, and NaN passes every numeric guard below — it would
+    // pin the body and then never release it. That ordering bug is fixed (see
+    // the deferred deep-link open at the end of boot); this keeps a future
+    // re-order from reintroducing it silently.
+    if (typeof lockDepth !== 'number' || isNaN(lockDepth)) lockDepth = 0;
+    lockDepth += 1;
+    if (lockDepth > 1) return;              // an outer layer already pinned it
     lockedScrollY = window.scrollY || window.pageYOffset || 0;
     var s = document.body.style;
     s.position = 'fixed';
@@ -2436,11 +2750,263 @@ input.slider::-moz-range-thumb{
     document.body.setAttribute('data-mtos-locked', 'true');
   }
   function unlockPageScroll() {
+    if (lockDepth === 0) return;
+    lockDepth -= 1;
+    if (lockDepth > 0) return;              // an outer layer still needs it
     if (!document.body.hasAttribute('data-mtos-locked')) return;
     var s = document.body.style;
     s.position = ''; s.top = ''; s.left = ''; s.right = ''; s.width = '';
     document.body.removeAttribute('data-mtos-locked');
     window.scrollTo(0, lockedScrollY);
+  }
+
+  /* =========================================================
+     MODAL MODE — view swapping
+     ---------------------------------------------------------
+     All of this is a no-op in inline mode.
+     ========================================================= */
+
+  function applyModalLabel(id) {
+    if (!modalMode) return;
+    if (id) {
+      modal.setAttribute('aria-labelledby', id);
+      modal.removeAttribute('aria-label');
+    } else {
+      modal.removeAttribute('aria-labelledby');
+      modal.setAttribute('aria-label', 'Free membership signup');
+    }
+  }
+
+  function showTosView() {
+    if (!modalMode) return;
+    viewForm.hidden = true;
+    viewTos.hidden  = false;
+    modal.setAttribute('data-view', 'tos');
+    applyModalLabel('mtos-title');
+  }
+
+  // Idempotent, and called from several places on purpose.
+  function showFormView() {
+    if (!modalMode) return;
+    viewTos.hidden  = true;
+    viewForm.hidden = false;
+    modal.setAttribute('data-view', 'form');
+    applyModalLabel(modalLabelId);
+  }
+
+  // Every agreement dismissal goes through here, and the view swap comes
+  // FIRST. The close listener focuses the consent checkbox, and so does the
+  // agree handler on the line after close(); either one landing while the
+  // form view is still hidden puts focus on <body> instead. Swapping first
+  // is correct under both orderings — <dialog> queues its close event as a
+  // task, the modal-mode shim dispatches it synchronously.
+  function closeAgreement() {
+    showFormView();
+    if (dlg && dlg.open) dlg.close();
+  }
+
+  function openFormModal(trigger) {
+    if (!modalMode || modal.open) return;
+    lastOpener = trigger || null;
+    showFormView();
+    lockPageScroll();
+    modal.showModal();
+  }
+
+  function closeFormModal() {
+    if (!modalMode || !modal.open) return;
+    // Unwind the agreement first so its dismissal is recorded and its slot on
+    // the scroll lock is released before the outer layer releases the pin.
+    if (dlg && dlg.open) closeAgreement();
+    modal.close();
+  }
+
+  function setupModalMode() {
+    if (!modalMode) return;
+
+    // .mef--bare takes its heading from the host section, and a sheet has no
+    // host section to take one from: the result is a headless form — eyebrow,
+    // fields, no argument. Refuse the combination rather than render it. The
+    // card stays inline, where .mef--bare is correct and the host's own h2 is
+    // right above it, and the page keeps working. Nothing here changes either
+    // the slot check or the .mef--bare exemption; it only declines to combine
+    // two things that mean opposite things.
+    if (mefRoot.classList.contains('mef--bare')) {
+      modalMode = false;
+      console.error('[MarketEye signup] data-mef-mode="modal" is not compatible with ' +
+        '.mef--bare — a sheet has no host section to take its heading from, so the ' +
+        'form would render with no headline at all. Falling back to the inline card. ' +
+        'Use slot mode (data-mef-headline / data-mef-sub) on a page that should open ' +
+        'the form in a modal.');
+      return;
+    }
+
+    // Out to <body> first. A modal <dialog> takes the viewport as its
+    // containing block, but a host ancestor carrying transform, filter or
+    // contain would capture it anyway, and a host overflow:hidden would clip
+    // it. Reparenting costs nothing and removes the whole class of problem.
+    document.body.appendChild(modal);
+    viewForm.appendChild(mefRoot);
+    mefRoot.classList.add('mef--modal');
+
+    // The agreement stops being a <dialog> here. MEASURED, not theoretical:
+    // an OPEN <dialog> descendant swallows the sheet's close request whole —
+    // Esc and the Android back gesture produce no 'cancel' on the sheet and
+    // close nothing at all, so the only way out of the agreement would be the
+    // mouse. It happens with show() and with the open attribute alike, so it
+    // is the element and not the opening method.
+    //
+    // Swapping the tag is cheap and total: every .mtos style is class- or
+    // attribute-based and still matches, every child reference survives
+    // because the children are MOVED rather than recreated, and gateAvailable
+    // was resolved against the real <dialog> before this runs. Four members
+    // are shimmed, which is all the gate touches. close() dispatches
+    // synchronously where <dialog> queues a task — closeAgreement() swaps the
+    // view before closing so both orderings land the same.
+    if (dlg) {
+      var shim = document.createElement('div');
+      for (var i = 0; i < dlg.attributes.length; i++) {
+        shim.setAttribute(dlg.attributes[i].name, dlg.attributes[i].value);
+      }
+      shim.removeAttribute('open');
+      while (dlg.firstChild) shim.appendChild(dlg.firstChild);
+      Object.defineProperty(shim, 'open', {
+        get: function () { return shim.hasAttribute('open'); }
+      });
+      shim.show = function () {
+        if (shim.hasAttribute('open')) return;
+        shim.setAttribute('open', '');
+      };
+      shim.close = function () {
+        if (!shim.hasAttribute('open')) return;
+        shim.removeAttribute('open');
+        shim.dispatchEvent(new Event('close'));
+      };
+      if (dlg.parentNode) dlg.parentNode.removeChild(dlg);
+      dlg = shim;
+      viewTos.appendChild(dlg);
+    }
+
+    // The host's #signup rules were written for a section in page flow —
+    // ret-macro-v6 runs padding-block 4/5/5.5rem on it and paints a
+    // background through #signup::before. An ID beats anything the component
+    // can write short of !important, so the id comes off instead of being
+    // fought. Nothing is lost: the section has left the page, and every
+    // #signup CTA is intercepted below rather than resolved as a fragment.
+    if (mefRoot.id === 'signup') mefRoot.removeAttribute('id');
+
+    // Bare mode ships .mef__title empty — there is no headline to name the
+    // sheet with, so a static label stands in.
+    var titleEl = mefRoot.querySelector('.mef__title');
+    if (!titleEl || !titleEl.textContent.trim()) modalLabelId = null;
+    showFormView();
+
+    // showModal() focuses the autofocus element if there is one and otherwise
+    // the first focusable thing in the dialog — which is Close. Landing a
+    // keyboard or screen reader user on "dismiss" is the wrong first word, so
+    // something else has to claim it. WHICH something depends on the pointer.
+    //
+    // Fine pointer: the first field, which is a real convenience and costs
+    // nothing — there is no on-screen keyboard to occlude anything.
+    //
+    // Coarse pointer: the HEADLINE, never a text field. showModal() runs from a
+    // tap, which is a user gesture, so autofocusing an input raises the
+    // on-screen keyboard immediately. The browser then scrolls the caret into
+    // view, which pushes the eyebrow and headline off the top of the sheet and
+    // leaves the submit button and trust bar behind the keyboard: the person
+    // lands mid-form with no idea what they opened, and dragging the sheet down
+    // only snaps back, because the browser re-anchors to the focused caret.
+    // Observed on iPhone, 2026-09-07.
+    // Focus still moves INTO the dialog, so the focus trap, Esc and the screen
+    // reader announcement all behave — and the announcement is now the
+    // headline, which is the right first thing to hear. tabindex="-1" makes the
+    // h2 programmatically focusable without putting it in the tab order, and
+    // :focus-visible heuristics keep a ring off a programmatic focus.
+    //
+    // Safe to set at boot rather than at open time either way: the attribute is
+    // inside a closed dialog, and the load-time autofocus flush skips
+    // candidates that are not being rendered.
+    var finePointer = !window.matchMedia ||
+                      window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (finePointer || !titleEl) {
+      firstEl.setAttribute('autofocus', '');
+    } else {
+      titleEl.setAttribute('tabindex', '-1');
+      titleEl.setAttribute('autofocus', '');
+    }
+
+    closeX.addEventListener('click', closeFormModal);
+
+    // Esc and the Android back gesture both arrive here as 'cancel'. One
+    // press closes the topmost layer only: with the agreement showing that is
+    // the agreement, and the sheet stays where it is.
+    modal.addEventListener('cancel', function (e) {
+      if (dlg && dlg.open) {
+        e.preventDefault();
+        closeAgreement();
+      }
+    });
+
+    modal.addEventListener('close', function () {
+      unlockPageScroll();
+      showFormView();
+      // Focus returns to whatever opened the sheet. preventScroll because the
+      // unlock above has already put the page back where it was, and focus()
+      // would otherwise scroll it somewhere else.
+      if (lastOpener && lastOpener.focus && document.contains(lastOpener)) {
+        try { lastOpener.focus({ preventScroll: true }); }
+        catch (err) { lastOpener.focus(); }
+      }
+      lastOpener = null;
+    });
+
+    // Click-outside-to-dismiss, gated exactly as the agreement's is: a mouse
+    // convention, not a width one. Off on touch, where a stray tap beside a
+    // sheet must not discard a half-filled form — Android's back gesture
+    // closes showModal() natively and is the free second route there. Press
+    // AND release must both land outside, so dragging a selection out of the
+    // form does not dismiss it.
+    var hasPointer = !window.matchMedia ||
+                     window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (hasPointer) {
+      var outsideSheet = function (e) {
+        var r = modal.getBoundingClientRect();
+        return e.clientX < r.left || e.clientX > r.right ||
+               e.clientY < r.top  || e.clientY > r.bottom;
+      };
+      var pressedOut = false;
+      modal.addEventListener('mousedown', function (e) { pressedOut = outsideSheet(e); });
+      modal.addEventListener('click', function (e) {
+        // detail === 0 is a keyboard-synthesised click, reported at 0,0, which
+        // would read as outside every time.
+        if (e.detail === 0) { pressedOut = false; return; }
+        if (pressedOut && outsideSheet(e)) closeFormModal();
+        pressedOut = false;
+      });
+    }
+
+    // Every in-page #signup CTA opens the sheet instead of jumping to it.
+    // Delegated, so CTAs added after boot are covered, and bubble-phase, so
+    // the host page's own form_cta_click push on the anchor has already run.
+    // NOTHING is pushed from here: opening the sheet is the same intent the
+    // host already measures, and a new event would need a new GTM trigger, a
+    // new tag, and possibly new custom definitions.
+    document.addEventListener('click', function (e) {
+      if (!e.target || !e.target.closest) return;
+      var t = e.target.closest('a[href="#signup"], [data-mef-open]');
+      if (!t || modal.contains(t)) return;
+      e.preventDefault();
+      openFormModal(t);
+    });
+
+    // A #signup deep link has nothing left to scroll to, so honour it by
+    // opening the sheet — but the INITIAL open is deferred to the end of
+    // boot(); the reasoning is in the block there. Registering a listener from
+    // here is safe; ACTING from here is not, because setupModalMode() runs
+    // before this file's own counters have been initialised.
+    window.addEventListener('hashchange', function () {
+      if (window.location.hash === '#signup') openFormModal(null);
+    });
   }
 
   function openDialog() {
@@ -2452,11 +3018,27 @@ input.slider::-moz-range-thumb{
     openCount += 1;
     openedAt = Date.now();
     lockPageScroll();
-    dlg.showModal();
-    // Observe only after showModal: while the dialog is display:none nothing
+    if (modalMode) {
+      // One dialog, two views: the agreement swaps in as a view of the sheet
+      // that is already in the top layer. Nothing else is opened, so there is
+      // one ::backdrop, one page-scroll pin and one Esc target.
+      showTosView();
+      if (!dlg.open) dlg.show();
+      // Nothing focuses the agreement for us here — it is not a <dialog> in
+      // this mode. The scroll region is the right target anyway: it is what
+      // has to be scrolled to the end, and it is where Home/End and the
+      // arrow keys need to land.
+      if (scrollEl && scrollEl.focus) {
+        try { scrollEl.focus({ preventScroll: true }); }
+        catch (err) { scrollEl.focus(); }
+      }
+    } else {
+      dlg.showModal();
+    }
+    // Observe only after the dialog is shown: while it is display:none nothing
     // intersects anything and the observer would report a false negative.
     watchSentinel();
-    // After showModal, not before: while the dialog is display:none the scroll
+    // After showing, not before: while the dialog is display:none the scroll
     // container reports zero height and the rail would size itself to nothing.
     updateProgress();
     updateRail();
@@ -2468,6 +3050,9 @@ input.slider::-moz-range-thumb{
     // the Agree button, and the Esc key, which fires 'close' without passing
     // through either handler. Unlocking anywhere else would miss Esc.
     dlg.addEventListener('close', function () {
+      // Backstop for any route that reached close() without going through
+      // closeAgreement(). Idempotent, and a no-op in inline mode.
+      showFormView();
       unlockPageScroll();
       // Every close route lands here, including Esc. Anything that isn't an
       // acceptance is a dismissal.
@@ -2483,7 +3068,7 @@ input.slider::-moz-range-thumb{
       consentEl.focus();
     });
 
-    closeBtn.addEventListener('click', function () { dlg.close(); });
+    closeBtn.addEventListener('click', function () { closeAgreement(); });
 
     // Click-outside-to-dismiss. Gated on a real pointing device rather than a
     // viewport width: this is a mouse convention, and a desktop window dragged
@@ -2509,7 +3094,7 @@ input.slider::-moz-range-thumb{
         // detail === 0 is a keyboard-synthesised click (Enter/Space on a
         // button), which reports 0,0 and would read as outside every time.
         if (e.detail === 0) { pressedOutside = false; return; }
-        if (pressedOutside && outside(e)) dlg.close();
+        if (pressedOutside && outside(e)) closeAgreement();
         pressedOutside = false;
       });
     }
@@ -2522,7 +3107,7 @@ input.slider::-moz-range-thumb{
         return;
       }
       var meta = readTosMeta();
-      if (!meta) { dlg.close(); return; }   // setFatal already fired
+      if (!meta) { closeAgreement(); return; }   // setFatal already fired
       consent = {
         version:    meta['data-tos-version'],
         effective:  meta['data-tos-effective'],
@@ -2534,7 +3119,7 @@ input.slider::-moz-range-thumb{
       // the dialog was accepted or dismissed.
       acceptedNow = true;
       track('community_agreement_accepted', { dwell_ms: dwell() });
-      dlg.close();
+      closeAgreement();
       consentEl.checked = true;
       setError(consentEl, 'mef-consent-err', false);
       consentEl.focus();
@@ -2851,9 +3436,26 @@ input.slider::-moz-range-thumb{
         btn.focus();
       });
   });
+
+  /* ---------- deferred: honour a #signup deep link ----------
+     This cannot live in setupModalMode(), which runs near the TOP of boot() —
+     over a hundred lines before `var lockDepth = 0` actually executes. Opening
+     the sheet from there took a lock while lockDepth was still undefined:
+     `undefined + 1` is NaN, NaN slips past the `> 1` guard so the body IS
+     pinned, and the later initialiser then resets lockDepth to 0.
+     unlockPageScroll() bails at `lockDepth === 0`, so the pin was never
+     released: closing the sheet left the page unscrollable by any route, with
+     no error, unrecoverable without a reload. It reproduced on every load
+     carrying the hash.
+     Running it here instead means every counter and handler above is
+     initialised, so the lock counts from a real 0 and the close releases it.
+     The hashchange path was never affected — by then boot() has finished —
+     which is exactly why the two behaved differently. */
+  if (modalMode && window.location.hash === '#signup') openFormModal(null);
   }
 })();
 </script>
+
 
 </main>
 
@@ -3485,9 +4087,52 @@ input.slider::-moz-range-thumb{
   border-top:1px solid var(--mtos-line);
   background:var(--mtos-panel);
 }
-.mtos__hint{ margin:0 0 .7rem; font-size:.8125rem; line-height:1.45; color:var(--mtos-ink-3); }
-.mtos.is-read .mtos__hint{ color:var(--mtos-ink-2); }
+/* The gate instruction. Raised from .8125rem/ink-3 on 2026-09-07: at 13px in the
+   dimmest ink it was the quietest thing in the sheet, while being the one line
+   that explains why "I Agree" is not doing anything yet. 1rem also clears the
+   content floor in workflow-lp-technical.md rule 1, which covers microcopy
+   carrying meaning — and a 40s-50s audience is exactly who that floor is for.
+
+   The chevron is a ::before, NOT a child element: markRead() and the too-early
+   click both assign hintEl.textContent, which would wipe any node inside. It is
+   drawn from two borders so it follows currentColor through every state, and it
+   becomes a tick once the end is reached, so the change from "keep scrolling" to
+   "you can agree now" is legible without reading the sentence again.
+   No colour is doing that work alone: the wording changes, the glyph changes
+   shape, and the escalation stays inside the existing ink ramp rather than
+   introducing a green — this is a trading page, and Compliance Rule 13 treats
+   an ambient green-up motif as a claim wherever it appears. */
+.mtos__hint{
+  display:flex; align-items:flex-start; gap:.5rem;
+  margin:0 0 .7rem; font-size:1rem; font-weight:600; line-height:1.45;
+  color:var(--mtos-ink-2);
+}
+.mtos__hint::before{
+  content:""; flex:0 0 auto;
+  width:.5rem; height:.5rem; margin-top:.28rem;
+  border-right:2px solid currentColor; border-bottom:2px solid currentColor;
+  transform:rotate(45deg);
+  animation:mtos-hint-nudge 1.1s ease-in-out 3;
+}
+/* End reached: chevron lengthens into a tick and the ink lifts to white. */
+.mtos.is-read .mtos__hint{ color:var(--mtos-white); }
+.mtos.is-read .mtos__hint::before{
+  width:.4rem; height:.72rem; margin-top:.12rem; animation:none;
+}
 .mtos__hint[data-state="error"]{ color:var(--mtos-danger); }
+.mtos__hint[data-state="error"]::before{ animation:none; }
+
+/* A 45deg-rotated box translated (d,d) in its own frame moves (0, d*sqrt2) on
+   screen — straight down, which is the direction being asked for. Bounded at 3
+   iterations, matching the one-off pulse the email suggestion uses: enough to
+   catch the eye on open, not a permanent distraction while someone reads. */
+@keyframes mtos-hint-nudge{
+  0%,100%{ transform:rotate(45deg) translate(0,0); }
+  50%    { transform:rotate(45deg) translate(.12rem,.12rem); }
+}
+@media (prefers-reduced-motion:reduce){
+  .mtos__hint::before{ animation:none; }
+}
 .mtos__actions{ display:flex; gap:.6rem; justify-content:flex-end; }
 
 .mtos__btn{
@@ -3553,7 +4198,16 @@ input.slider::-moz-range-thumb{
       </div>
       <div class="mkt-footer__mid">
         <span>&copy; 2026 MarketEye, LLC. All Rights Reserved.</span>
-        <a href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+        <!-- The site Terms of Service is reachable ONLY from here on an LP whose
+             signup form gates the Community Agreement. The consent label deliberately
+             omits it (docs/marketeye-form-spec.md 1), and the Community Agreement
+             incorporates it by reference — billing, refunds, arbitration and the
+             class-action waiver all live in it — so this link is load-bearing, not
+             decoration. Do not drop it. Matches components/footer.html. -->
+        <div class="mkt-legal">
+          <a href="https://marketeye.io/terms" target="_blank" rel="noopener">Terms of Service</a>
+          <a href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+        </div>
       </div>
       <div>
         <div class="mkt-connect__label">Connect</div>
