@@ -76,8 +76,14 @@ html{scroll-behavior:smooth;}
    defeated position:sticky on .site-head. The header did not stick at any
    width, on any device, for five versions.
    workflow-lp-technical.md rule 5 forbids it for exactly this reason: scoped
-   containers only, "never applied blindly to <body> to mask an underlying
-   layout break; that hides the symptom without fixing the cause."
+   containers only, "never applied blindly to the body element to mask an
+   underlying layout break; that hides the symptom without fixing the cause."
+   NOTE: this comment must never contain a literal opening body tag written
+   out in angle brackets. The edge GTM injector (cdn9.marketeye.io loader)
+   string-matches the first one in the document to place its noscript, and a
+   match inside the head made it treat the head as already closed — the gtm.js
+   loader was then never injected and GTM Preview reported "no tag found" on
+   the v6 production deploy. Spell structural tag names in prose, not markup.
    No scoped replacement was added, because the stress test says none is
    needed: driven to its input limits at 320px — age 18 to 99, $999,999,999
    portfolio, $5,000/mo at 12% — the calculator renders a $5,418,561,421,977
