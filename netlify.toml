@@ -45,3 +45,57 @@
   from = "/terms-of-service/*"
   to = "/terms/"
   status = 301
+
+# Retired LP versions folded into the live one. Ads and short links pointing at
+# v3 and v5 keep working and land on v6.
+#
+# `force = true` is REQUIRED here and is the whole trick. ret-macro-v3.html and
+# ret-macro-v5.html are still in the repo, so Eleventy still builds them to
+# /ret-macro-v3/index.html and /ret-macro-v5/index.html. Netlify serves an
+# existing file in preference to a redirect unless the rule is forced, so
+# without `force` these rules would never fire. Deleting the two HTML files
+# would work too — forcing keeps them recoverable by removing the rule.
+#
+# Query strings pass through automatically: Netlify appends the incoming query
+# string to the destination whenever the destination has no query string of its
+# own. `to` therefore must NOT carry any params — adding even one would replace
+# the incoming ones and drop utm_*, fbclid and gclid.
+#
+# Three rules per version because Netlify matches the whole path: bare, splat
+# (trailing slash and anything under it), and the .html form in case a
+# preview-style URL was ever pasted against the production domain.
+[[redirects]]
+  from = "/ret-macro-v5"
+  to = "/ret-macro-v6/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ret-macro-v5/*"
+  to = "/ret-macro-v6/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ret-macro-v5.html"
+  to = "/ret-macro-v6/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ret-macro-v3"
+  to = "/ret-macro-v6/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ret-macro-v3/*"
+  to = "/ret-macro-v6/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ret-macro-v3.html"
+  to = "/ret-macro-v6/"
+  status = 301
+  force = true
