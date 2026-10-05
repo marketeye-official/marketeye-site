@@ -22,9 +22,37 @@
   # following several skipped preview pushes still builds and still includes
   # everything in between. Nothing can be stranded.
   #
-  # Fails safe: if the ref is missing or git errors, the exit is non-zero and the
-  # build proceeds. To disable, comment this line out.
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)preview'"
+  # IT DOES NOT FAIL SAFE ON ITS OWN — this is guarded, and the guard is the
+  # point. Fixed 2026-10-05 after it cancelled the homepage deploy (main@331e15e)
+  # and, earlier, the homepage preview push.
+  #
+  # When the build cache is unavailable, Netlify leaves $CACHED_COMMIT_REF EMPTY
+  # rather than erroring. The bare command then loses an argument and silently
+  # becomes a different command:
+  #
+  #     git diff --quiet $COMMIT_REF -- . ':(exclude)preview'
+  #
+  # One commit argument means "diff the WORKING TREE against $COMMIT_REF." The
+  # repo was just cloned at that very commit, so there is nothing to find: git
+  # exits 0 and the build is cancelled — whatever was actually changed. The
+  # deploy log shows it plainly: "Failed to fetch cache, continuing with build"
+  # a few lines above "User-specified ignore command returned exit code 0."
+  #
+  # Cache misses are routine (first build after a quiet period, cache eviction,
+  # infra change), so this is not a rare edge. Worse, "Clear cache and retry" —
+  # the obvious thing to reach for when a deploy is stuck — GUARANTEES the empty
+  # ref and so reproduces the cancellation instead of clearing it.
+  #
+  # The && chain below exits non-zero (= build) unless it can prove a skip is
+  # right: the ref must be non-empty AND resolve to a commit present in this
+  # clone before the diff is allowed to decide anything. Note the clone is
+  # --filter=blob:none, so an old ref may legitimately be absent.
+  #
+  # ':(exclude)preview' is spelled ":!preview" here — same pathspec magic, and it
+  # avoids nesting single quotes inside a TOML literal string.
+  #
+  # To disable, comment this line out.
+  ignore = '''[ -n "$CACHED_COMMIT_REF" ] && git cat-file -e "$CACHED_COMMIT_REF^{commit}" 2>/dev/null && git diff --quiet "$CACHED_COMMIT_REF" "$COMMIT_REF" -- . ":!preview"'''
 # Current Community Agreement version. Bump `to` when a new version is
 # archived. The versioned paths themselves are permanent and are never edited
 # in place, because consent records point at them forever.
