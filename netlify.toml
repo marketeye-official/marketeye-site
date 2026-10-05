@@ -51,8 +51,26 @@
   # ':(exclude)preview' is spelled ":!preview" here — same pathspec magic, and it
   # avoids nesting single quotes inside a TOML literal string.
   #
-  # To disable, comment this line out.
-  ignore = '''[ -n "$CACHED_COMMIT_REF" ] && git cat-file -e "$CACHED_COMMIT_REF^{commit}" 2>/dev/null && git diff --quiet "$CACHED_COMMIT_REF" "$COMMIT_REF" -- . ":!preview"'''
+  # ---------------------------------------------------------------------------
+  # TEMPORARY, 2026-10-05: diagnostic + always-build.
+  #
+  # The guarded version above still returned 0 and cancelled the deploy, so the
+  # empty-ref theory was wrong or incomplete: the chain must have reached the
+  # final git diff, and that diff reported no change outside preview/ even
+  # though index.html had changed. The likeliest remaining cause is that Netlify
+  # sets CACHED_COMMIT_REF equal to COMMIT_REF when the cache fetch fails, so the
+  # diff compares a commit against itself — but that is a guess, and guessing has
+  # already cost two deploy cycles.
+  #
+  # This version ENDS IN `exit 1`, so the build always proceeds — the skip
+  # optimisation is off, every push runs a ~12s build, which is what happened
+  # before the rule existed and is a price worth paying while the homepage is
+  # stuck. The echo lines put the real values in the deploy log so the rule can
+  # be rewritten against evidence instead of inference.
+  #
+  # Restore the skip once the log shows what CACHED_COMMIT_REF actually is.
+  # ---------------------------------------------------------------------------
+  ignore = '''echo "IGNORE-DIAG cached=[$CACHED_COMMIT_REF]"; echo "IGNORE-DIAG commit=[$COMMIT_REF]"; echo "IGNORE-DIAG files-changed-outside-preview:"; git diff --name-only "$CACHED_COMMIT_REF" "$COMMIT_REF" -- . ":!preview"; echo "IGNORE-DIAG diff-exit=$?"; echo "IGNORE-DIAG forcing build"; exit 1'''
 # Current Community Agreement version. Bump `to` when a new version is
 # archived. The versioned paths themselves are permanent and are never edited
 # in place, because consent records point at them forever.
