@@ -22,55 +22,49 @@
   # following several skipped preview pushes still builds and still includes
   # everything in between. Nothing can be stranded.
   #
-  # IT DOES NOT FAIL SAFE ON ITS OWN — this is guarded, and the guard is the
-  # point. Fixed 2026-10-05 after it cancelled the homepage deploy (main@331e15e)
-  # and, earlier, the homepage preview push.
+  # IT DOES NOT FAIL SAFE ON ITS OWN — hence the guards. Fixed 2026-10-05, after
+  # it cancelled the homepage deploy (main@331e15e) and, earlier, the homepage
+  # preview push. Diagnosed by logging the inputs rather than reasoning about
+  # them; two plausible-sounding theories were wrong first.
   #
-  # When the build cache is unavailable, Netlify leaves $CACHED_COMMIT_REF EMPTY
-  # rather than erroring. The bare command then loses an argument and silently
-  # becomes a different command:
+  # ROOT CAUSE, measured. When the build cache is unavailable, Netlify sets
+  # CACHED_COMMIT_REF **equal to COMMIT_REF** — it does not leave it empty and it
+  # does not error. The deploy log for 0142718 shows both variables holding the
+  # same SHA, an empty changed-file list, and diff-exit=0:
   #
-  #     git diff --quiet $COMMIT_REF -- . ':(exclude)preview'
+  #     IGNORE-DIAG cached=[01427181b2f0a14909f3310399767e772094cd99]
+  #     IGNORE-DIAG commit=[01427181b2f0a14909f3310399767e772094cd99]
+  #     IGNORE-DIAG diff-exit=0
   #
-  # One commit argument means "diff the WORKING TREE against $COMMIT_REF." The
-  # repo was just cloned at that very commit, so there is nothing to find: git
-  # exits 0 and the build is cancelled — whatever was actually changed. The
-  # deploy log shows it plainly: "Failed to fetch cache, continuing with build"
-  # a few lines above "User-specified ignore command returned exit code 0."
+  # So the command was diffing a commit against itself. That is always empty, so
+  # it always exits 0, so the build is ALWAYS cancelled on a cache miss — no
+  # matter what changed. Every "Failed to fetch cache, continuing with build"
+  # line in a log is this condition, and all three deploys that day hit it.
   #
-  # Cache misses are routine (first build after a quiet period, cache eviction,
-  # infra change), so this is not a rare edge. Worse, "Clear cache and retry" —
-  # the obvious thing to reach for when a deploy is stuck — GUARANTEES the empty
-  # ref and so reproduces the cancellation instead of clearing it.
+  # Why the obvious guards do not catch it: the ref is non-empty and it is a
+  # valid commit present in the clone, so `[ -n ]` and `git cat-file -e` both
+  # pass. The only thing that distinguishes "no cache information" from "a real
+  # previous build" is that the two SHAs are identical — hence the `!=` test,
+  # which is the actual fix. The other two guards are kept as cheap belt-and-
+  # braces; the clone is --filter=blob:none, so an old ref may legitimately be
+  # absent from it.
   #
-  # The && chain below exits non-zero (= build) unless it can prove a skip is
-  # right: the ref must be non-empty AND resolve to a commit present in this
-  # clone before the diff is allowed to decide anything. Note the clone is
-  # --filter=blob:none, so an old ref may legitimately be absent.
+  # Also: "Clear cache and retry" is exactly the wrong instinct here. It
+  # guarantees the cache-miss condition and so reproduces the cancellation.
+  #
+  # The && chain exits non-zero (= build) unless it can positively prove a skip
+  # is right. Every unknown resolves to building.
   #
   # ':(exclude)preview' is spelled ":!preview" here — same pathspec magic, and it
   # avoids nesting single quotes inside a TOML literal string.
   #
-  # ---------------------------------------------------------------------------
-  # TEMPORARY, 2026-10-05: diagnostic + always-build.
+  # If cache misses turn out to be the norm rather than the exception, this rule
+  # is mostly inert and deleting it costs ~12s per preview push. Measure before
+  # keeping it on those grounds.
   #
-  # The guarded version above still returned 0 and cancelled the deploy, so the
-  # empty-ref theory was wrong or incomplete: the chain must have reached the
-  # final git diff, and that diff reported no change outside preview/ even
-  # though index.html had changed. The likeliest remaining cause is that Netlify
-  # sets CACHED_COMMIT_REF equal to COMMIT_REF when the cache fetch fails, so the
-  # diff compares a commit against itself — but that is a guess, and guessing has
-  # already cost two deploy cycles.
-  #
-  # This version ENDS IN `exit 1`, so the build always proceeds — the skip
-  # optimisation is off, every push runs a ~12s build, which is what happened
-  # before the rule existed and is a price worth paying while the homepage is
-  # stuck. The echo lines put the real values in the deploy log so the rule can
-  # be rewritten against evidence instead of inference.
-  #
-  # Restore the skip once the log shows what CACHED_COMMIT_REF actually is.
-  # ---------------------------------------------------------------------------
-  ignore = '''echo "IGNORE-DIAG cached=[$CACHED_COMMIT_REF]"; echo "IGNORE-DIAG commit=[$COMMIT_REF]"; echo "IGNORE-DIAG files-changed-outside-preview:"; git diff --name-only "$CACHED_COMMIT_REF" "$COMMIT_REF" -- . ":!preview"; echo "IGNORE-DIAG diff-exit=$?"; echo "IGNORE-DIAG forcing build"; exit 1'''
+  # To disable, comment this line out. To re-diagnose, append `; exit 1` and add
+  # echo lines — an ignore command that always exits non-zero is a safe probe.
+  ignore = '''[ -n "$CACHED_COMMIT_REF" ] && [ "$CACHED_COMMIT_REF" != "$COMMIT_REF" ] && git cat-file -e "$CACHED_COMMIT_REF^{commit}" 2>/dev/null && git diff --quiet "$CACHED_COMMIT_REF" "$COMMIT_REF" -- . ":!preview"'''
 # Current Community Agreement version. Bump `to` when a new version is
 # archived. The versioned paths themselves are permanent and are never edited
 # in place, because consent records point at them forever.
