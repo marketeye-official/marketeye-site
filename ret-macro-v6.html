@@ -2553,6 +2553,11 @@ input.slider::-moz-range-thumb{
     return 'mef-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
   }
 
+  function gaClientId() {
+    var p = getCookie('_ga').split('.'); // GA1.1.<cid>.<ts> — last two parts are the client ID
+    return p.length >= 4 ? p.slice(-2).join('.') : '';
+  }
+
   function attribution() {
     var q = new URLSearchParams(window.location.search);
     var fbclid = q.get('fbclid') || '';
@@ -2570,6 +2575,7 @@ input.slider::-moz-range-thumb{
       utm_campaign: q.get('utm_campaign') || '',
       utm_content:  q.get('utm_content')  || '',
       utm_term:     q.get('utm_term')     || '',
+      ga_client_id: gaClientId(),
       user_agent:   navigator.userAgent
     };
   }
