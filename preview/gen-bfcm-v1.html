@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MarketEye — Don't Start January in the Same Place</title>
+<meta name="description" content="The MarketEye mentorship opens for four days, November 27–30. Live sessions, direct mentor DMs, personalized coaching on process and execution. Interview-only, as always.">
+<!-- Favicon — site-wide set, identical on every LP. Assets are in the site repo
+     at assets/favicon/ and resolve at this path in Live Server, the GitHub Pages
+     preview, and Netlify production. See workflow-lp-technical.md, "Favicon". -->
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   MarketEye — GEN-BFCM v1
+   Layout: LAY-07 x Default, with LAY-02's single-price card as the offer donor.
+   Composition system: alternating splits (problem text-left, solution
+   text-right, offer text-left) punctuated by centred bands (proof, FAQ).
+   Hero and close are the bookends.
+
+   DEPARTURES FROM THE STANDARD BUILD — owner-approved in the handoff
+   (handoffs/gen-bfcm-v1.txt, ARCHITECTURE and SCOPE INVERSION), recorded here
+   so nobody "fixes" them:
+   - Paid-tier page. No signup form, no ToS modal. Every CTA links out to the
+     booking page. The page books only; it takes no payment.
+   - CTAs carry NO tracking class and there is no form_cta_click snippet. The
+     form-CTA class would count a different action under the same event name,
+     and the retired community-CTA class goes on nothing. Measurement on this
+     page was given up by decision (unfunded compliance test); revisit before
+     any spend.
+   - FAQ uses the components/faq.html markup and CSS, but its four baselines
+     are replaced by the raw copy's five objections: the baselines describe
+     the free community and would misdescribe a paid offer (Rule 11a, both
+     directions). The component file itself is unchanged.
+   - The reassurance line above each booking button was supplied verbatim in
+     the handoff's booking block, which counts as the explicit request the
+     standards require. It sits above the button; nothing sits under one.
+
+   Type: rem throughout; the root font-size is deliberately left alone.
+   CSS: mobile-first; tiers at 40rem / 64rem / 80rem.
+   ========================================================================= */
+
+:root{
+  --navy:#071D49;
+  --navy-deep:#04102e;
+  --navy-card:#0c2657;
+  --navy-raise:#123067;
+  --white:#FFFFFF;
+  --blue:#65CEF6;
+  --ink-soft:#c9dbf5;      /* secondary text: 11.66:1 navy, 10.44:1 card */
+  --ink-mute:#a8c0e0;      /* tertiary text: 8.81:1 navy, 7.43:1 card top */
+  --line:rgba(255,255,255,0.10);
+  --line-strong:rgba(255,255,255,0.20);
+  /* Brand Guide s2-A identity gradient: rules, borders, never behind a label */
+  --grad-id:linear-gradient(135deg,#00C8FF 0%,#2B72E8 45%,#5033C3 100%);
+  /* Brand Guide s2-B button gradient: any surface carrying a white label */
+  --grad-btn:linear-gradient(135deg,#1272B8 0%,#2B72E8 40%,#5033C3 100%);
+  --head:'Exo 2', system-ui, -apple-system, sans-serif;
+  --body:'Barlow', system-ui, -apple-system, sans-serif;
+  --wrap:75rem;
+  --gut:1.25rem;
+  --bar-h:4.5rem;
+
+  /* tokens read by the pasted FAQ component */
+  --cyan:var(--blue);
+  --ink-2:var(--ink-soft);
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+img,svg,video,iframe,input,textarea,select{max-width:100%;}
+
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--navy);
+  color:var(--white);
+  font-family:var(--body);
+  font-size:1.125rem;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{
+  font-family:var(--head);
+  margin:0;
+  line-height:1.15;
+  letter-spacing:-0.015em;
+  overflow-wrap:break-word;
+  word-break:break-word;
+  text-wrap:balance;
+}
+p,li,dd,dt,figcaption,span{overflow-wrap:break-word;word-break:break-word;}
+p{margin:0 0 1em;}
+p:last-child{margin-bottom:0;}
+a{color:inherit;}
+img,svg{display:block;height:auto;}
+ul{margin:0;padding:0;list-style:none;}
+
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut);}
+.measure{max-width:38rem;}
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+
+:focus-visible{outline:.1875rem solid var(--blue);outline-offset:.1875rem;}
+
+/* ---------- Buttons ----------
+   Variant B gradient behind a white label. Label held at 1.1875rem / 800 so
+   the 40% stop (#2B72E8, 4.49:1) clears its large-text floor; #1272B8 5.09:1,
+   #5033C3 8.07:1. No cyan stop behind the label in any state. */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  min-height:3.5rem;
+  padding:.85rem 1.6rem;
+  border-radius:999px;
+  font-family:var(--head);
+  font-weight:800;
+  font-size:1.1875rem;
+  line-height:1.2;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  text-decoration:none;
+  text-align:center;
+  color:var(--white);
+  background:var(--grad-btn);
+  text-wrap:balance;
+  box-shadow:0 .5rem 1.5rem rgba(43,114,232,.28);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn .arr{font-weight:700;}
+.btn .nw{white-space:nowrap;}   /* never split "30-minute" at its hyphen */
+.btn:hover{transform:translateY(-1px);box-shadow:0 .75rem 1.75rem rgba(43,114,232,.42);}
+.btn:focus-visible{outline-color:var(--white);}
+
+/* the booking line: supplied copy, sits ABOVE the button by rule */
+.book-line{color:var(--ink-soft);font-size:1.125rem;line-height:1.5;margin:0 0 1rem;}
+
+/* ---------- Sticky header ---------- */
+.site-head{
+  position:sticky;top:0;z-index:60;
+  background:rgba(4,16,46,.94);
+  backdrop-filter:saturate(150%) blur(.5rem);
+  -webkit-backdrop-filter:saturate(150%) blur(.5rem);
+  border-bottom:1px solid var(--line);
+}
+.site-head .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:4.25rem;}
+.brand{display:flex;align-items:center;flex:0 0 auto;}
+.brand__mark{width:2.25rem;height:2.25rem;}
+.brand__full{display:none;height:1.75rem;width:auto;}
+.head-cta{
+  min-height:2.75rem;padding:.55rem 1rem;
+  text-transform:none;letter-spacing:.01em;
+  box-shadow:none;
+}
+.head-cta .arr{display:none;}
+/* Below ~360px the header CTA cannot share a row with the mark at the
+   1.1875rem label the button gradient requires, so the row wraps and the bar
+   is taller; anchor offsets follow it. 22.5rem tracks the header only. */
+.site-head .wrap{flex-wrap:wrap;padding-block:.4rem;}
+:root{--bar-h:7rem;}
+@media (min-width:22.5rem){ :root{--bar-h:4.5rem;} }
+@media (min-width:30rem){
+  .brand__mark{display:none;}
+  .brand__full{display:block;}
+  .head-cta .arr{display:inline;}
+}
+
+/* in-page anchors clear the sticky bar */
+#problem,#program,#proof,#offer,#faq,#close{scroll-margin-top:var(--bar-h);}
+
+/* ---------- Section rhythm (workflow-lp-rhythm.md s7) ---------- */
+section{padding-block:2.5rem;}
+.sec--deep{padding-block:3.25rem;}
+@media (min-width:40rem){
+  section{padding-block:3.25rem;}
+  .sec--deep{padding-block:4rem;}
+}
+@media (min-width:64rem){
+  section{padding-block:4rem;}
+  .sec--deep{padding-block:5rem;}
+}
+@media (min-width:80rem){
+  section{padding-block:4.25rem;}
+  .sec--deep{padding-block:5rem;}
+}
+
+.h2{font-size:clamp(1.75rem,1.2rem + 2.2vw,2.5rem);font-weight:800;margin-bottom:1.25rem;}
+.lead{color:var(--ink-soft);}
+
+/* ---------- Hero ----------
+   Asset opened: monitor, calendar and mug sit right of centre; the left half
+   is bare shadowed wall; window light enters from the right. Copy goes left,
+   scrim darkens left. The brightest regions (screen, calendar) stay clear of
+   the text block at 40rem and up. */
+.hero{
+  position:relative;
+  display:flex;align-items:center;
+  min-height:calc(100svh - 4.25rem);
+  max-height:none;
+  padding-block:2.25rem 2.5rem;
+  overflow:clip;
+  isolation:isolate;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:-2;
+  width:100%;height:100%;
+  object-fit:cover;object-position:72% 50%;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,
+    rgba(7,29,73,.90) 0%, rgba(7,29,73,.86) 50%,
+    rgba(7,29,73,.80) 75%, rgba(7,29,73,.92) 100%);
+}
+.hero > .wrap{position:relative;}
+.hero h1{
+  font-size:clamp(2.375rem,1.6rem + 3.6vw,4rem);
+  font-weight:900;letter-spacing:-.025em;line-height:1.06;
+  text-shadow:0 .125rem 1.5rem rgba(4,16,46,.85);
+  margin-bottom:1rem;
+}
+.hero__sub{
+  font-size:clamp(1.25rem,1.1rem + .6vw,1.5rem);
+  font-weight:500;color:var(--white);line-height:1.4;
+  margin-bottom:1.5rem;
+}
+.facts{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem;}
+.facts li{
+  font-family:var(--head);font-weight:700;font-size:1rem;letter-spacing:.02em;
+  color:var(--ink-soft);
+  padding:.35rem .9rem;border-radius:999px;
+  border:1px solid var(--line-strong);background:rgba(4,16,46,.55);
+}
+/* Tablet keeps the vertical full-cover scrim: at ~768px the cover crop puts
+   the calendar and monitor under the left-aligned copy, so the subject cannot
+   be left clear there. The horizontal scrim engages at 64rem, where the crop
+   moves the subject right of the text block. Even then the calendar's left
+   edge reaches ~48% at 1024px, so the scrim holds >=.68 to 60% — computed
+   worst case, white text over the calendar paper: ~6.2:1. */
+@media (min-width:40rem){
+  .hero{min-height:40rem;padding-block:5rem 5.4rem;}
+}
+@media (min-width:64rem){
+  .hero{min-height:44rem;}
+  .hero::after{
+    background:linear-gradient(90deg,
+      rgba(7,29,73,.95) 0%, rgba(7,29,73,.92) 40%,
+      rgba(7,29,73,.70) 60%, rgba(7,29,73,.30) 78%, rgba(7,29,73,.06) 100%);
+  }
+}
+@media (min-width:80rem){
+  .hero{min-height:46rem;}
+}
+/* Past 90rem a full-bleed cover crop lets the monitor and window run to the
+   viewport's right edge while the copy stays in the centred 75rem container,
+   so the page reads right-heavy. Hold the photo and its scrim to a centred
+   90rem frame — the composition as it renders at 1440px — and fade the
+   frame's edges into the navy ground so the margins are symmetrical. */
+@media (min-width:90rem){
+  .hero{background:var(--navy);}
+  .hero-bg,
+  .hero::after{left:50%;right:auto;width:90rem;transform:translateX(-50%);}
+  .hero-bg{
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 20%,#000 88%,transparent 100%);
+            mask-image:linear-gradient(90deg,transparent 0,#000 20%,#000 88%,transparent 100%);
+  }
+}
+
+/* ---------- Split (workflow-lp-composition.md s3) ---------- */
+.split{display:grid;gap:2.5rem;align-items:center;}
+.prog-split{grid-template-areas:"head" "list" "foot";row-gap:1.5rem;}
+.prog-head .h2{margin-bottom:0;}
+.prog-foot .close-line{margin-top:0;}
+.prog-head{grid-area:head;}
+.prog-foot{grid-area:foot;}
+.prog-split .program{grid-area:list;}
+@media (min-width:64rem){ .prog-foot{padding-top:1.5rem;} }
+@media (min-width:64rem){
+  .split{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:4rem;}
+  /* solution section: list left, text right */
+  .prog-split{grid-template-areas:"list head" "list foot";row-gap:0;}
+  .prog-head{grid-area:head;align-self:end;}
+  .prog-foot{grid-area:foot;align-self:start;}
+  .prog-split .program{grid-area:list;}
+}
+
+/* ---------- Problem: the same note, twice ---------- */
+.notes{
+  position:relative;
+  display:grid;gap:1.5rem;
+  max-width:30rem;margin-inline:auto;width:100%;
+  padding:.5rem .5rem;   /* room for the rotated corners */
+}
+.note{
+  background:#eef2f8;
+  color:#14254a;                 /* 13.42:1 on the paper */
+  border-radius:.375rem;
+  padding:1.25rem 1.4rem 1.4rem;
+  box-shadow:0 1.25rem 2.5rem rgba(0,0,0,.35);
+}
+.note:nth-child(1){transform:rotate(-2deg);}
+.note:nth-child(2){transform:rotate(1.5deg);margin-left:1.25rem;}
+.note__when{
+  display:block;
+  font-family:var(--head);font-weight:700;font-size:1rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:#3a4f78;                 /* 7.27:1 on the paper */
+  padding-bottom:.6rem;margin-bottom:.75rem;
+  border-bottom:1px solid #c6d0e1;
+}
+.note__text{
+  font-style:italic;font-weight:500;
+  font-size:1.375rem;line-height:1.35;margin:0;
+}
+.notes__cap{
+  text-align:center;margin:.5rem 0 0;
+  font-family:var(--head);font-weight:800;font-size:1.25rem;color:var(--blue);
+}
+
+/* ---------- Program: three things ---------- */
+.program{
+  background:var(--navy-card);
+  border:1px solid var(--line);
+  border-radius:1.25rem;
+  padding:.5rem 1.5rem;
+}
+.program li{padding-block:1.4rem;border-top:1px solid var(--line);}
+.program li:first-child{border-top:0;}
+.program h3{
+  font-size:1.375rem;font-weight:800;margin-bottom:.4rem;
+  display:flex;gap:.75rem;align-items:baseline;
+}
+.program h3::before{
+  content:"";flex:0 0 auto;width:.75rem;height:.75rem;border-radius:2px;
+  background:var(--grad-id);transform:translateY(-.1rem);
+}
+.program p{color:var(--ink-soft);font-size:1.125rem;margin:0;}
+.close-line{font-family:var(--head);font-weight:700;font-size:1.25rem;line-height:1.4;margin-top:1.5rem;}
+.mid-cta{margin-top:1.75rem;}
+
+/* ---------- Proof: centred statement band ---------- */
+.proof{text-align:center;}
+.proof .rule{height:2px;width:4rem;margin:0 auto 1.75rem;background:var(--grad-id);border-radius:2px;}
+.proof h2{
+  max-width:44rem;margin:0 auto 2rem;
+  font-size:clamp(1.875rem,1.3rem + 2.4vw,2.75rem);font-weight:800;
+}
+.proof__cols{display:grid;gap:1.25rem;max-width:62rem;margin-inline:auto;text-align:left;}
+.proof__cols p{
+  margin:0;color:var(--ink-soft);
+  padding:1.4rem 1.5rem;border-left:2px solid var(--line-strong);
+}
+@media (min-width:40rem){
+  .proof__cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;}
+}
+
+/* ---------- Offer: LAY-02 single-price card ---------- */
+.price-card{
+  position:relative;
+  border-radius:1.5rem;
+  padding:2px;
+  background:var(--grad-id);
+  box-shadow:0 2rem 4rem rgba(0,0,0,.35);
+  width:100%;max-width:30rem;margin-inline:auto;
+}
+.price-card__in{
+  border-radius:calc(1.5rem - 2px);
+  background:linear-gradient(180deg,#0e2a60 0%,var(--navy-card) 100%);
+  padding:2rem 1.5rem;
+  text-align:center;
+}
+.price-card__name{font-size:1.375rem;font-weight:800;margin-bottom:1.5rem;}
+.price-row{display:flex;flex-direction:column;align-items:center;gap:.15rem;}
+.price-row__label{font-family:var(--head);font-weight:700;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);}
+.price-row--was .price-row__val{font-family:var(--head);font-weight:700;font-size:1.5rem;color:var(--ink-mute);text-decoration:line-through;text-decoration-thickness:2px;}
+.price-row--now{margin-top:1.1rem;}
+.price-row--now .price-row__label{color:var(--blue);}
+.price-row--now .price-row__val{font-family:var(--head);font-weight:900;font-size:clamp(3rem,2.4rem + 2.6vw,4rem);line-height:1.05;letter-spacing:-.02em;}
+.price-card__incl{
+  text-align:left;margin:1.75rem 0 1.75rem;padding-top:1.5rem;border-top:1px solid var(--line);
+}
+.price-card__incl li{display:flex;gap:.75rem;align-items:baseline;padding-block:.35rem;font-weight:600;}
+.price-card__incl li::before{content:"\2713";color:var(--blue);font-weight:700;flex:0 0 auto;}
+.price-card__term{color:var(--ink-soft);font-size:1rem;margin:.6rem 0 0;}
+.price-card__book{margin-bottom:1.5rem;}
+.price-card .btn{width:100%;}
+@media (min-width:40rem){
+  .price-card__in{padding:2.5rem 2.25rem;}
+}
+
+/* ---------- Final CTA (close bookend) ---------- */
+.final{
+  position:relative;
+  text-align:center;
+  background:
+    radial-gradient(60rem 26rem at 50% 0%, rgba(43,114,232,.22), transparent 70%),
+    var(--navy-deep);
+  border-top:1px solid var(--line);
+  padding-block:4rem 4.5rem;
+}
+.final::before{
+  content:"";position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  width:min(36rem,80%);height:2px;background:var(--grad-id);
+}
+.final h2{
+  max-width:44rem;margin:0 auto 1.25rem;
+  font-size:clamp(2.125rem,1.4rem + 3vw,3.25rem);font-weight:900;letter-spacing:-.02em;
+}
+.final p{max-width:38rem;margin-inline:auto;}
+.final .lead{font-size:1.25rem;line-height:1.55;margin-bottom:1.5rem;}
+.final__fit{font-family:var(--head);font-weight:800;font-size:1.375rem;margin-bottom:2rem;}
+@media (min-width:40rem){ .final{padding-block:5.5rem 6rem;} }
+@media (min-width:64rem){ .final{padding-block:7rem 7.5rem;} }
+@media (min-width:80rem){ .final{padding-block:7.5rem 8rem;} }
+
+/* ---------- FAQ component (components/faq.html) — CSS merged verbatim
+   except the padding tiers, deleted in favour of this page's section{} rhythm
+   as the component instructs. --mfaq-bar-h raised to clear the 4.25rem bar. */
+.mfaq, .mfaq *, .mfaq *::before, .mfaq *::after { box-sizing: border-box; }
+.mfaq{
+  --mfaq-white:   var(--white,  #FFFFFF);
+  --mfaq-ink-2:   var(--ink-2,  #C9D8F2);
+  --mfaq-cyan:    var(--cyan,   #00C8FF);
+  --mfaq-line:    var(--line,   rgba(255,255,255,0.12));
+  --mfaq-head:    var(--head, 'Exo 2', system-ui, -apple-system, sans-serif);
+  --mfaq-body:    var(--body, 'Barlow', system-ui, -apple-system, sans-serif);
+  --mfaq-bar-h:   var(--bar-h);
+  display: block;
+  font-family: var(--mfaq-body);
+  color: var(--mfaq-white);
+  -webkit-text-size-adjust: 100%;
+}
+.mfaq__wrap{ max-width: var(--wrap, 75rem); margin-inline: auto; padding-inline: 1.25rem; width: 100%; }
+.mfaq__title{
+  max-width: 44rem; margin: 0 auto; text-align: center;
+  font-family: var(--mfaq-head);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800; line-height: 1.15;
+  color: var(--mfaq-white);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+.mfaq__list{ max-width: 58rem; margin: 1.75rem auto 0; }
+.mfaq__item{ border-bottom: 1px solid var(--mfaq-line); scroll-margin-top: var(--mfaq-bar-h); }
+.mfaq__item:first-child{ border-top: 1px solid var(--mfaq-line); }
+.mfaq__q{
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1.25rem .25rem;
+  cursor: pointer; list-style: none;
+  font-family: var(--mfaq-head);
+  font-size: 1.1875rem; font-weight: 700; line-height: 1.35;
+  color: var(--mfaq-white);
+  min-height: 44px;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+.mfaq__q::-webkit-details-marker{ display: none; }
+.mfaq__q::after{
+  content: "+"; margin-left: auto; flex: 0 0 auto;
+  font-size: 1.6rem; line-height: 1; color: var(--mfaq-cyan);
+}
+.mfaq__item[open] .mfaq__q::after{ content: "\2212"; }
+.mfaq__q:focus-visible{ outline: 3px solid var(--mfaq-cyan); outline-offset: 3px; border-radius: .375rem; }
+.mfaq__a{ padding: 0 .25rem 1.35rem; }
+.mfaq__a p{ margin: 0; font-size: 1.125rem; line-height: 1.6; color: var(--mfaq-ink-2); overflow-wrap: break-word; }
+.mfaq__a p + p{ margin-top: .75rem; }
+
+/* ---------- Footer component (components/footer.html) ----------
+   Merged with the page's tokens; max-width matched to the page container. */
+.mkt-footer{ background:var(--navy-deep); color:var(--white); font-family:var(--body); border-top:1px solid var(--line); }
+.mkt-footer__inner{ max-width:var(--wrap); margin:0 auto; padding:2.4rem var(--gut) 1.4rem; }
+.mkt-footer__top{ display:flex; justify-content:space-between; align-items:center; gap:2rem; flex-wrap:wrap; padding-bottom:1.6rem; border-bottom:1px solid var(--line); }
+.mkt-brand__logo{ height:38px; width:auto; display:block; }
+.mkt-brand__tag{ margin-top:0.55rem; color:#8FA6CF; font-size:0.9rem; max-width:22rem; line-height:1.45; }
+.mkt-footer__mid{ display:flex; flex-direction:column; gap:0.35rem; text-align:center; color:#8FA6CF; font-size:0.82rem; }
+.mkt-footer__mid a{ color:#8FA6CF; text-decoration:none; }
+.mkt-legal{ display:flex; flex-wrap:wrap; gap:0 1.25rem; justify-content:center; }
+.mkt-footer__mid a:hover{ color:var(--blue); text-decoration:underline; }
+.mkt-connect{ text-align:right; }
+.mkt-connect__label{ font-family:var(--head); font-weight:700; font-size:0.72rem; letter-spacing:2px; text-transform:uppercase; color:#8FA6CF; margin-bottom:0.7rem; }
+.mkt-social{ display:flex; gap:0.7rem; justify-content:flex-end; }
+.mkt-social a{
+  width:38px; height:38px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,0.06); border:1px solid var(--line); transition:background .18s ease, border-color .18s ease, transform .18s ease;
+  color:var(--white);
+}
+.mkt-social a:hover{ background:rgba(101,206,246,0.16); border-color:var(--blue); transform:translateY(-2px); color:var(--blue); }
+.mkt-social svg{ width:19px; height:19px; fill:currentColor; }
+.mkt-disc-inline{ padding-top:1.3rem; }
+.mkt-disc-inline p{ color:#8FA6CF; font-size:0.76rem; line-height:1.65; margin:0; max-width:none; }
+.mkt-disc-inline p + p{ margin-top:.6rem; }
+.mkt-disc-inline strong{ color:#c3d2ef; font-weight:600; }
+@media (max-width:680px){
+  .mkt-footer__top{ flex-direction:column; align-items:flex-start; gap:1.4rem; }
+  .mkt-footer__mid{ text-align:left; align-items:flex-start; order:3; }
+  .mkt-connect{ text-align:left; order:2; }
+  .mkt-social{ justify-content:flex-start; }
+}
+
+/* ---------- Motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .btn,.mkt-social a{transition:none;}
+  .btn:hover,.mkt-social a:hover{transform:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="MarketEye — back to top">
+      <img class="brand__mark" src="/assets/favicon/favicon.svg" alt="" width="36" height="36">
+      <img class="brand__full" src="https://raw.githubusercontent.com/marketeye-official/marketeye-site/refs/heads/main/assets/images/MarketEye-Logo-1.03c-Gradient-horizontal%20(1).png" alt="MarketEye" width="173" height="28">
+    </a>
+    <a class="btn head-cta" href="https://calendly.com/john-lu-stackafi/30min"><span>Book a <span class="nw">30-minute call</span></span> <span class="arr" aria-hidden="true">&rarr;</span></a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <img class="hero-bg" src="/assets/images/gen-bfcm-v1/Hero.png" alt="" aria-hidden="true"
+         width="1376" height="768" fetchpriority="high" decoding="async">
+    <div class="wrap">
+      <!-- .measure is deliberate: headline, sub and booking line are prose. -->
+      <div class="measure">
+        <h1 id="hero-title">Don&rsquo;t start January in the same place.</h1>
+        <p class="hero__sub">The mentorship opens for four days. November 27&ndash;30.</p>
+        <p class="book-line">A call with a mentor before anyone is accepted. No obligation either way.</p>
+        <a class="btn" href="https://calendly.com/john-lu-stackafi/30min"><span>Book a <span class="nw">30-minute call</span></span> <span class="arr" aria-hidden="true">&rarr;</span></a>
+        <ul class="facts" aria-label="Offer at a glance">
+          <li>Interview-only</li>
+          <li>70% off</li>
+          <li>Nov 27&ndash;30</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEM — split, text left ============ -->
+  <section class="sec--deep" id="problem" aria-labelledby="problem-title">
+    <div class="wrap split">
+      <div class="measure">
+        <h2 class="h2" id="problem-title">Most people who want to get better at this don&rsquo;t lack information.</h2>
+        <p class="lead">There&rsquo;s more of it available free than anyone could work through in a year, and most of it gets watched once.</p>
+        <p class="lead">So the year goes by. Charts watched. Videos half-finished. A mental note to get serious about it in January &mdash; and then January arrives, and it&rsquo;s the same note.</p>
+        <p class="lead">What&rsquo;s missing isn&rsquo;t another explanation. It&rsquo;s someone who can see how you actually work and tell you where the gap is. That part doesn&rsquo;t happen alone, and it doesn&rsquo;t happen from a recording.</p>
+      </div>
+      <figure class="notes" role="img" aria-label="Two identical notes, one from the end of last year and one from the end of this year, each reading: get serious about this in January.">
+        <div class="note">
+          <span class="note__when">December, last year</span>
+          <p class="note__text">Get serious about this in January.</p>
+        </div>
+        <div class="note">
+          <span class="note__when">December, this year</span>
+          <p class="note__text">Get serious about this in January.</p>
+        </div>
+        <figcaption class="notes__cap" aria-hidden="true">Same note.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ SOLUTION — split, text right ============ -->
+  <section class="sec--deep" id="program" aria-labelledby="program-title">
+    <!-- Grid areas, not source order, place the text column: on a phone the
+         closing line and CTA follow the three items; at 64rem the items sit
+         left and the heading, line and CTA stack on the right. -->
+    <div class="wrap split prog-split">
+      <div class="measure prog-head">
+        <h2 class="h2" id="program-title">The mentorship is built around the part self-study can&rsquo;t cover.</h2>
+      </div>
+      <div class="measure prog-foot">
+        <p class="close-line">That&rsquo;s the whole program. Three things, done properly, for as long as you&rsquo;re in.</p>
+        <!-- mid-page CTA: keeps cadence under ~1500px; aligns with its column text -->
+        <a class="btn mid-cta" href="https://calendly.com/john-lu-stackafi/30min"><span>Book a <span class="nw">30-minute call</span></span> <span class="arr" aria-hidden="true">&rarr;</span></a>
+      </div>
+      <ul class="program">
+        <li>
+          <h3>Live sessions</h3>
+          <p>Working through the market as it moves, with a mentor talking through the reasoning out loud &mdash; not a polished recap after the fact.</p>
+        </li>
+        <li>
+          <h3>Direct mentor DMs</h3>
+          <p>A line to someone who answers. Not a forum thread that goes cold, not a support queue.</p>
+        </li>
+        <li>
+          <h3>Personalized coaching on process and execution</h3>
+          <p>On how you work: preparation, discipline, and what actually happens when a plan meets a live market.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PROOF — centred statement band ============ -->
+  <section class="proof" id="proof" aria-labelledby="proof-title">
+    <div class="wrap">
+      <div class="rule" aria-hidden="true"></div>
+      <h2 id="proof-title">The clearest thing we can tell you about this program is what it won&rsquo;t do.</h2>
+      <div class="proof__cols">
+        <p>It won&rsquo;t sell you on impulse. Everyone who joins has had a conversation first, and some of those conversations end with us saying no. That was true before this discount and it&rsquo;s true during it.</p>
+        <p>And the discount is exactly that &mdash; a discount. The price moved. The program didn&rsquo;t. Same mentors, same sessions, same interview on the other side of it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OFFER — split, text left, LAY-02 price card ============ -->
+  <section class="sec--deep" id="offer" aria-labelledby="offer-title">
+    <div class="wrap split">
+      <div class="measure">
+        <h2 class="h2" id="offer-title">Lifetime access to the MarketEye mentorship.</h2>
+        <p class="lead">The window is four days. On December 1 the price is $10,800 again. There&rsquo;s no extension and no second window.</p>
+        <p class="lead">Acceptance is by interview. The discount changes what it costs, not who gets in.</p>
+      </div>
+      <div class="price-card">
+        <div class="price-card__in">
+          <h3 class="price-card__name">The MarketEye mentorship</h3>
+          <div class="price-row price-row--was">
+            <span class="price-row__label">Regular price</span>
+            <span class="price-row__val">$10,800</span>
+          </div>
+          <div class="price-row price-row--now">
+            <span class="price-row__label">November 27&ndash;30</span>
+            <span class="price-row__val">$3,240</span>
+          </div>
+          <ul class="price-card__incl">
+            <li>Live sessions</li>
+            <li>Direct mentor DMs</li>
+            <li>Personalized coaching on process and execution</li>
+          </ul>
+          <p class="price-card__term">For as long as the program runs.</p>
+          <p class="price-card__term price-card__book">A call with a mentor before anyone is accepted. No obligation either way.</p>
+          <a class="btn" href="https://calendly.com/john-lu-stackafi/30min"><span>Book a <span class="nw">30-minute call</span></span> <span class="arr" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ — components/faq.html markup; baselines replaced by the
+       handoff's five approved objections (paid-tier page; see head comment) ============ -->
+  <section class="mfaq" id="faq" aria-labelledby="mfaq-title">
+    <div class="mfaq__wrap">
+      <h2 class="mfaq__title" id="mfaq-title">Still deciding?</h2>
+      <div class="mfaq__list">
+
+        <details class="mfaq__item">
+          <summary class="mfaq__q">Is this just a sales call?</summary>
+          <div class="mfaq__a">
+            <p>It&rsquo;s a conversation about whether the program fits &mdash; and it runs both directions. Some of them end with us saying no. You&rsquo;ll know where you stand by the end of it either way.</p>
+          </div>
+        </details>
+
+        <details class="mfaq__item">
+          <summary class="mfaq__q">What if I&rsquo;m not accepted?</summary>
+          <div class="mfaq__a">
+            <p>Then you&rsquo;re not, and you&rsquo;ve spent thirty minutes finding that out. There&rsquo;s no cost and nothing to cancel.</p>
+          </div>
+        </details>
+
+        <details class="mfaq__item">
+          <summary class="mfaq__q">70% off &mdash; was it ever really $10,800?</summary>
+          <div class="mfaq__a">
+            <p>Yes. That&rsquo;s the standard price and the price it returns to on December 1. We&rsquo;re not marking up to mark down.</p>
+          </div>
+        </details>
+
+        <details class="mfaq__item">
+          <summary class="mfaq__q">I&rsquo;ve bought things like this before and never opened them.</summary>
+          <div class="mfaq__a">
+            <p>Most people have. That&rsquo;s the honest risk with anything bought on a holiday weekend, this included. It&rsquo;s also why the interview exists &mdash; it&rsquo;s harder to drift away from something you had to talk your way into.</p>
+          </div>
+        </details>
+
+        <details class="mfaq__item">
+          <summary class="mfaq__q">What does lifetime mean?</summary>
+          <div class="mfaq__a">
+            <p>For as long as the program runs. There&rsquo;s no renewal and no second payment.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE (bookend) ============ -->
+  <section class="final" id="close" aria-labelledby="close-title">
+    <div class="wrap">
+      <h2 id="close-title">Four days, then the price goes back.</h2>
+      <p class="lead">If the last year looked like the one before it, the thing that changes that isn&rsquo;t more material &mdash; it&rsquo;s someone watching how you work and telling you the truth about it.</p>
+      <p class="final__fit">Find out whether this is a fit.</p>
+      <p class="book-line">A call with a mentor before anyone is accepted. No obligation either way.</p>
+      <a class="btn btn-lg" href="https://calendly.com/john-lu-stackafi/30min"><span>Book a <span class="nw">30-minute call</span></span> <span class="arr" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER COMPONENT (components/footer.html) ============ -->
+<footer class="mkt-footer">
+  <div class="mkt-footer__inner">
+
+    <div class="mkt-footer__top">
+      <div class="mkt-brand">
+        <img class="mkt-brand__logo" src="https://raw.githubusercontent.com/marketeye-official/marketeye-site/refs/heads/main/assets/images/MarketEye-Logo-1.03c-Gradient-horizontal%20(1).png" alt="MarketEye" width="235" height="38">
+        <div class="mkt-brand__tag">Real People. Real Beginners. Real Trading.</div>
+      </div>
+      <div class="mkt-footer__mid">
+        <span>&copy; 2026 MarketEye, LLC. All Rights Reserved.</span>
+        <!-- The Website Terms of Service governs pricing, billing, refunds and
+             cancellation for the paid program sold here. Load-bearing; keep it. -->
+        <div class="mkt-legal">
+          <a href="https://marketeye.io/terms" target="_blank" rel="noopener">Terms of Service</a>
+          <a href="https://marketeye.io/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="mkt-connect">
+        <div class="mkt-connect__label">Connect</div>
+        <div class="mkt-social">
+          <a href="https://www.facebook.com/marketeye.society" aria-label="MarketEye on Facebook" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/marketeye.society" aria-label="MarketEye on Instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c-2.72 0-3.06.01-4.12.06-1.07.05-1.79.22-2.43.47-.66.26-1.22.6-1.77 1.15-.55.55-.89 1.11-1.15 1.77-.25.64-.42 1.36-.47 2.43C2.01 8.94 2 9.28 2 12s.01 3.06.06 4.12c.05 1.07.22 1.79.47 2.43.26.66.6 1.22 1.15 1.77.55.55 1.11.89 1.77 1.15.64.25 1.36.42 2.43.47 1.06.05 1.4.06 4.12.06s3.06-.01 4.12-.06c1.07-.05 1.79-.22 2.43-.47.66-.26 1.22-.6 1.77-1.15.55-.55.89-1.11 1.15-1.77.25-.64.42-1.36.47-2.43.05-1.06.06-1.4.06-4.12s-.01-3.06-.06-4.12c-.05-1.07-.22-1.79-.47-2.43a4.9 4.9 0 0 0-1.15-1.77 4.9 4.9 0 0 0-1.77-1.15c-.64-.25-1.36-.42-2.43-.47C15.06 2.01 14.72 2 12 2zm0 1.8c2.67 0 2.99.01 4.04.06.98.04 1.5.21 1.86.35.47.18.8.4 1.15.75.35.35.57.68.75 1.15.14.36.31.88.35 1.86.05 1.05.06 1.37.06 4.04s-.01 2.99-.06 4.04c-.04.98-.21 1.5-.35 1.86-.18.47-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.36.14-.88.31-1.86.35-1.05.05-1.37.06-4.04.06s-2.99-.01-4.04-.06c-.98-.04-1.5-.21-1.86-.35a3.1 3.1 0 0 1-1.15-.75 3.1 3.1 0 0 1-.75-1.15c-.14-.36-.31-.88-.35-1.86-.05-1.05-.06-1.37-.06-4.04s.01-2.99.06-4.04c.04-.98.21-1.5.35-1.86.18-.47.4-.8.75-1.15.35-.35.68-.57 1.15-.75.36-.14.88-.31 1.86-.35C9.01 3.81 9.33 3.8 12 3.8zm0 3.06A5.14 5.14 0 1 0 12 17.14 5.14 5.14 0 0 0 12 6.86zm0 8.47A3.33 3.33 0 1 1 12 8.67a3.33 3.33 0 0 1 0 6.66zm5.34-9.87a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@MarketEyeSociety" aria-label="MarketEye on YouTube" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.11-2.12C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.39.53A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.11 2.12c1.89.53 9.39.53 9.39.53s7.5 0 9.39-.53a3 3 0 0 0 2.11-2.12A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Base risk disclaimer (always visible, verbatim from Core Compliance
+         Guidelines s5) plus the two page-specific add-ons supplied verbatim in
+         the handoff's DISCLAIMER BLOCK. -->
+    <div class="mkt-disc-inline">
+      <p><strong>Disclaimer.</strong> MarketEye is an educational community and does not provide personalized financial, investment, or trading advice. Trading futures, stocks, forex, and cryptocurrencies involves substantial risk of loss and is not suitable for all investors. Past performance does not guarantee future results, and passing an evaluation does not guarantee profitability. Results vary based on individual discipline, market conditions, and execution.</p>
+      <p>&ldquo;Lifetime&rdquo; means access for as long as the mentorship program operates. Access ends if the program is discontinued or MarketEye ceases operations.</p>
+      <p>$10,800 is the standard price of the lifetime mentorship. The promotional price of $3,240 is available November 27&ndash;30, 2026, after which the standard price applies.</p>
+    </div>
+
+  </div>
+</footer>
+<!-- ============ END FOOTER COMPONENT ============ -->
+
+</body>
+</html>
