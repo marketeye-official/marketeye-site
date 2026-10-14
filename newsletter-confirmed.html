@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're Subscribed! — MarketEye Newsletter</title>
+<link rel="icon" type="image/png" href="marketeye-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#00C8FF;
+  --blue-mid:#2B72E8;
+  --indigo:#5033C3;
+  --grad:linear-gradient(135deg,#00C8FF 0%,#2B72E8 45%,#5033C3 100%);
+  --grad-text:linear-gradient(90deg,#00C8FF,#6B8EFF);
+  --navy:#04091C;
+  --navy-mid:#070E25;
+  --navy-card:#0A1530;
+  --border:rgba(0,200,255,0.12);
+  --border-bright:rgba(0,200,255,0.3);
+  --text:#D0DEFF;
+  --muted:#8FA3C0;
+  --cream:#FFFFFF;
+}
+
+html{font-size:18px;}
+body{
+  font-family:'Barlow',sans-serif;
+  background:var(--navy);
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* TOP BANNER */
+.top-banner{
+  background:linear-gradient(90deg,#1a6b1a,#0d4d0d,#1a6b1a);
+  padding:13px 20px;
+  text-align:center;
+  position:sticky;top:0;z-index:100;
+  border-bottom:1px solid rgba(0,200,0,0.3);
+}
+.top-banner p{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(0.7rem,2.2vw,0.875rem);
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:#7fff7f;
+}
+
+/* TICKER */
+.ticker-bar{
+  background:linear-gradient(90deg,#0A1848,#051028,#0A1848);
+  border-bottom:1px solid var(--border);
+  height:32px;overflow:hidden;display:flex;align-items:center;
+}
+.ticker-track{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
+.ticker-track span{font-size:0.6875rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;padding:0 24px;}
+.ticker-track span.up{color:#22D98A;}
+.ticker-track span.dn{color:#FF5A5A;}
+.ticker-track span.up::before{content:'▲ ';}
+.ticker-track span.dn::before{content:'▼ ';}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* LOGO ROW */
+.logo-row{
+  display:flex;align-items:center;gap:10px;
+  padding:20px 32px;
+  max-width:900px;margin:0 auto;width:100%;
+}
+.logo-icon{width:36px;height:36px;}
+.logo-text{
+  font-family:'Exo 2',sans-serif;font-size:1.25rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:0.04em;
+}
+.logo-tag{font-size:0.625rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-left:4px;}
+
+/* HERO */
+.hero{
+  max-width:900px;margin:0 auto;width:100%;
+  padding:52px 32px 40px;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.congrats-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 16px;
+  background:linear-gradient(90deg,rgba(0,200,100,0.15),rgba(0,200,100,0.08));
+  border:1px solid rgba(0,200,100,0.3);border-radius:20px;
+  font-size:0.6875rem;letter-spacing:0.16em;text-transform:uppercase;color:#4dff9a;
+  font-weight:700;margin-bottom:24px;
+}
+.congrats-badge::before{content:'✓';}
+.hero h1{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(1.6rem,4vw,2.5rem);
+  font-weight:800;line-height:1.1;
+  color:var(--cream);margin-bottom:12px;
+}
+.hero h1 em{
+  font-style:italic;
+  background:var(--grad-text);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:1rem;color:var(--muted);line-height:1.6;
+  max-width:560px;margin:0 auto;
+}
+
+/* 3-STEP CARDS */
+.next-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  max-width:900px;margin:0 auto;width:100%;
+  padding:40px 32px;
+  border-bottom:1px solid var(--border);
+}
+@media(max-width:640px){.next-cards{grid-template-columns:1fr;}}
+.next-card{
+  background:var(--navy-card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:24px 20px;
+  text-align:center;
+}
+.next-card-num{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--grad);
+  font-family:'Exo 2',sans-serif;font-size:1.125rem;font-weight:800;
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+}
+.next-card h3{
+  font-family:'Exo 2',sans-serif;font-size:0.9375rem;font-weight:700;
+  color:var(--cream);margin-bottom:8px;
+}
+.next-card p{font-size:0.8125rem;color:var(--muted);line-height:1.55;}
+.next-card p strong{color:var(--text);}
+
+/* CTA BANNER */
+.cta-banner{
+  background:linear-gradient(90deg,rgba(0,200,255,0.08),rgba(43,114,232,0.12),rgba(0,200,255,0.08));
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:28px 32px;
+  text-align:center;
+}
+.cta-banner p{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(0.9rem,2.5vw,1.25rem);
+  font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:0.02em;
+}
+
+/* FOOTER */
+footer{
+  max-width:900px;margin:0 auto;width:100%;
+  padding:24px 32px;
+  text-align:center;
+}
+.footer-logo{
+  font-family:'Exo 2',sans-serif;font-size:0.875rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px;
+}
+footer p{font-size:0.5625rem;color:rgba(143,163,192,0.5);line-height:1.55;margin-bottom:4px;}
+footer p strong{color:rgba(143,163,192,0.7);}
+</style>
+</head>
+<body>
+
+<!-- TOP BANNER -->
+<div class="top-banner">
+  <p>&#127881; You're on the list &nbsp;&mdash;&nbsp; One more step to confirm your email</p>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track">
+    <span class="up">ES +0.42%</span><span class="dn">NQ -0.18%</span>
+    <span class="up">GC +0.71%</span><span class="dn">CL -1.03%</span>
+    <span class="up">ZB +0.15%</span><span class="up">YM +0.38%</span>
+    <span class="dn">RTY -0.27%</span><span class="up">SI +0.56%</span>
+    <span class="up">HG +0.22%</span><span class="up">ZN +0.08%</span>
+    <span class="up">ES +0.42%</span><span class="dn">NQ -0.18%</span>
+    <span class="up">GC +0.71%</span><span class="dn">CL -1.03%</span>
+    <span class="up">ZB +0.15%</span><span class="up">YM +0.38%</span>
+    <span class="dn">RTY -0.27%</span><span class="up">SI +0.56%</span>
+    <span class="up">HG +0.22%</span><span class="up">ZN +0.08%</span>
+  </div>
+</div>
+
+<!-- LOGO -->
+<div style="border-bottom:1px solid var(--border);">
+  <div class="logo-row">
+    <img class="logo-icon" src="marketeye-icon.png" alt="MarketEye">
+    <div>
+      <div class="logo-text">MarketEye</div>
+      <div class="logo-tag">right strategy. real process.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="congrats-badge">Subscription Confirmed</div>
+  <h1>You're <em>subscribed.</em></h1>
+  <p class="hero-sub">Welcome to the MarketEye newsletter. You'll get market insights, trading education, and updates straight to your inbox. Here's what to do right now.</p>
+</section>
+
+<!-- 3-STEP CARDS -->
+<div class="next-cards">
+  <div class="next-card">
+    <div class="next-card-num">1</div>
+    <h3>Check Your Email</h3>
+    <p>A welcome email is on its way to your inbox. If you don't see it within a few minutes, <strong>check your spam, junk, or promotions folder</strong> and move it to your inbox.</p>
+  </div>
+  <div class="next-card">
+    <div class="next-card-num">2</div>
+    <h3>Confirm Your Email</h3>
+    <p>Click the confirmation link inside the email to verify your address. This ensures you <strong>never miss an edition</strong> and keeps our emails out of your spam folder.</p>
+  </div>
+  <div class="next-card">
+    <div class="next-card-num">3</div>
+    <h3>Watch for Your First Edition</h3>
+    <p>We'll be in touch with insights, strategies, and updates from the MarketEye team. <strong>No filler — just what matters</strong> for serious traders.</p>
+  </div>
+</div>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <p>Confirm Your Email Now &mdash; Your Future Self Will Thank You</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MarketEye</div>
+  <p>&copy; 2026 MarketEye. All rights reserved.</p>
+  <p><strong>Risk Disclaimer:</strong> Trading futures, forex, stocks, and other financial instruments involves substantial risk of loss. Past performance is not indicative of future results. Content provided by MarketEye is for educational purposes only and does not constitute investment advice.</p>
+</footer>
+
+</body>
+</html>

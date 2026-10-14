@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're Confirmed — MarketEye</title>
+<link rel="icon" type="image/png" href="marketeye-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TS6V32CR');</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G96FR64Z2H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G96FR64Z2H');</script>
+
+<!-- Meta Pixel -->
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','2676371816078997');
+  fbq('track','PageView');
+  fbq('track','Lead');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2676371816078997&ev=Lead&noscript=1"/></noscript>
+
+<!-- iD Pixel -->
+<script src="https://cdn.idpixel.app/v1/idp-analytics-69ec35dad233fe5c1d74bffa.min.js" defer></script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --blue:#00C8FF;
+  --blue-mid:#2B72E8;
+  --indigo:#5033C3;
+  --grad:linear-gradient(135deg,#00C8FF 0%,#2B72E8 45%,#5033C3 100%);
+  --grad-text:linear-gradient(90deg,#00C8FF,#6B8EFF);
+  --navy:#04091C;
+  --navy-mid:#070E25;
+  --navy-card:#0A1530;
+  --border:rgba(0,200,255,0.12);
+  --border-bright:rgba(0,200,255,0.3);
+  --text:#D0DEFF;
+  --muted:#8FA3C0;
+  --cream:#FFFFFF;
+  --green:#22D98A;
+  --green-bg:rgba(34,217,138,0.06);
+  --green-border:rgba(34,217,138,0.25);
+}
+
+html{font-size:18px;}
+
+body{
+  font-family:'Barlow',sans-serif;
+  background:var(--navy);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 30%,rgba(0,200,255,0.05) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 40% at 80% 80%,rgba(80,51,195,0.04) 0%,transparent 50%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── TICKER ── */
+.ticker-bar{
+  background:linear-gradient(90deg,#0A1848,#051028,#0A1848);
+  border-bottom:1px solid var(--border);
+  height:32px;overflow:hidden;display:flex;align-items:center;
+  flex-shrink:0;position:relative;z-index:10;
+}
+.ticker-track{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
+.ticker-track span{font-size:0.6875rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;padding:0 24px;}
+.ticker-track span.up{color:#22D98A;}
+.ticker-track span.dn{color:#FF5A5A;}
+.ticker-track span.up::before{content:'▲ ';}
+.ticker-track span.dn::before{content:'▼ ';}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── PAGE SHELL ── */
+.page{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:36px 24px 56px;
+  position:relative;z-index:1;
+}
+
+/* ── LOGO ── */
+.logo-row{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin-bottom:32px;
+}
+.logo-inner{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:36px;height:36px;}
+.logo-text{
+  font-family:'Exo 2',sans-serif;font-size:1.25rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:0.04em;
+}
+.logo-tag{
+  font-size:0.5625rem;color:var(--muted);
+  letter-spacing:0.14em;text-transform:uppercase;
+}
+
+/* ── SUCCESS RING ── */
+.check-ring{
+  width:80px;height:80px;border-radius:50%;
+  background:var(--green-bg);
+  border:1px solid var(--green-border);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+  position:relative;
+}
+.check-ring::after{
+  content:'';
+  position:absolute;inset:-6px;
+  border-radius:50%;
+  border:1px solid rgba(34,217,138,0.1);
+}
+
+/* ── MAIN CARD ── */
+.card{
+  width:100%;max-width:580px;
+  background:var(--navy-mid);
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+
+.card-hero{
+  padding:36px 44px 32px;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+}
+
+.confirmed-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:5px 16px;
+  background:var(--green-bg);
+  border:1px solid var(--green-border);
+  border-radius:20px;
+  font-size:0.625rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--green);font-weight:700;
+  margin-bottom:20px;
+}
+
+h1{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(1.5rem,3.8vw,2.125rem);
+  font-weight:800;line-height:1.08;
+  color:var(--cream);
+  margin-bottom:14px;
+}
+h1 em{
+  font-style:italic;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero-body{
+  font-size:0.9375rem;color:var(--muted);line-height:1.7;
+  max-width:420px;
+}
+.hero-body strong{color:var(--text);}
+
+/* ── WHAT TO EXPECT ── */
+.card-body{
+  padding:28px 44px;
+  border-bottom:1px solid var(--border);
+}
+
+.body-label{
+  font-size:0.5625rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--blue);font-weight:700;
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+
+.expect-list{
+  list-style:none;padding:0;
+  display:flex;flex-direction:column;gap:0;
+}
+.expect-list li{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+  font-size:0.875rem;color:var(--muted);line-height:1.6;
+}
+.expect-list li:last-child{border-bottom:none;}
+.expect-list li strong{color:var(--text);}
+.expect-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--blue);opacity:0.7;
+  flex-shrink:0;margin-top:6px;
+}
+
+/* ── DELIVERABILITY TIP ── */
+.tip-card{
+  width:100%;max-width:580px;
+  background:rgba(0,200,255,0.04);
+  border:1px solid rgba(0,200,255,0.18);
+  border-left:3px solid var(--blue);
+  border-radius:6px;
+  padding:20px 24px;
+  margin-bottom:16px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.tip-icon{
+  font-size:1.125rem;flex-shrink:0;margin-top:1px;
+}
+.tip-title{
+  font-family:'Exo 2',sans-serif;font-size:0.875rem;font-weight:700;
+  color:var(--cream);margin-bottom:5px;
+}
+.tip-body{
+  font-size:0.8125rem;color:var(--muted);line-height:1.65;
+}
+.tip-body strong{color:var(--text);}
+.tip-body code{
+  font-family:monospace;font-size:0.8rem;
+  background:rgba(0,200,255,0.08);
+  border:1px solid rgba(0,200,255,0.15);
+  border-radius:3px;padding:1px 6px;
+  color:var(--blue);
+}
+
+/* ── LEGAL / COMPLIANCE ── */
+.compliance-note{
+  width:100%;max-width:580px;
+  text-align:center;
+  font-size:0.75rem;color:rgba(143,163,192,0.55);
+  line-height:1.7;
+  margin-bottom:24px;
+}
+.compliance-note a{color:rgba(143,163,192,0.55);text-decoration:underline;text-underline-offset:2px;}
+.compliance-note a:hover{color:var(--muted);}
+
+/* ── FOOTER ── */
+footer{
+  width:100%;max-width:580px;
+  padding-top:20px;
+  border-top:1px solid var(--border);
+  text-align:center;
+}
+.footer-logo{
+  font-family:'Exo 2',sans-serif;font-size:0.875rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:10px;
+}
+footer p{font-size:0.5625rem;color:rgba(143,163,192,0.45);line-height:1.6;margin-bottom:4px;}
+footer p strong{color:rgba(143,163,192,0.65);}
+.footer-links{display:flex;flex-wrap:wrap;gap:4px 16px;justify-content:center;margin-top:10px;}
+.footer-links a{font-size:0.625rem;color:rgba(143,163,192,0.45);text-decoration:none;}
+.footer-links a:hover{color:var(--blue);}
+
+@media(max-width:600px){
+  .card-hero,.card-body{padding-left:24px;padding-right:24px;}
+  .tip-card{padding:16px 18px;}
+  .check-ring{width:68px;height:68px;}
+}
+</style>
+</head>
+<body>
+
+<!-- GTM noscript -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TS6V32CR" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track">
+    <span class="up">ES 5,842.25 +18.50</span>
+    <span class="dn">NQ 20,421.00 &minus;32.75</span>
+    <span class="up">GC 2,398.40 +12.10</span>
+    <span class="up">CL 79.82 +1.24</span>
+    <span class="dn">EUR/USD 1.0843 &minus;0.0012</span>
+    <span class="up">BTC 97,468 +1,240</span>
+    <span class="up">RTY 2,104.50 +8.30</span>
+    <span class="dn">YM 43,218 &minus;95</span>
+    <span class="up">ES 5,842.25 +18.50</span>
+    <span class="dn">NQ 20,421.00 &minus;32.75</span>
+    <span class="up">GC 2,398.40 +12.10</span>
+    <span class="up">CL 79.82 +1.24</span>
+    <span class="dn">EUR/USD 1.0843 &minus;0.0012</span>
+    <span class="up">BTC 97,468 +1,240</span>
+    <span class="up">RTY 2,104.50 +8.30</span>
+    <span class="dn">YM 43,218 &minus;95</span>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- LOGO -->
+  <div class="logo-row">
+    <div class="logo-inner">
+      <img class="logo-icon" src="marketeye-icon.png" alt="MarketEye">
+      <span class="logo-text">MarketEye</span>
+    </div>
+    <span class="logo-tag">right strategy. real process.</span>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="card">
+
+    <!-- HERO -->
+    <div class="card-hero">
+      <div class="check-ring">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 18.5L15 23.5L26 12" stroke="#22D98A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="confirmed-badge">&#10003; Email Confirmed</div>
+
+      <h1 id="heroHeading">You're confirmed. <em>You're on the list.</em></h1>
+
+      <p class="hero-body">
+        Your email address has been verified and your subscription is now active.
+        <strong>You'll only ever hear from us because you asked to</strong> — and you can leave just as easily, any time you want.
+      </p>
+    </div>
+
+    <!-- WHAT TO EXPECT -->
+    <div class="card-body">
+      <div class="body-label">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="#00C8FF" stroke-width="1.3"/><path d="M1 5l6 4 6-4" stroke="#00C8FF" stroke-width="1.3"/></svg>
+        What you'll receive
+      </div>
+
+      <ul class="expect-list">
+        <li>
+          <span class="expect-dot"></span>
+          <span><strong>Trading education and market analysis</strong> — real examples, real markets, no surface-level content.</span>
+        </li>
+        <li>
+          <span class="expect-dot"></span>
+          <span><strong>Invitations to free live workshops</strong> — sessions on strategy, price action, and how to build a consistent trading process from scratch.</span>
+        </li>
+        <li>
+          <span class="expect-dot"></span>
+          <span><strong>Reminders and session updates</strong> — so you don't miss anything you signed up for.</span>
+        </li>
+        <li>
+          <span class="expect-dot"></span>
+          <span><strong>Occasional programme information</strong> — when we have something relevant to share, we'll share it. We don't send for the sake of sending.</span>
+        </li>
+      </ul>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- DELIVERABILITY TIP -->
+  <div class="tip-card">
+    <span class="tip-icon">📥</span>
+    <div>
+      <div class="tip-title">One quick step to make sure our emails reach you</div>
+      <div class="tip-body">
+        Add <code>support@marketeye.io</code> to your contacts or move our welcome email to your primary inbox.
+        Some email clients route new senders to <strong>Promotions or Spam</strong> — this tells your inbox we're someone you want to hear from.
+        Takes five seconds and means you won't miss session invites or time-sensitive updates.
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLIANCE NOTE -->
+  <p class="compliance-note">
+    You confirmed this subscription by clicking the verification link we sent you — that's it.
+    You're not charged anything for being on this list. You can unsubscribe at any time using the link in the footer of any email we send.
+    We will never sell or share your information.
+    See our <a href="mkt-i-privacy-tos/privacy-policy.html">Privacy Policy</a> for full details.
+  </p>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">MarketEye</div>
+    <p>&copy; 2026 MarketEye, LLC. All rights reserved.</p>
+    <p>
+      <strong>Risk Disclaimer:</strong> Trading futures, forex, stocks, and other financial instruments involves substantial risk of loss.
+      Past performance is not indicative of future results.
+      All content is for educational purposes only and does not constitute investment advice. CFTC Rule 4.41 applies.
+    </p>
+    <div class="footer-links">
+      <a href="mkt-i-privacy-tos/privacy-policy.html">Privacy Policy</a>
+      <a href="mkt-i-privacy-tos/terms-of-service.html">Terms of Service</a>
+      <a href="mailto:support@marketeye.io">Contact</a>
+    </div>
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+(function(){
+  /* Personalise heading with first name if passed via URL */
+  var p = new URLSearchParams(window.location.search);
+  var name = p.get('first_name') || p.get('name') || p.get('fname');
+  if(name){
+    name = decodeURIComponent(name).split(/[\s+]/)[0];
+    if(name){
+      var el = document.getElementById('heroHeading');
+      el.innerHTML = name + ', you\'re confirmed. <em>You\'re on the list.</em>';
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

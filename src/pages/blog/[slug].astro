@@ -1,0 +1,66 @@
+---
+// One blog post, rendered from its Markdown file in /_posts.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+// Posts open with "# Title", which this page already shows as its heading, so drop that first <h1>.
+const html = (post.rendered?.html ?? '').replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>/, '');
+const { title, description, date, tags } = post.data;
+const url = `https://marketeye.io/blog/${post.id}`;
+const shown = tags.filter((t) => t.toLowerCase() !== 'marketeye').slice(0, 3);
+
+const schema = [{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": title,
+      "description": description,
+      "datePublished": date.toISOString().slice(0, 10),
+      "author": { "@type": "Organization", "name": "MarketEye" },
+      "publisher": { "@type": "Organization", "name": "MarketEye", "url": "https://marketeye.io/" },
+      "mainEntityOfPage": url,
+      "keywords": tags.join(', '),
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://marketeye.io/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://marketeye.io/blog" },
+        { "@type": "ListItem", "position": 3, "name": title, "item": url },
+      ],
+    },
+  ],
+}];
+---
+<BaseLayout title={`${title} | MarketEye`} description={description} path={`/blog/${post.id}`} ogType="article" ogTitle={title} schema={schema}>
+  <article class="section post">
+    <div class="wrap post-wrap">
+      <a class="post-back" href="/blog"><span aria-hidden="true">←</span> All articles</a>
+      <p class="post-date">
+        {date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
+        {shown.length > 0 && <span> · {shown.join(', ')}</span>}
+      </p>
+      <h1 class="page-title">{title}</h1>
+      <div class="prose">
+        <Fragment set:html={html} />
+      </div>
+
+      <aside class="card post-cta" aria-labelledby="post-cta-h">
+        <span class="eyebrow">Free community</span>
+        <h2 class="t3" id="post-cta-h">Learn this with other traders, not alone.</h2>
+        <p class="muted">Answer five quick questions and we'll point you to the right first lesson in our free course.</p>
+        <div class="post-cta-actions">
+          <a class="btn" href="/#quiz">Get my free invite</a>
+          <a href="/newsletter-signup.html">Or get the free newsletter <span aria-hidden="true">→</span></a>
+        </div>
+      </aside>
+    </div>
+  </article>
+</BaseLayout>

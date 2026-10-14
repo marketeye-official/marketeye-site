@@ -1,0 +1,43 @@
+---
+// Blog index: every post, newest first.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('posts')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+
+const schema = [{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "MarketEye Blog",
+  "url": "https://marketeye.io/blog",
+  "publisher": { "@type": "Organization", "name": "MarketEye", "url": "https://marketeye.io/" },
+}];
+---
+<BaseLayout
+  title="Trading Education Blog | MarketEye"
+  description="Plain-English articles on futures trading, risk management, trading psychology and building a repeatable process, from the MarketEye community."
+  path="/blog"
+  schema={schema}
+>
+  <section class="section page-head">
+    <div class="wrap">
+      <span class="eyebrow">Blog</span>
+      <h1 class="page-title">Trading education, in plain English.</h1>
+      <p class="lead">Process, risk and psychology: the parts of trading most courses skip.</p>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap post-grid">
+      {posts.map((post) => (
+        <a class="card post-card" href={`/blog/${post.id}`}>
+          <span class="post-date">{fmt(post.data.date)}</span>
+          <h2 class="t3">{post.data.title}</h2>
+          <p class="muted">{post.data.description}</p>
+          <span class="post-more">Read article <span aria-hidden="true">→</span></span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

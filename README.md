@@ -21,8 +21,25 @@ src/components/    Header, Footer, Quiz (the 5-question hero quiz)
 src/pages/         One file per URL: index.astro (/), futures-trading.astro (/futures-trading)
 src/styles/        global.css (brand tokens and shared components)
 src/data/          hero-chart.svg + week.json (refreshed weekly), teach-chart.svg, home-schema.json
-tools/             Weekly refresh scripts
+tools/             Weekly refresh scripts, plus legacy-pages.js (see below)
+netlify/functions/ consent.js (records form consent)
+netlify.toml       Netlify build settings and redirects
+preview/           Preview landing pages from the LP builder (published to GitHub Pages, never to marketeye.io)
 ```
+
+## Pages carried over from the previous site
+
+The legal pages, ad landing pages, confirmation pages and the versioned community agreement are
+hand-written HTML files that sit at the repo root (and in `community-terms/`). `tools/legacy-pages.js`
+publishes them unchanged at the same URLs the old Eleventy site used:
+
+- `<name>.html` → `/<name>/` (for example `ret-macro-v6.html` → `/ret-macro-v6/`), or the `permalink:` in its front matter
+- The pages in its `PASSTHROUGH` list are also published at `/<name>.html`
+- `assets/`, `marketeye-icon.png` and `og-default.png` are copied as-is
+
+Keep `assets/` and `MarketEye-Logo-1.03c-Gradient-horizontal.png` where they are: the landing pages load images
+from this repo's `main` branch on GitHub, and the preview workflow copies `assets/`.
+Never edit a versioned community agreement in place; add a new version folder and update the redirect in `netlify.toml`.
 
 ## Weekly refresh (Sundays)
 
@@ -48,6 +65,6 @@ It also saves a Pre-Trade Prep post in Circle as a draft for review. Nothing is 
 - [ ] Connect the quiz form (`src/components/Quiz.astro`, `submit()`) to the email platform/Zapier that sends the Circle invite and tags the member.
 - [ ] Add Google Tag Manager in `BaseLayout.astro` (placeholder comment in `<head>`); map `quiz_start`, `quiz_complete`, `generate_lead`, `cta_click` to GA4, Meta and TikTok.
 - [ ] Cookie consent banner with Google Consent Mode.
-- [ ] 301 redirects from current marketeye.io URLs (`public/_redirects` on Netlify/Cloudflare).
-- [ ] Remaining pages: /welcome, /mentorship, /about, legal pages, blog, /tools/tick-value-calculator, 404.
+- [ ] Remaining pages: /welcome, /mentorship, /about, /tools/tick-value-calculator, /risk-disclosure, /contact, 404.
+- [ ] `robots.txt`: the old site blocked all crawlers; this one allows them. Confirm before launch.
 - [ ] Attorney review of disclosures; confirm testimonials and stats.

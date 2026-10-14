@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cancellation Instructions — MarketEye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#00C8FF;
+  --blue-mid:#2B72E8;
+  --indigo:#5033C3;
+  --grad:linear-gradient(135deg,#00C8FF 0%,#2B72E8 45%,#5033C3 100%);
+  --grad-text:linear-gradient(90deg,#00C8FF,#6B8EFF);
+  --navy:#04091C;
+  --navy-mid:#070E25;
+  --navy-card:#0A1530;
+  --border:rgba(0,200,255,0.12);
+  --border-bright:rgba(0,200,255,0.3);
+  --text:#D0DEFF;
+  --muted:#8FA3C0;
+  --cream:#FFFFFF;
+}
+
+html{font-size:18px;}
+body{
+  font-family:'Barlow',sans-serif;
+  background:var(--navy);
+  color:var(--text);
+  min-height:100vh;
+  position:relative;
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 75% 50%,rgba(0,200,255,0.04) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 80%,rgba(80,51,195,0.03) 0%,transparent 50%);
+  pointer-events:none;z-index:0;
+}
+
+/* TICKER */
+.ticker-bar{
+  background:linear-gradient(90deg,#0A1848,#051028,#0A1848);
+  border-bottom:1px solid var(--border);
+  height:32px;overflow:hidden;display:flex;align-items:center;
+  position:relative;z-index:10;
+}
+.ticker-track{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
+.ticker-track span{font-size:0.6875rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;padding:0 24px;}
+.ticker-track span.up{color:#22D98A;}
+.ticker-track span.dn{color:#FF5A5A;}
+.ticker-track span.up::before{content:'▲ ';}
+.ticker-track span.dn::before{content:'▼ ';}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* HEADER */
+.site-header{
+  border-bottom:1px solid var(--border);
+  padding:18px 0;
+  position:relative;z-index:1;
+}
+.header-inner{
+  max-width:760px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;gap:10px;
+}
+.logo-icon{width:32px;height:32px;}
+.logo-text{
+  font-family:'Exo 2',sans-serif;font-size:1.125rem;font-weight:700;
+  background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:0.04em;
+}
+.logo-tag{font-size:0.5625rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-left:4px;}
+
+/* CONTENT */
+.page-wrap{
+  max-width:760px;margin:0 auto;padding:56px 24px 80px;
+  position:relative;z-index:1;
+}
+
+.page-eyebrow{
+  display:flex;align-items:center;gap:10px;margin-bottom:20px;
+}
+.eyebrow-line{height:1px;width:28px;background:var(--blue);flex-shrink:0;}
+.eyebrow-text{font-size:0.5625rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);font-weight:600;}
+
+h1{
+  font-family:'Exo 2',sans-serif;
+  font-size:clamp(26px,3.5vw,36px);
+  font-weight:800;line-height:1.1;
+  color:var(--cream);margin-bottom:8px;
+}
+
+.meta{font-size:0.8125rem;color:var(--muted);margin-bottom:40px;}
+
+.grad-divider{height:1px;background:var(--grad);opacity:0.2;margin-bottom:40px;}
+
+/* STEPS */
+.steps{
+  display:flex;flex-direction:column;gap:0;
+  margin-bottom:40px;
+}
+.step{
+  display:flex;gap:20px;
+  padding:24px 0;
+  border-bottom:1px solid var(--border);
+}
+.step:first-child{padding-top:0;}
+.step:last-child{border-bottom:none;padding-bottom:0;}
+
+.step-num{
+  flex-shrink:0;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(0,200,255,0.08);
+  border:1px solid rgba(0,200,255,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Exo 2',sans-serif;font-size:0.875rem;font-weight:700;
+  color:var(--blue);
+  margin-top:2px;
+}
+.step-body h3{
+  font-family:'Exo 2',sans-serif;font-size:1rem;font-weight:700;
+  color:var(--cream);margin-bottom:6px;
+}
+.step-body p{
+  font-size:0.9375rem;color:var(--text);line-height:1.7;margin-bottom:8px;
+}
+.step-body p:last-child{margin-bottom:0;}
+
+.email-block{
+  display:inline-block;
+  background:rgba(0,200,255,0.06);
+  border:1px solid rgba(0,200,255,0.2);
+  border-radius:4px;
+  padding:12px 16px;
+  margin-top:4px;
+  font-size:0.875rem;
+  line-height:1.7;
+  color:var(--text);
+}
+.email-block strong{color:var(--cream);display:block;margin-bottom:2px;}
+
+.doc-section{margin-bottom:36px;}
+.doc-section h2{
+  font-family:'Exo 2',sans-serif;font-size:1rem;font-weight:700;
+  color:var(--cream);letter-spacing:0.04em;
+  margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.doc-section p{
+  font-size:0.9375rem;color:var(--text);line-height:1.75;margin-bottom:12px;
+}
+.doc-section p:last-child{margin-bottom:0;}
+
+.doc-section ul{
+  list-style:none;padding:0;margin:0 0 12px;
+}
+.doc-section ul li{
+  font-size:0.9375rem;color:var(--text);line-height:1.7;
+  padding-left:18px;position:relative;margin-bottom:6px;
+}
+.doc-section ul li::before{
+  content:'';position:absolute;left:0;top:10px;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--blue);opacity:0.7;
+}
+
+.highlight-box{
+  background:rgba(0,200,255,0.04);
+  border:1px solid rgba(0,200,255,0.15);
+  border-left:3px solid var(--blue);
+  border-radius:4px;
+  padding:16px 20px;
+  margin-bottom:12px;
+}
+.highlight-box p{
+  font-size:0.9375rem;color:var(--text);line-height:1.7;margin:0;
+}
+
+.warning-box{
+  background:rgba(255,90,90,0.04);
+  border:1px solid rgba(255,90,90,0.2);
+  border-left:3px solid #FF5A5A;
+  border-radius:4px;
+  padding:16px 20px;
+  margin-bottom:12px;
+}
+.warning-box p{
+  font-size:0.9375rem;color:var(--text);line-height:1.7;margin:0;
+}
+
+a{color:var(--blue);text-decoration:none;}
+a:hover{text-decoration:underline;}
+strong{color:var(--cream);font-weight:600;}
+
+/* FOOTER */
+.doc-footer{
+  margin-top:56px;padding-top:24px;
+  border-top:1px solid var(--border);
+}
+.doc-footer p{
+  font-size:0.75rem;color:var(--muted);line-height:1.7;margin-bottom:8px;
+}
+.doc-footer .footer-links{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:12px;
+}
+.doc-footer .footer-links a{font-size:0.75rem;color:var(--muted);}
+.doc-footer .footer-links a:hover{color:var(--blue);}
+
+@media(max-width:600px){
+  .page-wrap{padding:36px 20px 60px;}
+  h1{font-size:1.625rem;}
+  .step{gap:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track">
+    <span class="up">ES 5,842.25 +18.50</span>
+    <span class="dn">NQ 20,421.00 -32.75</span>
+    <span class="up">GC 2,398.40 +12.10</span>
+    <span class="up">CL 79.82 +1.24</span>
+    <span class="dn">EUR/USD 1.0843 -0.0012</span>
+    <span class="up">BTC 97,468 +1,240</span>
+    <span class="up">RTY 2,104.50 +8.30</span>
+    <span class="dn">YM 43,218 -95</span>
+    <span class="up">MES 584.23 +1.85</span>
+    <span class="up">ES 5,842.25 +18.50</span>
+    <span class="dn">NQ 20,421.00 -32.75</span>
+    <span class="up">GC 2,398.40 +12.10</span>
+    <span class="up">CL 79.82 +1.24</span>
+    <span class="dn">EUR/USD 1.0843 -0.0012</span>
+    <span class="up">BTC 97,468 +1,240</span>
+    <span class="up">RTY 2,104.50 +8.30</span>
+    <span class="dn">YM 43,218 -95</span>
+    <span class="up">MES 584.23 +1.85</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="17" stroke="url(#lg)" stroke-width="1.5"/>
+      <polyline points="7,24 13,16 18,20 24,12 29,14" stroke="url(#lg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#00C8FF"/><stop offset="1" stop-color="#5033C3"/></linearGradient></defs>
+    </svg>
+    <span class="logo-text">MarketEye</span>
+    <span class="logo-tag">Trading Education</span>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<div class="page-wrap">
+  <div class="page-eyebrow">
+    <div class="eyebrow-line"></div>
+    <span class="eyebrow-text">Legal &amp; Policies</span>
+  </div>
+
+  <h1>Cancellation Instructions</h1>
+  <p class="meta">MarketEye, LLC &nbsp;·&nbsp; Last updated: May 2026</p>
+  <div class="grad-divider"></div>
+
+  <div class="doc-section">
+    <h2>How to Cancel</h2>
+    <p>
+      Because MarketEye does not currently have a self-serve member portal, all cancellation
+      requests must be submitted by email. The process is straightforward and takes less than
+      a minute.
+    </p>
+  </div>
+
+  <!-- STEPS -->
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Send a cancellation email</h3>
+        <p>
+          Email us at <a href="mailto:support@marketeye.io">support@marketeye.io</a> from the
+          address associated with your MarketEye membership.
+        </p>
+        <div class="email-block">
+          <strong>Suggested subject line:</strong>
+          Cancellation Request — [Your Full Name]
+          <br><br>
+          <strong>Include in the body:</strong><br>
+          · Your full name<br>
+          · The email address on your account<br>
+          · A brief note that you'd like to cancel your membership
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Receive confirmation</h3>
+        <p>
+          Our team will confirm your cancellation by reply email within
+          <strong>14 business days</strong>. This confirmation is your record that the cancellation
+          has been processed — please keep it.
+        </p>
+        <p>
+          If you do not receive a reply within 14 business days, follow up at
+          <a href="mailto:support@marketeye.io">support@marketeye.io</a> to ensure your request
+          was received.
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Access ends at the close of your billing period</h3>
+        <p>
+          Once cancelled, no further charges will be made. Your access to MarketEye's Slack and
+          ClickUp spaces remains active through the end of your current 90-day billing period,
+          after which you will be removed from both platforms.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="doc-section">
+    <h2>Timing — Cancel Before Your Renewal Date</h2>
+    <div class="warning-box">
+      <p>Cancellation requests must be received and confirmed <strong>before</strong> your next renewal date to avoid being charged for the following quarter. Charges that have already been processed cannot be refunded.</p>
+    </div>
+    <p>
+      Your membership renews every 90 days from the date your first quarterly payment was processed.
+      If you are unsure of your next renewal date, email
+      <a href="mailto:support@marketeye.io">support@marketeye.io</a> and we will confirm it for you.
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>What Happens After Cancellation</h2>
+    <ul>
+      <li>No further charges will be made to your card.</li>
+      <li>You retain access to Slack and ClickUp through the end of your paid period.</li>
+      <li>At the end of the billing period you will be removed from both community spaces.</li>
+      <li>Your cancellation confirmation email serves as proof that recurring billing has been stopped.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>Rejoining After Cancellation</h2>
+    <p>
+      You are welcome to re-enroll at any time at the then-current membership rate — no additional
+      trial fee is required to rejoin. Prior membership history does not carry over.
+    </p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Questions</h2>
+    <p>
+      If you have any questions about your cancellation, billing, or access, contact us directly:
+    </p>
+    <p>
+      <strong>Email:</strong> <a href="mailto:support@marketeye.io">support@marketeye.io</a><br>
+      <strong>Company:</strong> MarketEye, LLC
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <p>&copy; 2026 MarketEye, LLC. All rights reserved. These instructions are subject to change; the current version will always be posted at this URL.</p>
+    <p style="margin-top:4px;font-size:0.6875rem;color:rgba(143,163,192,0.5);">
+      Trading futures, forex, and other financial instruments involves substantial risk of loss and is not
+      appropriate for all investors. Past performance is not indicative of future results. MarketEye content
+      is for educational purposes only and does not constitute investment advice.
+    </p>
+    <div class="footer-links">
+      <a href="refund-policy.html">Refund Policy</a>
+      <a href="membership-billing-terms.html">Billing Terms</a>
+      <a href="cancellation-instructions.html">Cancellation Instructions</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
