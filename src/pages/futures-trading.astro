@@ -1,0 +1,646 @@
+---
+// Futures Trading 101: the main SEO pillar page, with a tick value calculator,
+// a position size calculator and a live futures market-hours clock.
+import BaseLayout from '../layouts/BaseLayout.astro';
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Futures Trading for Beginners: Futures Trading 101",
+        "description": "What a futures contract is, ES vs MES and NQ vs MNQ, tick values, trading hours, rollover, margin, and risk, with free calculators.",
+        "datePublished": "2026-10-11",
+        "dateModified": "2026-10-11",
+        "author": {
+          "@type": "Organization",
+          "name": "MarketEye"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "MarketEye",
+          "url": "https://marketeye.io/"
+        },
+        "mainEntityOfPage": "https://marketeye.io/futures-trading"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://marketeye.io/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Learn",
+            "item": "https://marketeye.io/learn"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Futures Trading 101",
+            "item": "https://marketeye.io/futures-trading"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is futures trading good for beginners?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It can be, if you learn on micro contracts in a simulator first and put risk management before strategy. Futures are leveraged, so beginners who skip that step often lose money quickly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much money do I need to start trading futures?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You need no money to start learning, because simulators are free or low-cost. To trade real money, your broker sets the minimum deposit and margin requirements, and they vary. Whatever the amount, it should be money you can afford to lose, because futures losses can exceed your deposit."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between ES and MES?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "MES is the micro version of ES and is one-tenth the size. ES is worth $50 per point ($12.50 per tick), and MES is worth $5 per point ($1.25 per tick). They follow the same index, so the charts look the same."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What hours can you trade futures?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "US equity index futures trade on CME Globex from Sunday 6:00 PM ET to Friday 5:00 PM ET, with a daily break from 5:00 to 6:00 PM ET Monday through Thursday. Holiday schedules differ."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does the pattern day trader rule apply to futures?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The pattern day trader rule applies to stock margin accounts. Futures accounts follow your broker's margin requirements instead."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can you lose more than you invest in futures?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Because futures are leveraged, a fast move against your position can produce losses larger than the money in your account, and you'd owe the difference to your broker."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+---
+<BaseLayout
+  title="Futures Trading for Beginners: Futures Trading 101 | MarketEye"
+  description="Learn futures trading from scratch: what a futures contract is, ES vs MES and NQ vs MNQ, tick values, trading hours, rollover, margin, and risk. Free calculators included."
+  ogType="article"
+  ogTitle="Futures Trading for Beginners: Futures Trading 101"
+  ogDescription="What a futures contract is, ES vs MES, tick values, trading hours, margin, and risk, with free calculators."
+  path="/futures-trading"
+  schema={schema}
+  stickyCta={false}
+>
+<div class="f101">
+<div class="guide-head">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/learn">Learn</a><span>/</span><span aria-current="page">Futures Trading 101</span></nav>
+    <h1>Futures Trading for Beginners: Futures Trading 101</h1>
+    <p class="lede">Everything a new trader needs to understand before placing a first futures trade: what a contract is, how ticks turn into dollars, when the market is open, and how to manage risk on a leveraged product. Written for complete beginners, with free calculators.</p>
+    <div class="meta-row"><span>By the MarketEye trading team</span><span>Updated Oct 11, 2026</span><span>~15 min read</span><span><b>●</b> Education only, not trade recommendations</span></div>
+    <div class="key-facts" aria-label="Key facts">
+      <div><b>$12.50</b><span>Value of one tick on the E-mini S&amp;P 500 (ES)</span></div>
+      <div><b>$1.25</b><span>Value of one tick on the Micro E-mini (MES)</span></div>
+      <div><b>~23 hrs</b><span>Index futures trade Sunday evening to Friday afternoon</span></div>
+      <div><b>4×</b><span>Quarterly contract months: Mar, Jun, Sep, Dec</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap layout">
+  <aside class="rail" aria-label="On this page">
+    <nav class="toc" id="toc">
+      <b>On this page</b>
+      <a href="#what">What is a futures contract?</a>
+      <a href="#why">Why traders learn futures</a>
+      <a href="#contracts">E-mini vs micro contracts</a>
+      <a href="#ticks">Tick size and tick value</a>
+      <a href="#hours">Futures trading hours</a>
+      <a href="#rollover">Contract months and rollover</a>
+      <a href="#margin">Leverage and margin</a>
+      <a href="#vs-stocks">Futures vs stocks</a>
+      <a href="#risk">Position sizing</a>
+      <a href="#practice">Practice in a simulator</a>
+      <a href="#plan">Your first trading plan</a>
+      <a href="#mistakes">Beginner mistakes</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="rail-cta">
+      <strong>Learn futures with a community beside you</strong>
+      <p>Answer 5 questions and get a free starting plan plus an invite to the MarketEye community.</p>
+      <a href="/#quiz" class="btn btn-sm" data-cta="rail">Get my free plan</a>
+    </div>
+  </aside>
+
+  <article>
+    <section id="what">
+      <span class="sec-num">01 · THE BASICS</span>
+      <h2>What is a futures contract?</h2>
+      <p>A <strong>futures contract</strong> is a standardized agreement to buy or sell something at a set price on a set date in the future. The "something" can be a stock index, crude oil, gold, interest rates, or currencies. Every contract on the exchange has the same size, tick size, and expiration rules, which is why they're easy to compare and trade.</p>
+      <p>Most futures day traders never take or deliver anything. They open a position and close it the same day, and their profit or loss is the difference between the two prices. Index futures like the E-mini S&amp;P 500 are also <strong>cash-settled</strong>, so there's no physical delivery even if you held one to expiration.</p>
+      <div class="example">
+        <span class="lbl">Simulated example</span>
+        <p>A trader buys 1 Micro E-mini S&amp;P 500 (MES) contract at 5,840.00 in a simulator and sells it at 5,844.00. That's a 4-point move. Each MES point is worth $5, so the simulated result is a $20 gain before fees. If price had fallen 4 points instead, it would have been a $20 loss.</p>
+      </div>
+      <p>Futures trade on regulated exchanges. In the US, the most popular index futures trade on the CME Group's electronic platform, CME Globex, and the market is overseen by the Commodity Futures Trading Commission (CFTC).</p>
+    </section>
+
+    <section id="why">
+      <span class="sec-num">02 · WHY FUTURES</span>
+      <h2>Why traders learn futures</h2>
+      <ul>
+        <li><strong>Nearly around-the-clock hours.</strong> Index futures trade from Sunday evening to Friday afternoon (US Eastern), so you can practice before work or in the evening.</li>
+        <li><strong>One centralized market.</strong> Every order for a contract goes to the same exchange, so everyone sees the same prices and volume.</li>
+        <li><strong>Small, standardized contracts.</strong> Micro contracts are one-tenth the size of the E-minis, which makes the numbers easier for beginners to follow.</li>
+        <li><strong>A few markets to master.</strong> Many traders focus on just one or two contracts, such as ES and NQ, instead of scanning thousands of stocks.</li>
+      </ul>
+      <div class="note risk"><b>Leverage cuts both ways.</b> A small deposit controls a much larger contract value. That's what makes futures efficient, and it's also why losses can exceed the money in your account. Risk management comes before everything else on this page.</div>
+    </section>
+
+    <section id="contracts">
+      <span class="sec-num">03 · CONTRACTS</span>
+      <h2>E-mini vs micro futures: ES, MES, NQ, MNQ</h2>
+      <p>The two most popular index futures are the <strong>E-mini S&amp;P 500 (ES)</strong>, which tracks the 500 large US companies in the S&amp;P 500, and the <strong>E-mini Nasdaq-100 (NQ)</strong>, which tracks 100 of the largest Nasdaq-listed companies. Each has a <strong>micro</strong> version that is exactly one-tenth the size.</p>
+      <div class="tw">
+        <table>
+          <caption>Contract specifications per CME Group. Confirm current specs with the exchange and your broker.</caption>
+          <thead><tr><th scope="col">Contract</th><th scope="col">Symbol</th><th scope="col">Value per point</th><th scope="col">Tick size</th><th scope="col">Value per tick</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">E-mini S&amp;P 500</th><td class="num">ES</td><td class="num">$50.00</td><td class="num">0.25</td><td class="num">$12.50</td></tr>
+            <tr><th scope="row">Micro E-mini S&amp;P 500</th><td class="num">MES</td><td class="num">$5.00</td><td class="num">0.25</td><td class="num">$1.25</td></tr>
+            <tr><th scope="row">E-mini Nasdaq-100</th><td class="num">NQ</td><td class="num">$20.00</td><td class="num">0.25</td><td class="num">$5.00</td></tr>
+            <tr><th scope="row">Micro E-mini Nasdaq-100</th><td class="num">MNQ</td><td class="num">$2.00</td><td class="num">0.25</td><td class="num">$0.50</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Which should a beginner learn first?</h3>
+      <p>Most beginners learn on <strong>micro contracts in a simulator</strong>. The price chart is identical to the E-mini, so every lesson carries over, but each move is worth one-tenth as much. NQ and MNQ usually move more points per day than ES and MES, so many new traders find the S&amp;P contracts calmer to learn on.</p>
+    </section>
+
+    <section id="ticks">
+      <span class="sec-num">04 · TICKS</span>
+      <h2>Tick size and tick value, explained</h2>
+      <p>A <strong>tick</strong> is the smallest price move a contract can make. For ES, MES, NQ, and MNQ, one tick is 0.25 points, so there are 4 ticks in every point. The <strong>tick value</strong> is how much money one tick is worth per contract.</p>
+      <p>The formula is simple: <span class="mono">dollar change = ticks moved × tick value × contracts</span>. Try it below.</p>
+
+      <div class="tool" id="tick-tool">
+        <div class="tool-head"><h3>Futures tick value calculator</h3><span>Free tool</span></div>
+        <div class="fields">
+          <div class="field"><label for="tc-contract">Contract</label>
+            <select id="tc-contract"><option value="ES">ES · E-mini S&amp;P 500</option><option value="MES" selected>MES · Micro E-mini S&amp;P</option><option value="NQ">NQ · E-mini Nasdaq-100</option><option value="MNQ">MNQ · Micro E-mini Nasdaq</option></select></div>
+          <div class="field"><label for="tc-amount">Price move</label>
+            <input id="tc-amount" type="number" inputmode="decimal" min="0" step="0.25" value="4"></div>
+          <div class="field"><label for="tc-qty">Contracts</label>
+            <input id="tc-qty" type="number" inputmode="numeric" min="1" step="1" value="1"></div>
+        </div>
+        <div class="field" style="margin-top:12px"><span style="font-size:.8rem;font-weight:600;color:var(--muted)">Price move is in</span>
+          <div class="seg" role="group" aria-label="Price move units"><button type="button" id="tc-unit-points" aria-pressed="true">Points</button><button type="button" id="tc-unit-ticks" aria-pressed="false">Ticks</button></div>
+        </div>
+        <div class="result" aria-live="polite"><span class="big" id="tc-out">$20.00</span><span class="sub" id="tc-sub">4 points = 16 ticks × $1.25 × 1 contract</span></div>
+        <p class="tool-foot">Before commissions and fees. For education only.</p>
+      </div>
+    </section>
+
+    <section id="hours">
+      <span class="sec-num">05 · HOURS</span>
+      <h2>Futures trading hours</h2>
+      <p>US equity index futures (ES, MES, NQ, MNQ) trade on CME Globex almost 23 hours a day, five days a week. All times below are US Eastern Time (ET).</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">Period</th><th scope="col">Time (ET)</th><th scope="col">What it means</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Weekly open</th><td class="num">Sun 6:00 PM</td><td>Trading starts for the week.</td></tr>
+            <tr><th scope="row">Daily break</th><td class="num">Mon–Thu 5:00–6:00 PM</td><td>A one-hour pause each evening.</td></tr>
+            <tr><th scope="row">US cash session</th><td class="num">Mon–Fri 9:30 AM–4:00 PM</td><td>When the stock market is open. Volume and movement are usually highest here, especially in the first hour.</td></tr>
+            <tr><th scope="row">Weekly close</th><td class="num">Fri 5:00 PM</td><td>Trading stops for the weekend.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tool" id="clock-tool">
+        <div class="tool-head"><h3>Is the futures market open right now?</h3><span>Live</span></div>
+        <div class="clock">
+          <div class="light" id="clk-light"><i></i></div>
+          <div><div class="state" id="clk-state">Checking…</div><div class="detail" id="clk-detail"></div></div>
+        </div>
+        <div class="week" id="clk-week" aria-hidden="true"></div>
+        <p class="tool-foot">Regular weekly schedule for CME equity index futures. Exchange holidays and early closes aren't included; check the CME holiday calendar.</p>
+      </div>
+      <div class="note tip"><b>Schedule tip:</b> you don't need to trade all day. Many MarketEye members pick one consistent 60 to 90 minute window, such as the first hour of the cash session or an evening window, and practice only then.</div>
+    </section>
+
+    <section id="rollover">
+      <span class="sec-num">06 · EXPIRATION</span>
+      <h2>Contract months, symbols, and rollover</h2>
+      <p>Index futures expire four times a year. Each contract month has a one-letter code, and the full symbol adds the year. For example, <span class="mono">ESZ26</span> is the E-mini S&amp;P 500 expiring in December 2026.</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">Month</th><th scope="col">March</th><th scope="col">June</th><th scope="col">September</th><th scope="col">December</th></tr></thead>
+          <tbody><tr><th scope="row">Code</th><td class="num">H</td><td class="num">M</td><td class="num">U</td><td class="num">Z</td></tr></tbody>
+        </table>
+      </div>
+      <p>Equity index futures expire on the <strong>third Friday</strong> of the contract month. About a week before that, most traders <strong>roll over</strong> to the next contract because that's where the volume moves. Your platform will usually show which contract is the "front month." Always check that your chart and your order ticket are on the same contract.</p>
+    </section>
+
+    <section id="margin">
+      <span class="sec-num">07 · LEVERAGE</span>
+      <h2>Leverage and margin, explained</h2>
+      <p><strong>Margin</strong> in futures is a good-faith deposit, not a loan. The exchange sets an <strong>initial margin</strong> to open a position overnight and a <strong>maintenance margin</strong> you must keep above. Many brokers also set lower <strong>day-trading margins</strong> for positions closed before the end of the session. All of these amounts change, so check your broker's current requirements.</p>
+      <p>Because the deposit is small compared with the full contract value, futures are <strong>leveraged</strong>. One ES contract controls 50 times the index level. At an index level of 5,800, that's $290,000 of exposure, regardless of how much money is in the account.</p>
+      <div class="note risk"><b>You can lose more than you deposit.</b> If a position moves against you quickly, your losses aren't capped at your account balance. Your broker can also close positions if your account falls below margin. This is the main reason to learn on a simulator and to size positions from your risk, not from your available margin.</div>
+    </section>
+
+    <section id="vs-stocks">
+      <span class="sec-num">08 · COMPARISON</span>
+      <h2>Futures vs stocks for a new trader</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col"></th><th scope="col">Index futures</th><th scope="col">Individual stocks</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Trading hours</th><td>Nearly 23 hours, Sun–Fri</td><td>Mainly 9:30 AM–4:00 PM ET, plus limited extended hours</td></tr>
+            <tr><th scope="row">What you study</th><td>One or two contracts</td><td>Thousands of tickers to scan</td></tr>
+            <tr><th scope="row">Pattern day trader rule</th><td>Doesn't apply (broker margin rules do)</td><td>Applies to margin accounts under $25,000</td></tr>
+            <tr><th scope="row">Leverage</th><td>Built in; losses can exceed deposit</td><td>Optional margin; cash accounts can't lose more than invested</td></tr>
+            <tr><th scope="row">Expiration</th><td>Quarterly; roll to the next contract</td><td>None</td></tr>
+            <tr><th scope="row">Short selling</th><td>As simple as buying</td><td>Requires borrowing shares</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Neither is "better." Futures suit people who want a small number of markets and flexible hours. The trade-off is built-in leverage, which makes risk management non-negotiable.</p>
+    </section>
+
+    <section id="risk">
+      <span class="sec-num">09 · RISK</span>
+      <h2>How to size a futures position</h2>
+      <p>Professional traders size positions backwards: they start with how much they're willing to lose on one trade, then work out how many contracts that allows. Many traders cap a single trade's risk at a small, fixed share of their account, and also set a <strong>daily loss limit</strong> that ends the session when it's hit.</p>
+      <p><span class="mono">max contracts = risk per trade ÷ (stop distance in ticks × tick value)</span></p>
+
+      <div class="tool" id="size-tool">
+        <div class="tool-head"><h3>Futures position size calculator</h3><span>Free tool</span></div>
+        <div class="fields">
+          <div class="field"><label for="ps-risk">Max risk per trade ($)</label>
+            <input id="ps-risk" type="number" inputmode="decimal" min="1" step="1" value="100"></div>
+          <div class="field"><label for="ps-stop">Stop distance (ticks)</label>
+            <input id="ps-stop" type="number" inputmode="numeric" min="1" step="1" value="16"></div>
+          <div class="field"><label for="ps-contract">Contract</label>
+            <select id="ps-contract"><option value="ES">ES · E-mini S&amp;P 500</option><option value="MES" selected>MES · Micro E-mini S&amp;P</option><option value="NQ">NQ · E-mini Nasdaq-100</option><option value="MNQ">MNQ · Micro E-mini Nasdaq</option></select></div>
+        </div>
+        <div class="result" id="ps-result" aria-live="polite"><span class="big" id="ps-out">5 contracts</span><span class="sub" id="ps-sub">Each contract risks 16 ticks × $1.25 = $20.00. Total risk: $100.00.</span></div>
+        <p class="tool-foot">Example values. Doesn't include slippage, commissions, or fees, and isn't a recommendation to trade any size.</p>
+      </div>
+    </section>
+
+    <section id="practice">
+      <span class="sec-num">10 · PRACTICE</span>
+      <h2>Practice in a simulator before risking money</h2>
+      <p>A futures simulator uses live market data but fake money. It's where you learn the platform, test your rules, and build a track record without the cost of beginner mistakes.</p>
+      <ol class="steps">
+        <li><span><strong>Pick one contract.</strong> MES is the most common starting point. Learn how it moves before adding a second market.</span></li>
+        <li><span><strong>Pick one setup.</strong> Learn one complete pattern, with entry, stop, and exit rules, from start to finish.</span></li>
+        <li><span><strong>Trade the same window every day.</strong> Consistency in timing makes your results comparable.</span></li>
+        <li><span><strong>Journal every trade.</strong> Record the setup, whether you followed your rules, and how you felt.</span></li>
+        <li><span><strong>Review weekly against benchmarks.</strong> Look at rule-following first and results second. Only consider real money after a long stretch of consistent simulated results.</span></li>
+      </ol>
+      <div class="note tip"><b>Inside MarketEye:</b> the team posts step-by-step trade breakdowns, and members share their own simulated charts in the comments for feedback. MES is the contract we trade most often as a group.</div>
+    </section>
+
+    <section id="plan">
+      <span class="sec-num">11 · YOUR PLAN</span>
+      <h2>Your first futures trading plan</h2>
+      <p>A trading plan is a short set of written rules you follow every session. If a rule isn't written down, it's easy to break under pressure. Start with these sections:</p>
+      <ul class="plan">
+        <li><b>Market</b><span>Which contract you trade (for example, MES only).</span></li>
+        <li><b>Session</b><span>Your trading window, such as 9:30 to 11:00 AM ET.</span></li>
+        <li><b>Setup</b><span>The one pattern you're allowed to trade, described in plain words.</span></li>
+        <li><b>Entry</b><span>The exact condition that gets you in.</span></li>
+        <li><b>Stop</b><span>Where you're wrong, decided before you enter.</span></li>
+        <li><b>Target</b><span>Where you take profit, or how you trail.</span></li>
+        <li><b>Size</b><span>Your max risk per trade and the contract count that results.</span></li>
+        <li><b>Daily limit</b><span>The loss, or number of losing trades, that ends your day.</span></li>
+        <li><b>Review</b><span>When you journal and when you review the week.</span></li>
+      </ul>
+    </section>
+
+    <section id="mistakes">
+      <span class="sec-num">12 · AVOID</span>
+      <h2>Common futures trading mistakes beginners make</h2>
+      <ul class="mistakes">
+        <li><strong>Sizing from margin instead of risk.</strong> Just because you can open 5 contracts doesn't mean your plan allows it.</li>
+        <li><strong>Trading without a stop.</strong> Leverage turns a "it'll come back" moment into an account-ending one.</li>
+        <li><strong>Revenge trading after a loss.</strong> Your daily loss limit exists for this exact moment.</li>
+        <li><strong>Jumping between markets.</strong> ES in the morning, crude oil at lunch, NQ in the afternoon means you never learn one well.</li>
+        <li><strong>Trading the wrong contract month.</strong> Check the symbol after every rollover.</li>
+        <li><strong>Skipping the simulator.</strong> Real money is an expensive place to learn the order ticket.</li>
+      </ul>
+    </section>
+
+    <section id="faq">
+      <span class="sec-num">13 · FAQ</span>
+      <h2>Futures trading FAQ</h2>
+      <details><summary>Is futures trading good for beginners?</summary><p>It can be, if you learn on micro contracts in a simulator first and put risk management before strategy. Futures are leveraged, so beginners who skip that step often lose money quickly.</p></details>
+      <details><summary>How much money do I need to start trading futures?</summary><p>You need no money to start learning, because simulators are free or low-cost. To trade real money, your broker sets the minimum deposit and margin requirements, and they vary. Whatever the amount, it should be money you can afford to lose, because futures losses can exceed your deposit.</p></details>
+      <details><summary>What is the difference between ES and MES?</summary><p>MES is the micro version of ES and is one-tenth the size. ES is worth $50 per point ($12.50 per tick), and MES is worth $5 per point ($1.25 per tick). They follow the same index, so the charts look the same.</p></details>
+      <details><summary>What hours can you trade futures?</summary><p>US equity index futures trade on CME Globex from Sunday 6:00 PM ET to Friday 5:00 PM ET, with a daily break from 5:00 to 6:00 PM ET Monday through Thursday. Holiday schedules differ.</p></details>
+      <details><summary>Does the pattern day trader rule apply to futures?</summary><p>No. The pattern day trader rule applies to stock margin accounts. Futures accounts follow your broker's margin requirements instead.</p></details>
+      <details><summary>Can you lose more than you invest in futures?</summary><p>Yes. Because futures are leveraged, a fast move against your position can produce losses larger than the money in your account, and you'd owe the difference to your broker.</p></details>
+    </section>
+
+    <section id="next">
+      <div class="end-cta">
+        <span class="sec-num" style="margin:0">NEXT STEP</span>
+        <h2>Learn futures trading with a community beside you.</h2>
+        <p>This guide covers the basics. The MarketEye community gives you the free 26-lesson Trading Fundamentals course, weekly Pre-Trade Prep, team trade breakdowns, and traders who review your simulated charts with you. It's free to join.</p>
+        <a href="/#quiz" class="btn" data-cta="end">Get my free starting plan</a>
+        <span class="micro">5 questions · Free forever · No credit card</span>
+      </div>
+      <h3>Keep learning</h3>
+      <div class="related">
+        <a href="/blog/micro-e-mini-futures-explained"><span>Contracts</span>Micro e-mini futures explained (MES, MNQ)</a>
+        <a href="/blog/es-vs-nq"><span>Contracts</span>ES vs NQ: which futures contract to learn first</a>
+        <a href="/blog/futures-position-sizing"><span>Risk</span>How to size a futures position in ticks</a>
+        <a href="/blog/futures-margin-explained"><span>Risk</span>Leverage and margin explained for beginners</a>
+        <a href="/blog/opening-range-breakout-es"><span>Price action</span>The opening range breakout on ES, explained</a>
+        <a href="/blog/futures-trading-plan-template"><span>Your plan</span>Write your first futures trading plan (template)</a>
+      </div>
+    </section>
+  </article>
+</div>
+</div>
+</BaseLayout>
+
+<style is:global>
+/* Futures 101 page styles, nested under .f101 so they never leak into other pages. */
+.f101 {
+  h1, h2, h3 { font-family: var(--f-display); color: var(--white); line-height: 1.15; margin: 0; text-wrap: balance; }
+  .mono { font-family: var(--f-mono); }
+  .btn { min-height: 0; padding: 13px 22px; font-size: 1rem; }
+  .btn-sm { padding: 9px 16px; font-size: .9rem; }
+  .wrap { max-width: 1180px; }
+  font-size: 18px; line-height: 1.7;
+  /* Guide header */
+  .guide-head { padding-block: 44px 40px; border-bottom: 1px solid var(--line); background: radial-gradient(ellipse 60% 120% at 85% 0%, rgba(43, 114, 232, .22), transparent 60%); }
+  .crumbs { font: 500 .75rem var(--f-mono); letter-spacing: .08em; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--cyan); }
+  .guide-head h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; margin: 16px 0 14px; max-width: 18ch; }
+  .guide-head .lede { font-size: 1.2rem; max-width: 62ch; color: var(--text); }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 20px; font: 500 .78rem var(--f-mono); color: var(--muted); }
+  .meta-row b { color: var(--green); font-weight: 500; }
+  .key-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-top: 30px; }
+  .key-facts div { background: var(--navy-2); padding: 16px 18px; display: grid; gap: 2px; }
+  .key-facts b { font: 800 1.35rem var(--f-display); color: var(--white); font-variant-numeric: tabular-nums; }
+  .key-facts span { font-size: .88rem; color: var(--muted); line-height: 1.4; }
+  @media (max-width: 760px) { .key-facts { grid-template-columns: 1fr 1fr; } }
+  
+  /* Article layout */
+  .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 56px; padding-block: 48px 80px; }
+  .rail { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; display: grid; gap: 22px; }
+  .toc { display: grid; gap: 2px; font-size: .9rem; }
+  .toc b { font: 500 .7rem var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .toc a { color: var(--muted); text-decoration: none; padding: 4px 0 4px 12px; border-left: 2px solid var(--line); line-height: 1.35; }
+  .toc a:hover, .toc a.on { color: var(--white); border-left-color: var(--cyan); }
+  .rail-cta { padding: 18px; border-radius: 14px; background: var(--card); border: 1px solid var(--line-2); display: grid; gap: 10px; }
+  .rail-cta strong { font: 700 1.05rem var(--f-display); color: var(--white); line-height: 1.25; }
+  .rail-cta p { font-size: .9rem; color: var(--muted); margin: 0; line-height: 1.5; }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; gap: 0; } .rail { display: none; } }
+  
+  article { min-width: 0; max-width: 760px; }
+  article section { padding-block: 8px 40px; }
+  article section + section { border-top: 1px solid var(--line); padding-top: 40px; }
+  article h2 { font-size: clamp(1.6rem, 3vw, 2.05rem); font-weight: 800; margin-bottom: 16px; }
+  article h3 { font-size: 1.2rem; margin: 26px 0 10px; }
+  article p { margin: 0 0 16px; max-width: 68ch; }
+  article ul, article ol { margin: 0 0 16px; padding-left: 1.3em; max-width: 68ch; }
+  article li { margin-bottom: 8px; }
+  article strong { color: var(--white); }
+  .sec-num { display: block; font: 500 .74rem var(--f-mono); letter-spacing: .14em; color: var(--cyan); margin-bottom: 8px; }
+  .note { padding: 16px 18px; border-radius: 10px; margin: 18px 0; font-size: .97rem; border: 1px solid; }
+  .note.risk { background: rgba(255, 90, 90, .06); border-color: rgba(255, 90, 90, .3); }
+  .note.risk b { color: var(--red); }
+  .note.tip { background: rgba(34, 217, 138, .06); border-color: rgba(34, 217, 138, .28); }
+  .note.tip b { color: var(--green); }
+  .example { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin: 18px 0; }
+  .example .lbl { font: 500 .7rem var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 8px; }
+  .example p:last-child { margin-bottom: 0; }
+  
+  /* Tables */
+  .tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; margin: 18px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; min-width: 560px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { font: 500 .7rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: var(--navy-2); }
+  tbody th { color: var(--white); font-weight: 600; }
+  tr:last-child td, tr:last-child th { border-bottom: 0; }
+  td.num { font-family: var(--f-mono); font-size: .9rem; font-variant-numeric: tabular-nums; color: var(--white); }
+  caption { caption-side: bottom; text-align: left; padding: 10px 16px; color: var(--muted); font-size: .84rem; }
+  
+  /* Tools */
+  .tool { background: linear-gradient(180deg, var(--card-2), var(--card)); border: 1px solid var(--line-2); border-radius: 16px; padding: 22px; margin: 22px 0; }
+  .tool-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tool-head h3 { margin: 0; font-size: 1.1rem; }
+  .tool-head span { font: 500 .7rem var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--green); }
+  .fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 620px) { .fields { grid-template-columns: 1fr; } }
+  .field { display: grid; gap: 5px; min-width: 0; }
+  .field label { font-size: .8rem; font-weight: 600; color: var(--muted); }
+  .field input, .field select { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--line-2); background: rgba(4, 9, 28, .7); color: var(--white); font: 500 1rem var(--f-body); }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(0, 200, 255, .18); }
+  .seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; }
+  .seg button { background: transparent; color: var(--muted); border: 0; padding: 10px 12px; font: 600 .9rem var(--f-body); cursor: pointer; flex: 1; }
+  .seg button[aria-pressed="true"] { background: rgba(0, 200, 255, .16); color: var(--white); }
+  .result { margin-top: 16px; padding: 16px 18px; border-radius: 10px; background: rgba(4, 9, 28, .6); border: 1px solid var(--line); display: grid; gap: 4px; }
+  .result .big { font: 800 1.9rem var(--f-display); color: var(--white); font-variant-numeric: tabular-nums; }
+  .result .sub { font-size: .92rem; color: var(--muted); }
+  .result.warn .big { color: var(--amber); }
+  .tool-foot { font-size: .82rem; color: var(--muted); margin-top: 10px; }
+  
+  /* Session clock */
+  .clock { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+  .light { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; }
+  .light i { width: 18px; height: 18px; border-radius: 50%; display: block; }
+  .light.open { background: rgba(34, 217, 138, .14); } .light.open i { background: var(--green); box-shadow: 0 0 14px var(--green); }
+  .light.break { background: rgba(255, 181, 71, .14); } .light.break i { background: var(--amber); }
+  .light.closed { background: rgba(255, 90, 90, .12); } .light.closed i { background: var(--red); }
+  .clock .state { font: 800 1.35rem var(--f-display); color: var(--white); }
+  .clock .detail { color: var(--muted); font-size: .94rem; }
+  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 18px; font: 500 .68rem var(--f-mono); text-align: center; color: var(--muted); }
+  .week div { display: grid; gap: 4px; }
+  .week span.bar { height: 26px; border-radius: 4px; background: rgba(34, 217, 138, .35); position: relative; overflow: hidden; }
+  .week span.bar.closed { background: rgba(255, 90, 90, .18); }
+  .week span.bar.partial-start { background: linear-gradient(90deg, rgba(255, 90, 90, .18) 75%, rgba(34, 217, 138, .35) 75%); }
+  .week span.bar.partial-end { background: linear-gradient(90deg, rgba(34, 217, 138, .35) 70.8%, rgba(255, 90, 90, .18) 70.8%); }
+  .week .today { color: var(--white); }
+  
+  /* Checklist + steps */
+  .steps { counter-reset: st; list-style: none; padding: 0 !important; display: grid; gap: 14px; }
+  .steps li { counter-increment: st; display: grid; grid-template-columns: 34px 1fr; gap: 14px; margin: 0; }
+  .steps li::before { content: counter(st); width: 34px; height: 34px; border-radius: 50%; background: var(--card); border: 1px solid var(--line-2); color: var(--cyan); display: grid; place-items: center; font: 500 .85rem var(--f-mono); }
+  .plan { list-style: none; padding: 0 !important; display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .plan li { display: grid; grid-template-columns: 170px 1fr; gap: 16px; padding: 14px 18px; margin: 0; border-bottom: 1px solid var(--line); background: var(--navy-2); }
+  .plan li:last-child { border-bottom: 0; }
+  .plan li b { font: 500 .78rem var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--cyan); padding-top: 3px; }
+  .plan li span { color: var(--muted); }
+  @media (max-width: 560px) { .plan li { grid-template-columns: 1fr; gap: 2px; } }
+  .mistakes { display: grid; gap: 12px; list-style: none; padding: 0 !important; }
+  .mistakes li { padding: 14px 18px; border-left: 3px solid var(--red); background: var(--navy-2); border-radius: 0 10px 10px 0; margin: 0; }
+  .mistakes li strong { display: block; margin-bottom: 2px; }
+  
+  /* FAQ */
+  details { border-bottom: 1px solid var(--line); }
+  details:first-of-type { border-top: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; padding: 18px 40px 18px 0; position: relative; font: 700 1.05rem var(--f-display); color: var(--white); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; position: absolute; right: 4px; top: 14px; font: 500 1.5rem var(--f-mono); color: var(--cyan); transition: transform .2s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { color: var(--muted); }
+  
+  /* End CTA + related */
+  .end-cta { margin-top: 12px; padding: clamp(28px, 4vw, 40px); border-radius: 20px; border: 1px solid var(--line-2); background: radial-gradient(ellipse at 50% 0%, rgba(43, 114, 232, .35), transparent 60%), var(--card); display: grid; gap: 14px; justify-items: start; }
+  .end-cta h2 { margin: 0; }
+  .end-cta p { margin: 0; color: var(--text); }
+  .end-cta .micro { font-size: .86rem; color: var(--muted); }
+  .related { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  .related a { display: grid; gap: 2px; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--navy-2); text-decoration: none; color: var(--white); font-weight: 600; line-height: 1.35; }
+  .related a span { font: 500 .68rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .related a:hover { border-color: var(--cyan); }
+  @media (max-width: 560px) { .related { grid-template-columns: 1fr; } }
+  
+  /* Footer */
+  footer.site { background: var(--navy-2); border-top: 1px solid var(--line); padding-block: 40px; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); font-size: .82rem; color: var(--muted); line-height: 1.6; }
+  footer.site .risk { display: grid; gap: 10px; max-width: 900px; }
+  footer.site a { color: var(--text); }
+  
+}
+</style>
+
+<script is:inline>
+(function () {
+  var SPEC = {
+    ES:  { name: 'ES',  pointValue: 50, tick: 0.25, tickValue: 12.5 },
+    MES: { name: 'MES', pointValue: 5,  tick: 0.25, tickValue: 1.25 },
+    NQ:  { name: 'NQ',  pointValue: 20, tick: 0.25, tickValue: 5 },
+    MNQ: { name: 'MNQ', pointValue: 2,  tick: 0.25, tickValue: 0.5 }
+  };
+  function money(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function num(el) { var v = parseFloat(el.value); return isFinite(v) && v >= 0 ? v : 0; }
+  function plural(n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); }
+
+  /* Tick value calculator */
+  var unit = 'points';
+  var tc = { c: document.getElementById('tc-contract'), a: document.getElementById('tc-amount'), q: document.getElementById('tc-qty'),
+    out: document.getElementById('tc-out'), sub: document.getElementById('tc-sub'),
+    pts: document.getElementById('tc-unit-points'), tks: document.getElementById('tc-unit-ticks') };
+  function calcTick() {
+    var s = SPEC[tc.c.value], amt = num(tc.a), qty = Math.max(1, Math.floor(num(tc.q)) || 1);
+    var ticks = unit === 'points' ? Math.round(amt / s.tick) : Math.round(amt);
+    var dollars = ticks * s.tickValue * qty;
+    tc.out.textContent = money(dollars);
+    var lead = unit === 'points' ? (amt + ' ' + (amt === 1 ? 'point' : 'points') + ' = ' + plural(ticks, 'tick')) : plural(ticks, 'tick') + ' (' + (ticks * s.tick) + ' points)';
+    tc.sub.textContent = lead + ' × ' + money(s.tickValue) + ' × ' + plural(qty, 'contract');
+  }
+  function setUnit(u) {
+    if (u === unit) return;
+    var s = SPEC[tc.c.value], amt = num(tc.a);
+    tc.a.value = u === 'ticks' ? Math.round(amt / s.tick) : (amt * s.tick);
+    tc.a.step = u === 'ticks' ? '1' : '0.25';
+    unit = u;
+    tc.pts.setAttribute('aria-pressed', String(u === 'points'));
+    tc.tks.setAttribute('aria-pressed', String(u === 'ticks'));
+    calcTick();
+  }
+  [tc.c, tc.a, tc.q].forEach(function (el) { el.addEventListener('input', calcTick); });
+  tc.pts.addEventListener('click', function () { setUnit('points'); });
+  tc.tks.addEventListener('click', function () { setUnit('ticks'); });
+  calcTick();
+
+  /* Position size calculator */
+  var ps = { r: document.getElementById('ps-risk'), s: document.getElementById('ps-stop'), c: document.getElementById('ps-contract'),
+    box: document.getElementById('ps-result'), out: document.getElementById('ps-out'), sub: document.getElementById('ps-sub') };
+  function calcSize() {
+    var spec = SPEC[ps.c.value], risk = num(ps.r), stop = Math.round(num(ps.s));
+    if (!risk || !stop) {
+      ps.box.classList.add('warn'); ps.out.textContent = '—';
+      ps.sub.textContent = 'Enter a max risk above $0 and a stop of at least 1 tick.'; return;
+    }
+    var perContract = stop * spec.tickValue;
+    var n = Math.floor(risk / perContract);
+    if (n < 1) {
+      ps.box.classList.add('warn');
+      ps.out.textContent = '0 contracts';
+      ps.sub.textContent = 'One ' + spec.name + ' contract would risk ' + money(perContract) + ', which is more than your ' + money(risk) + ' limit. A micro contract or a closer stop in your plan would fit.';
+      return;
+    }
+    ps.box.classList.remove('warn');
+    ps.out.textContent = plural(n, 'contract');
+    ps.sub.textContent = 'Each contract risks ' + plural(stop, 'tick') + ' × ' + money(spec.tickValue) + ' = ' + money(perContract) + '. Total risk: ' + money(n * perContract) + '.';
+  }
+  [ps.r, ps.s, ps.c].forEach(function (el) { el.addEventListener('input', calcSize); });
+  calcSize();
+
+  /* Session clock (CME equity index futures, regular weekly schedule, US Eastern) */
+  var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function nowET() {
+    var parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date());
+    var o = {}; parts.forEach(function (p) { o[p.type] = p.value; });
+    var h = parseInt(o.hour, 10) % 24, m = parseInt(o.minute, 10);
+    return { day: DAYS.indexOf(o.weekday), mins: h * 60 + m, label: o.weekday + ' ' + new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' }).format(new Date()) + ' ET' };
+  }
+  function status(t) {
+    var d = t.day, m = t.mins, OPEN = 18 * 60, CLOSE = 17 * 60;
+    if (d === 6) return ['closed', 'Closed for the weekend', 'Futures reopen Sunday at 6:00 PM ET.'];
+    if (d === 0) return m >= OPEN ? ['open', 'Open', 'The new trading week started at 6:00 PM ET.'] : ['closed', 'Closed for the weekend', 'Futures reopen today at 6:00 PM ET.'];
+    if (d === 5 && m >= CLOSE) return ['closed', 'Closed for the weekend', 'Futures reopen Sunday at 6:00 PM ET.'];
+    if (d >= 1 && d <= 4 && m >= CLOSE && m < OPEN) return ['break', 'Daily break', 'Trading resumes at 6:00 PM ET.'];
+    var cash = m >= 9 * 60 + 30 && m < 16 * 60;
+    return ['open', cash ? 'Open · US cash session' : 'Open', cash ? 'The stock market is also open, so volume is usually highest now.' : (d === 5 ? 'The market closes for the weekend at 5:00 PM ET.' : 'Next daily break at 5:00 PM ET.')];
+  }
+  var light = document.getElementById('clk-light'), st = document.getElementById('clk-state'), det = document.getElementById('clk-detail'), wk = document.getElementById('clk-week');
+  function renderClock() {
+    var t = nowET(), s = status(t);
+    light.className = 'light ' + s[0];
+    st.textContent = s[1];
+    det.textContent = 'It\'s ' + t.label + '. ' + s[2];
+    var cls = ['partial-start', '', '', '', '', 'partial-end', 'closed'];
+    wk.innerHTML = DAYS.map(function (d, i) { return '<div class="' + (i === t.day ? 'today' : '') + '"><span class="bar ' + cls[i] + '"></span>' + d + '</div>'; }).join('');
+  }
+  renderClock();
+  setInterval(renderClock, 30000);
+
+  /* Contents highlight */
+  var links = Array.prototype.slice.call(document.querySelectorAll('#toc a'));
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); });
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('article section[id]').forEach(function (s) { io.observe(s); });
+  }
+
+  /* Analytics hook */
+  document.querySelectorAll('[data-cta]').forEach(function (a) {
+    a.addEventListener('click', function () { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'cta_click', location: 'futures101_' + a.getAttribute('data-cta') }); });
+  });
+})();
+</script>

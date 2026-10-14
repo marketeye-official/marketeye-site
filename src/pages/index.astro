@@ -1,0 +1,265 @@
+---
+// Homepage. The hero chart and the weekly Pre-Trade Prep data are refreshed every Sunday
+// by tools/update-week.js, which rewrites src/data/hero-chart.svg and src/data/week.json.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Quiz from '../components/Quiz.astro';
+import heroChart from '../data/hero-chart.svg?raw';
+import teachChart from '../data/teach-chart.svg?raw';
+import week from '../data/week.json';
+import schema from '../data/home-schema.json';
+---
+<BaseLayout
+  title="Learn Futures Trading Free | MarketEye Futures Trading Community"
+  description="Learn to read futures charts on MES and NQ, manage risk, and build your first trading plan in a free 26-lesson course, with a community of experienced traders."
+  ogDescription="A free futures trading community with a 26-lesson course, weekly pre-trade prep, and traders who keep you accountable."
+  path="/"
+  schema={schema}
+>
+
+<section class="hero" aria-labelledby="hero-h">
+<Fragment set:html={heroChart} />
+  <div class="hero-shade"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Free futures trading community</span>
+      <h1 id="hero-h">Stop learning to trade alone.</h1>
+      <p class="lead">A free course, a weekly game plan, and traders who check your work.</p>
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg>26 free lessons</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Weekly prep</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>Simulator first</span>
+      </div>
+    </div>
+    <Quiz />
+  </div>
+  <div class="hero-fade"></div>
+  <span class="hero-note">Real MES data via TradingView · illustrative, not a recommendation</span>
+</section>
+
+<section class="proof" aria-label="Quick facts">
+  <div class="wrap">
+    <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div class="stat"><b>36+ yrs</b><span>combined trading experience</span></div></div>
+    <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/></svg></div><div class="stat"><b>26</b><span>free lessons in 8 modules</span></div></div>
+    <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18l5-6 4 3 7-9"/><path d="M15 6h5v5"/></svg></div><div class="stat"><b>MES-first</b><span>taught on micro futures</span></div></div>
+    <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v8H4v-8"/><path d="M2 7h20v5H2zM12 22V7"/></svg></div><div class="stat"><b>$0</b><span>to join the community</span></div></div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="quit-h">
+  <div class="wrap split">
+    <div class="photo"><img src="/assets/ai/01-why-traders-quit/01-why-traders-quit.jpg" alt="A trader lit by a wall of bright chart screens, one hand on the back of their head" loading="lazy"><span class="tag" style="left: 24px; bottom: 24px"><svg viewBox="0 0 24 24" fill="none" stroke="#FF8A8A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>Trading alone is hard</span></div>
+    <div class="head" style="gap: 32px">
+      <span class="eyebrow">Why traders quit</span>
+      <h2 class="h2" id="quit-h">The information is free. The support isn't.</h2>
+      <div style="display: flex; flex-direction: column; gap: 22px">
+        <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M10 9l5 2-5 2z"/></svg></div><div><div class="t3" style="font-size: 19px">Too many videos</div><p class="muted">No order, no finish line.</p></div></div>
+        <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><div><div class="t3" style="font-size: 19px">No one checks your work</div><p class="muted">Mistakes repeat for months.</p></div></div>
+        <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l6 6 4-4 8 8"/><path d="M21 11v6h-6"/></svg></div><div><div class="t3" style="font-size: 19px">One bad week</div><p class="muted">And the plan goes out the window.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" aria-labelledby="get-h">
+  <div class="wrap stack">
+    <div class="head center"><span class="eyebrow">What you get, free</span><h2 class="h2" id="get-h">Everything inside the community.</h2></div>
+    <div class="grid-3">
+      <div class="card feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/></svg></div><h3 class="t3">Free course</h3><p class="muted">26 lessons, at your pace.</p></div>
+      <div class="card feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div><h3 class="t3">Weekly Pre-Trade Prep</h3><p class="muted">The week's key releases in one post.</p></div>
+      <div class="card feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18l5-6 4 3 7-9"/></svg></div><h3 class="t3">Trade breakdowns</h3><p class="muted">Step-by-step charts from the team.</p></div>
+      <div class="card feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></div><h3 class="t3">Member chat</h3><p class="muted">Talk through the session live.</p></div>
+      <div class="card feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 6h3a3 3 0 0 1-3 4M7 6H4a3 3 0 0 0 3 4"/></svg></div><h3 class="t3">Wins and lessons</h3><p class="muted">Share what worked and what didn't.</p></div>
+      <div class="card feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M10 9l5 2-5 2z"/><path d="M8 21h8"/></svg></div><h3 class="t3">Live sessions</h3><p class="muted">Join the team as they're scheduled.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="who-h">
+  <div class="wrap stack">
+    <div class="head"><span class="eyebrow">Who it's for</span><h2 class="h2" id="who-h">Built around your life.</h2></div>
+    <div class="split" style="align-items: stretch; gap: 28px">
+      <div class="photo"><img src="/assets/ai/02-after-work/02-after-work.jpg" alt="A relaxed person at a laptop with a glowing chart, warm lamp light and city lights in the evening" loading="lazy"><span class="tag" style="left: 24px; bottom: 24px"><svg viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>After work · evening sessions</span></div>
+      <div class="photo"><img src="/assets/ai/03-from-home/03-from-home.jpg" alt="A bright morning home desk with sunlight, a laptop showing a rising chart, and coffee" loading="lazy"><span class="tag" style="left: 24px; bottom: 24px"><svg viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/></svg>From home · your own pace</span></div>
+    </div>
+    <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr))">
+      <div class="card row" style="padding: 24px"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/></svg></div><div class="t3" style="font-size: 18px">Complete beginners</div></div>
+      <div class="card row" style="padding: 24px"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></div><div class="t3" style="font-size: 18px">Starting over</div></div>
+      <div class="card row" style="padding: 24px"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div><div class="t3" style="font-size: 18px">Busy professionals</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="how" aria-labelledby="how-h">
+  <div class="wrap split">
+    <div class="card chart-card">
+      <div class="chart-meta"><b>MES · 15 min</b><span>Oct 9 to Oct 11, 2026</span></div>
+<Fragment set:html={teachChart} />
+      <p class="muted" style="font-size: 13px">Real MES data via TradingView. Educational example, shown after the fact. Not a trade recommendation.</p>
+    </div>
+    <div class="head" style="gap: 32px">
+      <span class="eyebrow">How we teach</span>
+      <h2 class="h2" id="how-h">Every breakdown, step by step.</h2>
+      <div class="steps-4">
+        <div class="row"><div class="ico">1</div><span class="l">Read the structure</span></div>
+        <div class="row"><div class="ico">2</div><span class="l">Wait for the break</span></div>
+        <div class="row"><div class="ico">3</div><span class="l">Let price come back</span></div>
+        <div class="row"><div class="ico">4</div><span class="l">Risk before entry</span></div>
+      </div>
+      <p class="lead">Then it's your turn: post your chart and get feedback.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="learn" aria-labelledby="learn-h">
+  <div class="wrap stack">
+    <div class="learn-head">
+      <div class="head"><span class="eyebrow">Free course · Trading Fundamentals</span><h2 class="h2" id="learn-h">26 lessons. 8 modules.</h2></div>
+      <a class="btn" href="#quiz" data-cta="learn">Unlock free</a>
+    </div>
+    <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr))">
+      <div class="card"><div class="thumb"><img src="/assets/ai/05-market-fundamentals/05-market-fundamentals.jpg" alt="" loading="lazy"><div class="ov"></div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div></div><div class="module-body"><span class="eyebrow">Module 1 · 4 lessons</span><h3 class="t3">Market Fundamentals</h3></div></div>
+      <div class="card"><div class="thumb"><img src="/assets/ai/06-reading-charts/06-reading-charts.jpg" alt="" loading="lazy"><div class="ov"></div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M17 4v16"/><rect x="5" y="8" width="4" height="7"/><rect x="15" y="6" width="4" height="9"/></svg></div></div><div class="module-body"><span class="eyebrow">Module 2 · 4 lessons</span><h3 class="t3">Reading Charts</h3></div></div>
+      <div class="card"><div class="thumb"><img src="/assets/ai/07-risk-management/07-risk-management.jpg" alt="" loading="lazy"><div class="ov"></div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div></div><div class="module-body"><span class="eyebrow">Module 3 · 3 lessons</span><h3 class="t3">Risk Management</h3></div></div>
+      <div class="card"><div class="thumb"><img src="/assets/ai/08-charting-platform/08-charting-platform.jpg" alt="" loading="lazy"><div class="ov"></div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M7 13l3-3 3 2 4-4M8 21h8"/></svg></div></div><div class="module-body"><span class="eyebrow">Module 4 · 5 lessons</span><h3 class="t3">Charting Platform</h3></div></div>
+      <div class="card"><div class="thumb"><img src="/assets/ai/09-order-types/09-order-types.jpg" alt="" loading="lazy"><div class="ov"></div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h6"/><circle cx="18" cy="16" r="3"/></svg></div></div><div class="module-body"><span class="eyebrow">Module 5 · 4 lessons</span><h3 class="t3">Order Types</h3></div></div>
+      <div class="card"><div class="thumb"><img src="/assets/ai/10-first-trading-plan/10-first-trading-plan.jpg" alt="" loading="lazy"><div class="ov"></div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8l1.5 1.5L13 7M9 13l1.5 1.5L13 12M9 18h6"/></svg></div></div><div class="module-body"><span class="eyebrow">Module 6 · 4 lessons</span><h3 class="t3">Your First Trading Plan</h3></div></div>
+    </div>
+    <p class="muted">New to futures? Start with <a href="/futures-trading">Futures Trading 101</a>.</p>
+  </div>
+</section>
+
+<section class="section alt" aria-labelledby="practice-h">
+  <div class="wrap split">
+    <div class="head" style="gap: 28px">
+      <span class="eyebrow">Practice first</span>
+      <h2 class="h2" id="practice-h">Real charts. Simulated money.</h2>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><span style="color: var(--white); font-size: 18px">No real money at risk while you learn</span></div>
+        <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div><span style="color: var(--white); font-size: 18px">Journal every trade</span></div>
+        <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></div><span style="color: var(--white); font-size: 18px">Get feedback on your process</span></div>
+      </div>
+    </div>
+    <div class="photo"><img src="/assets/ai/04-practice-first/04-practice-first.jpg" alt="Hands on a keyboard in front of two monitors with glowing candlestick charts" loading="lazy"><span class="tag" style="right: 24px; top: 24px; color: var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="#22D98A" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/></svg>SIMULATOR</span></div>
+  </div>
+</section>
+
+<section class="section" id="method" aria-labelledby="method-h">
+  <div class="wrap stack">
+    <div class="head center"><span class="eyebrow">The MarketEye Method</span><h2 class="h2" id="method-h">Three stages. Move on when you're ready.</h2></div>
+    <div class="grid-3">
+      <div class="card stage"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/></svg></div><span class="num">STAGE 01</span><span class="name">LEARN</span><p class="muted">The free 26-lesson course: markets, charts, risk, orders, and your first plan.</p><span class="where"><b>Free</b> in the community</span></div>
+      <div class="card stage"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4V10H4zM10 20h4V4h-4zM16 20h4v-7h-4z"/></svg></div><span class="num">STAGE 02</span><span class="name">PROVE</span><p class="muted">Trade a simulated futures account against clear benchmarks.</p><span class="where">Community + mentorship</span></div>
+      <div class="card stage"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></svg></div><span class="num">STAGE 03</span><span class="name">GO INDEPENDENT</span><p class="muted">Trade your own written plan. MarketEye doesn't provide or arrange trading capital.</p><span class="where">Mentorship · by interview</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="community" aria-labelledby="community-h">
+  <div class="wrap split">
+    <div class="card circle" aria-label="Illustration of a Pre-Trade Prep post in the MarketEye community on Circle">
+      <div class="side">
+        <span class="eyebrow">Start Here</span><span>Introduce Yourself</span>
+        <span class="eyebrow">Learn</span><span>Trading Fundamentals</span>
+        <span class="eyebrow">Trade &amp; Discuss</span><span class="on">Pre-Trade Prep</span><span>Market Discussion</span><span>Wins &amp; Lessons Learned</span>
+        <span class="eyebrow">Live</span><span>Live Sessions</span>
+      </div>
+      <div class="post">
+        <div class="row" style="gap: 12px"><div class="av" style="width: 40px; height: 40px; border-radius: 12px; background: var(--grad); font-size: 14px">ME</div><div><div style="color: var(--white); font-weight: 500">MarketEye Team</div><div class="muted" style="font-size: 13px">Pre-Trade Prep · Sunday</div></div></div>
+        <div class="t3" style="font-size: 20px">Week of {week.weekOf}: what to watch</div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          {week.highlights.slice(0, 2).map((h) => (
+            <div class="line"><span>{h.label}</span><span>{h.time}</span></div>
+          ))}
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap"><span class="pill">Ask in the comments</span><span class="pill">Educational only</span></div>
+      </div>
+    </div>
+    <div class="head" style="gap: 28px">
+      <span class="eyebrow">Community</span>
+      <h2 class="h2" id="community-h">A trading floor you can walk into on day one.</h2>
+      <div class="space-chips"><span>Introduce Yourself</span><span>Pre-Trade Prep</span><span>Market Discussion</span><span>Wins &amp; Lessons Learned</span><span>Live Sessions</span></div>
+      <a class="btn" href="#quiz" style="align-self: flex-start" data-cta="community">Get my free invite</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prep" aria-labelledby="prep-h">
+  <div class="wrap split">
+    <div class="head" style="gap: 24px">
+      <span class="eyebrow">Weekly Pre-Trade Prep</span>
+      <h2 class="h2" id="prep-h">Know the week before it starts.</h2>
+      <p class="lead">Each week, the releases that can move futures, in one post.</p>
+    </div>
+    <div class="card cal">
+      <div class="cal-head"><span class="t3">Week of {week.weekOf}</span><span>VIA TRADINGVIEW</span></div>
+      {week.rows.map((r) => (
+        <div class="cal-row"><span class="d">{r.day}</span><span class="e" style={r.bold ? 'font-weight: 700' : undefined}>{r.event}</span><span class={`badge ${r.level}`}>{r.badge}</span></div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section alt" aria-labelledby="team-h">
+  <div class="wrap split">
+    <div class="card exp">
+      <span class="big">36+</span>
+      <span style="color: var(--white); font-weight: 500; font-size: 18px">years of combined trading experience across the traders in our community</span>
+      <span class="since">We were trading the markets before online trading existed.</span>
+      <span class="eyebrow" style="color: var(--muted); padding-top: 16px; border-top: 1px solid var(--line)">Our core futures watchlist</span>
+      <div class="markets"><span>Micro E-mini S&amp;P 500 (MES)</span><span>Nasdaq (NQ)</span><span>Dow (YM)</span><span>Gold (GC)</span><span>Crude oil (CL)</span></div>
+    </div>
+    <div class="head" style="gap: 28px">
+      <span class="eyebrow">Who's teaching you</span>
+      <h2 class="h2" id="team-h">Working traders, not a trading personality.</h2>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></div><div><div class="t3" style="font-size: 19px">We show our work</div><p class="muted">Including where the idea would be wrong.</p></div></div>
+        <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></div><div><div class="t3" style="font-size: 19px">Process before profits</div><p class="muted">No screenshots of wins. No income claims.</p></div></div>
+        <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><div><div class="t3" style="font-size: 19px">Risk comes first</div><p class="muted">Every setup starts with where you're wrong.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="stories-h">
+  <div class="wrap stack">
+    <div class="head center"><span class="eyebrow">Members</span><h2 class="h2" id="stories-h">In their words.</h2></div>
+    <div class="grid-3">
+      <div class="card review"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Within the first 20 minutes I realized I'd been wrong about what trading actually was.”</blockquote><div class="who"><div class="av" style="background: #2B72E8">DL</div><div><div style="color: var(--white); font-weight: 500">David L.</div><div class="muted" style="font-size: 14px">New trader · Prove stage</div></div></div></div>
+      <div class="card review"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“You learn the skill, you prove you can do it, then you move forward.”</blockquote><div class="who"><div class="av" style="background: #5033C3">JK</div><div><div style="color: var(--white); font-weight: 500">Jennifer K.</div><div class="muted" style="font-size: 14px">Go Independent stage</div></div></div></div>
+      <div class="card review"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Trading turned out to be a skill with a repeatable process, where I'm the only variable.”</blockquote><div class="who"><div class="av" style="background: #0E7FA8">SM</div><div><div style="color: var(--white); font-weight: 500">Sarah M.</div><div class="muted" style="font-size: 14px">Ecommerce owner · Learn stage</div></div></div></div>
+    </div>
+    <p class="muted" style="font-size: 13px; text-align: center">Testimonials reflect individual experiences and are not guarantees of results.</p>
+  </div>
+</section>
+
+<section class="section alt" id="faq" aria-labelledby="faq-h">
+  <div class="wrap faq-grid">
+    <div class="head">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="h2" id="faq-h">Questions before you join.</h2>
+      <p class="muted">Still unsure? Email <span style="color: var(--white)">support@marketeye.io</span> and a real person will answer.</p>
+    </div>
+    <div class="faq-list">
+      <details open><summary>Is the community really free?</summary><p>Yes. The community, the 26-lesson Trading Fundamentals course, weekly Pre-Trade Prep, and the member chat are free with no credit card. The paid mentorship is optional and by interview only.</p></details>
+      <details><summary>What happens after I join?</summary><p>You'll get an email from MarketEye with the subject &quot;MarketEye Team has invited you to join…&quot;. Click Accept invitation, set your password, and finish your profile to unlock the lessons. Then say hi in Introduce Yourself and open Trading Fundamentals at the module matched to your quiz answers.</p></details>
+      <details><summary>Can a complete beginner learn futures trading?</summary><p>Yes. The course starts with what trading is and how markets work, then chart reading, risk management, order types, and your first trading plan. No prior knowledge is assumed, and beginners often progress quickly because they have no bad habits to unlearn.</p></details>
+      <details><summary>What are micro futures?</summary><p>Micro futures are smaller versions of popular futures contracts. The Micro E-mini S&amp;P 500 (MES) is one-tenth the size of the E-mini S&amp;P 500 (ES), so each price move is worth one-tenth as much. Many new traders learn on micro contracts in a simulator because the numbers are smaller and easier to follow. Futures carry substantial risk of loss at any contract size.</p></details>
+      <details><summary>Can I learn futures trading with a small account?</summary><p>You can learn without any account. Members practice in a simulator first. Before you ever trade real money, understand that futures are leveraged and losses can exceed the money you deposit. That's why our curriculum teaches position sizing and daily loss limits before anything else.</p></details>
+      <details><summary>How much money do I need to start?</summary><p>You don't need a trading account to start learning. Members practice in a simulator during the Learn and Prove stages. MarketEye is an education company. We don't provide, manage, or arrange trading capital, and any third-party evaluations come with their own rules and fees.</p></details>
+      <details><summary>How much time does it take?</summary><p>Plan on a few hours a week for lessons, plus a consistent trading window of 60 to 90 minutes on the days you practice. Most members pick a morning or evening window that fits their job.</p></details>
+      <details><summary>How do I get into the mentorship?</summary><p>Work through the free course first. When you're ready, apply from inside the community. Every applicant has a short interview so we can make sure it's the right fit. Cohorts stay small on purpose.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final" aria-labelledby="final-h">
+  <img src="/assets/ai/05-market-fundamentals/05-market-fundamentals.jpg" alt="" loading="lazy">
+  <div class="ov"></div>
+  <div class="wrap">
+    <h2 class="h2" id="final-h" style="font-size: clamp(40px, 5vw, 58px)">Your seat is free.</h2>
+    <p class="lead" style="text-align: center">Five questions. A starting plan. An invite.</p>
+    <a class="btn" href="#quiz" data-cta="final">Start the quiz</a>
+    <span class="micro">Free forever · No credit card · Leave anytime</span>
+  </div>
+</section>
+</BaseLayout>

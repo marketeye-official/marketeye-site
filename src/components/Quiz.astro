@@ -1,0 +1,170 @@
+---
+// The 5-question hero quiz: renders a personal starting plan, then collects first name + email.
+// TODO (launch): POST the lead payload in submit() to the email platform / Zapier that sends the Circle invite.
+---
+<div class="quiz" id="quiz" aria-live="polite">
+  <div class="quiz-top"><span id="quiz-step-label">Question 1 of 5</span><span class="live">~45 sec</span></div>
+  <div class="progress" aria-hidden="true"><span id="quiz-progress"></span></div>
+  <div id="quiz-body"></div>
+</div>
+
+<script is:inline>
+(function () {
+  /* ---------- Quiz ---------- */
+  var QUESTIONS = [
+    { id: 'training_time', q: 'How much time can you dedicate to training each week?', hint: 'Lessons, replays, and practice.', opts: [
+      ['under_2h', 'Under 2 hours'], ['2_5h', '2 to 5 hours'], ['5_10h', '5 to 10 hours'], ['10h_plus', '10+ hours'] ], cols: 2 },
+    { id: 'trading_time', q: 'How much time can you dedicate to day trading each week?', hint: 'Time watching and trading the market.', opts: [
+      ['not_yet', "I'm not ready to trade yet"], ['under_3h', 'Under 3 hours (about 30 min a day)'], ['3_8h', '3 to 8 hours (about 1 to 1.5 hrs a day)'], ['8h_plus', '8+ hours'] ] },
+    { id: 'capital_belief', q: 'How much capital do you believe is needed to start your trading business?', hint: "There's no wrong answer. This helps us set expectations.", opts: [
+      ['under_1k', 'Under $1,000'], ['1k_5k', '$1,000 to $5,000'], ['5k_25k', '$5,000 to $25,000'], ['25k_plus', '$25,000+'], ['unsure', "I honestly don't know"] ] },
+    { id: 'prior_education', q: 'Have you taken a trading course or joined a community before?', hint: 'Be honest. It helps us skip what you already know.', opts: [
+      ['none', 'No, this is my first step'], ['course', 'Yes, a course'], ['community', 'Yes, a community or chat room'], ['both', 'Yes, both'] ] },
+    { id: 'biggest_struggle', q: "What's been your biggest struggle so far?", hint: 'Pick the one that costs you the most.', opts: [
+      ['consistency', 'Consistency'], ['discipline', 'Discipline'], ['strategy', 'Finding a strategy'], ['risk', 'Risk management'], ['emotions', 'Emotions'], ['not_started', "I haven't started yet"] ], cols: 2 }
+  ];
+
+  var TRACKS = {
+    consistency: ['Your First Trading Plan', 'Pre-trade analysis and a pre-trade checklist you run before every session. Consistency comes from a repeatable routine.'],
+    discipline: ['Your First Trading Plan', 'Daily loss limits and a pre-trade checklist that keep you on your rules when it matters.'],
+    strategy: ['Reading Charts', 'Swing points, gaps, and key levels first, then the Pullback Strategy lesson ties it into one complete setup.'],
+    risk: ['Risk Management', 'Risk-reward, position size, and partial entries, worked through in ticks on MES. Futures are leveraged, so this comes first.'],
+    emotions: ['Your First Trading Plan', 'Daily loss limits and a pre-trade checklist take the guesswork out of hard moments. Wins & Lessons Learned is where members talk it through.'],
+    not_started: ['Market Fundamentals', 'What trading is, who is in the market, supply and demand, and support and resistance.']
+  };
+
+  var answers = {};
+  var step = 0;
+  var body = document.getElementById('quiz-body');
+  var bar = document.getElementById('quiz-progress');
+  var label = document.getElementById('quiz-step-label');
+  var started = false;
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function track(event, data) {
+    // Hook for GA4 / Meta Pixel / CRM. Replace with your analytics calls.
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(Object.assign({ event: event }, data || {}));
+  }
+
+  function renderQuestion(focus) {
+    var Q = QUESTIONS[step];
+    label.textContent = 'Question ' + (step + 1) + ' of ' + QUESTIONS.length;
+    bar.style.width = ((step + 1) / QUESTIONS.length * 100) + '%';
+    var html = '<div class="step-anim"><h2 class="q-title" id="q-title" tabindex="-1">' + esc(Q.q) + '</h2>' +
+      '<p class="q-hint">' + esc(Q.hint) + '</p><div class="options' + (Q.cols === 2 ? ' two' : '') + '" role="group" aria-labelledby="q-title">';
+    Q.opts.forEach(function (o, i) {
+      var sel = answers[Q.id] === o[0];
+      html += '<button type="button" class="opt" id="opt-' + Q.id + '-' + o[0] + '" data-v="' + o[0] + '" aria-pressed="' + sel + '"><span class="key">' + String.fromCharCode(65 + i) + '</span>' + esc(o[1]) + '</button>';
+    });
+    html += '</div><div class="quiz-foot">' + (step > 0 ? '<button type="button" class="back" id="quiz-back">← Back</button>' : '<span>Free forever · No credit card</span>') +
+      '<span>' + (step + 1) + '/' + QUESTIONS.length + '</span></div></div>';
+    body.innerHTML = html;
+    body.querySelectorAll('.opt').forEach(function (b) {
+      b.addEventListener('click', function () { choose(Q, b); });
+    });
+    var back = document.getElementById('quiz-back');
+    if (back) back.addEventListener('click', function () { step--; renderQuestion(true); });
+    if (focus) document.getElementById('q-title').focus({ preventScroll: true });
+  }
+
+  function choose(Q, btn) {
+    answers[Q.id] = btn.getAttribute('data-v');
+    body.querySelectorAll('.opt').forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+    if (!started) { started = true; track('quiz_start'); }
+    track('quiz_answer', { question: Q.id, answer: answers[Q.id] });
+    setTimeout(function () {
+      if (step < QUESTIONS.length - 1) { step++; renderQuestion(true); }
+      else renderResult();
+    }, 220);
+  }
+
+  function buildProfile(a) {
+    var tried = a.prior_education !== 'none';
+    var lowTime = a.training_time === 'under_2h' || a.trading_time === 'under_3h';
+    var highTime = (a.training_time === '10h_plus' || a.training_time === '5_10h') && (a.trading_time === '8h_plus' || a.trading_time === '3_8h');
+    var name, intro;
+    if (!tried && a.biggest_struggle === 'not_started') { name = 'The Foundation Builder'; intro = "You're starting fresh, which is an advantage. You have no bad habits to unlearn."; }
+    else if (!tried) { name = 'The Self-Taught Starter'; intro = "You've been figuring it out on your own. Structure and feedback will speed things up."; }
+    else { name = 'The Rebuilder'; intro = "You've already invested in learning. What's usually missing is structure and accountability, and that's what the community is for."; }
+
+    var pace;
+    if (a.trading_time === 'not_yet') pace = "Focus on lessons first. You'll start sim trading once the foundations click.";
+    else if (highTime) pace = 'You have time to move quickly: daily lessons, weekly prep, and sim reps most days.';
+    else if (lowTime) pace = 'Your schedule fits a steady pace. One focused trading window and one or two lessons a week is enough to make progress.';
+    else pace = 'You have room for a solid routine: a few lessons a week plus a set daily trading window.';
+
+    var capital;
+    if (a.capital_belief === '25k_plus') capital = "You don't need any money in a trading account to start learning. Members build and test their process in a simulator first.";
+    else if (a.capital_belief === 'unsure') capital = "That's a common answer. You don't need a trading account to start learning. Members practice in a simulator first.";
+    else capital = "You don't need a trading account to start learning. Members practice in a simulator first, so you can focus on the skill.";
+
+    return { name: name, intro: intro, pace: pace, capital: capital, track: TRACKS[a.biggest_struggle] };
+  }
+
+  function renderResult() {
+    var p = buildProfile(answers);
+    label.textContent = 'Your starting plan';
+    bar.style.width = '100%';
+    track('quiz_complete', { answers: answers, profile: p.name });
+    body.innerHTML = '<div class="step-anim">' +
+      '<div class="result-badge">● Plan ready</div>' +
+      '<h2 class="q-title" id="q-title" tabindex="-1">You\'re ' + esc(p.name) + '.</h2>' +
+      '<p class="q-hint" style="margin-bottom:0">' + esc(p.intro) + '</p>' +
+      '<ul class="result-list">' +
+        '<li><span class="ico-n">01</span><span><strong>Start with: ' + esc(p.track[0]) + '.</strong> ' + esc(p.track[1]) + '</span></li>' +
+        '<li><span class="ico-n">02</span><span><strong>Your pace.</strong> ' + esc(p.pace) + '</span></li>' +
+        '<li><span class="ico-n">03</span><span><strong>About getting started.</strong> ' + esc(p.capital) + '</span></li>' +
+      '</ul>' +
+      '<form class="form" id="join-form" novalidate>' +
+        '<div class="frow">' +
+          '<div class="field"><label for="f-name">First name</label><input id="f-name" name="first_name" autocomplete="given-name" required></div>' +
+          '<div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>' +
+        '</div>' +
+        '<p class="err" id="f-err" role="alert"></p>' +
+        '<button class="btn" type="submit" id="f-submit">Send my free community invite</button>' +
+        '<p class="micro">Free forever · No credit card · Unsubscribe anytime</p>' +
+      '</form>' +
+      '<div class="quiz-foot"><button type="button" class="back" id="quiz-back">← Change answers</button><span></span></div>' +
+    '</div>';
+    document.getElementById('q-title').focus({ preventScroll: true });
+    document.getElementById('quiz-back').addEventListener('click', function () { step = QUESTIONS.length - 1; renderQuestion(true); });
+    document.getElementById('join-form').addEventListener('submit', function (e) { e.preventDefault(); submit(p); });
+  }
+
+  function submit(p) {
+    var nameEl = document.getElementById('f-name');
+    var emailEl = document.getElementById('f-email');
+    var err = document.getElementById('f-err');
+    var name = nameEl.value.trim();
+    var email = emailEl.value.trim();
+    nameEl.removeAttribute('aria-invalid'); emailEl.removeAttribute('aria-invalid');
+    if (!name) { err.textContent = 'Enter your first name so we know what to call you.'; nameEl.setAttribute('aria-invalid', 'true'); nameEl.focus(); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Enter a valid email address, like name@example.com.'; emailEl.setAttribute('aria-invalid', 'true'); emailEl.focus(); return; }
+    err.textContent = '';
+
+    // Lead payload: send to your email platform / Zapier, which triggers the Circle invite and tags the member.
+    var lead = Object.assign({ first_name: name, email: email, profile: p.name, start_module: p.track[0], source: 'homepage_quiz' }, answers);
+    track('generate_lead', { profile: p.name, module: p.track[0] });
+    // TODO: fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(lead) })
+    void lead;
+
+    label.textContent = "You're in";
+    body.innerHTML = '<div class="step-anim">' +
+      '<div class="result-badge">● Invite sent</div>' +
+      '<h2 class="q-title" id="q-title" tabindex="-1">Welcome to MarketEye, ' + esc(name) + '.</h2>' +
+      '<p class="q-hint">Your invite is on its way to <strong style="color:#fff">' + esc(email) + '</strong>. Here\'s what to do next:</p>' +
+      '<ol class="success-steps">' +
+        '<li><span><strong>Open the email from MarketEye</strong> titled "MarketEye Team has invited you to join…". Check spam and Promotions too. It comes from a circle.so address.</span></li>' +
+        '<li><span><strong>Accept the invitation and finish your profile.</strong> That unlocks the lessons.</span></li>' +
+        '<li><span><strong>Say hi in Introduce Yourself,</strong> then open Trading Fundamentals at: ' + esc(p.track[0]) + '.</span></li>' +
+      '</ol></div>';
+    document.getElementById('q-title').focus({ preventScroll: true });
+    document.dispatchEvent(new CustomEvent('me:joined'));
+  }
+
+  renderQuestion(false);
+
+
+})();
+</script>

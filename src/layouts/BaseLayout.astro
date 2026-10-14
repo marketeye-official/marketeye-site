@@ -1,0 +1,115 @@
+---
+// Shared page shell: <head> with SEO and social tags, header, footer, sticky mobile CTA,
+// structured data and site-wide scripts. Every page renders inside this layout.
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path for the canonical URL, e.g. "/" or "/futures-trading". */
+  path: string;
+  ogType?: 'website' | 'article';
+  ogTitle?: string;
+  ogDescription?: string;
+  /** JSON-LD objects to embed as structured data. */
+  schema?: object[];
+  /** Show the sticky "Get my free community invite" bar on phones. */
+  stickyCta?: boolean;
+}
+
+const { title, description, path, ogType = 'website', ogTitle = title, ogDescription = description, schema = [], stickyCta = true } = Astro.props;
+const canonical = new URL(path, Astro.site).href.replace(/\/$/, path === '/' ? '/' : '');
+const ogImage = new URL('/assets/og-image.png', Astro.site).href;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="canonical" href={canonical}>
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/marketeye-icon.svg" type="image/svg+xml">
+<meta property="og:type" content={ogType}>
+<meta property="og:site_name" content="MarketEye">
+<meta property="og:title" content={ogTitle}>
+<meta property="og:description" content={ogDescription}>
+<meta property="og:url" content={canonical}>
+<meta property="og:image" content={ogImage}>
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Exo+2:wght@700;800&family=JetBrains+Mono:wght@500&display=swap">
+<!-- Google Tag Manager goes here (see README: Tracking). Quiz and CTA events already push to window.dataLayer. -->
+<slot name="head" />
+</head>
+<body>
+<Header />
+<main id="top">
+<slot />
+</main>
+<Footer />
+
+{schema.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}
+
+{stickyCta && (
+  <div class="sticky-cta" id="sticky-cta" data-show="false">
+    <a href="/#quiz" class="btn" data-cta="sticky-mobile">Get my free community invite</a>
+  </div>
+)}
+
+<script is:inline>
+(function () {
+  window.dataLayer = window.dataLayer || [];
+  function track(event, data) { window.dataLayer.push(Object.assign({ event: event }, data || {})); }
+
+  /* ---------- Nav dropdown and mobile menu ---------- */
+  var dd = document.querySelector('.has-dd');
+  if (dd) {
+    var ddBtn = dd.querySelector('.dd-toggle');
+    var closeDd = function () { dd.classList.remove('open'); ddBtn.setAttribute('aria-expanded', 'false'); };
+    ddBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = dd.classList.toggle('open');
+      ddBtn.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', function (e) { if (!dd.contains(e.target)) closeDd(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDd(); });
+    dd.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeDd); });
+  }
+  var menuBtn = document.querySelector('.menu-btn');
+  var menu = document.getElementById('mobile-menu');
+  if (menuBtn && menu) {
+    menuBtn.addEventListener('click', function () {
+      var open = menu.getAttribute('data-open') !== 'true';
+      menu.setAttribute('data-open', String(open));
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { menu.setAttribute('data-open', 'false'); menuBtn.setAttribute('aria-expanded', 'false'); });
+    });
+  }
+
+  /* ---------- Sticky mobile CTA: shows after the first screen, hides near the footer and after sign-up ---------- */
+  var sticky = document.getElementById('sticky-cta');
+  var topEl = document.querySelector('.hero') || document.querySelector('main > *');
+  var footerEl = document.querySelector('footer.site');
+  if (sticky && topEl && footerEl && 'IntersectionObserver' in window) {
+    var topVisible = true, footVisible = false, joined = false;
+    var update = function () { sticky.setAttribute('data-show', String(!topVisible && !footVisible && !joined)); };
+    new IntersectionObserver(function (en) { topVisible = en[0].isIntersecting; update(); }).observe(topEl);
+    new IntersectionObserver(function (en) { footVisible = en[0].isIntersecting; update(); }).observe(footerEl);
+    document.addEventListener('me:joined', function () { joined = true; update(); });
+  }
+
+  /* ---------- CTA click tracking ---------- */
+  document.querySelectorAll('[data-cta]').forEach(function (a) {
+    a.addEventListener('click', function () { track('cta_click', { location: a.getAttribute('data-cta') }); });
+  });
+})();
+</script>
+</body>
+</html>

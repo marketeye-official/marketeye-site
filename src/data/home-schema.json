@@ -1,0 +1,89 @@
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "MarketEye",
+    "url": "https://marketeye.io/",
+    "logo": "https://marketeye.io/assets/marketeye-logo.png",
+    "description": "A free futures trading community and structured futures trading education path.",
+    "email": "support@marketeye.io",
+    "knowsAbout": [
+      "Futures trading",
+      "Micro E-mini S&P 500 futures",
+      "Nasdaq futures",
+      "Micro futures",
+      "Price action",
+      "Trading risk management"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the community really free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The community, the 26-lesson Trading Fundamentals course, weekly Pre-Trade Prep, and the member chat are free with no credit card. The paid mentorship is optional and by interview only."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens after I join?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You'll get an email from MarketEye with the subject \"MarketEye Team has invited you to join…\". Click Accept invitation, set your password, and finish your profile to unlock the lessons. Then say hi in Introduce Yourself and open Trading Fundamentals at the module matched to your quiz answers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a complete beginner learn futures trading?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The course starts with what trading is and how markets work, then chart reading, risk management, order types, and your first trading plan. No prior knowledge is assumed, and beginners often progress quickly because they have no bad habits to unlearn."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are micro futures?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Micro futures are smaller versions of popular futures contracts. The Micro E-mini S&P 500 (MES) is one-tenth the size of the E-mini S&P 500 (ES), so each price move is worth one-tenth as much. Many new traders learn on micro contracts in a simulator because the numbers are smaller and easier to follow. Futures carry substantial risk of loss at any contract size."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I learn futures trading with a small account?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can learn without any account. Members practice in a simulator first. Before you ever trade real money, understand that futures are leveraged and losses can exceed the money you deposit. That's why our curriculum teaches position sizing and daily loss limits before anything else."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much money do I need to start?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You don't need a trading account to start learning. Members practice in a simulator during the Learn and Prove stages. MarketEye is an education company. We don't provide, manage, or arrange trading capital, and any third-party evaluations come with their own rules and fees."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much time does it take?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Plan on a few hours a week for lessons, plus a consistent trading window of 60 to 90 minutes on the days you practice. Most members pick a morning or evening window that fits their job."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I get into the mentorship?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Work through the free course first. When you're ready, apply from inside the community. Every applicant has a short interview so we can make sure it's the right fit. Cohorts stay small on purpose."
+        }
+      }
+    ]
+  }
+]

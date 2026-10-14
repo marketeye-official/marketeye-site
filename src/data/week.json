@@ -1,0 +1,41 @@
+{
+  "weekOf": "Oct 12",
+  "rows": [
+    {
+      "day": "Mon 12",
+      "event": "Bond market holiday",
+      "badge": "Quiet",
+      "level": "quiet"
+    },
+    {
+      "day": "Tue 13",
+      "event": "Existing Home Sales",
+      "badge": "10:00 ET",
+      "level": "mid"
+    },
+    {
+      "day": "Wed 14",
+      "event": "CPI and Core CPI",
+      "badge": "8:30 ET",
+      "level": "hot",
+      "bold": true
+    },
+    {
+      "day": "Thu 15",
+      "event": "PPI and Retail Sales",
+      "badge": "Morning",
+      "level": "hot",
+      "bold": true
+    }
+  ],
+  "highlights": [
+    {
+      "label": "Wed · CPI",
+      "time": "8:30 ET"
+    },
+    {
+      "label": "Thu · PPI and Retail Sales",
+      "time": "Morning"
+    }
+  ]
+}
