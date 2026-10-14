@@ -1,7 +1,36 @@
 ---
 // Futures Trading 101: the main SEO pillar page, with a tick value calculator,
 // a position size calculator and a live futures market-hours clock.
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Line icons (24x24, stroked) used for section headers and cards.
+const P = {
+  book: '<path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/>',
+  bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
+  layers: '<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/>',
+  ruler: '<path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  refresh: '<path d="M20 11a8 8 0 0 0-14.9-3.5M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14.9 3.5M20 20v-4h-4"/>',
+  scale: '<path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7h6zM19 7l-3 7h6z"/>',
+  compare: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  shield: '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+  clipboard: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 12l2 2 4-4"/>',
+  alert: '<path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/>',
+  chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+  dollar: '<path d="M12 3v18M16.5 7.5C16 6 14.3 5 12 5c-2.8 0-4.5 1.3-4.5 3.2 0 4.6 9 2.6 9 7.4 0 2-1.8 3.4-4.5 3.4-2.4 0-4.2-1-4.8-2.7"/>',
+  micro: '<rect x="3" y="3" width="12" height="12" rx="2"/><rect x="15" y="15" width="6" height="6" rx="1"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".5"/>',
+  hub: '<circle cx="12" cy="12" r="3"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/>',
+  x: '<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',
+};
+const ico = (k: keyof typeof P) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[k]}</svg>`;
+
+// "Keep learning": real posts from the blog.
+const RELATED = ['what-is-risk-management-and-why-does-it-matter', 'building-a-repeatable-trading-process', '7-costly-trading-mistakes-new-traders-make'];
+const related = (await getCollection('posts')).filter((p) => RELATED.includes(p.id)).sort((a, b) => RELATED.indexOf(a.id) - RELATED.indexOf(b.id));
 const schema = [
   {
     "@context": "https://schema.org",
@@ -35,12 +64,6 @@ const schema = [
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Learn",
-            "item": "https://marketeye.io/learn"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
             "name": "Futures Trading 101",
             "item": "https://marketeye.io/futures-trading"
           }
@@ -114,20 +137,30 @@ const schema = [
   stickyCta={false}
 >
 <div class="f101">
-<div class="guide-head">
-  <div class="wrap">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/learn">Learn</a><span>/</span><span aria-current="page">Futures Trading 101</span></nav>
-    <h1>Futures Trading for Beginners: Futures Trading 101</h1>
-    <p class="lede">Everything a new trader needs to understand before placing a first futures trade: what a contract is, how ticks turn into dollars, when the market is open, and how to manage risk on a leveraged product. Written for complete beginners, with free calculators.</p>
-    <div class="meta-row"><span>By the MarketEye trading team</span><span>Updated Oct 11, 2026</span><span>~15 min read</span><span><b>●</b> Education only, not trade recommendations</span></div>
-    <div class="key-facts" aria-label="Key facts">
-      <div><b>$12.50</b><span>Value of one tick on the E-mini S&amp;P 500 (ES)</span></div>
-      <div><b>$1.25</b><span>Value of one tick on the Micro E-mini (MES)</span></div>
-      <div><b>~23 hrs</b><span>Index futures trade Sunday evening to Friday afternoon</span></div>
-      <div><b>4×</b><span>Quarterly contract months: Mar, Jun, Sep, Dec</span></div>
+<section class="guide-head">
+  <div class="wrap split">
+    <div class="guide-copy">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Futures Trading 101</span></nav>
+      <h1>Futures Trading for Beginners: Futures Trading 101</h1>
+      <p class="lede">Everything a new trader needs to understand before placing a first futures trade: what a contract is, how ticks turn into dollars, when the market is open, and how to manage risk on a leveraged product. Written for complete beginners, with free calculators.</p>
+      <div class="guide-actions">
+        <a href="#ticks" class="btn">Try the calculators</a>
+        <a href="/#quiz" class="btn ghost" data-cta="futures101-hero">Get my free plan</a>
+      </div>
+      <div class="meta-row"><span>By the MarketEye trading team</span><span>Updated Oct 14, 2026</span><span>~15 min read</span><span><b>●</b> Education only, not trade recommendations</span></div>
     </div>
+    <div class="photo"><img src="/assets/ai/06-reading-charts/06-reading-charts.jpg" alt="Glowing cyan and purple candlesticks rising across a dark background" width="1456" height="728"><span class="tag" style="left: 24px; bottom: 24px"><Fragment set:html={ico('layers')} />ES · MES · NQ · MNQ</span></div>
   </div>
-</div>
+</section>
+
+<section class="facts-band" aria-label="Key facts">
+  <div class="wrap key-facts">
+    <div class="card fact"><span class="ico"><Fragment set:html={ico('dollar')} /></span><b>$12.50</b><span>Value of one tick on the E-mini S&amp;P 500 (ES)</span></div>
+    <div class="card fact"><span class="ico"><Fragment set:html={ico('micro')} /></span><b>$1.25</b><span>Value of one tick on the Micro E-mini (MES)</span></div>
+    <div class="card fact"><span class="ico"><Fragment set:html={ico('clock')} /></span><b>~23 hrs</b><span>Index futures trade Sunday evening to Friday afternoon</span></div>
+    <div class="card fact"><span class="ico"><Fragment set:html={ico('calendar')} /></span><b>4×</b><span>Quarterly contract months: Mar, Jun, Sep, Dec</span></div>
+  </div>
+</section>
 
 <div class="wrap layout">
   <aside class="rail" aria-label="On this page">
@@ -150,14 +183,13 @@ const schema = [
     <div class="rail-cta">
       <strong>Learn futures with a community beside you</strong>
       <p>Answer 5 questions and get a free starting plan plus an invite to the MarketEye community.</p>
-      <a href="/#quiz" class="btn btn-sm" data-cta="rail">Get my free plan</a>
+      <a href="/#quiz" class="btn btn-sm" data-cta="futures101-rail">Get my free plan</a>
     </div>
   </aside>
 
   <article>
     <section id="what">
-      <span class="sec-num">01 · THE BASICS</span>
-      <h2>What is a futures contract?</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('book')} /></span><div><span class="sec-num">01 · THE BASICS</span><h2>What is a futures contract?</h2></div></div>
       <p>A <strong>futures contract</strong> is a standardized agreement to buy or sell something at a set price on a set date in the future. The "something" can be a stock index, crude oil, gold, interest rates, or currencies. Every contract on the exchange has the same size, tick size, and expiration rules, which is why they're easy to compare and trade.</p>
       <p>Most futures day traders never take or deliver anything. They open a position and close it the same day, and their profit or loss is the difference between the two prices. Index futures like the E-mini S&amp;P 500 are also <strong>cash-settled</strong>, so there's no physical delivery even if you held one to expiration.</p>
       <div class="example">
@@ -168,20 +200,18 @@ const schema = [
     </section>
 
     <section id="why">
-      <span class="sec-num">02 · WHY FUTURES</span>
-      <h2>Why traders learn futures</h2>
-      <ul>
-        <li><strong>Nearly around-the-clock hours.</strong> Index futures trade from Sunday evening to Friday afternoon (US Eastern), so you can practice before work or in the evening.</li>
-        <li><strong>One centralized market.</strong> Every order for a contract goes to the same exchange, so everyone sees the same prices and volume.</li>
-        <li><strong>Small, standardized contracts.</strong> Micro contracts are one-tenth the size of the E-minis, which makes the numbers easier for beginners to follow.</li>
-        <li><strong>A few markets to master.</strong> Many traders focus on just one or two contracts, such as ES and NQ, instead of scanning thousands of stocks.</li>
-      </ul>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('bulb')} /></span><div><span class="sec-num">02 · WHY FUTURES</span><h2>Why traders learn futures</h2></div></div>
+      <div class="why-grid">
+        <div class="card why"><span class="ico"><Fragment set:html={ico('clock')} /></span><h3>Nearly around-the-clock hours</h3><p>Index futures trade from Sunday evening to Friday afternoon (US Eastern), so you can practice before work or in the evening.</p></div>
+        <div class="card why"><span class="ico"><Fragment set:html={ico('hub')} /></span><h3>One centralized market</h3><p>Every order for a contract goes to the same exchange, so everyone sees the same prices and volume.</p></div>
+        <div class="card why"><span class="ico"><Fragment set:html={ico('micro')} /></span><h3>Small, standardized contracts</h3><p>Micro contracts are one-tenth the size of the E-minis, which makes the numbers easier for beginners to follow.</p></div>
+        <div class="card why"><span class="ico"><Fragment set:html={ico('target')} /></span><h3>A few markets to master</h3><p>Many traders focus on just one or two contracts, such as ES and NQ, instead of scanning thousands of stocks.</p></div>
+      </div>
       <div class="note risk"><b>Leverage cuts both ways.</b> A small deposit controls a much larger contract value. That's what makes futures efficient, and it's also why losses can exceed the money in your account. Risk management comes before everything else on this page.</div>
     </section>
 
     <section id="contracts">
-      <span class="sec-num">03 · CONTRACTS</span>
-      <h2>E-mini vs micro futures: ES, MES, NQ, MNQ</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('layers')} /></span><div><span class="sec-num">03 · CONTRACTS</span><h2>E-mini vs micro futures: ES, MES, NQ, MNQ</h2></div></div>
       <p>The two most popular index futures are the <strong>E-mini S&amp;P 500 (ES)</strong>, which tracks the 500 large US companies in the S&amp;P 500, and the <strong>E-mini Nasdaq-100 (NQ)</strong>, which tracks 100 of the largest Nasdaq-listed companies. Each has a <strong>micro</strong> version that is exactly one-tenth the size.</p>
       <div class="tw">
         <table>
@@ -195,13 +225,13 @@ const schema = [
           </tbody>
         </table>
       </div>
+      <figure class="fig"><img src="/assets/ai/08-charting-platform/08-charting-platform.jpg" alt="A charting platform on a laptop screen showing candlesticks, volume and an indicator panel" width="1456" height="728" loading="lazy"></figure>
       <h3>Which should a beginner learn first?</h3>
       <p>Most beginners learn on <strong>micro contracts in a simulator</strong>. The price chart is identical to the E-mini, so every lesson carries over, but each move is worth one-tenth as much. NQ and MNQ usually move more points per day than ES and MES, so many new traders find the S&amp;P contracts calmer to learn on.</p>
     </section>
 
     <section id="ticks">
-      <span class="sec-num">04 · TICKS</span>
-      <h2>Tick size and tick value, explained</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('ruler')} /></span><div><span class="sec-num">04 · TICKS</span><h2>Tick size and tick value, explained</h2></div></div>
       <p>A <strong>tick</strong> is the smallest price move a contract can make. For ES, MES, NQ, and MNQ, one tick is 0.25 points, so there are 4 ticks in every point. The <strong>tick value</strong> is how much money one tick is worth per contract.</p>
       <p>The formula is simple: <span class="mono">dollar change = ticks moved × tick value × contracts</span>. Try it below.</p>
 
@@ -224,8 +254,7 @@ const schema = [
     </section>
 
     <section id="hours">
-      <span class="sec-num">05 · HOURS</span>
-      <h2>Futures trading hours</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('clock')} /></span><div><span class="sec-num">05 · HOURS</span><h2>Futures trading hours</h2></div></div>
       <p>US equity index futures (ES, MES, NQ, MNQ) trade on CME Globex almost 23 hours a day, five days a week. All times below are US Eastern Time (ET).</p>
       <div class="tw">
         <table>
@@ -252,8 +281,7 @@ const schema = [
     </section>
 
     <section id="rollover">
-      <span class="sec-num">06 · EXPIRATION</span>
-      <h2>Contract months, symbols, and rollover</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('refresh')} /></span><div><span class="sec-num">06 · EXPIRATION</span><h2>Contract months, symbols, and rollover</h2></div></div>
       <p>Index futures expire four times a year. Each contract month has a one-letter code, and the full symbol adds the year. For example, <span class="mono">ESZ26</span> is the E-mini S&amp;P 500 expiring in December 2026.</p>
       <div class="tw">
         <table>
@@ -265,16 +293,14 @@ const schema = [
     </section>
 
     <section id="margin">
-      <span class="sec-num">07 · LEVERAGE</span>
-      <h2>Leverage and margin, explained</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('scale')} /></span><div><span class="sec-num">07 · LEVERAGE</span><h2>Leverage and margin, explained</h2></div></div>
       <p><strong>Margin</strong> in futures is a good-faith deposit, not a loan. The exchange sets an <strong>initial margin</strong> to open a position overnight and a <strong>maintenance margin</strong> you must keep above. Many brokers also set lower <strong>day-trading margins</strong> for positions closed before the end of the session. All of these amounts change, so check your broker's current requirements.</p>
       <p>Because the deposit is small compared with the full contract value, futures are <strong>leveraged</strong>. One ES contract controls 50 times the index level. At an index level of 5,800, that's $290,000 of exposure, regardless of how much money is in the account.</p>
       <div class="note risk"><b>You can lose more than you deposit.</b> If a position moves against you quickly, your losses aren't capped at your account balance. Your broker can also close positions if your account falls below margin. This is the main reason to learn on a simulator and to size positions from your risk, not from your available margin.</div>
     </section>
 
     <section id="vs-stocks">
-      <span class="sec-num">08 · COMPARISON</span>
-      <h2>Futures vs stocks for a new trader</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('compare')} /></span><div><span class="sec-num">08 · COMPARISON</span><h2>Futures vs stocks for a new trader</h2></div></div>
       <div class="tw">
         <table>
           <thead><tr><th scope="col"></th><th scope="col">Index futures</th><th scope="col">Individual stocks</th></tr></thead>
@@ -292,9 +318,9 @@ const schema = [
     </section>
 
     <section id="risk">
-      <span class="sec-num">09 · RISK</span>
-      <h2>How to size a futures position</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('shield')} /></span><div><span class="sec-num">09 · RISK</span><h2>How to size a futures position</h2></div></div>
       <p>Professional traders size positions backwards: they start with how much they're willing to lose on one trade, then work out how many contracts that allows. Many traders cap a single trade's risk at a small, fixed share of their account, and also set a <strong>daily loss limit</strong> that ends the session when it's hit.</p>
+      <figure class="fig"><img src="/assets/ai/07-risk-management/07-risk-management.jpg" alt="A glowing shield standing over a price chart" width="1456" height="728" loading="lazy"></figure>
       <p><span class="mono">max contracts = risk per trade ÷ (stop distance in ticks × tick value)</span></p>
 
       <div class="tool" id="size-tool">
@@ -313,9 +339,9 @@ const schema = [
     </section>
 
     <section id="practice">
-      <span class="sec-num">10 · PRACTICE</span>
-      <h2>Practice in a simulator before risking money</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('monitor')} /></span><div><span class="sec-num">10 · PRACTICE</span><h2>Practice in a simulator before risking money</h2></div></div>
       <p>A futures simulator uses live market data but fake money. It's where you learn the platform, test your rules, and build a track record without the cost of beginner mistakes.</p>
+      <figure class="fig"><img src="/assets/ai/04-practice-first/04-practice-first.jpg" alt="Hands on a keyboard in front of two monitors with glowing candlestick charts" width="1456" height="728" loading="lazy"></figure>
       <ol class="steps">
         <li><span><strong>Pick one contract.</strong> MES is the most common starting point. Learn how it moves before adding a second market.</span></li>
         <li><span><strong>Pick one setup.</strong> Learn one complete pattern, with entry, stop, and exit rules, from start to finish.</span></li>
@@ -327,9 +353,9 @@ const schema = [
     </section>
 
     <section id="plan">
-      <span class="sec-num">11 · YOUR PLAN</span>
-      <h2>Your first futures trading plan</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('clipboard')} /></span><div><span class="sec-num">11 · YOUR PLAN</span><h2>Your first futures trading plan</h2></div></div>
       <p>A trading plan is a short set of written rules you follow every session. If a rule isn't written down, it's easy to break under pressure. Start with these sections:</p>
+      <figure class="fig"><img src="/assets/ai/10-first-trading-plan/10-first-trading-plan.jpg" alt="An open notebook with an empty checklist beside a tablet showing a rising chart" width="1456" height="728" loading="lazy"></figure>
       <ul class="plan">
         <li><b>Market</b><span>Which contract you trade (for example, MES only).</span></li>
         <li><b>Session</b><span>Your trading window, such as 9:30 to 11:00 AM ET.</span></li>
@@ -344,21 +370,19 @@ const schema = [
     </section>
 
     <section id="mistakes">
-      <span class="sec-num">12 · AVOID</span>
-      <h2>Common futures trading mistakes beginners make</h2>
-      <ul class="mistakes">
-        <li><strong>Sizing from margin instead of risk.</strong> Just because you can open 5 contracts doesn't mean your plan allows it.</li>
-        <li><strong>Trading without a stop.</strong> Leverage turns a "it'll come back" moment into an account-ending one.</li>
-        <li><strong>Revenge trading after a loss.</strong> Your daily loss limit exists for this exact moment.</li>
-        <li><strong>Jumping between markets.</strong> ES in the morning, crude oil at lunch, NQ in the afternoon means you never learn one well.</li>
-        <li><strong>Trading the wrong contract month.</strong> Check the symbol after every rollover.</li>
-        <li><strong>Skipping the simulator.</strong> Real money is an expensive place to learn the order ticket.</li>
-      </ul>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('alert')} /></span><div><span class="sec-num">12 · AVOID</span><h2>Common futures trading mistakes beginners make</h2></div></div>
+      <div class="mistakes">
+        <div class="card mistake"><span class="ico"><Fragment set:html={ico('x')} /></span><div><h3>Sizing from margin instead of risk</h3><p>Just because you can open 5 contracts doesn't mean your plan allows it.</p></div></div>
+        <div class="card mistake"><span class="ico"><Fragment set:html={ico('x')} /></span><div><h3>Trading without a stop</h3><p>Leverage turns a "it'll come back" moment into an account-ending one.</p></div></div>
+        <div class="card mistake"><span class="ico"><Fragment set:html={ico('x')} /></span><div><h3>Revenge trading after a loss</h3><p>Your daily loss limit exists for this exact moment.</p></div></div>
+        <div class="card mistake"><span class="ico"><Fragment set:html={ico('x')} /></span><div><h3>Jumping between markets</h3><p>ES in the morning, crude oil at lunch, NQ in the afternoon means you never learn one well.</p></div></div>
+        <div class="card mistake"><span class="ico"><Fragment set:html={ico('x')} /></span><div><h3>Trading the wrong contract month</h3><p>Check the symbol after every rollover.</p></div></div>
+        <div class="card mistake"><span class="ico"><Fragment set:html={ico('x')} /></span><div><h3>Skipping the simulator</h3><p>Real money is an expensive place to learn the order ticket.</p></div></div>
+      </div>
     </section>
 
     <section id="faq">
-      <span class="sec-num">13 · FAQ</span>
-      <h2>Futures trading FAQ</h2>
+      <div class="sec-head"><span class="ico"><Fragment set:html={ico('chat')} /></span><div><span class="sec-num">13 · FAQ</span><h2>Futures trading FAQ</h2></div></div>
       <details><summary>Is futures trading good for beginners?</summary><p>It can be, if you learn on micro contracts in a simulator first and put risk management before strategy. Futures are leveraged, so beginners who skip that step often lose money quickly.</p></details>
       <details><summary>How much money do I need to start trading futures?</summary><p>You need no money to start learning, because simulators are free or low-cost. To trade real money, your broker sets the minimum deposit and margin requirements, and they vary. Whatever the amount, it should be money you can afford to lose, because futures losses can exceed your deposit.</p></details>
       <details><summary>What is the difference between ES and MES?</summary><p>MES is the micro version of ES and is one-tenth the size. ES is worth $50 per point ($12.50 per tick), and MES is worth $5 per point ($1.25 per tick). They follow the same index, so the charts look the same.</p></details>
@@ -367,26 +391,36 @@ const schema = [
       <details><summary>Can you lose more than you invest in futures?</summary><p>Yes. Because futures are leveraged, a fast move against your position can produce losses larger than the money in your account, and you'd owe the difference to your broker.</p></details>
     </section>
 
-    <section id="next">
-      <div class="end-cta">
-        <span class="sec-num" style="margin:0">NEXT STEP</span>
-        <h2>Learn futures trading with a community beside you.</h2>
-        <p>This guide covers the basics. The MarketEye community gives you the free 26-lesson Trading Fundamentals course, weekly Pre-Trade Prep, team trade breakdowns, and traders who review your simulated charts with you. It's free to join.</p>
-        <a href="/#quiz" class="btn" data-cta="end">Get my free starting plan</a>
-        <span class="micro">5 questions · Free forever · No credit card</span>
-      </div>
-      <h3>Keep learning</h3>
-      <div class="related">
-        <a href="/blog/micro-e-mini-futures-explained"><span>Contracts</span>Micro e-mini futures explained (MES, MNQ)</a>
-        <a href="/blog/es-vs-nq"><span>Contracts</span>ES vs NQ: which futures contract to learn first</a>
-        <a href="/blog/futures-position-sizing"><span>Risk</span>How to size a futures position in ticks</a>
-        <a href="/blog/futures-margin-explained"><span>Risk</span>Leverage and margin explained for beginners</a>
-        <a href="/blog/opening-range-breakout-es"><span>Price action</span>The opening range breakout on ES, explained</a>
-        <a href="/blog/futures-trading-plan-template"><span>Your plan</span>Write your first futures trading plan (template)</a>
-      </div>
-    </section>
   </article>
 </div>
+
+<section class="final" aria-labelledby="f101-final-h">
+  <img src="/assets/ai/03-from-home/03-from-home.jpg" alt="" loading="lazy">
+  <div class="ov"></div>
+  <div class="wrap">
+    <span class="eyebrow">Next step</span>
+    <h2 class="h2" id="f101-final-h">Learn futures trading with a community beside you.</h2>
+    <p class="lead" style="text-align: center">This guide covers the basics. The MarketEye community gives you the free 26-lesson Trading Fundamentals course, weekly Pre-Trade Prep, team trade breakdowns, and traders who review your simulated charts with you. It's free to join.</p>
+    <a href="/#quiz" class="btn" data-cta="futures101-end">Get my free starting plan</a>
+    <span class="micro">5 questions · Free forever · No credit card</span>
+  </div>
+</section>
+
+<section class="section alt" aria-labelledby="f101-more-h">
+  <div class="wrap stack">
+    <div class="head center"><span class="eyebrow">Keep learning</span><h2 class="h2" id="f101-more-h">More from the blog.</h2></div>
+    <div class="post-grid">
+      {related.map((post) => (
+        <a class="card post-card" href={`/blog/${post.id}`}>
+          <h3 class="t3">{post.data.title}</h3>
+          <p class="muted">{post.data.description}</p>
+          <span class="post-more">Read article <span aria-hidden="true">→</span></span>
+        </a>
+      ))}
+    </div>
+    <p class="center-link"><a href="/blog">All articles <span aria-hidden="true">→</span></a></p>
+  </div>
+</section>
 </div>
 </BaseLayout>
 
@@ -395,27 +429,39 @@ const schema = [
 .f101 {
   h1, h2, h3 { font-family: var(--f-display); color: var(--white); line-height: 1.15; margin: 0; text-wrap: balance; }
   .mono { font-family: var(--f-mono); }
-  .btn { min-height: 0; padding: 13px 22px; font-size: 1rem; }
-  .btn-sm { padding: 9px 16px; font-size: .9rem; }
+  .rail-cta .btn { min-height: 0; padding: 9px 16px; font-size: .9rem; }
+  .btn.ghost { background: transparent; border: 1px solid var(--line-2); color: var(--white); box-shadow: none; }
+  .btn.ghost:hover { border-color: var(--cyan); }
   .wrap { max-width: 1180px; }
   font-size: 18px; line-height: 1.7;
   /* Guide header */
-  .guide-head { padding-block: 44px 40px; border-bottom: 1px solid var(--line); background: radial-gradient(ellipse 60% 120% at 85% 0%, rgba(43, 114, 232, .22), transparent 60%); }
+  .guide-head { padding-block: clamp(56px, 7vw, 96px); background: radial-gradient(ellipse 60% 120% at 85% 0%, rgba(43, 114, 232, .22), transparent 60%); }
+  .guide-copy { display: flex; flex-direction: column; gap: 22px; }
   .crumbs { font: 500 .75rem var(--f-mono); letter-spacing: .08em; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
   .crumbs a { color: var(--muted); text-decoration: none; }
   .crumbs a:hover { color: var(--cyan); }
-  .guide-head h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; margin: 16px 0 14px; max-width: 18ch; }
-  .guide-head .lede { font-size: 1.2rem; max-width: 62ch; color: var(--text); }
-  .meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 20px; font: 500 .78rem var(--f-mono); color: var(--muted); }
+  .guide-head h1 { font-size: clamp(2.2rem, 4.6vw, 3.4rem); font-weight: 800; max-width: 18ch; }
+  .guide-head .lede { font-size: 1.15rem; max-width: 56ch; color: var(--soft); margin: 0; }
+  .guide-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; font: 500 .78rem var(--f-mono); color: var(--muted); }
   .meta-row b { color: var(--green); font-weight: 500; }
-  .key-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-top: 30px; }
-  .key-facts div { background: var(--navy-2); padding: 16px 18px; display: grid; gap: 2px; }
-  .key-facts b { font: 800 1.35rem var(--f-display); color: var(--white); font-variant-numeric: tabular-nums; }
-  .key-facts span { font-size: .88rem; color: var(--muted); line-height: 1.4; }
-  @media (max-width: 760px) { .key-facts { grid-template-columns: 1fr 1fr; } }
-  
+  .guide-head .photo { aspect-ratio: 4 / 3; box-shadow: 0 30px 80px -40px rgba(0, 200, 255, .45); }
+
+  /* Key facts band (lighter, like the homepage's alternate sections) */
+  .facts-band { background: var(--alt); border-block: 1px solid rgba(0, 200, 255, .08); padding-block: 56px; }
+  .key-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .fact { display: flex; flex-direction: column; gap: 10px; padding: 28px; background: linear-gradient(180deg, #1A3160 0%, #13264D 100%); border-color: rgba(0, 200, 255, .38); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+  .fact:hover { transform: translateY(-6px); border-color: var(--cyan); box-shadow: 0 26px 50px -22px rgba(0, 200, 255, .45); }
+  .fact .ico { width: 48px; height: 48px; border-radius: 14px; background: rgba(0, 200, 255, .16); }
+  .fact .ico svg { width: 24px; height: 24px; }
+  .fact b { font: 800 1.9rem var(--f-display); color: var(--white); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .fact span:last-child { font-size: .92rem; color: var(--soft); line-height: 1.45; }
+  @media (max-width: 960px) { .key-facts { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .key-facts { gap: 12px; } .fact { padding: 18px; } .fact b { font-size: 1.5rem; } .fact span:last-child { font-size: .84rem; } }
+  @media (max-width: 340px) { .key-facts { grid-template-columns: 1fr; } }
+
   /* Article layout */
-  .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 56px; padding-block: 48px 80px; }
+  .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 64px; padding-block: 88px 112px; }
   .rail { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; display: grid; gap: 22px; }
   .toc { display: grid; gap: 2px; font-size: .9rem; }
   .toc b { font: 500 .7rem var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
@@ -427,9 +473,23 @@ const schema = [
   @media (max-width: 960px) { .layout { grid-template-columns: 1fr; gap: 0; } .rail { display: none; } }
   
   article { min-width: 0; max-width: 760px; }
-  article section { padding-block: 8px 40px; }
-  article section + section { border-top: 1px solid var(--line); padding-top: 40px; }
-  article h2 { font-size: clamp(1.6rem, 3vw, 2.05rem); font-weight: 800; margin-bottom: 16px; }
+  article section { padding-block: 8px 64px; scroll-margin-top: calc(var(--header-h) + 24px); }
+  article section + section { border-top: 1px solid var(--line); padding-top: 64px; }
+  article h2 { font-size: clamp(1.6rem, 3vw, 2.05rem); font-weight: 800; }
+  .sec-head { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
+  .sec-head .ico { width: 52px; height: 52px; border-radius: 15px; box-shadow: 0 0 0 1px rgba(0, 200, 255, .22) inset; }
+  .sec-head .ico svg { width: 26px; height: 26px; }
+  .sec-head .sec-num { margin-bottom: 4px; }
+  .fig { margin: 26px 0; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0, 200, 255, .18); aspect-ratio: 2 / 1; }
+  .fig img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .why-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 8px 0 22px; }
+  .why { padding: 24px; display: flex; flex-direction: column; gap: 12px; transition: transform .25s ease, border-color .25s ease; }
+  .why:hover { transform: translateY(-4px); border-color: var(--line-2); }
+  .why .ico { width: 44px; height: 44px; border-radius: 13px; }
+  .why .ico svg { width: 22px; height: 22px; }
+  .why h3 { margin: 0; font-size: 1.08rem; }
+  .why p { margin: 0; font-size: .97rem; color: var(--soft); }
+  @media (max-width: 620px) { .why-grid { grid-template-columns: 1fr; } }
   article h3 { font-size: 1.2rem; margin: 26px 0 10px; }
   article p { margin: 0 0 16px; max-width: 68ch; }
   article ul, article ol { margin: 0 0 16px; padding-left: 1.3em; max-width: 68ch; }
@@ -502,10 +562,14 @@ const schema = [
   .plan li b { font: 500 .78rem var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--cyan); padding-top: 3px; }
   .plan li span { color: var(--muted); }
   @media (max-width: 560px) { .plan li { grid-template-columns: 1fr; gap: 2px; } }
-  .mistakes { display: grid; gap: 12px; list-style: none; padding: 0 !important; }
-  .mistakes li { padding: 14px 18px; border-left: 3px solid var(--red); background: var(--navy-2); border-radius: 0 10px 10px 0; margin: 0; }
-  .mistakes li strong { display: block; margin-bottom: 2px; }
-  
+  .mistakes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .mistake { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 20px; }
+  .mistake .ico { width: 40px; height: 40px; border-radius: 12px; background: rgba(255, 138, 138, .1); color: var(--red); }
+  .mistake .ico svg { width: 22px; height: 22px; }
+  .mistake h3 { margin: 0 0 4px; font-size: 1.02rem; }
+  .mistake p { margin: 0; font-size: .94rem; color: var(--soft); }
+  @media (max-width: 620px) { .mistakes { grid-template-columns: 1fr; } }
+
   /* FAQ */
   details { border-bottom: 1px solid var(--line); }
   details:first-of-type { border-top: 1px solid var(--line); }
@@ -515,22 +579,11 @@ const schema = [
   details[open] summary::after { transform: rotate(45deg); }
   details p { color: var(--muted); }
   
-  /* End CTA + related */
-  .end-cta { margin-top: 12px; padding: clamp(28px, 4vw, 40px); border-radius: 20px; border: 1px solid var(--line-2); background: radial-gradient(ellipse at 50% 0%, rgba(43, 114, 232, .35), transparent 60%), var(--card); display: grid; gap: 14px; justify-items: start; }
-  .end-cta h2 { margin: 0; }
-  .end-cta p { margin: 0; color: var(--text); }
-  .end-cta .micro { font-size: .86rem; color: var(--muted); }
-  .related { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
-  .related a { display: grid; gap: 2px; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--navy-2); text-decoration: none; color: var(--white); font-weight: 600; line-height: 1.35; }
-  .related a span { font: 500 .68rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-  .related a:hover { border-color: var(--cyan); }
-  @media (max-width: 560px) { .related { grid-template-columns: 1fr; } }
-  
-  /* Footer */
-  footer.site { background: var(--navy-2); border-top: 1px solid var(--line); padding-block: 40px; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); font-size: .82rem; color: var(--muted); line-height: 1.6; }
-  footer.site .risk { display: grid; gap: 10px; max-width: 900px; }
-  footer.site a { color: var(--text); }
-  
+  /* Closing bands */
+  .final .h2 { max-width: 20ch; text-align: center; }
+  .final .lead { max-width: 640px; }
+  .post-grid { margin-top: 0; }
+  .center-link { text-align: center; margin: 0; font-weight: 600; }
 }
 </style>
 
@@ -638,9 +691,5 @@ const schema = [
     document.querySelectorAll('article section[id]').forEach(function (s) { io.observe(s); });
   }
 
-  /* Analytics hook */
-  document.querySelectorAll('[data-cta]').forEach(function (a) {
-    a.addEventListener('click', function () { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'cta_click', location: 'futures101_' + a.getAttribute('data-cta') }); });
-  });
 })();
 </script>

@@ -278,7 +278,7 @@ footer.site { background: var(--navy-2); border-top: 1px solid var(--line); padd
 @media (max-width: 760px) { .sticky-cta[data-show="true"] { display: block; } }
 
 /* ---------- Blog ---------- */
-.page-head { padding-block: calc(var(--header-h) + 64px) 56px; }
+.page-head { padding-block: clamp(64px, 8vw, 104px) 56px; }
 .page-head .lead { margin-top: 18px; }
 .page-title { font-weight: 800; font-size: clamp(36px, 5vw, 56px); line-height: 1.08; margin-top: 14px; }
 .post-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
@@ -287,7 +287,7 @@ footer.site { background: var(--navy-2); border-top: 1px solid var(--line); padd
 .post-card .muted { flex: 1; }
 .post-date { font-family: var(--f-mono); font-size: 13px; letter-spacing: .06em; color: var(--muted); margin: 0; }
 .post-more { color: var(--cyan); font-weight: 600; }
-.post { padding-top: calc(var(--header-h) + 48px); }
+.post { padding-top: clamp(48px, 6vw, 80px); }
 .post-wrap { max-width: 760px; }
 .post-back { display: inline-block; margin-bottom: 28px; text-decoration: none; font-weight: 600; }
 .post .page-title { margin-bottom: 36px; }
