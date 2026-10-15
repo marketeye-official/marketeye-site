@@ -1,0 +1,25 @@
+---
+// Opening section for inner pages: eyebrow, H1, lede and actions, with an optional image on the right.
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  /** Path under /assets/ai, e.g. "02-after-work". */
+  image?: string;
+  imageAlt?: string;
+}
+const { eyebrow, title, lede, image, imageAlt = '' } = Astro.props;
+---
+<section class={`page-hero${image ? '' : ' no-image'}`}>
+  <div class={`wrap${image ? ' split' : ''}`}>
+    <div class="page-hero-copy">
+      {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+      <h1 class="page-title">{title}</h1>
+      {lede && <p class="lead">{lede}</p>}
+      {Astro.slots.has('default') && <div class="page-hero-actions"><slot /></div>}
+    </div>
+    {image && (
+      <div class="photo"><img src={`/assets/ai/${image}/${image}.jpg`} alt={imageAlt} width="1456" height="728"></div>
+    )}
+  </div>
+</section>

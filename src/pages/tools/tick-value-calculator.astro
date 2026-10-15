@@ -1,0 +1,100 @@
+---
+// Free futures tick value calculator (ES, MES, NQ, MNQ) with a position size calculator and contract specs.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import TickCalculator from '../../components/tools/TickCalculator.astro';
+import SizeCalculator from '../../components/tools/SizeCalculator.astro';
+import { ico } from '../../lib/icons';
+import '../../styles/guide.css';
+
+const faqs = [
+  ['What is a tick in futures trading?', 'A tick is the smallest price move a futures contract can make. For the E-mini S&P 500 (ES), Micro E-mini S&P 500 (MES), E-mini Nasdaq-100 (NQ) and Micro E-mini Nasdaq-100 (MNQ), one tick is 0.25 index points, so there are four ticks in every point.'],
+  ['How much is one tick worth on ES and MES?', 'One tick on ES is worth $12.50 per contract ($50 per point). One tick on MES is worth $1.25 per contract ($5 per point), exactly one-tenth of ES.'],
+  ['How much is one tick worth on NQ and MNQ?', 'One tick on NQ is worth $5.00 per contract ($20 per point). One tick on MNQ is worth $0.50 per contract ($2 per point).'],
+  ['How do you calculate profit or loss on a futures trade?', 'Multiply the number of ticks the price moved by the tick value and by the number of contracts. For example, 16 ticks × $1.25 × 2 MES contracts = $40, before commissions and fees.'],
+  ['Does the calculator include commissions and fees?', 'No. Results are gross. Your broker, the exchange and data providers all charge fees that reduce gains and increase losses, so check your own costs.'],
+];
+
+const schema = [{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Futures Tick Value Calculator",
+      "url": "https://marketeye.io/tools/tick-value-calculator",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": { "@type": "Organization", "name": "MarketEye", "url": "https://marketeye.io/" },
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(([q, a]) => ({ "@type": "Question", "name": q, "acceptedAnswer": { "@type": "Answer", "text": a } })),
+    },
+  ],
+}];
+---
+<BaseLayout
+  title="Futures Tick Value Calculator (ES, MES, NQ, MNQ) | MarketEye"
+  description="Free futures tick value calculator. See what a price move is worth on ES, MES, NQ and MNQ in points or ticks, then size a position from your max risk."
+  path="/tools/tick-value-calculator"
+  schema={schema}
+>
+<div class="guide">
+  <PageHero
+    eyebrow="Free tool"
+    title="Futures tick value calculator"
+    lede="See what any price move is worth on the E-mini and Micro E-mini S&P 500 and Nasdaq-100, in points or ticks. Then work out how many contracts your risk limit allows."
+  />
+
+  <div class="wrap">
+    <article class="solo" style="padding-top: 8px">
+      <section id="calculator">
+        <div class="sec-head"><span class="ico" set:html={ico('ruler')} /><div><span class="sec-num">STEP 1 · VALUE A MOVE</span><h2>What is this move worth?</h2></div></div>
+        <p>Pick a contract, enter the price move and the number of contracts. Switch between points and ticks to match how your platform shows it.</p>
+        <TickCalculator />
+      </section>
+
+      <section id="size">
+        <div class="sec-head"><span class="ico" set:html={ico('shield')} /><div><span class="sec-num">STEP 2 · SIZE THE TRADE</span><h2>How many contracts fit your risk?</h2></div></div>
+        <p>Start from the most you're willing to lose on one trade, then divide by what one contract risks at your stop: <span class="mono">contracts = max risk ÷ (stop in ticks × tick value)</span>.</p>
+        <SizeCalculator />
+        <div class="note risk"><b>Futures are leveraged.</b> Losses can exceed the money in your account. Size from your risk limit, never from your available margin, and practice in a simulator first.</div>
+      </section>
+
+      <section id="specs">
+        <div class="sec-head"><span class="ico" set:html={ico('layers')} /><div><span class="sec-num">REFERENCE</span><h2>Tick values for ES, MES, NQ and MNQ</h2></div></div>
+        <div class="tw">
+          <table>
+            <caption>Contract specifications per CME Group. Confirm current specs with the exchange and your broker.</caption>
+            <thead><tr><th scope="col">Contract</th><th scope="col">Symbol</th><th scope="col">Tick size</th><th scope="col">Value per tick</th><th scope="col">Value per point</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">E-mini S&amp;P 500</th><td class="num">ES</td><td class="num">0.25</td><td class="num">$12.50</td><td class="num">$50.00</td></tr>
+              <tr><th scope="row">Micro E-mini S&amp;P 500</th><td class="num">MES</td><td class="num">0.25</td><td class="num">$1.25</td><td class="num">$5.00</td></tr>
+              <tr><th scope="row">E-mini Nasdaq-100</th><td class="num">NQ</td><td class="num">0.25</td><td class="num">$5.00</td><td class="num">$20.00</td></tr>
+              <tr><th scope="row">Micro E-mini Nasdaq-100</th><td class="num">MNQ</td><td class="num">0.25</td><td class="num">$0.50</td><td class="num">$2.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="example">
+          <span class="lbl">Simulated example</span>
+          <p>A trader's plan allows $100 of risk per trade with a 3-point stop on MES. Three points is 12 ticks, and 12 × $1.25 = $15 per contract, so the plan allows 6 contracts ($90 of risk). The same stop on ES risks $150 per contract, which is over the limit, so the plan allows 0 ES contracts.</p>
+        </div>
+      </section>
+
+      <section id="faq">
+        <div class="sec-head"><span class="ico" set:html={ico('chat')} /><div><span class="sec-num">FAQ</span><h2>Tick value questions</h2></div></div>
+        {faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+        <p style="margin-top: 28px">New to futures? Read <a href="/futures-trading">Futures Trading 101</a> for the full beginner's guide, or check <a href="/futures-trading-hours">futures trading hours</a> and the <a href="/glossary">futures glossary</a>.</p>
+      </section>
+    </article>
+  </div>
+
+  <FinalCta
+    heading="Know the numbers. Then learn the process."
+    text="The free MarketEye community teaches risk, position sizing and your first trading plan in a 26-lesson course, with traders who review your simulated charts."
+    cta="tick-tool-end"
+  />
+</div>
+</BaseLayout>

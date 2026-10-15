@@ -1,0 +1,17 @@
+---
+// Live "is the futures market open?" clock for CME equity index futures. Styles live in src/styles/guide.css (render inside .guide).
+---
+<div class="tool" id="clock-tool">
+  <div class="tool-head"><h3>Is the futures market open right now?</h3><span>Live</span></div>
+  <div class="clock">
+    <div class="light" id="clk-light"><i></i></div>
+    <div><div class="state" id="clk-state">Checking…</div><div class="detail" id="clk-detail"></div></div>
+  </div>
+  <div class="week" id="clk-week" aria-hidden="true"></div>
+  <p class="tool-foot">Regular weekly schedule for CME equity index futures. Exchange holidays and early closes aren't included; check the CME holiday calendar.</p>
+</div>
+
+<script>
+  import { initMarketClock } from '../../scripts/futures-tools.js';
+  initMarketClock();
+</script>

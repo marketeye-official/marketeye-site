@@ -1,0 +1,21 @@
+---
+// Futures position size calculator: contracts allowed by a max risk and stop distance. Styles live in src/styles/guide.css (render inside .guide).
+---
+<div class="tool" id="size-tool">
+  <div class="tool-head"><h3>Futures position size calculator</h3><span>Free tool</span></div>
+  <div class="fields">
+    <div class="field"><label for="ps-risk">Max risk per trade ($)</label>
+      <input id="ps-risk" type="number" inputmode="decimal" min="1" step="1" value="100"></div>
+    <div class="field"><label for="ps-stop">Stop distance (ticks)</label>
+      <input id="ps-stop" type="number" inputmode="numeric" min="1" step="1" value="16"></div>
+    <div class="field"><label for="ps-contract">Contract</label>
+      <select id="ps-contract"><option value="ES">ES · E-mini S&amp;P 500</option><option value="MES" selected>MES · Micro E-mini S&amp;P</option><option value="NQ">NQ · E-mini Nasdaq-100</option><option value="MNQ">MNQ · Micro E-mini Nasdaq</option></select></div>
+  </div>
+  <div class="result" id="ps-result" aria-live="polite"><span class="big" id="ps-out">5 contracts</span><span class="sub" id="ps-sub">Each contract risks 16 ticks × $1.25 = $20.00. Total risk: $100.00.</span></div>
+  <p class="tool-foot">Example values. Doesn't include slippage, commissions, or fees, and isn't a recommendation to trade any size.</p>
+</div>
+
+<script>
+  import { initSizeCalculator } from '../../scripts/futures-tools.js';
+  initSizeCalculator();
+</script>

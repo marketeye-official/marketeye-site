@@ -1,0 +1,25 @@
+---
+// Full-width closing call to action over an image, linking to the homepage quiz.
+interface Props {
+  heading: string;
+  text: string;
+  button?: string;
+  /** Where the click came from, sent with the cta_click event. */
+  cta: string;
+  /** Path under /assets/ai. */
+  image?: string;
+}
+const { heading, text, button = 'Get my free starting plan', cta, image = '03-from-home' } = Astro.props;
+const id = `${cta}-final-h`;
+---
+<section class="final" aria-labelledby={id}>
+  <img src={`/assets/ai/${image}/${image}.jpg`} alt="" loading="lazy">
+  <div class="ov"></div>
+  <div class="wrap">
+    <span class="eyebrow">Free community</span>
+    <h2 class="h2 final-h" id={id}>{heading}</h2>
+    <p class="lead final-lead">{text}</p>
+    <a href="/#quiz" class="btn" data-cta={cta}>{button}</a>
+    <span class="micro">5 questions · Free forever · No credit card</span>
+  </div>
+</section>

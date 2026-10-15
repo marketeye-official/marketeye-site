@@ -1,0 +1,109 @@
+---
+// About MarketEye: who we are, how we teach, what we are and aren't. No founder names or photos.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCta from '../components/FinalCta.astro';
+import { ico } from '../lib/icons';
+
+const schema = [{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "url": "https://marketeye.io/about",
+  "mainEntity": {
+    "@type": "EducationalOrganization",
+    "name": "MarketEye",
+    "url": "https://marketeye.io/",
+    "description": "A free futures trading education community with a 26-lesson course, weekly Pre-Trade Prep and an optional mentorship by interview.",
+    "email": "support@marketeye.io",
+  },
+}];
+---
+<BaseLayout
+  title="About MarketEye | Futures Trading Education Community"
+  description="MarketEye is a free futures trading education community. Our traders bring 36+ years of combined experience and teach process, risk and planning before profits."
+  path="/about"
+  schema={schema}
+>
+  <PageHero
+    eyebrow="About MarketEye"
+    title="Working traders who teach the process."
+    lede="MarketEye is a futures trading education community. Our traders bring 36+ years of combined experience, and some of us were trading before online trading existed. We teach what took us years to learn: process, risk and a written plan come before profits."
+    image="02-after-work"
+    imageAlt="A relaxed person at a laptop with a glowing chart, warm lamp light and city lights in the evening"
+  >
+    <a href="/#quiz" class="btn" data-cta="about-hero">Join the free community</a>
+    <a href="#beliefs">How we teach <span aria-hidden="true">↓</span></a>
+  </PageHero>
+
+  <section class="section alt" id="beliefs" aria-labelledby="beliefs-h">
+    <div class="wrap stack">
+      <div class="head center"><span class="eyebrow">How we teach</span><h2 class="h2" id="beliefs-h">Four things we won't compromise on.</h2></div>
+      <div class="icon-grid four">
+        <div class="card icon-card"><span class="ico" set:html={ico('eye')} /><h3 class="t3">We show our work</h3><p class="muted">Every breakdown explains the idea, the plan and where the idea would be wrong.</p></div>
+        <div class="card icon-card"><span class="ico" set:html={ico('clipboard')} /><h3 class="t3">Process before profits</h3><p class="muted">No screenshots of wins. No income claims. We judge trades by whether you followed your plan.</p></div>
+        <div class="card icon-card"><span class="ico" set:html={ico('shield')} /><h3 class="t3">Risk comes first</h3><p class="muted">Position sizing and daily loss limits are taught before any strategy.</p></div>
+        <div class="card icon-card"><span class="ico" set:html={ico('users')} /><h3 class="t3">Nobody learns alone</h3><p class="muted">Traders who check each other's work stick with it longer than traders who go it alone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="method-h">
+    <div class="wrap split">
+      <div class="stack" style="gap: 28px">
+        <div class="head"><span class="eyebrow">The MarketEye Method</span><h2 class="h2" id="method-h">Three stages. Move on when you're ready.</h2></div>
+        <ol class="num-steps">
+          <li class="card"><div><h3>Learn</h3><p class="muted">The free 26-lesson course: markets, charts, risk, orders and your first trading plan.</p></div></li>
+          <li class="card"><div><h3>Prove</h3><p class="muted">Trade a simulated futures account against clear benchmarks, with process reviews from the community.</p></div></li>
+          <li class="card"><div><h3>Go Independent</h3><p class="muted">Trade your own written plan. MarketEye doesn't provide or arrange trading capital.</p></div></li>
+        </ol>
+      </div>
+      <div class="photo"><img src="/assets/ai/10-first-trading-plan/10-first-trading-plan.jpg" alt="An open notebook with an empty checklist beside a tablet showing a rising chart" loading="lazy" width="1456" height="728"></div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="is-h">
+    <div class="wrap stack">
+      <div class="head center"><span class="eyebrow">Straight answers</span><h2 class="h2" id="is-h">What MarketEye is, and isn't.</h2></div>
+      <div class="fit">
+        <div class="card">
+          <h3 class="t3">MarketEye is</h3>
+          <ul class="checks">
+            <li><span>An education company focused on futures: ES, NQ and their micro contracts</span></li>
+            <li><span>A free community on Circle with a 26-lesson Trading Fundamentals course</span></li>
+            <li><span>Weekly Pre-Trade Prep and step-by-step trade breakdowns from the team</span></li>
+            <li><span>An optional paid <a href="/mentorship">mentorship</a>, by interview only</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="t3">MarketEye isn't</h3>
+          <ul class="checks no">
+            <li><span>A broker-dealer, investment adviser or commodity trading advisor</span></li>
+            <li><span>A source of individualized investment advice or recommendations to buy or sell</span></li>
+            <li><span>A firm that manages money, accounts or trading capital</span></li>
+            <li><span>A promise of income. Trading involves substantial risk of loss.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="where-h">
+    <div class="wrap stack">
+      <div class="head center"><span class="eyebrow">Where we meet</span><h2 class="h2" id="where-h">The community lives on Circle.</h2>
+        <p class="lead" style="text-align: center; margin-inline: auto">Members log in at <a href="https://learn.marketeye.io">learn.marketeye.io</a>. Here's what's inside.</p></div>
+      <div class="icon-grid four">
+        <div class="card icon-card"><span class="ico" set:html={ico('book')} /><h3 class="t3">Trading Fundamentals</h3><p class="muted">26 lessons, from how markets work to your first trading plan.</p></div>
+        <div class="card icon-card"><span class="ico" set:html={ico('calendar')} /><h3 class="t3">Pre-Trade Prep</h3><p class="muted">The week's key economic releases in one post.</p></div>
+        <div class="card icon-card"><span class="ico" set:html={ico('compare')} /><h3 class="t3">Trade breakdowns</h3><p class="muted">Step-by-step charts from the team, simulated and for teaching only.</p></div>
+        <div class="card icon-card"><span class="ico" set:html={ico('chat')} /><h3 class="t3">Member chat</h3><p class="muted">Introduce yourself, ask questions and share your simulated charts for feedback.</p></div>
+      </div>
+      <p class="center-link">Questions? <a href="/contact">Contact us</a></p>
+    </div>
+  </section>
+
+  <FinalCta
+    heading="Start with the free course."
+    text="Answer five quick questions and we'll point you to the right first lesson, then send your invite to the community."
+    cta="about-end"
+  />
+</BaseLayout>

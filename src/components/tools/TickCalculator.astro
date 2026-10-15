@@ -1,0 +1,24 @@
+---
+// Futures tick value calculator (ES, MES, NQ, MNQ). Styles live in src/styles/guide.css (render inside .guide).
+---
+<div class="tool" id="tick-tool">
+  <div class="tool-head"><h3>Futures tick value calculator</h3><span>Free tool</span></div>
+  <div class="fields">
+    <div class="field"><label for="tc-contract">Contract</label>
+      <select id="tc-contract"><option value="ES">ES · E-mini S&amp;P 500</option><option value="MES" selected>MES · Micro E-mini S&amp;P</option><option value="NQ">NQ · E-mini Nasdaq-100</option><option value="MNQ">MNQ · Micro E-mini Nasdaq</option></select></div>
+    <div class="field"><label for="tc-amount">Price move</label>
+      <input id="tc-amount" type="number" inputmode="decimal" min="0" step="0.25" value="4"></div>
+    <div class="field"><label for="tc-qty">Contracts</label>
+      <input id="tc-qty" type="number" inputmode="numeric" min="1" step="1" value="1"></div>
+  </div>
+  <div class="field" style="margin-top:12px"><span style="font-size:.8rem;font-weight:600;color:var(--muted)">Price move is in</span>
+    <div class="seg" role="group" aria-label="Price move units"><button type="button" id="tc-unit-points" aria-pressed="true">Points</button><button type="button" id="tc-unit-ticks" aria-pressed="false">Ticks</button></div>
+  </div>
+  <div class="result" aria-live="polite"><span class="big" id="tc-out">$20.00</span><span class="sub" id="tc-sub">4 points = 16 ticks × $1.25 × 1 contract</span></div>
+  <p class="tool-foot">Before commissions and fees. For education only.</p>
+</div>
+
+<script>
+  import { initTickCalculator } from '../../scripts/futures-tools.js';
+  initTickCalculator();
+</script>

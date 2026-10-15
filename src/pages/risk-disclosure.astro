@@ -1,0 +1,51 @@
+---
+// Risk disclosure. Expands the footer disclosure; needs attorney review before launch.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+<BaseLayout
+  title="Risk Disclosure | MarketEye"
+  description="Futures and other trading involve substantial risk of loss. Read MarketEye's risk disclosure, including leverage, simulated performance and the limits of our education."
+  path="/risk-disclosure"
+>
+  <PageHero eyebrow="Legal" title="Risk disclosure" />
+
+  <section class="section" style="padding-top: 0">
+    <div class="wrap reading">
+      <p class="updated">MarketEye, LLC · Last updated October 15, 2026</p>
+
+      <div class="callout">
+        <p style="margin: 0"><strong>Futures trading involves substantial risk of loss and is not suitable for all investors.</strong> Futures are leveraged, and you can lose more than your initial deposit. Only trade with money you can afford to lose.</p>
+      </div>
+
+      <h2>Education only</h2>
+      <p>MarketEye is an education company. We are not a broker-dealer, investment adviser or commodity trading advisor, and we do not manage money, accounts or trading capital. Our courses, live sessions, posts, emails, tools and community discussions are for educational purposes only. Nothing we publish is individualized investment advice or a recommendation to buy or sell any security, futures contract or other instrument.</p>
+      <p>You are solely responsible for your trading decisions. Before trading, consider your financial situation and consult a licensed professional if you need advice.</p>
+
+      <h2>Leverage and losses</h2>
+      <p>A small deposit controls a futures contract worth much more. Leverage magnifies both gains and losses. A fast move against your position can produce losses larger than the money in your account, and you would owe the difference to your broker. Your broker may also close your positions without notice if your account falls below its margin requirements.</p>
+
+      <h2>Other markets</h2>
+      <p>The same risks apply, in different ways, to trading stocks, options, forex and cryptocurrencies. Some of these markets are open around the clock, move quickly and can gap past stop orders.</p>
+
+      <h2>Simulated and hypothetical results</h2>
+      <p class="caps">Hypothetical or simulated performance results have certain limitations. Unlike an actual performance record, simulated results do not represent actual trading. Also, since the trades have not been executed, the results may have under- or over-compensated for the impact, if any, of certain market factors, such as lack of liquidity. Simulated trading programs in general are also subject to the fact that they are designed with the benefit of hindsight. No representation is being made that any account will or is likely to achieve profit or losses similar to those shown.</p>
+      <p>Examples on this website and in our community are labeled as simulated and are used for teaching only.</p>
+
+      <h2>Past performance</h2>
+      <p>Past performance, whether actual or simulated, is not indicative of future results.</p>
+
+      <h2>Member comments</h2>
+      <p>Comments from members describe their own experience of our education. They are not typical, they are not about trading profits, and they are no guarantee that you will have the same experience.</p>
+
+      <h2>Third-party evaluations and services</h2>
+      <p>Funded-trader evaluations, brokers, platforms and data providers are independent third parties with their own terms, rules and fees. MarketEye is not affiliated with them unless we say so in writing, and we don't provide, manage or arrange trading capital.</p>
+
+      <h2>Images</h2>
+      <p>Images on this website are AI-generated illustrations. They do not depict MarketEye members or real trading results.</p>
+
+      <h2>Questions</h2>
+      <p>Email <a href="mailto:contact@marketeye.io">contact@marketeye.io</a>. See also our <a href="/terms">Terms of Service</a>, <a href="/privacy">Privacy Policy</a> and <a href="/community-terms">Community Agreement</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

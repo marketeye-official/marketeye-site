@@ -17,7 +17,6 @@ Built with [Astro](https://astro.build) as a fully static site.
 ```
 public/            Files copied as-is (logo, favicon, AI images, robots.txt)
 src/layouts/       BaseLayout.astro: <head>/SEO tags, header, footer, sticky CTA, site scripts
-src/components/    Header, Footer, Quiz (the 5-question hero quiz)
 src/pages/         One file per URL: index.astro (/), futures-trading.astro (/futures-trading)
 src/styles/        global.css (brand tokens and shared components)
 src/data/          hero-chart.svg + week.json (refreshed weekly), teach-chart.svg, home-schema.json
@@ -71,6 +70,8 @@ It also saves a Pre-Trade Prep post in Circle as a draft for review. Nothing is 
 - [ ] Connect the quiz form (`src/components/Quiz.astro`, `submit()`) to the email platform/Zapier that sends the Circle invite and tags the member.
 - [ ] Add Google Tag Manager in `BaseLayout.astro` (placeholder comment in `<head>`); map `quiz_start`, `quiz_complete`, `generate_lead`, `cta_click` to GA4, Meta and TikTok.
 - [ ] Cookie consent banner with Google Consent Mode.
-- [ ] Remaining pages: /welcome, /mentorship, /about, /tools/tick-value-calculator, /risk-disclosure, /contact, 404.
+- [ ] Point the quiz/email flow's thank-you step at /welcome (noindex) and use it as the conversion page in ads.
+- [ ] Attorney review of /risk-disclosure and the mentorship page.
+- [ ] Membership billing terms list "real-time trade alerts"; align them with the education-only positioning.
 - [ ] `robots.txt`: the old site blocked all crawlers; this one allows them. Confirm before launch.
 - [ ] Attorney review of disclosures; confirm testimonials and stats.

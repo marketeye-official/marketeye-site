@@ -1,0 +1,25 @@
+---
+// Not-found page. Netlify serves dist/404.html for any missing URL.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ico } from '../lib/icons';
+---
+<BaseLayout
+  title="Page Not Found | MarketEye"
+  description="We couldn't find that page."
+  path="/404"
+  noindex
+  stickyCta={false}
+>
+  <section class="section nf">
+    <div class="wrap stack" style="align-items: center; text-align: center">
+      <span class="eyebrow">Error 404</span>
+      <h1 class="page-title" style="margin: 0">This page stopped out.</h1>
+      <p class="lead" style="text-align: center">The link may be old, or the page may have moved. Here are the most useful places to go instead.</p>
+      <div class="icon-grid" style="width: 100%; text-align: left">
+        <a class="card icon-card post-card" href="/"><span class="ico" set:html={ico('home')} /><h2 class="t3">Home</h2><p class="muted">Take the 5-question quiz and join the free community.</p></a>
+        <a class="card icon-card post-card" href="/futures-trading"><span class="ico" set:html={ico('book')} /><h2 class="t3">Futures Trading 101</h2><p class="muted">The beginner's guide to futures.</p></a>
+        <a class="card icon-card post-card" href="/blog"><span class="ico" set:html={ico('search')} /><h2 class="t3">Blog</h2><p class="muted">Articles on process, risk and psychology.</p></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

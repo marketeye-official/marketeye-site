@@ -1,0 +1,131 @@
+---
+// Futures trading hours for CME equity index futures, with a live "is the market open?" clock.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCta from '../components/FinalCta.astro';
+import MarketClock from '../components/tools/MarketClock.astro';
+import { ico } from '../lib/icons';
+import '../styles/guide.css';
+
+const faqs = [
+  ['What are the trading hours for ES and NQ futures?', 'E-mini S&P 500 (ES) and E-mini Nasdaq-100 (NQ) futures, and their micro versions MES and MNQ, trade on CME Globex from Sunday 6:00 PM ET to Friday 5:00 PM ET, with a one-hour break from 5:00 to 6:00 PM ET Monday through Thursday.'],
+  ['Are futures open 24 hours a day?', 'Nearly. Equity index futures trade about 23 hours a day, five days a week. The only weekday pause is the daily break from 5:00 to 6:00 PM ET.'],
+  ['Can you trade futures on weekends?', 'No. Trading stops Friday at 5:00 PM ET and starts again Sunday at 6:00 PM ET.'],
+  ['When is the futures market busiest?', 'Usually during the US cash session, 9:30 AM to 4:00 PM ET, and especially in the first hour after the open. Volume also tends to rise around scheduled economic releases such as 8:30 AM ET reports.'],
+  ['Do futures trade on US holidays?', 'Holiday schedules vary. On many US holidays the market closes early or doesn\'t open. Check the CME Group holiday calendar before each holiday.'],
+];
+
+const schema = [{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Futures Trading Hours: When ES, NQ, MES and MNQ Trade",
+      "description": "CME equity index futures trading hours in Eastern, Central and Pacific time, the daily break, the US cash session and key economic release times.",
+      "dateModified": "2026-10-15",
+      "author": { "@type": "Organization", "name": "MarketEye" },
+      "publisher": { "@type": "Organization", "name": "MarketEye", "url": "https://marketeye.io/" },
+      "mainEntityOfPage": "https://marketeye.io/futures-trading-hours",
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(([q, a]) => ({ "@type": "Question", "name": q, "acceptedAnswer": { "@type": "Answer", "text": a } })),
+    },
+  ],
+}];
+---
+<BaseLayout
+  title="Futures Trading Hours (ES, NQ, MES, MNQ) | Is the Market Open? | MarketEye"
+  description="When do futures trade? ES, NQ, MES and MNQ trade Sunday 6 PM to Friday 5 PM ET with a daily 5–6 PM break. Live market clock, time zones and key release times."
+  path="/futures-trading-hours"
+  schema={schema}
+>
+<div class="guide">
+  <PageHero
+    eyebrow="Futures market hours"
+    title="Futures trading hours"
+    lede="When the E-mini and Micro E-mini S&P 500 and Nasdaq-100 trade, when they pause, and when they're usually busiest. All times are US Eastern unless noted."
+    image="05-market-fundamentals"
+    imageAlt="A glowing globe covered in connected points of light"
+  >
+    <a href="#now" class="btn">Is it open right now?</a>
+  </PageHero>
+
+  <div class="wrap">
+    <article class="solo">
+      <section id="now">
+        <div class="sec-head"><span class="ico" set:html={ico('clock')} /><div><span class="sec-num">LIVE</span><h2>Is the futures market open?</h2></div></div>
+        <MarketClock />
+      </section>
+
+      <section id="schedule">
+        <div class="sec-head"><span class="ico" set:html={ico('calendar')} /><div><span class="sec-num">WEEKLY SCHEDULE</span><h2>The trading week at a glance</h2></div></div>
+        <p>US equity index futures (ES, MES, NQ, MNQ) trade on CME Globex almost 23 hours a day, five days a week.</p>
+        <div class="tw">
+          <table>
+            <thead><tr><th scope="col">Period</th><th scope="col">Time (ET)</th><th scope="col">What it means</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Weekly open</th><td class="num">Sun 6:00 PM</td><td>Trading starts for the week.</td></tr>
+              <tr><th scope="row">Overnight session</th><td class="num">6:00 PM–9:30 AM</td><td>Futures trade while US stock markets are closed. Volume is usually lighter.</td></tr>
+              <tr><th scope="row">US cash session</th><td class="num">Mon–Fri 9:30 AM–4:00 PM</td><td>When the stock market is open. Volume and movement are usually highest, especially in the first hour.</td></tr>
+              <tr><th scope="row">After the cash close</th><td class="num">4:00–5:00 PM</td><td>Futures keep trading for an hour after stocks close.</td></tr>
+              <tr><th scope="row">Daily break</th><td class="num">Mon–Thu 5:00–6:00 PM</td><td>A one-hour pause each evening.</td></tr>
+              <tr><th scope="row">Weekly close</th><td class="num">Fri 5:00 PM</td><td>Trading stops for the weekend.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="time-zones">
+        <div class="sec-head"><span class="ico" set:html={ico('compass')} /><div><span class="sec-num">TIME ZONES</span><h2>Key times in your time zone</h2></div></div>
+        <p>CME is based in Chicago, so you'll often see these times quoted in Central Time.</p>
+        <div class="tw">
+          <table>
+            <thead><tr><th scope="col">Event</th><th scope="col">Eastern</th><th scope="col">Central</th><th scope="col">Pacific</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Daily open</th><td class="num">6:00 PM</td><td class="num">5:00 PM</td><td class="num">3:00 PM</td></tr>
+              <tr><th scope="row">Stock market open</th><td class="num">9:30 AM</td><td class="num">8:30 AM</td><td class="num">6:30 AM</td></tr>
+              <tr><th scope="row">Stock market close</th><td class="num">4:00 PM</td><td class="num">3:00 PM</td><td class="num">1:00 PM</td></tr>
+              <tr><th scope="row">Daily close</th><td class="num">5:00 PM</td><td class="num">4:00 PM</td><td class="num">2:00 PM</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="releases">
+        <div class="sec-head"><span class="ico" set:html={ico('alert')} /><div><span class="sec-num">SCHEDULED NEWS</span><h2>Times when the market can move fast</h2></div></div>
+        <p>Scheduled economic releases can cause sudden, large moves in index futures. Many traders stay flat through them or plan for them in advance.</p>
+        <div class="why-grid">
+          <div class="card why"><span class="ico" set:html={ico('clock')} /><h3>8:30 AM ET</h3><p>Many major US reports, including CPI inflation, the monthly jobs report, PPI and retail sales.</p></div>
+          <div class="card why"><span class="ico" set:html={ico('clock')} /><h3>10:00 AM ET</h3><p>Reports such as ISM surveys, consumer sentiment and job openings.</p></div>
+          <div class="card why"><span class="ico" set:html={ico('scale')} /><h3>2:00 PM ET</h3><p>Federal Reserve (FOMC) rate decisions on meeting days, with a press conference at 2:30 PM ET.</p></div>
+          <div class="card why"><span class="ico" set:html={ico('calendar')} /><h3>Every week</h3><p>Members get the week's key releases in one Pre-Trade Prep post inside the free community.</p></div>
+        </div>
+      </section>
+
+      <section id="when-to-practice">
+        <div class="sec-head"><span class="ico" set:html={ico('target')} /><div><span class="sec-num">FOR BEGINNERS</span><h2>Pick one window and stick to it</h2></div></div>
+        <p>You don't need to watch the market all day. Most new traders do better with one consistent 60 to 90 minute window, practiced the same way every session in a simulator.</p>
+        <ul>
+          <li><strong>Morning window:</strong> the first 60 to 90 minutes after the 9:30 AM ET open, when volume is highest.</li>
+          <li><strong>Evening window:</strong> part of the overnight session, which fits around a day job. Moves are often slower, and volume is lighter.</li>
+        </ul>
+        <div class="note tip"><b>Holidays:</b> exchange holidays and early closes aren't shown above. Check the <a href="https://www.cmegroup.com/trading-hours.html" rel="noopener">CME Group holiday calendar</a> before each US holiday.</div>
+      </section>
+
+      <section id="faq">
+        <div class="sec-head"><span class="ico" set:html={ico('chat')} /><div><span class="sec-num">FAQ</span><h2>Futures hours questions</h2></div></div>
+        {faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+        <p style="margin-top: 28px">Keep learning: <a href="/futures-trading">Futures Trading 101</a>, the <a href="/tools/tick-value-calculator">tick value calculator</a> and the <a href="/glossary">futures glossary</a>.</p>
+      </section>
+    </article>
+  </div>
+
+  <FinalCta
+    heading="Know when to trade. Learn how."
+    text="Get the week's key releases every week in Pre-Trade Prep, plus the free 26-lesson Trading Fundamentals course and a community that checks your work."
+    cta="hours-end"
+    image="02-after-work"
+  />
+</div>
+</BaseLayout>

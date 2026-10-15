@@ -1,0 +1,45 @@
+---
+// Post-signup page: what to do while the Circle invite arrives. Not indexed. Use as the "thank you"
+// URL for the quiz/email flow and as a conversion page in ads.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+<BaseLayout
+  title="Welcome to MarketEye: Check Your Email"
+  description="Your MarketEye community invite is on its way. Here's what to do next."
+  path="/welcome"
+  noindex
+  stickyCta={false}
+>
+  <PageHero
+    eyebrow="You're in"
+    title="Welcome to MarketEye. Check your email."
+    lede="Your invite to the free community is on its way. Here's how to get set up when it arrives."
+    image="03-from-home"
+    imageAlt="A bright morning home desk with sunlight, a laptop showing a rising chart, and coffee"
+  />
+
+  <section class="section alt" aria-labelledby="next-h">
+    <div class="wrap stack" style="max-width: 860px">
+      <div class="head center"><span class="eyebrow">Next steps</span><h2 class="h2" id="next-h">Four steps to get set up.</h2></div>
+      <ol class="num-steps">
+        <li class="card"><div><h3>Open the invite</h3><p class="muted">Look for an email from MarketEye with the subject "MarketEye Team has invited you to join…". Not there? Check spam and promotions, and mark it as not spam.</p></div></li>
+        <li class="card"><div><h3>Accept and set your password</h3><p class="muted">Click <strong>Accept invitation</strong>, choose a password, and finish your profile to unlock the lessons.</p></div></li>
+        <li class="card"><div><h3>Say hi</h3><p class="muted">Post a quick hello in <strong>Introduce Yourself</strong>: where you're starting from and what you want to learn.</p></div></li>
+        <li class="card"><div><h3>Start your first lesson</h3><p class="muted">Open <strong>Trading Fundamentals</strong> at the module your quiz suggested, and check this week's <strong>Pre-Trade Prep</strong>.</p></div></li>
+      </ol>
+      <p class="center-link">Already set up? <a href="https://learn.marketeye.io" data-cta="welcome-login">Go to the community</a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="wait-h">
+    <div class="wrap stack" style="max-width: 860px">
+      <div class="head center"><span class="eyebrow">While you wait</span><h2 class="h2" id="wait-h">Get a head start.</h2></div>
+      <div class="icon-grid">
+        <a class="card post-card" href="/futures-trading"><h3 class="t3">Futures Trading 101</h3><p class="muted">The beginner's guide to contracts, ticks, hours and risk.</p><span class="post-more">Read the guide <span aria-hidden="true">→</span></span></a>
+        <a class="card post-card" href="/tools/tick-value-calculator"><h3 class="t3">Tick value calculator</h3><p class="muted">See what a price move is worth on ES, MES, NQ and MNQ.</p><span class="post-more">Open the tool <span aria-hidden="true">→</span></span></a>
+      </div>
+      <p class="muted" style="text-align: center">Can't find your invite, even in spam? Email <a href="mailto:support@marketeye.io">support@marketeye.io</a> and we'll sort it out.</p>
+    </div>
+  </section>
+</BaseLayout>

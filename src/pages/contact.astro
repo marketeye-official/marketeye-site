@@ -1,0 +1,43 @@
+---
+// Contact: email addresses only (support@ for members and billing, contact@ for privacy and legal, as on the legal pages).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { ico } from '../lib/icons';
+---
+<BaseLayout
+  title="Contact MarketEye"
+  description="Questions about the free community, the mentorship, billing or privacy? Email the MarketEye team and a real person will answer."
+  path="/contact"
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Talk to a real person."
+    lede="Email is the fastest way to reach us. Include the email address on your account if you're a member, so we can find you."
+  />
+
+  <section class="section alt">
+    <div class="wrap stack">
+      <div class="icon-grid">
+        <div class="card icon-card">
+          <span class="ico" set:html={ico('chat')} />
+          <h2 class="t3">Community and mentorship</h2>
+          <p class="muted">Questions before you join, help getting into the community, or anything about the mentorship.</p>
+          <a href="mailto:support@marketeye.io">support@marketeye.io</a>
+        </div>
+        <div class="card icon-card">
+          <span class="ico" set:html={ico('dollar')} />
+          <h2 class="t3">Billing and cancellations</h2>
+          <p class="muted">Billing dates, payment issues or cancelling a membership. See the <a href="/cancellation-instructions">cancellation instructions</a> first.</p>
+          <a href="mailto:support@marketeye.io">support@marketeye.io</a>
+        </div>
+        <div class="card icon-card">
+          <span class="ico" set:html={ico('shield')} />
+          <h2 class="t3">Privacy and legal</h2>
+          <p class="muted">Data requests and questions about our <a href="/privacy">privacy policy</a> or <a href="/terms">terms</a>.</p>
+          <a href="mailto:contact@marketeye.io">contact@marketeye.io</a>
+        </div>
+      </div>
+      <p class="center-link" style="font-weight: 400; color: var(--muted)">Already a member? You can also post in the community at <a href="https://learn.marketeye.io">learn.marketeye.io</a>.</p>
+    </div>
+  </section>
+</BaseLayout>
