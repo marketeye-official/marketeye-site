@@ -41,6 +41,12 @@ Keep `assets/` and `MarketEye-Logo-1.03c-Gradient-horizontal.png` where they are
 from this repo's `main` branch on GitHub, and the preview workflow copies `assets/`.
 Never edit a versioned community agreement in place; add a new version folder and update the redirect in `netlify.toml`.
 
+## Previews
+
+Pushes to the `redesign` branch build a Netlify branch preview at `redesign--<netlify-site-name>.netlify.app`,
+and the draft pull request (marketeye-official/marketeye-site#2) gets its own Deploy Preview link.
+Only `main` deploys to marketeye.io, so merging that pull request is the launch.
+
 ## Weekly refresh (Sundays)
 
 A scheduled Claude task pulls MES 15-minute bars and the week's US economic calendar from TradingView, then:
