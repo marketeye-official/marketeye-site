@@ -2293,6 +2293,7 @@ input.slider::-moz-range-thumb{
   var fatalMsg = 'We could not load the Community Agreement. Please refresh the page and try again.';
   var io = null;
   var eventId = null;
+  var gaUserId = null;  // GA4 User-ID — one value, sent to both the dataLayer and Make
   var consent = null;   // {version, effective, url, acceptedAt, method}
 
   /* gate analytics state */
@@ -2576,6 +2577,7 @@ input.slider::-moz-range-thumb{
       utm_content:  q.get('utm_content')  || '',
       utm_term:     q.get('utm_term')     || '',
       ga_client_id: gaClientId(),
+      ga_user_id:   gaUserId,
       user_agent:   navigator.userAgent
     };
   }
@@ -3382,6 +3384,7 @@ input.slider::-moz-range-thumb{
       'user_first_name': values.first_name,
       'user_last_name': values.last_name,
       'event_id': eventId,
+      'ga_user_id': gaUserId,
       // navigate once the tag has actually fired, so the redirect doesn't
       // cut the request off mid-flight
       'eventCallback': go,
@@ -3425,6 +3428,11 @@ input.slider::-moz-range-thumb{
     setStatus('', null);
     setLoading(true);
     eventId = eventId || makeEventId();
+    // Same generator, deliberately a second value. A random UUID is the GA4
+    // User-ID: it is not derived from the email, so it carries no PII and does
+    // not depend on the address matching between here and Circle. Stored on the
+    // member record so the server-side replay can stitch to this session.
+    gaUserId = gaUserId || makeEventId();
 
     postConsent(values, hpFilled)
       .then(function () {
