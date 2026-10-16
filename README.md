@@ -56,7 +56,7 @@ node tools/update-week.js hero.svg week.json     # writes src/data/, backs up to
 npm run build
 ```
 
-It also saves a Pre-Trade Prep post in Circle as a draft for review. Nothing is published or deployed automatically.
+It then commits `src/data/` and pushes to `main`, which deploys marketeye.io (approved Oct 16, 2026), and saves a Pre-Trade Prep post in Circle as a draft for review. The Circle post is never published automatically.
 
 ## Content rules
 
