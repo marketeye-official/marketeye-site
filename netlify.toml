@@ -91,6 +91,12 @@
   to = "/terms/"
   status = 301
 
+# The member confirmation pages link to /terms-of-service.html.
+[[redirects]]
+  from = "/terms-of-service.html"
+  to = "/terms/"
+  status = 301
+
 # Retired LP versions folded into the live one. Ads and short links pointing at
 # v3 and v5 keep working and land on v6.
 #
