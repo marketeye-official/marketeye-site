@@ -72,6 +72,5 @@ It also saves a Pre-Trade Prep post in Circle as a draft for review. Nothing is 
 - [ ] Cookie consent banner with Google Consent Mode.
 - [ ] Point the quiz/email flow's thank-you step at /welcome (noindex) and use it as the conversion page in ads.
 - [ ] Attorney review of /risk-disclosure and the mentorship page.
-- [ ] Membership billing terms list "real-time trade alerts"; align them with the education-only positioning.
 - [ ] `robots.txt`: the old site blocked all crawlers; this one allows them. Confirm before launch.
 - [ ] Attorney review of disclosures; confirm testimonials and stats.

@@ -1,5 +1,5 @@
 ---
-// Paid mentorship overview. No prices here (they're shared on the interview call); apply via the existing Calendly link.
+// Paid mentorship overview with retail pricing (quarterly or lifetime); apply via the existing Calendly link.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import { ico } from '../lib/icons';
@@ -7,7 +7,8 @@ import { ico } from '../lib/icons';
 const APPLY = 'https://calendly.com/marketeye/marketeye-applicant';
 
 const faqs = [
-  ['How much does the mentorship cost?', "We go over current pricing and billing on your interview call, before you commit to anything. You can also read our membership billing terms, refund policy and cancellation instructions at any time."],
+  ['How much does the mentorship cost?', 'There are two options: a quarterly membership at $900 every 90 days, or lifetime access for $10,800 plus a $25/month platform fee. We walk through both on your interview call, before you commit to anything.'],
+  ['Can I get a refund?', 'Membership charges are non-refundable, and quarterly memberships renew automatically until you cancel. Read the refund policy and cancellation instructions before enrolling.'],
   ['Do I have to finish the free course first?', 'We recommend it. The course covers the foundations the mentorship builds on, and the interview goes better when you know the basics.'],
   ['Will you tell me what to trade?', "No. MarketEye is an education company, not an adviser. Mentors give feedback on whether you're following your own written plan, and nothing we share is a recommendation to buy or sell."],
   ['Do you provide trading capital or funded accounts?', "No. MarketEye doesn't provide, manage or arrange trading capital. Any third-party evaluations come with their own rules and fees, and we aren't affiliated with them."],
@@ -22,7 +23,7 @@ const schema = [{
 ---
 <BaseLayout
   title="MarketEye Mentorship | Futures Trading Mentorship by Interview"
-  description="An optional paid futures trading mentorship for MarketEye community members: live sessions, direct Q&A and process reviews. By interview only."
+  description="An optional paid futures trading mentorship for MarketEye community members: live sessions, direct Q&A and process reviews. $900 per quarter or lifetime access. By interview only."
   path="/mentorship"
   schema={schema}
 >
@@ -49,7 +50,33 @@ const schema = [{
     </div>
   </section>
 
-  <section class="section" aria-labelledby="fit-h">
+  <section class="section" aria-labelledby="price-h">
+    <div class="wrap stack">
+      <div class="head center"><span class="eyebrow">Pricing</span><h2 class="h2" id="price-h">Two ways to join.</h2>
+        <p class="lead" style="text-align: center; margin-inline: auto">Both include everything above. You'll go over them on your interview call before you commit to anything.</p></div>
+      <div class="price-grid">
+        <div class="card price-card">
+          <span class="eyebrow">Quarterly</span>
+          <div class="price"><b>$900</b><span>every 90 days</span></div>
+          <ul class="checks">
+            <li><span>Renews automatically every 90 days</span></li>
+            <li><span>Cancel by email before your renewal date</span></li>
+          </ul>
+        </div>
+        <div class="card price-card">
+          <span class="eyebrow">Lifetime</span>
+          <div class="price"><b>$10,800</b><span>one time, plus a $25/month platform fee</span></div>
+          <ul class="checks">
+            <li><span>Access for as long as the program runs</span></li>
+            <li><span>No renewal fee. The only ongoing cost is the platform fee.</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="center-link" style="font-weight: 400; color: var(--muted)">Charges are non-refundable. See the <a href="/membership-billing-terms">billing terms</a>, <a href="/refund-policy">refund policy</a> and <a href="/cancellation-instructions">cancellation instructions</a>.</p>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="fit-h">
     <div class="wrap stack">
       <div class="head center"><span class="eyebrow">Is it a fit?</span><h2 class="h2" id="fit-h">Small on purpose, so we're picky.</h2></div>
       <div class="fit">
@@ -75,13 +102,13 @@ const schema = [{
     </div>
   </section>
 
-  <section class="section alt" aria-labelledby="how-h">
+  <section class="section" aria-labelledby="how-h">
     <div class="wrap split">
       <div class="stack" style="gap: 28px">
         <div class="head"><span class="eyebrow">How to join</span><h2 class="h2" id="how-h">Three steps, no pressure.</h2></div>
         <ol class="num-steps">
           <li class="card"><div><h3>Join the free community</h3><p class="muted">Take the 5-question quiz and start the course at the lesson that fits you.</p></div></li>
-          <li class="card"><div><h3>Book a short interview</h3><p class="muted">We talk about your goals, your schedule and how you practice, and go over pricing.</p></div></li>
+          <li class="card"><div><h3>Book a short interview</h3><p class="muted">We talk about your goals, your schedule and how you practice, and answer your questions about the two plans.</p></div></li>
           <li class="card"><div><h3>Decide with no pressure</h3><p class="muted">If it's a fit on both sides, you'll get enrollment details. If not, the free community is still yours.</p></div></li>
         </ol>
         <div class="page-hero-actions">
@@ -93,7 +120,7 @@ const schema = [{
     </div>
   </section>
 
-  <section class="section" aria-labelledby="mfaq-h">
+  <section class="section alt" aria-labelledby="mfaq-h">
     <div class="wrap faq-list" style="max-width: 820px">
       <div class="head center" style="margin-bottom: 32px"><span class="eyebrow">FAQ</span><h2 class="h2" id="mfaq-h">Mentorship questions.</h2></div>
       {faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
