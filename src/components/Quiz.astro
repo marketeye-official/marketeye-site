@@ -116,6 +116,13 @@ import TosModal from './signup/TosModal.astro';
     return { name: name, intro: intro, pace: pace, capital: capital, track: TRACKS[a.biggest_struggle] };
   }
 
+  // The answer's wording as shown on the button (e.g. "2 to 5 hours"), so it reads well in Circle and the Sheet.
+  function answerLabel(id) {
+    var Q = QUESTIONS.filter(function (q) { return q.id === id; })[0];
+    var o = Q && Q.opts.filter(function (opt) { return opt[0] === answers[id]; })[0];
+    return o ? o[1] : (answers[id] || '');
+  }
+
   function renderResult() {
     var p = buildProfile(answers);
     label.textContent = 'Your starting plan';
@@ -137,11 +144,11 @@ import TosModal from './signup/TosModal.astro';
       signup_source: 'homepage_quiz',
       quiz_profile: p.name,
       quiz_start_module: p.track[0],
-      quiz_training_time: answers.training_time,
-      quiz_trading_time: answers.trading_time,
-      quiz_capital_belief: answers.capital_belief,
-      quiz_prior_education: answers.prior_education,
-      quiz_biggest_struggle: answers.biggest_struggle
+      quiz_training_time: answerLabel('training_time'),
+      quiz_trading_time: answerLabel('trading_time'),
+      quiz_capital_belief: answerLabel('capital_belief'),
+      quiz_prior_education: answerLabel('prior_education'),
+      quiz_biggest_struggle: answerLabel('biggest_struggle')
     };
     signup.hidden = false;
   }
