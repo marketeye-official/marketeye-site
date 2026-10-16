@@ -69,7 +69,3 @@ It also saves a Pre-Trade Prep post in Circle as a draft for review. Nothing is 
 
 - [ ] Test one real quiz signup on the Netlify preview (consent log row + Make.com scenario + Circle invite). The quiz uses the live LP form in `src/components/signup/` and sends `quiz_*` fields and `signup_source: homepage_quiz` with the registration.
 - [ ] In GTM, add triggers for the new events if wanted: `quiz_start`, `quiz_answer`, `quiz_complete`, `cta_click`, `consent_update` (signup conversions already arrive as `free_member_signup`).
-- [ ] Point the quiz/email flow's thank-you step at /welcome (noindex) and use it as the conversion page in ads.
-- [ ] Attorney review of /risk-disclosure and the mentorship page.
-- [ ] `robots.txt`: the old site blocked all crawlers; this one allows them. Confirm before launch.
-- [ ] Attorney review of disclosures; confirm testimonials and stats.
