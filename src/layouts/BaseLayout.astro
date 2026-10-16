@@ -47,7 +47,9 @@ const ogImage = new URL('/assets/og-image.png', Astro.site).href;
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Exo+2:wght@700;800&family=JetBrains+Mono:wght@500&display=swap">
-<!-- Google Consent Mode defaults, then Google Tag Manager (GTM-TS6V32CR). See ConsentBanner.astro. -->
+<!-- Google Consent Mode defaults. These must run before Google Tag Manager, which is NOT in this file:
+     Netlify injects GTM-TS6V32CR (served from cdn9.marketeye.io) just before </head> on every page
+     (Netlify → Project configuration → Developer settings → Snippet injection). Don't add a second copy here. -->
 <script is:inline>
   window.dataLayer = window.dataLayer || [];
   function gtag() { dataLayer.push(arguments); }
@@ -64,11 +66,9 @@ const ogImage = new URL('/assets/og-image.png', Astro.site).href;
     if (saved === 'granted' || saved === 'denied') gtag('consent', 'update', { ad_storage: saved, ad_user_data: saved, ad_personalization: saved, analytics_storage: saved });
   })();
 </script>
-<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TS6V32CR');</script>
 <slot name="head" />
 </head>
 <body>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TS6V32CR" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <Header />
 <main id="top">
 <slot />
