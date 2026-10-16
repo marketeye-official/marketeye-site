@@ -1,0 +1,44 @@
+---
+// Cookie notice for Google Consent Mode. Defaults are set in BaseLayout <head> before GTM loads:
+// denied in the EEA, UK and Switzerland until someone accepts; granted elsewhere, except ads
+// storage when the browser sends Global Privacy Control. A choice here overrides both and is
+// remembered in localStorage. Any [data-cookie-settings] element reopens the notice.
+---
+<div class="cookie" id="cookie" role="region" aria-label="Cookie notice" hidden>
+  <p>We use cookies to understand how people use this site and to measure our ads. See our <a href="/privacy">Privacy Policy</a>.</p>
+  <div class="cookie-actions">
+    <button type="button" class="btn btn-sm ghost" data-consent="denied">Decline</button>
+    <button type="button" class="btn btn-sm" data-consent="granted">Accept</button>
+  </div>
+</div>
+
+<script is:inline>
+(function () {
+  var box = document.getElementById('cookie');
+  var KEY = 'me_consent';
+  var saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (!saved) box.hidden = false;
+
+  function apply(choice) {
+    var v = choice === 'granted' ? 'granted' : 'denied';
+    gtag('consent', 'update', { ad_storage: v, ad_user_data: v, ad_personalization: v, analytics_storage: v });
+    try { localStorage.setItem(KEY, v); } catch (e) {}
+    window.dataLayer.push({ event: 'consent_update', consent_choice: v });
+    box.hidden = true;
+  }
+  box.querySelectorAll('[data-consent]').forEach(function (b) {
+    b.addEventListener('click', function () { apply(b.getAttribute('data-consent')); });
+  });
+  document.querySelectorAll('[data-cookie-settings]').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); box.hidden = false; box.querySelector('[data-consent="granted"]').focus(); });
+  });
+})();
+</script>
+
+<style is:global>
+.cookie { position: fixed; z-index: 70; left: 16px; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); max-width: 560px; margin-inline: auto; padding: 18px 20px; border-radius: 16px; background: rgba(10, 21, 48, .97); border: 1px solid var(--line-2); box-shadow: 0 20px 60px -20px rgba(0, 0, 0, .7); display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; }
+.cookie[hidden] { display: none; }
+.cookie p { margin: 0; flex: 1 1 280px; font-size: 15px; line-height: 1.5; color: var(--soft); }
+.cookie-actions { display: flex; gap: 10px; }
+</style>

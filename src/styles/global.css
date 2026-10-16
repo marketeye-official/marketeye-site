@@ -354,3 +354,10 @@ footer.site { background: var(--navy-2); border-top: 1px solid var(--line); padd
 .price { display: flex; flex-direction: column; gap: 4px; }
 .price b { font: 800 clamp(40px, 5vw, 52px) var(--f-display); color: var(--white); line-height: 1; font-variant-numeric: tabular-nums; }
 .price span { color: var(--soft); }
+
+/* Live signup form (src/components/signup) inside the quiz card: map its tokens to ours and drop its card frame. */
+.quiz-signup { margin-top: 22px; --head: var(--f-display); --body: var(--f-body); --panel: var(--card-2); --ink-2: var(--soft); --ink-3: var(--muted); --grad-btn: var(--grad); }
+.quiz-signup .mef { padding: 0; }
+.quiz-signup .mef__card { margin: 0; padding: 0; background: none; border: 0; box-shadow: none; }
+.quiz-signup .mef__eyebrow, .quiz-signup .mef__title:empty, .quiz-signup .mef__lead:empty { display: none; }
+.quiz-signup .quiz-foot { margin-top: 18px; }

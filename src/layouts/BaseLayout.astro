@@ -4,6 +4,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
 
 interface Props {
   title: string;
@@ -46,15 +47,34 @@ const ogImage = new URL('/assets/og-image.png', Astro.site).href;
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Exo+2:wght@700;800&family=JetBrains+Mono:wght@500&display=swap">
-<!-- Google Tag Manager goes here (see README: Tracking). Quiz and CTA events already push to window.dataLayer. -->
+<!-- Google Consent Mode defaults, then Google Tag Manager (GTM-TS6V32CR). See ConsentBanner.astro. -->
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  (function () {
+    var DENY = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' };
+    var gpc = navigator.globalPrivacyControl === true;
+    var ads = gpc ? 'denied' : 'granted';
+    // EEA, UK and Switzerland: nothing until someone accepts.
+    gtag('consent', 'default', Object.assign({}, DENY, { wait_for_update: 500, region: ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'] }));
+    // Everywhere else: on by default; ads storage off when the browser sends Global Privacy Control.
+    gtag('consent', 'default', { ad_storage: ads, ad_user_data: ads, ad_personalization: ads, analytics_storage: 'granted' });
+    var saved = null;
+    try { saved = localStorage.getItem('me_consent'); } catch (e) {}
+    if (saved === 'granted' || saved === 'denied') gtag('consent', 'update', { ad_storage: saved, ad_user_data: saved, ad_personalization: saved, analytics_storage: saved });
+  })();
+</script>
+<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TS6V32CR');</script>
 <slot name="head" />
 </head>
 <body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TS6V32CR" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <Header />
 <main id="top">
 <slot />
 </main>
 <Footer />
+<ConsentBanner />
 
 {schema.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}
 

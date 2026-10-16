@@ -1,12 +1,19 @@
 ---
-// The 5-question hero quiz: renders a personal starting plan, then collects first name + email.
-// TODO (launch): POST the lead payload in submit() to the email platform / Zapier that sends the Circle invite.
+// The 5-question hero quiz: renders a personal starting plan, then reveals the live signup form
+// (same consent gate and Make.com scenario as the landing pages) with the quiz answers attached.
+import SignupForm from './signup/SignupForm.astro';
+import TosModal from './signup/TosModal.astro';
 ---
-<div class="quiz" id="quiz" aria-live="polite">
+<div class="quiz" id="quiz">
   <div class="quiz-top"><span id="quiz-step-label">Question 1 of 5</span><span class="live">~45 sec</span></div>
   <div class="progress" aria-hidden="true"><span id="quiz-progress"></span></div>
-  <div id="quiz-body"></div>
+  <div id="quiz-body" aria-live="polite"></div>
+  <div class="quiz-signup" id="quiz-signup" hidden>
+    <SignupForm />
+    <div class="quiz-foot"><button type="button" class="back" id="quiz-change">← Change answers</button><span>Free forever · No credit card</span></div>
+  </div>
 </div>
+<TosModal />
 
 <script is:inline>
 (function () {
@@ -39,10 +46,17 @@
   var bar = document.getElementById('quiz-progress');
   var label = document.getElementById('quiz-step-label');
   var started = false;
+  var signup = document.getElementById('quiz-signup');
+  document.getElementById('quiz-change').addEventListener('click', function () {
+    signup.hidden = true;
+    window.MEF_EXTRA = null;
+    step = QUESTIONS.length - 1;
+    renderQuestion(true);
+  });
 
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function track(event, data) {
-    // Hook for GA4 / Meta Pixel / CRM. Replace with your analytics calls.
+    // Picked up by Google Tag Manager. The signup itself is tracked by the form as free_member_signup.
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(Object.assign({ event: event }, data || {}));
   }
@@ -116,51 +130,20 @@
         '<li><span class="ico-n">02</span><span><strong>Your pace.</strong> ' + esc(p.pace) + '</span></li>' +
         '<li><span class="ico-n">03</span><span><strong>About getting started.</strong> ' + esc(p.capital) + '</span></li>' +
       '</ul>' +
-      '<form class="form" id="join-form" novalidate>' +
-        '<div class="frow">' +
-          '<div class="field"><label for="f-name">First name</label><input id="f-name" name="first_name" autocomplete="given-name" required></div>' +
-          '<div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>' +
-        '</div>' +
-        '<p class="err" id="f-err" role="alert"></p>' +
-        '<button class="btn" type="submit" id="f-submit">Send my free community invite</button>' +
-        '<p class="micro">Free forever · No credit card · Unsubscribe anytime</p>' +
-      '</form>' +
-      '<div class="quiz-foot"><button type="button" class="back" id="quiz-back">← Change answers</button><span></span></div>' +
     '</div>';
     document.getElementById('q-title').focus({ preventScroll: true });
-    document.getElementById('quiz-back').addEventListener('click', function () { step = QUESTIONS.length - 1; renderQuestion(true); });
-    document.getElementById('join-form').addEventListener('submit', function (e) { e.preventDefault(); submit(p); });
-  }
-
-  function submit(p) {
-    var nameEl = document.getElementById('f-name');
-    var emailEl = document.getElementById('f-email');
-    var err = document.getElementById('f-err');
-    var name = nameEl.value.trim();
-    var email = emailEl.value.trim();
-    nameEl.removeAttribute('aria-invalid'); emailEl.removeAttribute('aria-invalid');
-    if (!name) { err.textContent = 'Enter your first name so we know what to call you.'; nameEl.setAttribute('aria-invalid', 'true'); nameEl.focus(); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Enter a valid email address, like name@example.com.'; emailEl.setAttribute('aria-invalid', 'true'); emailEl.focus(); return; }
-    err.textContent = '';
-
-    // Lead payload: send to your email platform / Zapier, which triggers the Circle invite and tags the member.
-    var lead = Object.assign({ first_name: name, email: email, profile: p.name, start_module: p.track[0], source: 'homepage_quiz' }, answers);
-    track('generate_lead', { profile: p.name, module: p.track[0] });
-    // TODO: fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(lead) })
-    void lead;
-
-    label.textContent = "You're in";
-    body.innerHTML = '<div class="step-anim">' +
-      '<div class="result-badge">● Invite sent</div>' +
-      '<h2 class="q-title" id="q-title" tabindex="-1">Welcome to MarketEye, ' + esc(name) + '.</h2>' +
-      '<p class="q-hint">Your invite is on its way to <strong style="color:#fff">' + esc(email) + '</strong>. Here\'s what to do next:</p>' +
-      '<ol class="success-steps">' +
-        '<li><span><strong>Open the email from MarketEye</strong> titled "MarketEye Team has invited you to join…". Check spam and Promotions too. It comes from a circle.so address.</span></li>' +
-        '<li><span><strong>Accept the invitation and finish your profile.</strong> That unlocks the lessons.</span></li>' +
-        '<li><span><strong>Say hi in Introduce Yourself,</strong> then open Trading Fundamentals at: ' + esc(p.track[0]) + '.</span></li>' +
-      '</ol></div>';
-    document.getElementById('q-title').focus({ preventScroll: true });
-    document.dispatchEvent(new CustomEvent('me:joined'));
+    // Sent with the registration to the same Make.com scenario as the landing pages.
+    window.MEF_EXTRA = {
+      signup_source: 'homepage_quiz',
+      quiz_profile: p.name,
+      quiz_start_module: p.track[0],
+      quiz_training_time: answers.training_time,
+      quiz_trading_time: answers.trading_time,
+      quiz_capital_belief: answers.capital_belief,
+      quiz_prior_education: answers.prior_education,
+      quiz_biggest_struggle: answers.biggest_struggle
+    };
+    signup.hidden = false;
   }
 
   renderQuestion(false);

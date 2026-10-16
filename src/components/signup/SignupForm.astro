@@ -1,0 +1,8 @@
+---
+// The live signup form (consent gate → /.netlify/functions/consent → Make.com webhook → Circle),
+// copied from the ad landing page so every signup on marketeye.io goes through the same flow.
+// The quiz renders the form card; the Community Agreement dialog must live outside any hidden
+// ancestor, so it's a separate export rendered at the end of the quiz.
+import formHtml from './signup-form.html?raw';
+---
+<Fragment set:html={formHtml} />
