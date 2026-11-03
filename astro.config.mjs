@@ -9,8 +9,9 @@ export default defineConfig({
   build: { format: 'file' },
   integrations: [
     sitemap({
-      // Thank-you and error pages stay out of search.
-      filter: (page) => !/\/(welcome|404)(\.html)?$/.test(page),
+      // Thank-you and error pages stay out of search, and so does the tick value calculator
+      // (delinked from the nav and footer; the page itself stays live).
+      filter: (page) => !/\/(welcome|404|tools\/tick-value-calculator)(\.html)?$/.test(page),
       // Carried-over pages are published outside Astro, so list the indexable ones here.
       // Ad landing pages and confirmation pages are deliberately left out.
       customPages: [

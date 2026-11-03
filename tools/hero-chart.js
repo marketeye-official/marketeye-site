@@ -5,6 +5,10 @@
 // Usage: node tools/hero-chart.js <bars.json> <out.svg> [cardTop=112] [height=860]
 // bars.json: {"o":[...],"h":[...],"l":[...],"c":[...]}  (oldest first; about 60 bars works best)
 import fs from 'node:fs';
+// Last-price marker at the end of the chart: the dashed line at the last close, the pulsing dot,
+// the price pill and the "MES · 15m" label. Off so the hero doesn't read as a live quote; set to
+// true to restore it.
+const SHOW_LAST_PRICE = false;
 const [barsPath, outPath, cardTopArg, heightArg] = process.argv.slice(2);
 if (!barsPath || !outPath) { console.error('Usage: node tools/hero-chart.js <bars.json> <out.svg> [cardTop] [height]'); process.exit(1); }
 const { o, h, l, c } = JSON.parse(fs.readFileSync(barsPath, 'utf8'));
@@ -35,10 +39,12 @@ const sm = c.map((_, i) => { const a = c.slice(Math.max(0, i - 4), i + 1); retur
 s += `<path class="trend" d="M${sm.map((v, i) => `${cx(i)} ${y(v)}`).join(' L')}" fill="none" stroke="#7FE3FF" stroke-width="3" stroke-linecap="round" pathLength="1"/>`;
 const ex = cx(n - 1), ey = y(c[n - 1]);
 const last = c[n - 1].toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-s += `<line x1="${ex - 140}" x2="${ex + 14}" y1="${ey}" y2="${ey}" stroke="#00C8FF" stroke-opacity="0.45" stroke-dasharray="4 6"/>`;
-s += `<g class="pulse"><circle cx="${ex}" cy="${ey}" r="7" fill="#00C8FF"/></g>`;
-s += `<rect x="${ex + 16}" y="${ey - 15}" width="100" height="30" rx="6" fill="#00C8FF"/><text x="${ex + 66}" y="${ey + 5}" text-anchor="middle" fill="#04091C" font-size="14" font-weight="700" font-family="JetBrains Mono, monospace">${last}</text>`;
-s += `<text x="${ex + 16}" y="${ey - 24}" fill="#8A9BBF" font-size="12" font-family="JetBrains Mono, monospace">MES · 15m</text>`;
+if (SHOW_LAST_PRICE) {
+  s += `<line x1="${ex - 140}" x2="${ex + 14}" y1="${ey}" y2="${ey}" stroke="#00C8FF" stroke-opacity="0.45" stroke-dasharray="4 6"/>`;
+  s += `<g class="pulse"><circle cx="${ex}" cy="${ey}" r="7" fill="#00C8FF"/></g>`;
+  s += `<rect x="${ex + 16}" y="${ey - 15}" width="100" height="30" rx="6" fill="#00C8FF"/><text x="${ex + 66}" y="${ey + 5}" text-anchor="middle" fill="#04091C" font-size="14" font-weight="700" font-family="JetBrains Mono, monospace">${last}</text>`;
+  s += `<text x="${ex + 16}" y="${ey - 24}" fill="#8A9BBF" font-size="12" font-family="JetBrains Mono, monospace">MES · 15m</text>`;
+}
 s += `<defs><linearGradient id="sweepg" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#00C8FF" stop-opacity="0"/><stop offset="0.5" stop-color="#00C8FF" stop-opacity="0.16"/><stop offset="1" stop-color="#00C8FF" stop-opacity="0"/></linearGradient></defs><rect class="sweep" x="-260" y="0" width="260" height="${H}" fill="url(#sweepg)"/>`;
 s += `</svg>`;
 fs.writeFileSync(outPath, s);

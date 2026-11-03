@@ -61,7 +61,7 @@ It then commits `src/data/` and pushes to `main`, which deploys marketeye.io (ap
 ## Content rules
 
 - Education only: no price levels, trade calls, income claims, or capital/funding language.
-- No founder name or photo. Experience is "36+ years of combined trading experience."
+- No founder name or photo. Experience is "30+ years of combined trading experience."
 - Images are AI-generated (Canva) and must never be presented as members or testimonials.
 - Every page includes the risk disclosure via the shared footer.
 
