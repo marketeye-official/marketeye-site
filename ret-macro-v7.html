@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MarketEye — Learn to Read the Market. Free.</title>
-<meta name="description" content="Retirement math has changed. Learn to read the market through a clear framework — free, beginner-first, four modules, twenty lessons.">
+<meta name="description" content="Retirement math has changed. Learn to read the market through a clear framework — free, beginner-first, six core modules.">
 <!-- Favicon — site-wide set, identical on every LP. Assets are in the site repo
      at assets/favicon/ and resolve at this path in Live Server, the GitHub Pages
      preview, and Netlify production. See workflow-lp-technical.md, "Favicon". -->
@@ -137,9 +137,6 @@ button,input{font:inherit;color:inherit;}
   background-clip:text;
   color:transparent;
 }
-
-/* ---------- Ticker bar (restored from v3) ---------- */
-.ticker-bar{background:var(--navy-deep);border-bottom:1px solid var(--line);overflow:hidden;}
 
 /* ---------- Sticky header ---------- */
 .site-head{
@@ -568,12 +565,18 @@ section{padding-block:3.5rem;}
 
 /* ---------- Curriculum ---------- */
 .mods{display:grid;gap:1rem;margin-top:2rem;}
+/* Bridges the headline (whole course, 26 lessons) and the cards (the six
+   core modules only), so the cards are not read as summing to it. */
+.mods-note{margin:2rem 0 0;color:var(--ink-soft);font-size:1rem;}
+.mods-note + .mods{margin-top:.75rem;}
 .mod{
   background:var(--navy-card);
   border:1px solid var(--line);
   border-radius:var(--r-md);
   padding:1.25rem;
+  display:flex;flex-direction:column;
 }
+.mod .count{margin-top:auto;}   /* counts line up across a row when a title wraps */
 .mod-art{
   position:relative;
   background:linear-gradient(160deg,rgba(101,206,246,.10),rgba(124,111,240,.06));
@@ -596,6 +599,19 @@ section{padding-block:3.5rem;}
   font-size:1rem;color:var(--blue);font-weight:700;
   letter-spacing:.08em;text-transform:uppercase;
 }
+/* Six cards stacked one-up ran ~1,530px at 375. Two-up on phones holds
+   them to ~575px; card chrome and type step down to fit a ~150px column.
+   Must stay below the base .mod rules above or they override it. */
+@media (max-width:47.99rem){
+  .mods{grid-template-columns:1fr 1fr;gap:.75rem;}
+  .mod{padding:.75rem;}
+  .mod-art{padding:.5rem;margin-bottom:.625rem;}
+  .mod-art .n{width:1.375rem;height:1.375rem;font-size:.8125rem;inset-block-start:.375rem;inset-inline-start:.375rem;}
+  .mod h3{font-size:1rem;line-height:1.25;margin-bottom:.375rem;}
+  .mod .count{font-size:.8125rem;}
+}
+/* Below 360 the column is ~127px and "Fundamentals" at 16px broke mid-word. */
+@media (max-width:22.49rem){ .mod h3{font-size:.875rem;} }
 
 /* ---------- Proof ---------- */
 .proof{display:grid;gap:1rem;margin-top:2rem;}
@@ -771,7 +787,7 @@ section{padding-block:3.5rem;}
   .hero h1{font-size:4rem;max-width:32rem;}          /* top of the hero band */
   .hero .sub{max-width:30rem;}
   .hero .cta-row{max-width:32rem;}
-  .mods{grid-template-columns:repeat(4,1fr);}
+  .mods{grid-template-columns:repeat(3,1fr);}
   .cards-2{grid-template-columns:1fr 1fr;}
 }
 @media (prefers-reduced-motion:reduce){
@@ -782,31 +798,9 @@ section{padding-block:3.5rem;}
 </head>
 <body>
 
-<!-- Live market data ticker powered by TradingView (restored from v3) -->
-<div class="ticker-bar">
-  <div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {
-      "symbols": [
-        { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500" },
-        { "proName": "FOREXCOM:NSXUSD", "title": "Nasdaq 100" },
-        { "proName": "OANDA:XAUUSD", "title": "Gold" },
-        { "proName": "TVC:USOIL", "title": "Crude Oil" },
-        { "proName": "FX:EURUSD", "title": "EUR/USD" },
-        { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
-        { "proName": "NASDAQ:AMZN", "title": "Amazon" }
-      ],
-      "showSymbolLogo": false,
-      "colorTheme": "dark",
-      "isTransparent": true,
-      "displayMode": "regular",
-      "locale": "en"
-    }
-    </script>
-  </div>
-</div>
-
+<!-- No market-data ticker (removed 2026-11-02, in place): live quotes read as a
+     market-data service rather than education, and the Meta dataset is
+     categorised "financial service". Same call as the home page, 2026-10-28. -->
 <header class="site-head">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="MarketEye">
@@ -1109,7 +1103,7 @@ section{padding-block:3.5rem;}
             <h3><span class="dot dot-green"></span>Learning it in order</h3>
             <ul>
               <li>How price forms</li>
-              <li>Know the instrument</li>
+              <li>Set up the chart</li>
               <li>Read structure</li>
               <li>Risk before entry</li>
             </ul>
@@ -1130,8 +1124,9 @@ section{padding-block:3.5rem;}
 <section id="how-it-works">
   <div class="wrap">
     <span class="eyebrow">What's inside, free</span>
-    <h2 class="h2 measure">Four modules. Twenty lessons. Over 100 topics.</h2>
+    <h2 class="h2 measure">Six core modules. Twenty-six lessons. 140 topics.</h2>
     <p class="lead measure">Most courses start at charts, then wonder why people feel lost. This one starts with what a market is. Markets follow rules — the lessons show you the rules.</p>
+    <p class="mods-note">The six core teaching modules, plus a welcome and a what's-next:</p>
     <div class="mods">
       <div class="mod">
         <div class="mod-art"><span class="n">1</span>
@@ -1141,27 +1136,36 @@ section{padding-block:3.5rem;}
             <line x1="80" y1="20" x2="80" y2="84" stroke="#ffffff" stroke-width="2" stroke-dasharray="3 4" opacity=".5"/>
           </svg>
         </div>
-        <h3>How Markets Actually Work</h3>
-        <div class="count">28 topics</div>
+        <h3>Market Fundamentals</h3>
+        <div class="count">20 topics</div>
       </div>
       <div class="mod">
         <div class="mod-art"><span class="n">2</span>
-          <svg viewBox="0 0 160 90" role="img" aria-label="A futures contract sheet with a highlighted specification line and a tick scale beneath it.">
-            <rect x="30" y="10" width="100" height="60" rx="6" fill="none" stroke="#65CEF6" stroke-width="2.5"/>
-            <rect x="30" y="10" width="100" height="14" rx="6" fill="#65CEF6" opacity=".35"/>
-            <g stroke="#c9dbf5" stroke-width="2.5" stroke-linecap="round" opacity=".7">
-              <line x1="40" y1="36" x2="104" y2="36"/><line x1="40" y1="46" x2="88" y2="46"/>
+          <svg viewBox="0 0 160 90" role="img" aria-label="A charting window: timeframe buttons along the top, a column of drawing tools down the left, and candlesticks beneath a marked level.">
+            <rect x="18" y="8" width="136" height="76" rx="6" fill="none" stroke="#65CEF6" stroke-width="2"/>
+            <g stroke="#65CEF6" stroke-width="1.5" opacity=".5"><line x1="18" y1="22" x2="154" y2="22"/><line x1="34" y1="22" x2="34" y2="84"/></g>
+            <g fill="#65CEF6"><rect x="42" y="12" width="14" height="6" rx="3" opacity=".35"/><rect x="60" y="12" width="14" height="6" rx="3"/><rect x="78" y="12" width="14" height="6" rx="3" opacity=".35"/><rect x="96" y="12" width="14" height="6" rx="3" opacity=".35"/></g>
+            <g stroke="#c9dbf5" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".8">
+              <line x1="22" y1="35" x2="30" y2="28"/>
+              <rect x="22" y="41" width="8" height="7" rx="1"/>
+              <path d="M22,60 L25,55 L28,58 L31,53"/>
+              <path d="M22,66 H30 V72 H26 L23,75 Z"/>
             </g>
-            <line x1="40" y1="56" x2="120" y2="56" stroke="#2EE6A6" stroke-width="3" stroke-linecap="round"/>
-            <g stroke="#8FA6CF" stroke-width="2" stroke-linecap="round" opacity=".8">
-              <line x1="34" y1="80" x2="126" y2="80"/>
-              <line x1="46" y1="76" x2="46" y2="84"/><line x1="70" y1="74" x2="70" y2="86"/>
-              <line x1="94" y1="76" x2="94" y2="84"/><line x1="118" y1="74" x2="118" y2="86"/>
+            <line x1="38" y1="44" x2="150" y2="44" stroke="#8FA6CF" stroke-width="1.5" stroke-dasharray="4 4" opacity=".8"/>
+            <g stroke-width="2" stroke-linecap="round">
+              <g stroke="#ffffff" fill="#ffffff"><line x1="48" y1="58" x2="48" y2="78"/><rect x="45" y="62" width="6" height="11" rx="1"/></g>
+              <g stroke="#FF6666" fill="#FF6666"><line x1="62" y1="56" x2="62" y2="76"/><rect x="59" y="60" width="6" height="10" rx="1"/></g>
+              <g stroke="#ffffff" fill="#ffffff"><line x1="76" y1="48" x2="76" y2="70"/><rect x="73" y="52" width="6" height="13" rx="1"/></g>
+              <g stroke="#ffffff" fill="#ffffff"><line x1="90" y1="40" x2="90" y2="60"/><rect x="87" y="44" width="6" height="11" rx="1"/></g>
+              <g stroke="#FF6666" fill="#FF6666"><line x1="104" y1="42" x2="104" y2="62"/><rect x="101" y="46" width="6" height="10" rx="1"/></g>
+              <g stroke="#ffffff" fill="#ffffff"><line x1="118" y1="34" x2="118" y2="54"/><rect x="115" y="38" width="6" height="12" rx="1"/></g>
+              <g stroke="#ffffff" fill="#ffffff"><line x1="132" y1="28" x2="132" y2="46"/><rect x="129" y="31" width="6" height="11" rx="1"/></g>
+              <g stroke="#FF6666" fill="#FF6666"><line x1="144" y1="30" x2="144" y2="50"/><rect x="141" y="34" width="6" height="9" rx="1"/></g>
             </g>
           </svg>
         </div>
-        <h3>Futures 101</h3>
-        <div class="count">21 topics</div>
+        <h3>Charting Platform</h3>
+        <div class="count">24 topics</div>
       </div>
       <div class="mod">
         <div class="mod-art"><span class="n">3</span>
@@ -1177,11 +1181,39 @@ section{padding-block:3.5rem;}
             </g>
           </svg>
         </div>
-        <h3>Reading the Charts</h3>
-        <div class="count">34 topics</div>
+        <h3>Reading Charts</h3>
+        <div class="count">23 topics</div>
       </div>
       <div class="mod">
         <div class="mod-art"><span class="n">4</span>
+          <svg viewBox="0 0 160 90" role="img" aria-label="A long-position marker: price rises to an entry line, with a green reward zone above it twice the height of the red risk zone below.">
+            <rect x="70" y="14" width="76" height="34" rx="2" fill="#2EE6A6" fill-opacity=".22" stroke="#2EE6A6" stroke-width="1.5"/>
+            <rect x="70" y="48" width="76" height="17" rx="2" fill="#FF6666" fill-opacity=".3" stroke="#FF6666" stroke-width="1.5"/>
+            <path d="M14,78 L30,62 L44,70 L58,54 L70,48" fill="none" stroke="#8FA6CF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+            <path d="M70,48 L84,57 L100,38 L114,44 L136,20" fill="none" stroke="#2EE6A6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="70" y1="48" x2="146" y2="48" stroke="#ffffff" stroke-width="2"/>
+            <circle cx="70" cy="48" r="5" fill="#0c2657" stroke="#fff" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <h3>Risk Management</h3>
+        <div class="count">20 topics</div>
+      </div>
+      <div class="mod">
+        <div class="mod-art"><span class="n">5</span>
+          <svg viewBox="0 0 160 90" role="img" aria-label="Price falls to a dashed buy-limit line and fills there, while a dashed stop line waits above.">
+            <line x1="14" y1="20" x2="132" y2="20" stroke="#7C6FF0" stroke-width="2" stroke-dasharray="6 4"/>
+            <rect x="134" y="15" width="18" height="10" rx="3" fill="#7C6FF0" opacity=".45"/>
+            <line x1="14" y1="68" x2="132" y2="68" stroke="#65CEF6" stroke-width="2" stroke-dasharray="6 4"/>
+            <rect x="134" y="63" width="18" height="10" rx="3" fill="#65CEF6" opacity=".45"/>
+            <path d="M14,34 L32,44 L48,38 L68,58 L86,68 L102,52 L118,46 L130,40" fill="none" stroke="#c9dbf5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+            <circle cx="86" cy="68" r="5" fill="#65CEF6" stroke="#fff" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>Order Types &amp; Placing Trades</h3>
+        <div class="count">20 topics</div>
+      </div>
+      <div class="mod">
+        <div class="mod-art"><span class="n">6</span>
           <svg viewBox="0 0 160 90" role="img" aria-label="A pullback setup: price rallies to a prior swing high, retraces into a marked zone, then breaks decisively above that level and continues.">
             <line x1="26" y1="38" x2="154" y2="38" stroke="#8FA6CF" stroke-width="2" stroke-dasharray="6 4" opacity=".8"/>
             <rect x="62" y="48" width="34" height="22" rx="3" fill="#65CEF6" opacity=".18" stroke="#65CEF6" stroke-width="1.5" stroke-dasharray="3 3"/>
@@ -1191,12 +1223,12 @@ section{padding-block:3.5rem;}
             <circle cx="79" cy="59" r="6" fill="#0c2657" stroke="#fff" stroke-width="2.5"/>
           </svg>
         </div>
-        <h3>Trade Setups</h3>
-        <div class="count">31 topics</div>
+        <h3>Your First Trading Plan</h3>
+        <div class="count">23 topics</div>
       </div>
     </div>
 
-    <p class="lead measure-center center" style="margin-top:2rem;">Free video lessons, worked in order, at whatever pace suits — starting from zero.</p>
+    <p class="lead measure-center center" style="margin-top:2rem;">Free lessons, worked in order, at whatever pace suits — starting from zero.</p>
   </div>
 </section>
 
@@ -1222,7 +1254,7 @@ section{padding-block:3.5rem;}
       </div>
       <div class="stat">
         <div class="big grad-text">$0</div>
-        <div class="cap">Cost to join the community and start Module 1</div>
+        <div class="cap">Cost to join the community and start the&nbsp;course</div>
       </div>
     </div>
   </div>
@@ -1254,14 +1286,14 @@ section{padding-block:3.5rem;}
           <span>Isn't it a bit late to be learning this?</span>
           <span class="chev" aria-hidden="true">+</span>
         </button>
-        <div class="a"><p>Reading a market is not a young person's game. It rewards patience, doubt, and the willingness to walk away from a bad trade — and those come with time. Module 4 spends a whole lesson on when <em>not</em> to trade; that instinct is the hard part to teach.</p></div>
+        <div class="a"><p>Reading a market is not a young person's game. It rewards patience, doubt, and the willingness to walk away from a bad trade — and that comes with time. The course gives a whole lesson to daily loss limits: once you hit your number, you're done for the day, no exceptions. Knowing when to stop is the hard part to teach.</p></div>
       </div>
       <div class="qa">
         <button type="button" aria-expanded="false">
           <span>How is this different from other trading education?</span>
           <span class="chev" aria-hidden="true">+</span>
         </button>
-        <div class="a"><p>Most courses start at charts. This starts with what a market is and builds in order — four modules, twenty lessons, ending with one complete setup taught start to finish.</p></div>
+        <div class="a"><p>Most courses start at charts. This starts with what a market is and builds in order — six core modules, building to one complete setup taught start to finish.</p></div>
       </div>
     </div>
   </div>
@@ -1306,7 +1338,7 @@ section{padding-block:3.5rem;}
 <section class="final">
   <div class="wrap">
     <h2>Stop guessing. Start with the logic.</h2>
-    <p class="lead measure-center">Free community, four modules, twenty lessons, built for people starting from zero.</p>
+    <p class="lead measure-center">Free community, six core modules, built for people starting from zero.</p>
     <a class="btn btn-lg lp-form-cta" href="#quiz">Get My Free Invite</a>
   </div>
 </section>
@@ -3979,8 +4011,8 @@ section{padding-block:3.5rem;}
    the same release.
    DELIBERATE DIVERGENCES from the homepage, per the v7 brief:
      - The result leads with the profile. It never shows the start module
-       (TRACKS holds homepage module names that do not exist on this page),
-       and never echoes the capital answer, so the homepage's "pace" and
+       (TRACKS holds the curriculum's section names, which since 261102 also
+       title the module cards on this page), and never echoes the capital answer, so the homepage's "pace" and
        "capital" result lines are not rendered and not computed.
      - quiz_start_module is still SENT, unchanged, in MEF_EXTRA and in the
        quiz_complete push.
@@ -4003,7 +4035,7 @@ section{padding-block:3.5rem;}
    ga_client_id with it. Do not add, rename or reorder them. */
 (function () {
   var QUESTIONS = [
-    { id: 'training_time', q: 'How much time can you dedicate to training each week?', hint: 'Lessons, replays, and practice.', opts: [
+    { id: 'training_time', q: 'How much time can you dedicate to training each week?', hint: 'Lessons and practice.', opts: [
       ['under_2h', 'Under 2 hours'], ['2_5h', '2 to 5 hours'], ['5_10h', '5 to 10 hours'], ['10h_plus', '10+ hours'] ], cols: 2 },
     { id: 'trading_time', q: 'How much time can you dedicate to day trading each week?', hint: 'Time watching and trading the market.', opts: [
       ['not_yet', "I'm not ready to trade yet"], ['under_3h', 'Under 3 hours (about 30 min a day)'], ['3_8h', '3 to 8 hours (about 1 to 1.5 hrs a day)'], ['8h_plus', '8+ hours'] ] },
